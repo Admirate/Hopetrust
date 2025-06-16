@@ -160,11 +160,11 @@ export default function ReviewsSection() {
                 
                 {/* Quote */}
                 <div className="relative mb-8">
-                  <div className="text-6xl text-orange-200 absolute -top-4 -left-2 font-serif">"</div>
+                  <div className="text-6xl text-orange-200 absolute -top-4 -left-2 font-serif">&ldquo;</div>
                   <p className="text-gray-700 italic text-xl leading-relaxed max-w-md mx-auto font-light px-6">
                     {reviews[currentReview].text}
                   </p>
-                  <div className="text-6xl text-orange-200 absolute -bottom-8 -right-2 font-serif rotate-180">"</div>
+                  <div className="text-6xl text-orange-200 absolute -bottom-8 -right-2 font-serif rotate-180">&rdquo;</div>
                 </div>
                 
                 {/* Author */}

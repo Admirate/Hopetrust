@@ -74,7 +74,7 @@ export default function HeroSection() {
             className="text-xl md:text-2xl text-white/95 mb-12 max-w-4xl mx-auto font-light drop-shadow-lg"
             style={fadeInUp(contentVisible, 800)}
           >
-            NO PRESSURE. JUST SUPPORT. WHEN YOU'RE READY, WE'RE HERE
+            NO PRESSURE. JUST SUPPORT. WHEN YOU&apos;RE READY, WE&apos;RE HERE
           </p>
           
           <button 

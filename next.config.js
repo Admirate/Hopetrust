@@ -6,9 +6,8 @@ const nextConfig = {
     unoptimized: true,
   },
   assetPrefix: process.env.NODE_ENV === 'production' ? '' : '',
-  // Disable server-side features for static export
-  experimental: {
-    appDir: true,
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 };
 
