@@ -33,7 +33,7 @@ export default function JourneySection() {
           className="space-y-6 max-w-md mx-auto"
         >
           <button 
-            className="w-full bg-gray-400 hover:bg-gray-500 text-white font-semibold py-4 px-8 rounded-full flex items-center justify-center gap-3 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-4 px-8 rounded-full flex items-center justify-center gap-3 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
             style={scaleIn(buttonsVisible, 400)}
           >
             <MessageCircle size={24} />
@@ -41,7 +41,7 @@ export default function JourneySection() {
           </button>
           
           <button 
-            className="w-full bg-gray-400 hover:bg-gray-500 text-white font-semibold py-4 px-8 rounded-full flex items-center justify-center gap-3 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-4 px-8 rounded-full flex items-center justify-center gap-3 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
             style={scaleIn(buttonsVisible, 600)}
           >
             <Calendar size={24} />

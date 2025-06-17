@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useRef, useEffect } from 'react';
 import { useScrollAnimation, fadeInUp, scaleIn } from '@/hooks/useScrollAnimation';
 
 export default function HeroSection() {
@@ -8,24 +9,46 @@ export default function HeroSection() {
     rootMargin: '0px' 
   });
 
+  // Array of video sources
+  const videos = [
+    '/83279-581386236_medium.mp4',
+    '/134649-760133245_small.mp4',
+    '/215124_small.mp4',
+    '/119242-717347117_small.mp4'
+  ];
+
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Handle video end to switch to next video
+  const handleVideoEnd = () => {
+    setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length);
+  };
+
+  // Load new video when index changes
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.load();
+    }
+  }, [currentVideoIndex]);
+
   return (
     <section className="relative overflow-hidden bg-gray-900 rounded-3xl mx-4 mt-8 mb-16">
       {/* Background video */}
       <div className="absolute inset-0 rounded-3xl overflow-hidden">
         <video
+          ref={videoRef}
           autoPlay
-          loop
           muted
           playsInline
           className="w-full h-full object-cover opacity-90"
+          onEnded={handleVideoEnd}
           onError={(e) => {
             console.log('Video failed to load, using fallback background');
             e.currentTarget.style.display = 'none';
           }}
         >
-          {/* Your custom video - put your video file in the public folder */}
-          <source src="/hero-video.mp4" type="video/mp4" />
-          <source src="/hero-video.webm" type="video/webm" />
+          <source src={videos[currentVideoIndex]} type="video/mp4" />
           
           {/* Fallback message */}
           Your browser does not support the video tag.
