@@ -1,6 +1,5 @@
 "use client";
 
-import { Heart, Brain, Shield, Users } from 'lucide-react';
 import Image from 'next/image';
 import { useScrollAnimation, fadeInUp, scaleIn } from '@/hooks/useScrollAnimation';
 
@@ -10,36 +9,28 @@ export default function ServicesSection() {
 
   const services = [
     {
-      icon: Heart,
-      title: "THERAPY/COUNSELLING",
+      title: "THERAPY AND COUNSELING",
       description: "Individual, group, and family therapy sessions with licensed professionals in a safe, supportive environment.",
-      color: "from-pink-400 to-rose-500",
-      bgColor: "bg-pink-50",
-      borderColor: "border-pink-200"
+      imageUrl: "https://images.pexels.com/photos/7176026/pexels-photo-7176026.jpeg?auto=compress&cs=tinysrgb&w=800",
+      alt: "Two women having a counseling session"
     },
     {
-      icon: Brain,
       title: "PSYCHIATRIC CONSULTATIONS",
       description: "Expert psychiatric evaluations and medication management with board-certified psychiatrists.",
-      color: "from-blue-400 to-indigo-500",
-      bgColor: "bg-blue-50",
-      borderColor: "border-blue-200"
+      imageUrl: "https://images.pexels.com/photos/5699456/pexels-photo-5699456.jpeg?auto=compress&cs=tinysrgb&w=800",
+      alt: "Professional psychiatric consultation"
     },
     {
-      icon: Shield,
-      title: "RECOVERY & DE-ADDICTION",
+      title: "RECOVERY AND DE-ADDICTION",
       description: "Comprehensive addiction recovery programs with personalized treatment plans and ongoing support.",
-      color: "from-green-400 to-emerald-500",
-      bgColor: "bg-green-50",
-      borderColor: "border-green-200"
+      imageUrl: "https://images.pexels.com/photos/7176319/pexels-photo-7176319.jpeg?auto=compress&cs=tinysrgb&w=800",
+      alt: "Recovery support and counseling"
     },
     {
-      icon: Users,
-      title: "CHILD & ADOLESCENT CARE",
+      title: "CARE FOR CHILDREN AND ADOLESCENTS",
       description: "Specialized mental health services for children and teenagers with age-appropriate approaches.",
-      color: "from-orange-400 to-amber-500",
-      bgColor: "bg-orange-50",
-      borderColor: "border-orange-200"
+      imageUrl: "https://images.pexels.com/photos/8613089/pexels-photo-8613089.jpeg?auto=compress&cs=tinysrgb&w=800",
+      alt: "Family therapy with children and adolescents"
     }
   ];
 
@@ -67,59 +58,37 @@ export default function ServicesSection() {
           ref={servicesRef as React.RefObject<HTMLDivElement>}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
         >
-          {services.map((service, index) => {
-            const Icon = service.icon;
-            return (
-              <div
-                key={index}
-                className={`group relative p-8 rounded-3xl ${service.bgColor} ${service.borderColor} border-2 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden`}
-                style={scaleIn(servicesVisible, 200 + index * 150)}
-              >
-                {/* Background gradient overlay on hover */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}></div>
+          {services.map((service, index) => (
+            <div
+              key={index}
+              className="group relative rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 bg-white"
+              style={scaleIn(servicesVisible, 200 + index * 150)}
+            >
+              {/* Service image */}
+              <div className="relative h-80 w-full overflow-hidden">
+                <Image
+                  src={service.imageUrl}
+                  alt={service.alt}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                {/* Overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
                 
-                {/* Icon container */}
-                <div className={`relative w-16 h-16 bg-gradient-to-br ${service.color} rounded-2xl mb-6 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                  <Icon className="text-white" size={32} />
-                  {/* Shine effect */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/20 to-white/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                {/* Text overlay */}
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-4 shadow-lg">
+                    <h3 className="text-lg font-bold text-gray-800 mb-2 leading-tight">
+                      {service.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">
+                      {service.description}
+                    </p>
+                  </div>
                 </div>
-
-                {/* Service image */}
-                <div className="mb-6 rounded-2xl overflow-hidden shadow-md group-hover:shadow-lg transition-shadow duration-300 h-32 relative">
-                  <Image
-                    src={`https://images.pexels.com/photos/${
-                      index === 0 ? '4098369' : 
-                      index === 1 ? '4099235' : 
-                      index === 2 ? '3182832' : '4195504'
-                    }/pexels-photo-${
-                      index === 0 ? '4098369' : 
-                      index === 1 ? '4099235' : 
-                      index === 2 ? '3182832' : '4195504'
-                    }.jpeg?auto=compress&cs=tinysrgb&w=800`}
-                    alt={service.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/5 transition-colors duration-300"></div>
-                </div>
-
-                {/* Content */}
-                <div className="relative z-10">
-                  <h3 className="text-xl font-bold text-gray-800 mb-4 group-hover:text-gray-900 transition-colors duration-300">
-                    {service.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed group-hover:text-gray-700 transition-colors duration-300">
-                    {service.description}
-                  </p>
-                </div>
-
-                {/* Decorative corner accent */}
-                <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl ${service.color} opacity-10 group-hover:opacity-20 transition-opacity duration-300`}
-                     style={{ clipPath: 'polygon(100% 0, 0 0, 100% 100%)' }}></div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
 
         {/* Call to action */}
