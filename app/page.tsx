@@ -1,6 +1,8 @@
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
 import TrustSection from '@/components/TrustSection';
+import WhySection from '@/components/WhySection';
+import WhatWeTreatSection from '@/components/WhatWeTreatSection';
 import ServicesSection from '@/components/ServicesSection';
 import ReviewsSection from '@/components/ReviewsSection';
 import JourneySection from '@/components/JourneySection';
@@ -12,6 +14,8 @@ export default function Home() {
       <Header />
       <HeroSection />
       <TrustSection />
+      <WhySection />
+      <WhatWeTreatSection />
       <ServicesSection />
       <ReviewsSection />
       <JourneySection />
