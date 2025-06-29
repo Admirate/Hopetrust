@@ -1,5 +1,7 @@
 "use client";
 
+import { useScrollAnimation, fadeInLeft, fadeInUp } from '@/hooks/useScrollAnimation';
+
 const GradientBlobs = () => {
   return (
     <>
@@ -70,6 +72,9 @@ const WhySection = () => {
     "GENTLE, PROVEN THERAPIES AND HOLISTIC CARE"
   ];
 
+  const { elementRef: titleRef, isVisible: titleVisible } = useScrollAnimation();
+  const featureRefs = features.map(() => useScrollAnimation());
+
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-8">
       <section className="py-16 lg:py-24 bg-[#FFF5F1] rounded-[40px] max-w-[1440px] mx-auto relative overflow-hidden">
@@ -78,7 +83,7 @@ const WhySection = () => {
           <div className="flex flex-col lg:flex-row lg:gap-20 max-w-6xl mx-auto">
             {/* Left side - Title */}
             <div className="mb-10 lg:mb-0 lg:w-1/3">
-              <h2 className="text-[40px] sm:text-[48px] lg:text-[56px] font-medium leading-[1.1]">
+              <h2 ref={titleRef} className="text-[40px] sm:text-[48px] lg:text-[56px] font-medium leading-[1.1]" style={fadeInLeft(titleVisible, 200)}>
                 WHY
                 <div className="text-[#FF6B2C] mt-2">
                   HOPE<br />
@@ -93,7 +98,9 @@ const WhySection = () => {
                 {features.map((feature, index) => (
                   <div 
                     key={index}
+                    ref={featureRefs[index].elementRef}
                     className="bg-white rounded-[20px] p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-shadow duration-300 max-w-[540px]"
+                    style={fadeInUp(featureRefs[index].isVisible, 300 + (index * 150))}
                   >
                     <p className="text-[#2D2D2D] text-sm sm:text-base tracking-wide">
                       {feature}

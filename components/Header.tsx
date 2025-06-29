@@ -24,14 +24,22 @@ export default function Header() {
         <div className="flex justify-between items-center py-6">
           {/* Logo */}
           <div className="flex items-center">
-            <div className="relative">
-              {/* Custom Logo Image */}
+            <div className="relative flex-shrink-0">
+              {/* Custom Logo Image - Optimized for clarity only */}
               <Image
                 src="/logo.png"
                 alt="Hope Trust Logo"
                 width={80}
                 height={80}
-                className="object-contain"
+                className="object-contain w-20 h-20"
+                priority={true}
+                quality={100}
+                style={{
+                  imageRendering: 'crisp-edges',
+                  filter: 'contrast(1.15) brightness(1.05) saturate(1.1)',
+                  transform: 'translateZ(0)',
+                  backfaceVisibility: 'hidden',
+                } as React.CSSProperties}
                 onError={(e) => {
                   // Fallback to original design if custom logo fails to load
                   e.currentTarget.style.display = 'none';

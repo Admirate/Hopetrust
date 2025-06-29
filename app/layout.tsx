@@ -1,12 +1,28 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import WebVitals from '@/components/WebVitals';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+  preload: true,
+  fallback: ['system-ui', 'arial'],
+});
 
 export const metadata: Metadata = {
-  title: 'Hope Trust - Your Space to Begin Healing',
-  description: 'Professional therapy, psychiatry and recovery services. Over 20 years of experience supporting individuals and families with empathy and clinical expertise.',
+  title: 'Hope Trust - A place for hope, healing, and renewal',
+  description: 'Hope Trust has been supporting individuals and families on their path to recovery for over 20 years. Our care is respectful, evidence-based, and always personal.',
+  keywords: 'mental health, therapy, counseling, recovery, addiction, hope trust',
+  authors: [{ name: 'Hope Trust' }],
+  viewport: 'width=device-width, initial-scale=1',
+  robots: 'index, follow',
+  openGraph: {
+    title: 'Hope Trust - A place for hope, healing, and renewal',
+    description: 'Hope Trust has been supporting individuals and families on their path to recovery for over 20 years.',
+    type: 'website',
+    siteName: 'Hope Trust',
+  },
 };
 
 export default function RootLayout({

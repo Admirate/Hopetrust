@@ -1,6 +1,7 @@
 "use client";
 
 import Image from 'next/image';
+import { useScrollAnimation, fadeInUp, fadeInLeft, fadeInRight } from '@/hooks/useScrollAnimation';
 
 const GradientBlobs = () => {
   return (
@@ -65,6 +66,13 @@ const GradientBlobs = () => {
 };
 
 export default function TrustSection() {
+  const { elementRef: titleRef, isVisible: titleVisible } = useScrollAnimation();
+  const { elementRef: descriptionRef, isVisible: descriptionVisible } = useScrollAnimation();
+  const { elementRef: buttonRef, isVisible: buttonVisible } = useScrollAnimation();
+  const { elementRef: card1Ref, isVisible: card1Visible } = useScrollAnimation();
+  const { elementRef: card2Ref, isVisible: card2Visible } = useScrollAnimation();
+  const { elementRef: card3Ref, isVisible: card3Visible } = useScrollAnimation();
+
   return (
     <section className="py-8 sm:py-12 lg:py-16 relative overflow-hidden">
       <GradientBlobs />
@@ -81,12 +89,12 @@ export default function TrustSection() {
       <div className="container mx-auto px-4 relative">
         {/* Who We Are section */}
         <div className="mb-8 sm:mb-12 lg:mb-16 ml-0 sm:ml-[100px] lg:ml-[200px]">
-          <h2 className="text-[40px] sm:text-[52px] lg:text-[64px] font-medium leading-tight mb-6 lg:mb-8">
+          <h2 ref={titleRef} className="text-[40px] sm:text-[52px] lg:text-[64px] font-medium leading-tight mb-6 lg:mb-8" style={fadeInLeft(titleVisible, 200)}>
             Who<br />
             We<br />
             Are?
           </h2>
-          <div className="max-w-[320px] sm:max-w-[400px] lg:max-w-[480px] bg-white rounded-[24px] sm:rounded-[28px] lg:rounded-[32px] p-4 sm:p-5 lg:p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
+          <div ref={descriptionRef} className="max-w-[320px] sm:max-w-[400px] lg:max-w-[480px] bg-white rounded-[24px] sm:rounded-[28px] lg:rounded-[32px] p-4 sm:p-5 lg:p-6 shadow-[0_2px_8px_rgba(0,0,0,0.08)]" style={fadeInUp(descriptionVisible, 400)}>
             <p className="text-gray-600 text-sm sm:text-base">
               Hope Trust has been supporting individuals and families on their path to recovery for over 20 years. Our care is respectful, evidence-based, and always personal.
             </p>
@@ -94,7 +102,7 @@ export default function TrustSection() {
         </div>
 
         {/* What We Offer button */}
-        <button className="group bg-white rounded-full px-4 sm:px-5 lg:px-6 py-2.5 sm:py-3 shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex items-center gap-2 sm:gap-3 hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)] transition-all mb-8 sm:mb-10 lg:mb-12">
+        <button ref={buttonRef} className="group bg-white rounded-full px-4 sm:px-5 lg:px-6 py-2.5 sm:py-3 shadow-[0_2px_8px_rgba(0,0,0,0.08)] flex items-center gap-2 sm:gap-3 hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)] transition-all mb-8 sm:mb-10 lg:mb-12" style={fadeInUp(buttonVisible, 600)}>
           <span className="text-sm sm:text-base font-medium">What We Offer</span>
           <span className="relative w-4 sm:w-5 h-4 sm:h-5 flex items-center">
             <span className="absolute w-3 sm:w-4 h-[2px] bg-black rounded-full"></span>
@@ -108,7 +116,7 @@ export default function TrustSection() {
           {/* Top row with two cards */}
           <div className="flex flex-col lg:flex-row justify-between gap-6 sm:gap-8 lg:gap-16 mb-6 sm:mb-8 lg:mb-12">
             {/* Therapy and Counseling Card */}
-            <div className="relative w-full lg:w-[400px]">
+            <div ref={card1Ref} className="relative w-full lg:w-[400px]" style={fadeInLeft(card1Visible, 200)}>
               <div className="relative rounded-[24px] sm:rounded-[28px] lg:rounded-[32px] overflow-hidden aspect-[4/3]">
                 <Image 
                   src="/therapy.png"
@@ -131,7 +139,7 @@ export default function TrustSection() {
             </div>
 
             {/* Home-based Recovery Programs Card */}
-            <div className="relative w-full lg:w-[400px]">
+            <div ref={card2Ref} className="relative w-full lg:w-[400px]" style={fadeInRight(card2Visible, 400)}>
               <div className="relative rounded-[24px] sm:rounded-[28px] lg:rounded-[32px] overflow-hidden aspect-[4/3]">
                 <Image 
                   src="/children.png"
@@ -155,7 +163,7 @@ export default function TrustSection() {
           </div>
 
           {/* Bottom centered card */}
-          <div className="relative w-full lg:w-[400px] mx-auto">
+          <div ref={card3Ref} className="relative w-full lg:w-[400px] mx-auto" style={fadeInUp(card3Visible, 600)}>
             <div className="relative rounded-[24px] sm:rounded-[28px] lg:rounded-[32px] overflow-hidden aspect-[4/3]">
               <Image 
                 src="/addiction.png"

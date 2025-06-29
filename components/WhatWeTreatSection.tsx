@@ -1,6 +1,7 @@
 "use client";
 
 import Image from 'next/image';
+import { useScrollAnimation, fadeInUp, scaleIn } from '@/hooks/useScrollAnimation';
 
 export default function WhatWeTreatSection() {
   const treatmentAreas = [
@@ -54,12 +55,15 @@ export default function WhatWeTreatSection() {
     }
   ];
 
+  const { elementRef: titleRef, isVisible: titleVisible } = useScrollAnimation();
+  const cardRefs = treatmentAreas.map(() => useScrollAnimation());
+
   return (
     <section className="py-12 lg:py-16 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           {/* Section Title */}
-          <div className="text-center mb-12">
+          <div ref={titleRef} className="text-center mb-12" style={fadeInUp(titleVisible, 200)}>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#FF6B2C] tracking-wide">
               WHAT WE TREAT
             </h2>
@@ -70,6 +74,7 @@ export default function WhatWeTreatSection() {
             {treatmentAreas.map((area, index) => (
               <div
                 key={index}
+                ref={cardRefs[index].elementRef}
                 className="text-center hover:scale-105 transition-transform duration-300"
                 style={{
                   background: '#FEFBDC',
@@ -80,7 +85,8 @@ export default function WhatWeTreatSection() {
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
+                  ...scaleIn(cardRefs[index].isVisible, 300 + (index * 150))
                 }}
               >
                 {/* Icon */}
