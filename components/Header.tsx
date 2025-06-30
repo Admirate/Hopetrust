@@ -3,19 +3,20 @@
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
-    'What Do We Treat',
-    'About Us', 
-    'Services',
-    'Training',
-    'Gallery',
-    'Blog',
-    'FAQS',
-    'Contact Us'
+    { label: 'What Do We Treat', href: '#' },
+    { label: 'About Us', href: '/about' },
+    { label: 'Services', href: '#' },
+    { label: 'Training', href: '#' },
+    { label: 'Gallery', href: '#' },
+    { label: 'Blog', href: '#' },
+    { label: 'FAQS', href: '#' },
+    { label: 'Contact Us', href: '#' }
   ];
 
   return (
@@ -65,13 +66,13 @@ export default function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex space-x-12">
             {navItems.map((item) => (
-              <a
-                key={item}
-                href="#"
+              <Link
+                key={item.label}
+                href={item.href}
                 className="text-gray-700 hover:text-orange-500 font-medium transition-colors duration-200 text-sm px-4 py-3 rounded-lg hover:bg-gray-50"
               >
-                {item}
-              </a>
+                {item.label}
+              </Link>
             ))}
           </nav>
 
@@ -89,14 +90,14 @@ export default function Header() {
           <div className="lg:hidden border-t border-gray-200">
             <div className="py-6 space-y-3">
               {navItems.map((item) => (
-                <a
-                  key={item}
-                  href="#"
+                <Link
+                  key={item.label}
+                  href={item.href}
                   className="block px-6 py-4 text-gray-700 hover:text-orange-500 hover:bg-gray-50 rounded-lg transition-colors duration-200 text-base"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {item}
-                </a>
+                  {item.label}
+                </Link>
               ))}
             </div>
           </div>
