@@ -39,9 +39,9 @@ export default function Home() {
       <HeroSection />
       <Suspense fallback={<div className="h-screen animate-pulse bg-gray-100" />}>
         <TrustSection />
+        <ServicesSection />
         <WhySection />
         <WhatWeTreatSection />
-        <ServicesSection />
         <ReviewsSection />
         <JourneySection />
         <Footer />
