@@ -12,7 +12,7 @@ const HeroSection = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   return (
-    <div className="relative min-h-[calc(100dvh-8rem)] w-full overflow-hidden">
+    <div className="relative min-h-[calc(100dvh-5rem)] w-full overflow-hidden">
       <video
         ref={videoRef}
         autoPlay
