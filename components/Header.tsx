@@ -34,7 +34,7 @@ export default function Header() {
     <Link
       key={item.label}
       href={item.href}
-      className="flex items-center gap-1 text-xs md:text-sm text-gray-800 hover:text-orange-500 font-medium transition-colors duration-200"
+      className="flex items-center gap-1 text-sm md:text-base text-gray-800 hover:text-orange-500 font-semibold transition-colors duration-200"
     >
       <span>{item.label}</span>
       {item.hasDropdown && (
@@ -89,7 +89,7 @@ export default function Header() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="flex items-center justify-between px-4 py-3 text-sm text-gray-800 hover:bg-gray-50"
+                  className="flex items-center justify-between px-4 py-3 text-base font-semibold text-gray-800 hover:bg-gray-50"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <span>{item.label}</span>

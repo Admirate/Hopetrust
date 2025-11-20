@@ -45,9 +45,9 @@ const journeySteps = [
     // 4: Session timings
     lines: [
       "Session timings",
-      "Individual therapy — sixty minutes",
-      "Couples therapy — ninety minutes",
-      "Psychiatry — thirty minutes",
+      "Individual therapy — 60 minutes",
+      "Couples therapy — 90 minutes",
+      "Psychiatry — 30 minutes",
       "Your progress continues after each session.",
       "One step at a time.",
     ],
@@ -107,7 +107,7 @@ export default function HowJourneyUnfoldsSection() {
         <div className="mx-auto flex max-w-5xl flex-col items-center px-4 text-center">
           {/* Small looping video icon */}
           <div className="mb-6 md:mb-8">
-            <div className="h-12 w-12 md:h-14 md:w-14 lg:h-16 lg:w-16 overflow-hidden">
+            <div className="h-18 w-18 md:h-24 md:w-24 lg:h-28 lg:w-28 overflow-hidden">
               <video
                 autoPlay
                 loop
@@ -132,12 +132,37 @@ export default function HowJourneyUnfoldsSection() {
             <div className="mb-4 text-sm md:text-base font-medium tracking-[0.25em] uppercase text-[#ED7428]">
               Step {current.step}
             </div>
-            <div
-              className={`${ibarra.className} text-[24px] md:text-[30px] lg:text-[36px] font-semibold leading-normal text-black transition-opacity duration-300`}
-            >
-              {current.lines.map((line, i) => (
-                <p key={i}>{line}</p>
-              ))}
+            <div className="relative left-1/2 w-screen -translate-x-1/2 bg-gradient-to-b from-white to-[#FFFAD4] py-8 md:py-10">
+              <div className="mx-auto max-w-5xl px-4">
+                <div
+                  className={`${ibarra.className} text-[24px] md:text-[30px] lg:text-[36px] font-semibold leading-normal text-black transition-opacity duration-300`}
+                >
+                  {current.step === 4 ? (
+                    <>
+                      <p>Session timings</p>
+                      <p>
+                        Individual therapy —{" "}
+                        <span className="text-[#ED7428]">60</span>{" "}
+                        <span className="text-[#FFDF00]">minutes</span>
+                      </p>
+                      <p>
+                        Couples therapy —{" "}
+                        <span className="text-[#ED7428]">90</span>{" "}
+                        <span className="text-[#FFDF00]">minutes</span>
+                      </p>
+                      <p>
+                        Psychiatry —{" "}
+                        <span className="text-[#ED7428]">30</span>{" "}
+                        <span className="text-[#FFDF00]">minutes</span>
+                      </p>
+                      <p>Your progress continues after each session.</p>
+                      <p>One step at a time.</p>
+                    </>
+                  ) : (
+                    current.lines.map((line, i) => <p key={i}>{line}</p>)
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>

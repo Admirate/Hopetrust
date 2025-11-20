@@ -33,22 +33,10 @@ export default function WhatWeOfferSection() {
         {/* Content wrapper to approximate 616px height while staying responsive */}
         <div className="flex h-full flex-col px-8 py-8 md:px-12 md:py-10 lg:px-16 lg:py-12 gap-8 md:gap-10">
           {/* Header row */}
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <h2 className="font-mono text-3xl md:text-4xl font-semibold tracking-wide">
-                What We Offer
-              </h2>
-            </div>
-            <div className="hidden sm:block">
-              <div className="relative h-16 w-16">
-                <Image
-                  src="/logo1.png"
-                  alt="Hope Trust"
-                  fill
-                  className="object-contain drop-shadow-md"
-                />
-              </div>
-            </div>
+          <div className="flex items-start justify-start gap-4">
+            <h2 className="font-mono text-3xl md:text-4xl font-semibold tracking-wide">
+              What We Offer
+            </h2>
           </div>
 
           {/* Top divider */}
