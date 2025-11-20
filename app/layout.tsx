@@ -2,6 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import WebVitals from '@/components/WebVitals';
+import LenisProvider from '@/components/LenisProvider';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -38,8 +39,10 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className={`${inter.className} antialiased`}>
-        {children}
-        <WebVitals />
+        <LenisProvider>
+          {children}
+          <WebVitals />
+        </LenisProvider>
       </body>
     </html>
   );

@@ -1,22 +1,18 @@
 "use client";
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef } from "react";
+import { IBM_Plex_Mono } from "next/font/google";
+
+const ibmMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["600"],
+});
 
 const HeroSection = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    // Trigger animation after component mounts
-    const timer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 300); // Small delay to ensure smooth transition
-
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
-    <div className="relative h-screen w-full overflow-hidden">
+    <div className="relative min-h-[calc(100dvh-8rem)] w-full overflow-hidden">
       <video
         ref={videoRef}
         autoPlay
@@ -30,64 +26,34 @@ const HeroSection = () => {
         <source src="/final hero video.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-      <div className="relative z-10 flex h-full items-end justify-end p-8 md:p-12 lg:p-16">
-        <div 
-          className={`w-full max-w-md rounded-lg bg-black bg-opacity-75 p-8 text-white transition-all duration-1000 ease-out ${
-            isLoaded 
-              ? 'opacity-100 transform translate-y-0' 
-              : 'opacity-0 transform translate-y-8'
-          }`}
-        >
-          <h1 className="space-y-2">
-            <span 
-              className={`block text-4xl font-light italic md:text-5xl transition-all duration-1000 ease-out ${
-                isLoaded 
-                  ? 'opacity-100 transform translate-y-0' 
-                  : 'opacity-0 transform translate-y-4'
-              }`}
-              style={{ transitionDelay: '200ms' }}
-            >
-              A place for
-            </span>
-            <span 
-              className={`block text-5xl font-bold leading-tight text-orange-500 md:text-6xl lg:text-7xl transition-all duration-1000 ease-out ${
-                isLoaded 
-                  ? 'opacity-100 transform translate-y-0' 
-                  : 'opacity-0 transform translate-y-4'
-              }`}
-              style={{ transitionDelay: '400ms' }}
-            >
-              hope, healing,
-              <br />
-              and renewal.
-            </span>
-          </h1>
-          <div 
-            className={`mt-6 space-y-2 transition-all duration-1000 ease-out ${
-              isLoaded 
-                ? 'opacity-100 transform translate-y-0' 
-                : 'opacity-0 transform translate-y-4'
-            }`}
-            style={{ transitionDelay: '600ms' }}
+
+      {/* Text overlay on left side */}
+      <div className="relative z-10 h-full">
+        <div className="flex h-full items-start justify-start px-6 sm:px-12 lg:px-24 pt-24 md:pt-32 lg:pt-40">
+          <div
+            className={`${ibmMono.className} max-w-lg space-y-8 text-left text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]`}
           >
-            <div className="flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M18 10c0 4.418-3.582 8-8 8s-8-3.582-8-8 3.582-8 8-8 8 3.582 8 8zm-1.5 0a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0zm-4.5-2a1 1 0 100 2 1 1 0 000-2zm-5 0a1 1 0 100 2 1 1 0 000-2zm2.5 4.5c1.5 0 2.5-.75 2.5-.75s-1 1.75-2.5 1.75-2.5-1.75-2.5-1.75 1 .75 2.5 .75z" clipRule="evenodd"/>
-              </svg>
-              <span className="font-medium text-base text-gray-300">A gentle reminder:</span>
+            <p className="whitespace-pre-line text-[36px] leading-[47px]">
+              {`A place for `}
+              <span className="text-yellow-300">hope</span>
+              {`,\nhealing, and renewal.`}
+            </p>
+
+            <div className="space-y-2">
+              <p className="text-[32px] leading-[42px] text-[#FFFAD4]">
+                A gentle reminder:
+              </p>
+              <p className="text-[32px] leading-[42px] text-[#FFFAD4]">
+                We&apos;re here if you need us — message us anytime
+              </p>
             </div>
-            <p className="text-lg text-gray-200">We're here if you need us — message us anytime</p>
+
+            <button
+              className="inline-flex h-[46px] w-[158px] items-center justify-center rounded-[7px] bg-[#FFFFFF] text-base sm:text-lg font-semibold text-black shadow-md hover:bg-gray-100 transition-colors"
+            >
+              Chat with us
+            </button>
           </div>
-          <button 
-            className={`mt-6 bg-white text-black px-6 py-2.5 rounded-full hover:bg-gray-200 transition-all font-semibold text-base ${
-              isLoaded 
-                ? 'opacity-100 transform translate-y-0' 
-                : 'opacity-0 transform translate-y-4'
-            }`}
-            style={{ transitionDelay: '800ms', transitionDuration: '1000ms' }}
-          >
-            Chat with us
-          </button>
         </div>
       </div>
     </div>
