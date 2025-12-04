@@ -122,7 +122,7 @@ export default function HowJourneyUnfoldsSection() {
 
           {/* Heading */}
           <h2
-            className={`${ibmMono.className} text-[40px] md:text-[52px] lg:text-[64px] font-semibold leading-normal text-[#ED7428]`}
+            className={`${ibmMono.className} fluid-heading-hero font-semibold text-[#ED7428] text-balance`}
           >
             How Your Journey Unfolds
           </h2>
@@ -135,7 +135,7 @@ export default function HowJourneyUnfoldsSection() {
             <div className="relative left-1/2 w-screen -translate-x-1/2 bg-gradient-to-b from-white to-[#FFFAD4] py-8 md:py-10">
               <div className="mx-auto max-w-5xl px-4">
                 <div
-                  className={`${ibarra.className} text-[24px] md:text-[30px] lg:text-[36px] font-semibold leading-normal text-black transition-opacity duration-300`}
+                className={`${ibarra.className} fluid-body-xl font-semibold text-black transition-opacity duration-300 text-balance`}
                 >
                   {current.step === 4 ? (
                     <>

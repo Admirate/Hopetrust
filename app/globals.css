@@ -70,14 +70,66 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* GPU acceleration for smooth scrolling */
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
+    /* Global fluid typography base */
+    font-size: clamp(14px, 1.1vw, 18px);
+    line-height: 1.4;
+  }
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Fluid headings */
+  h1 {
+    font-size: clamp(32px, 6vw, 56px);
+    font-weight: 700;
+  }
+
+  h2 {
+    font-size: clamp(26px, 4.5vw, 42px);
+    font-weight: 700;
+  }
+
+  h3 {
+    font-size: clamp(22px, 3.5vw, 32px);
+    font-weight: 600;
+  }
+
+  h4 {
+    font-size: clamp(18px, 2.5vw, 26px);
+    font-weight: 600;
+  }
+
+  /* Fluid body text */
+  p,
+  body {
+    font-size: clamp(14px, 2vw, 18px);
+    font-weight: 400;
+  }
+
+  .bold-body {
+    font-size: clamp(14px, 2vw, 18px);
+    font-weight: 600;
+  }
+
+  /* Fluid lists */
+  ul,
+  ol {
+    font-size: clamp(14px, 2vw, 18px);
+    margin-left: 1rem;
+    line-height: 1.5;
+  }
+
+  /* Fluid button text */
+  button {
+    font-size: clamp(14px, 1.8vw, 16px);
+    font-weight: 600;
+    letter-spacing: 0.3px;
   }
   
   /* Enhanced image rendering for maximum clarity */
-  img, video {
+  img,
+  video {
     image-rendering: -webkit-optimize-contrast;
     image-rendering: -moz-crisp-edges;
     image-rendering: crisp-edges;
@@ -86,83 +138,49 @@
     transform: translateZ(0);
     backface-visibility: hidden;
   }
-  
-  /* Ultra-sharp logo rendering for all displays */
-  img[alt*="Logo"], img[alt*="logo"] {
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-    /* Enhanced sharpness and clarity */
-    filter: contrast(1.15) brightness(1.05) saturate(1.1) unsharp-mask(1px 1px 0.5px);
-    /* Force hardware acceleration for crisp rendering */
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    /* Prevent anti-aliasing blur */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  
-  /* High DPI display specific optimizations */
-  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 2dppx) {
-    img[alt*="Logo"], img[alt*="logo"] {
-      /* Force pixel-perfect rendering on retina displays */
-      image-rendering: -webkit-optimize-contrast;
-      image-rendering: pixelated;
-      filter: contrast(1.2) brightness(1.03) saturate(1.05);
-    }
-  }
 }
 
 @layer components {
-  /* Optimized animation classes */
-  .smooth-transition {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: transform, opacity;
-  }
-  
-  .gpu-accelerated {
-    transform: translateZ(0);
-    will-change: transform;
-  }
-  
   .fade-in-optimized {
     animation: fade-in 0.5s ease-out forwards;
     will-change: opacity, transform;
   }
   
-  /* Loading skeleton optimized */
-  .skeleton {
-    @apply animate-pulse bg-gray-200 rounded;
-    background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
-    background-size: 200% 100%;
-    animation: loading 1.5s infinite;
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
-  
-  @keyframes loading {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-  }
-  
-  /* Optimize focus states */
-  .focus-optimized:focus {
-    outline: 2px solid hsl(var(--ring));
-    outline-offset: 2px;
-  }
-  
+
   /* Scroll behavior optimization */
   .smooth-scroll {
     scroll-behavior: smooth;
   }
 
-  /* Hide scrollbars while keeping scroll behavior */
-  .no-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+  /* Fluid (liquid) typography scale */
+  .fluid-heading-hero {
+    font-size: clamp(2.25rem, 4vw, 3.5rem); /* ~36px → 56px */
+    line-height: 1.15;
   }
 
-  .no-scrollbar::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+  .fluid-heading-xl {
+    font-size: clamp(2rem, 3.5vw, 3rem); /* ~32px → 48px */
+    line-height: 1.15;
+  }
+
+  .fluid-body-xl {
+    font-size: clamp(1.25rem, 2.2vw, 1.75rem); /* ~20px → 28px */
+    line-height: 1.6;
+  }
+
+  .fluid-body-lg {
+    font-size: clamp(1.0625rem, 1.6vw, 1.375rem); /* ~17px → 22px */
+    line-height: 1.6;
   }
   
   /* Reduce motion for accessibility */

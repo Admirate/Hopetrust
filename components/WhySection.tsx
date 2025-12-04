@@ -77,13 +77,17 @@ const WhySection = () => {
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-8">
-      <section className="py-16 lg:py-24 bg-[#FFF5F1] rounded-[40px] max-w-[1440px] mx-auto relative overflow-hidden">
+      <section className="py-16 lg:py-24 min-h-screen flex items-center bg-[#FFF5F1] rounded-[40px] max-w-[1440px] mx-auto relative overflow-hidden">
         <GradientBlobs />
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="flex flex-col lg:flex-row lg:gap-20 max-w-6xl mx-auto">
             {/* Left side - Title */}
             <div className="mb-10 lg:mb-0 lg:w-1/3">
-              <h2 ref={titleRef} className="text-[40px] sm:text-[48px] lg:text-[56px] font-medium leading-[1.1]" style={fadeInLeft(titleVisible, 200)}>
+              <h2
+                ref={titleRef}
+                className="fluid-heading-hero font-medium text-balance"
+                style={fadeInLeft(titleVisible, 200)}
+              >
                 WHY
                 <div className="text-[#FF6B2C] mt-2">
                   HOPE<br />

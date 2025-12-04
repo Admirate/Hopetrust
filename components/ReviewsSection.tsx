@@ -67,7 +67,7 @@ export default function ReviewsSection() {
   };
 
   return (
-    <section className="py-24 bg-gradient-to-br from-gray-50 via-white to-blue-50">
+    <section className="py-24 bg-gradient-to-br from-gray-50 via-white to-blue-50 min-h-screen flex items-center">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left side - Reviews statistics */}

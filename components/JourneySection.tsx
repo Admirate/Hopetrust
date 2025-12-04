@@ -8,7 +8,7 @@ export default function JourneySection() {
   const { elementRef: buttonsRef, isVisible: buttonsVisible } = useScrollAnimation({ threshold: 0.2 });
 
   return (
-    <section className="py-20 bg-gradient-to-br from-yellow-50 to-yellow-100">
+    <section className="py-20 bg-gradient-to-br from-yellow-50 to-yellow-100 min-h-screen flex items-center">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Header */}
         <div 

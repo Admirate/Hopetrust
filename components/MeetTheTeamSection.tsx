@@ -42,11 +42,11 @@ export default function MeetTheTeamSection() {
   });
 
   return (
-    <section className="bg-[#FCEFE5] py-16 md:py-24 lg:py-28">
+    <section className="bg-[#FCEFE5] py-16 md:py-24 lg:py-28 min-h-screen flex items-center">
       <div className="mx-auto flex max-w-6xl flex-col items-center px-4 text-center">
         {/* Heading */}
         <h2
-          className={`${headingFont.className} text-[32px] md:text-[40px] lg:text-[48px] font-semibold leading-normal text-[#000000] mb-12`}
+          className={`${headingFont.className} fluid-heading-xl font-semibold text-[#000000] mb-12 text-balance`}
         >
           Meet the Team
         </h2>
@@ -94,7 +94,7 @@ export default function MeetTheTeamSection() {
 
         {/* Body text */}
         <div
-          className={`${bodyFont.className} mt-12 text-[20px] md:text-[22px] lg:text-[24px] font-semibold leading-relaxed text-black max-w-3xl`}
+          className={`${bodyFont.className} mt-12 fluid-body-xl font-semibold text-black max-w-3xl text-balance`}
         >
           <p>The people who support your healing.</p>
           <p>Choose the person you connect with.</p>

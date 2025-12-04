@@ -15,12 +15,12 @@ const bodyFont = Ibarra_Real_Nova({
 
 export default function ConnectShareSection() {
   return (
-    <section className="relative overflow-hidden bg-[#ED7428] py-14 md:py-16 lg:py-20">
+    <section className="relative overflow-hidden bg-[#ED7428] py-14 md:py-16 lg:py-20 min-h-screen flex items-center">
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-10 px-4 text-left md:flex-row md:items-center md:justify-between">
         {/* Left: Text + button */}
         <div className="w-full md:w-1/2">
           <h2
-            className={`${headingFont.className} text-[32px] md:text-[40px] lg:text-[48px] leading-snug text-white`}
+            className={`${headingFont.className} fluid-heading-xl text-white text-balance`}
           >
             Connect,
             <br />

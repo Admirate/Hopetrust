@@ -11,7 +11,7 @@ const ServicesSection = () => {
   const { elementRef: buttonRef, isVisible: buttonVisible } = useScrollAnimation();
 
   return (
-    <section className="py-16 bg-white relative overflow-hidden">
+    <section className="py-16 bg-white relative overflow-hidden min-h-screen flex items-center">
       {/* Pink lines background */}
       <div className="absolute inset-0 pointer-events-none">
         <Image

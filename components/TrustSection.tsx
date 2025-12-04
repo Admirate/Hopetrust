@@ -74,7 +74,7 @@ export default function TrustSection() {
   const { elementRef: card3Ref, isVisible: card3Visible } = useScrollAnimation();
 
   return (
-    <section className="py-8 sm:py-12 lg:py-16 relative overflow-hidden">
+    <section className="py-8 sm:py-12 lg:py-16 relative overflow-hidden min-h-screen flex items-center">
       <GradientBlobs />
       {/* Pink lines background */}
       <div className="absolute inset-0 pointer-events-none">

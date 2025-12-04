@@ -12,7 +12,7 @@ type NavItem = {
 };
 
 const leftNavItems: NavItem[] = [
-  { label: 'About Us', href: '#', hasDropdown: true },
+  { label: 'About Us', href: '/about', hasDropdown: false },
   { label: 'Mental health', href: '#', hasDropdown: true },
   { label: 'Addiction services', href: '#', hasDropdown: true },
   { label: 'For companies', href: '#', hasDropdown: true },
@@ -34,7 +34,7 @@ export default function Header() {
     <Link
       key={item.label}
       href={item.href}
-      className="flex items-center gap-1 text-sm md:text-base text-gray-800 hover:text-orange-500 font-semibold transition-colors duration-200"
+      className="flex items-center gap-1 text-sm md:text-base text-gray-800 hover:text-orange-500 font-semibold transition-colors duration-200 transition-transform hover:-translate-y-0.5"
     >
       <span>{item.label}</span>
       {item.hasDropdown && (
@@ -44,7 +44,7 @@ export default function Header() {
   );
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm">
+    <header className="fixed top-0 z-50 w-full bg-white/95 shadow-sm backdrop-blur">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between py-4 md:py-5">
           {/* Logo */}

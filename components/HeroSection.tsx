@@ -1,62 +1,81 @@
 "use client";
 
-import { useRef } from "react";
-import { IBM_Plex_Mono } from "next/font/google";
-
-const ibmMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["600"],
-});
-
 const HeroSection = () => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
   return (
-    <div className="relative min-h-[calc(100dvh-5rem)] w-full overflow-hidden">
+    <section className="relative min-h-screen w-full overflow-hidden">
+      {/* Background gradient video */}
       <video
-        ref={videoRef}
         autoPlay
         muted
         loop
         playsInline
-        className="absolute top-0 left-0 z-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover"
         preload="metadata"
-        poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 10'%3E%3Crect width='16' height='10' fill='%23000'/%3E%3C/svg%3E"
       >
-        <source src="/final hero video.mp4" type="video/mp4" />
+        <source src="/0_Pink_Red_1280x720.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
-      {/* Text overlay on left side */}
-      <div className="relative z-10 h-full">
-        <div className="flex h-full items-start justify-start px-6 sm:px-12 lg:px-24 pt-24 md:pt-32 lg:pt-40">
-          <div
-            className={`${ibmMono.className} max-w-lg space-y-8 text-left text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]`}
-          >
-            <p className="whitespace-pre-line text-[36px] leading-[47px]">
-              {`A place for `}
-              <span className="text-yellow-300">hope</span>
-              {`,\nhealing, and renewal.`}
-            </p>
+      {/* Soft overlay to improve text contrast */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/15 to-black/25" />
 
-            <div className="space-y-2">
-              <p className="text-[32px] leading-[42px] text-[#FFFAD4]">
-                A gentle reminder:
-              </p>
-              <p className="text-[32px] leading-[42px] text-[#FFFAD4]">
-                We&apos;re here if you need us — message us anytime
-              </p>
+      {/* Centered rounded rectangle with inner hero video */}
+      <div className="relative z-10 flex h-full w-full items-center justify-center px-4 sm:px-6 lg:px-10 py-10 sm:py-16 fade-in-optimized">
+        <div className="relative w-full max-w-[1200px] max-h-[calc(100vh-8rem)] aspect-[4/3] sm:aspect-[16/9] lg:aspect-[21/9]">
+          {/* Side handles (rounded rectangles) */}
+          <div className="pointer-events-none absolute inset-y-10 -left-6 hidden sm:block">
+            <div className="h-full w-8 rounded-full border-2 border-white/60" />
+          </div>
+          <div className="pointer-events-none absolute inset-y-10 -right-6 hidden sm:block">
+            <div className="h-full w-8 rounded-full border-2 border-white/60" />
+          </div>
+
+          {/* Main rounded hero card */}
+          <div className="relative h-full w-full overflow-hidden rounded-[24px] sm:rounded-[32px] lg:rounded-[40px] border border-white/70 bg-black/60 backdrop-blur-md shadow-[0_30px_80px_rgba(0,0,0,0.35)]">
+            {/* Inner hero video */}
+            <div className="absolute inset-0">
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="h-full w-full object-cover"
+                preload="metadata"
+              >
+                <source src="/final hero video.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <div className="absolute inset-0 bg-black/45" />
             </div>
 
-            <button
-              className="inline-flex h-[46px] w-[158px] items-center justify-center rounded-[7px] bg-[#FFFFFF] text-base sm:text-lg font-semibold text-black shadow-md hover:bg-gray-100 transition-colors"
-            >
-              Chat with us
-            </button>
+            {/* Content overlay */}
+            <div className="relative flex min-h-full flex-col items-center justify-center px-5 sm:px-10 lg:px-20 py-10 sm:py-14 gap-4 sm:gap-6 text-center text-white">
+              <h1 className="fluid-heading-hero font-semibold text-balance fade-in-optimized">
+                A place for{" "}
+                <span className="text-yellow-300">hope</span>,<br />
+                healing, and renewal.
+              </h1>
+
+              <div className="space-y-1 fluid-body-lg font-semibold text-balance fade-in-optimized">
+                <p>A gentle reminder:</p>
+                <p>
+                  We&apos;re here if you need us{" "}
+                  <span className="hidden sm:inline">—</span>
+                  <span className="block sm:inline">
+                    {" "}
+                    message us anytime
+                  </span>
+                </p>
+              </div>
+
+              <button className="mt-4 inline-flex items-center justify-center rounded-full bg-[#00343A] px-8 sm:px-10 py-3 text-sm sm:text-base font-semibold text-white shadow-lg transition-all duration-200 hover:bg-[#02424a] hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0 active:scale-[0.97] fade-in-optimized">
+                Chat with us
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
