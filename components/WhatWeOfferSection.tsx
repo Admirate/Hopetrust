@@ -12,8 +12,8 @@ const items = [
 
 export default function WhatWeOfferSection() {
   return (
-    <section className="w-full bg-[#F9E6D0] min-h-screen flex items-center">
-      <div className="mx-auto flex min-h-[415px] w-full max-w-[1440px] flex-col items-center justify-center gap-6 px-4 sm:px-8 lg:px-[106px] py-12">
+    <section className="w-full bg-[#F9E6D0] py-12 sm:py-16">
+      <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center gap-6 px-4 sm:px-8 lg:px-[106px]">
         <h2 className="fluid-heading-xl font-semibold text-[#004047] text-balance mb-4 md:mb-6">
           What We Offer
         </h2>
