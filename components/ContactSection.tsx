@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 export default function ContactSection() {
   return (
     <section className="w-full bg-[#F7F5EF] py-20">
@@ -44,19 +46,59 @@ export default function ContactSection() {
                 </p>
               </div>
 
-              <div className="flex items-center gap-3 pt-2 text-[#111827] text-base">
-                <span className="h-7 w-7 rounded-full border border-[#00373E] flex items-center justify-center text-xs font-semibold">
-                  in
-                </span>
-                <span className="h-7 w-7 rounded-full border border-[#00373E] flex items-center justify-center text-xs font-semibold">
-                  f
-                </span>
-                <span className="h-7 w-7 rounded-full border border-[#00373E] flex items-center justify-center text-xs font-semibold">
-                  ig
-                </span>
-                <span className="h-7 w-7 rounded-full border border-[#00373E] flex items-center justify-center text-xs font-semibold">
-                  wa
-                </span>
+              <div className="flex items-center gap-4 pt-2 text-[#111827] text-base">
+                <a
+                  href="#"
+                  aria-label="Visit our LinkedIn"
+                  className="inline-flex items-center justify-center"
+                >
+                  <Image
+                    src="/Asset 16.png"
+                    alt="LinkedIn icon"
+                    width={24}
+                    height={24}
+                    className="object-contain"
+                  />
+                </a>
+                <a
+                  href="#"
+                  aria-label="Visit our Facebook"
+                  className="inline-flex items-center justify-center"
+                >
+                  <Image
+                    src="/Asset 17.png"
+                    alt="Facebook icon"
+                    width={24}
+                    height={24}
+                    className="object-contain"
+                  />
+                </a>
+                <a
+                  href="#"
+                  aria-label="Visit our Instagram"
+                  className="inline-flex items-center justify-center"
+                >
+                  <Image
+                    src="/Asset 18.png"
+                    alt="Instagram icon"
+                    width={24}
+                    height={24}
+                    className="object-contain"
+                  />
+                </a>
+                <a
+                  href="#"
+                  aria-label="Contact us on WhatsApp"
+                  className="inline-flex items-center justify-center"
+                >
+                  <Image
+                    src="/Asset 19.png"
+                    alt="WhatsApp icon"
+                    width={24}
+                    height={24}
+                    className="object-contain"
+                  />
+                </a>
               </div>
 
               <p className="pt-4 text-xs sm:text-[13px] text-[#6B7280]">

@@ -12,17 +12,16 @@ type NavItem = {
 };
 
 const leftNavItems: NavItem[] = [
-  { label: 'About Us', href: '/about', hasDropdown: false },
-  { label: 'Mental health', href: '#', hasDropdown: true },
-  { label: 'Addiction services', href: '#', hasDropdown: true },
-  { label: 'For companies', href: '#', hasDropdown: true },
+  { label: 'About us', href: '/about', hasDropdown: false },
+  { label: 'Mental Health', href: '#', hasDropdown: false },
+  { label: 'Addiction Services', href: '/addiction', hasDropdown: false },
+  { label: 'For Companies', href: '#', hasDropdown: false },
 ];
 
 const rightNavItems: NavItem[] = [
   { label: 'Blogs', href: '#', hasDropdown: false },
-  { label: 'JOIN US', href: '#', hasDropdown: true },
-  { label: 'RESOURCES', href: '#', hasDropdown: true },
-  { label: 'CONTACT US', href: '#', hasDropdown: true },
+  { label: 'Resources', href: '#', hasDropdown: true },
+  { label: 'Contact Us', href: '#', hasDropdown: false },
 ];
 
 export default function Header() {
@@ -49,7 +48,7 @@ export default function Header() {
         <div className="flex items-center justify-between py-4 md:py-5">
           {/* Logo */}
           <div className="flex items-center">
-            <div className="relative flex-shrink-0">
+            <Link href="/" className="relative flex-shrink-0">
               <Image
                 src="/logo1.png"
                 alt="Hope Trust Logo"
@@ -59,7 +58,7 @@ export default function Header() {
                 priority
                 quality={100}
               />
-            </div>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
