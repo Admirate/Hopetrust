@@ -13,7 +13,7 @@ type NavItem = {
 
 const leftNavItems: NavItem[] = [
   { label: 'About us', href: '/about', hasDropdown: false },
-  { label: 'Mental Health', href: '#', hasDropdown: false },
+  { label: 'Mental Health', href: '/mental-health', hasDropdown: false },
   { label: 'Addiction Services', href: '/addiction', hasDropdown: false },
   { label: 'For Companies', href: '#', hasDropdown: false },
 ];
