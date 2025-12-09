@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Image from 'next/image';
 import { Bricolage_Grotesque, IBM_Plex_Sans } from 'next/font/google';
+import FadeInSection from '@/components/FadeInSection';
 
 const bricolageBody = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -18,6 +19,7 @@ export default function AddictionPage() {
       <Header />
       <main className="min-h-screen pt-20 bg-white">
         {/* Hero section: text left, hero image (to be updated) right */}
+        <FadeInSection>
         <section className="w-full flex items-center bg-white pt-8 sm:pt-12 pb-10 sm:pb-14">
           <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-10 px-4 sm:px-8 lg:px-12 md:flex-row md:items-center md:justify-between">
             {/* Left: centered text content */}
@@ -60,8 +62,10 @@ export default function AddictionPage() {
             </div>
           </div>
         </section>
+        </FadeInSection>
 
         {/* Why Hope Trust + Areas We Support section */}
+        <FadeInSection delay={100}>
         <section className="w-full py-16 sm:py-20 bg-[#FEF2EB]">
           <div className="mx-auto flex w-full max-w-[1184px] flex-col gap-12 px-4 sm:px-8 lg:px-12">
             {/* Top row: Why Hope Trust + dark green rounded square with illustration */}
@@ -145,8 +149,10 @@ export default function AddictionPage() {
             </div>
           </div>
         </section>
+        </FadeInSection>
 
         {/* What Treatment Involves section */}
+        <FadeInSection delay={150}>
         <section className="w-full bg-white py-16 sm:py-20">
           <div className="mx-auto flex w-full max-w-[1184px] flex-col items-center gap-10 px-4 sm:px-8 lg:px-12">
             {/* Heading */}
@@ -198,8 +204,10 @@ export default function AddictionPage() {
             </p>
           </div>
         </section>
+        </FadeInSection>
 
         {/* Road to Recovery section */}
+        <FadeInSection delay={200}>
         <section className="w-full bg-white py-16 sm:py-20">
           <div className="mx-auto flex w-full max-w-[1184px] flex-col items-center px-4 sm:px-8 lg:px-12">
             {/* Heading */}
@@ -223,8 +231,10 @@ export default function AddictionPage() {
             </div>
           </div>
         </section>
+        </FadeInSection>
 
         {/* Recovery steps strip */}
+        <FadeInSection delay={250}>
         <section className="w-full bg-white pb-16 sm:pb-20">
           <div className="mx-auto w-full max-w-[1184px] px-4 sm:px-8 lg:px-12">
             <div className="flex gap-4 overflow-x-auto pb-2 sm:justify-between">
@@ -269,6 +279,7 @@ export default function AddictionPage() {
             </div>
           </div>
         </section>
+        </FadeInSection>
       </main>
     </>
   );

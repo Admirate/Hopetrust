@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export default function HomeFinalCtaSection() {
   return (
-    <section className="w-full bg-white pb-20">
+    <section className="w-full bg-white pt-10 sm:pt-14 pb-20">
       <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-8 lg:px-0 flex flex-col lg:flex-row gap-10">
         {/* Left links card */}
         <div className="w-full lg:w-1/2 flex justify-start">

@@ -20,8 +20,8 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/15 to-black/25" />
 
       {/* Centered rounded rectangle with inner hero video */}
-      <div className="relative z-10 flex h-full w-full items-center justify-center px-4 sm:px-6 lg:px-10 py-10 sm:py-16 fade-in-optimized">
-        <div className="relative w-full max-w-[1200px] max-h-[calc(100vh-8rem)] aspect-[4/3] sm:aspect-[16/9] lg:aspect-[21/9]">
+      <div className="relative z-10 flex h-full w-full items-start justify-center px-4 sm:px-6 lg:px-10 pt-16 sm:pt-24 pb-10 fade-in-optimized">
+        <div className="relative w-full max-w-[1200px] max-h-[calc(100vh-5rem)] aspect-[4/3] sm:aspect-[16/9] lg:aspect-[21/9]">
           {/* Side handles (rounded rectangles) */}
           <div className="pointer-events-none absolute inset-y-10 -left-6 hidden sm:block">
             <div className="h-full w-8 rounded-full border-2 border-white/60" />
