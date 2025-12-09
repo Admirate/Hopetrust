@@ -1,8 +1,18 @@
 "use client";
 
 import Image from "next/image";
+import { useRef } from "react";
+import { Roboto_Flex } from "next/font/google";
+import VariableProximity from "./VariableProximity";
+
+const robotoFlex = Roboto_Flex({
+  subsets: ["latin"],
+  axes: ["opsz", "GRAD"],
+});
 
 export default function LargeRectangleSection() {
+  const headingContainerRef = useRef<HTMLDivElement | null>(null);
+
   return (
     <section className="w-full bg-[#F7F5EF] py-16 sm:py-20">
       <div className="mx-auto w-full max-w-[1244px] h-[587px] rounded-[59px] bg-white shadow-[0_24px_60px_rgba(0,0,0,0.06)] overflow-hidden relative">
@@ -22,11 +32,17 @@ export default function LargeRectangleSection() {
             <p className="text-[11px] tracking-[0.22em] uppercase text-[#6A8181]">
               Community
             </p>
-            <h2 className="text-4xl sm:text-[2.6rem] font-semibold leading-snug">
-              You&apos;re Not Alone
-              <br />
-              on This Journey
-            </h2>
+            <div ref={headingContainerRef} className="relative inline-block">
+              <VariableProximity
+                label={"You're Not Alone on This Journey"}
+                fromFontVariationSettings="'GRAD' 0, 'opsz' 14"
+                toFontVariationSettings="'GRAD' 100, 'opsz' 40"
+                containerRef={headingContainerRef}
+                radius={120}
+                falloff="linear"
+                className={`${robotoFlex.className} whitespace-pre-line text-4xl sm:text-[2.6rem] font-semibold leading-snug`}
+              />
+            </div>
             <p className="text-base sm:text-lg leading-relaxed text-[#486364] max-w-md">
               Connect with others, share experiences, and find encouragement in
               a safe, supportive space.
