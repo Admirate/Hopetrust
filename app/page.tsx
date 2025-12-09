@@ -1,15 +1,32 @@
+import dynamic from 'next/dynamic';
 import Header from '@/components/Header';
-import HeroSection from '@/components/HeroSection';
-import BackgroundCirclesSection from '@/components/BackgroundCirclesSection';
-import WhatWeOfferSection from '@/components/WhatWeOfferSection';
-import RectangleSection from '@/components/RectangleSection';
-import ClientsSayingSection from '@/components/ClientsSayingSection';
-import ResourcesSection from '@/components/ResourcesSection';
-import LargeRectangleSection from '@/components/LargeRectangleSection';
-import MeetTheTeamSection from '@/components/MeetTheTeamSection';
-import ContactSection from '@/components/ContactSection';
-import HomeFinalCtaSection from '@/components/HomeFinalCtaSection';
 import FadeInSection from '@/components/FadeInSection';
+
+// Code-split home sections so each becomes its own chunk
+const HeroSection = dynamic(() => import('@/components/HeroSection'));
+const BackgroundCirclesSection = dynamic(
+  () => import('@/components/BackgroundCirclesSection')
+);
+const WhatWeOfferSection = dynamic(
+  () => import('@/components/WhatWeOfferSection')
+);
+const RectangleSection = dynamic(() => import('@/components/RectangleSection'));
+const ClientsSayingSection = dynamic(
+  () => import('@/components/ClientsSayingSection')
+);
+const ResourcesSection = dynamic(
+  () => import('@/components/ResourcesSection')
+);
+const LargeRectangleSection = dynamic(
+  () => import('@/components/LargeRectangleSection')
+);
+const MeetTheTeamSection = dynamic(
+  () => import('@/components/MeetTheTeamSection')
+);
+const ContactSection = dynamic(() => import('@/components/ContactSection'));
+const HomeFinalCtaSection = dynamic(
+  () => import('@/components/HomeFinalCtaSection')
+);
 
 export default function Home() {
   return (

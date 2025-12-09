@@ -4,8 +4,13 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Bricolage_Grotesque } from 'next/font/google';
 import Header from '@/components/Header';
-import HomeFinalCtaSection from '@/components/HomeFinalCtaSection';
+import dynamic from 'next/dynamic';
 import FadeInSection from '@/components/FadeInSection';
+
+// Code-split shared CTA
+const HomeFinalCtaSection = dynamic(
+  () => import('@/components/HomeFinalCtaSection')
+);
 
 type FocusAreaKey = 'therapy' | 'medications' | 'couples' | 'family';
 type AssessmentKey = 'adhd' | 'student' | 'queer';
