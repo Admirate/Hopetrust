@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import type React from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 type Testimonial = {
   quote: string;
@@ -28,6 +30,50 @@ const testimonials: Testimonial[] = [
 
 export default function ClientsSayingSection() {
   const [index, setIndex] = useState(0);
+  const [typedHeading, setTypedHeading] = useState("");
+  const [showCursor, setShowCursor] = useState(true);
+
+  const { elementRef: headingRef, isVisible: headingVisible } = useScrollAnimation({
+    threshold: 0.2,
+  });
+  const hasStartedTypingRef = useRef(false);
+
+  // Typing animation for heading "What Our Clients\n\nAre Saying"
+  useEffect(() => {
+    // Start typing only when the heading section is in view, and only once
+    if (!headingVisible || hasStartedTypingRef.current) return;
+
+    hasStartedTypingRef.current = true;
+
+    const fullText = "What Our Clients\nAre Saying";
+    let currentIndex = 0;
+
+    const interval = setInterval(() => {
+      currentIndex += 1;
+      setTypedHeading(fullText.slice(0, currentIndex));
+
+      if (currentIndex >= fullText.length) {
+        clearInterval(interval);
+      }
+    }, 60);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [headingVisible]);
+
+  // Blinking cursor for the typing effect
+  useEffect(() => {
+    if (!headingVisible) return;
+
+    const blink = setInterval(() => {
+      setShowCursor((prev) => !prev);
+    }, 500);
+
+    return () => clearInterval(blink);
+  }, [headingVisible]);
+
+  const [firstLine, secondLine = ""] = typedHeading.split("\n");
 
   const visible = [
     testimonials[index],
@@ -47,12 +93,22 @@ export default function ClientsSayingSection() {
   return (
     <section className="w-full bg-white py-16 sm:py-20">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 sm:px-6 lg:flex-row lg:items-stretch lg:gap-16">
-        {/* Left column: heading and description */}
-        <div className="w-full max-w-md space-y-4 text-[#00373E]">
-          <h2 className="text-3xl sm:text-4xl font-semibold leading-tight">
-            What Our Clients
+        {/* Left column: heading (with typing animation) and description */}
+        <div
+          ref={headingRef as React.RefObject<HTMLDivElement>}
+          className="w-full max-w-md space-y-4 text-[#00373E]"
+        >
+          <h2 className="text-3xl sm:text-4xl font-semibold leading-tight whitespace-pre-line min-h-[3.5rem]">
+            {firstLine}
             <br />
-            Are Saying
+            <span className="inline-flex items-center">
+              {secondLine}
+              {/* Typing cursor */}
+              <span
+                className="ml-1 inline-block w-[2px] h-[1.1em] bg-[#00373E] align-bottom"
+                style={{ opacity: showCursor ? 1 : 0 }}
+              />
+            </span>
           </h2>
           <p className="mt-3 text-sm sm:text-base leading-relaxed">
             Positive experiences from users who have benefited from

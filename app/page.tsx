@@ -36,9 +36,8 @@ export default function Home() {
         <FadeInSection>
           <HeroSection />
         </FadeInSection>
-        <FadeInSection delay={100}>
-          <BackgroundCirclesSection />
-        </FadeInSection>
+        {/* Let BackgroundCirclesSection handle its own element animations so the background image stays static */}
+        <BackgroundCirclesSection />
         <FadeInSection delay={150}>
           <WhatWeOfferSection />
         </FadeInSection>
@@ -48,21 +47,17 @@ export default function Home() {
         <FadeInSection delay={250}>
           <ClientsSayingSection />
         </FadeInSection>
-        <FadeInSection delay={300}>
-          <ResourcesSection />
-        </FadeInSection>
-        <FadeInSection delay={350}>
-          <LargeRectangleSection />
-        </FadeInSection>
+        {/* Let ResourcesSection handle its own staggered card animation */}
+        <ResourcesSection />
+        {/* Let LargeRectangleSection handle its own card animation */}
+        <LargeRectangleSection />
         <FadeInSection delay={400}>
           <MeetTheTeamSection />
         </FadeInSection>
-        <FadeInSection delay={450}>
-          <ContactSection />
-        </FadeInSection>
-        <FadeInSection delay={500}>
-          <HomeFinalCtaSection />
-        </FadeInSection>
+        {/* Let ContactSection handle its own text + card animation */}
+        <ContactSection />
+        {/* Let HomeFinalCtaSection handle its own left/right card animations */}
+        <HomeFinalCtaSection />
       </main>
     </>
   );

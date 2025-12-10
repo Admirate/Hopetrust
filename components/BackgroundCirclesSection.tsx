@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Bricolage_Grotesque, Roboto_Flex } from 'next/font/google';
 import TiltedCard from './TiltedCard';
 import VariableProximity from './VariableProximity';
+import { MagicText } from './MagicText';
 import { useScrollAnimation, fadeInUp } from '@/hooks/useScrollAnimation';
 import { useRef } from 'react';
 
@@ -61,10 +62,9 @@ const BackgroundCirclesSection = () => {
               />
             </div>
 
-            <p className="mt-6 fluid-body-lg text-[#004047] max-w-xl">
-              Browse therapists, book a session, and start your healing journey
-              with trusted professionals.
-            </p>
+            <div className="mt-6 max-w-xl text-[#004047]">
+              <MagicText text="Browse therapists, book a session, and start your healing journey with trusted professionals." />
+            </div>
 
             <button className="mt-10 inline-flex items-center justify-center rounded-full bg-[#F97316] px-8 sm:px-10 py-3 text-sm sm:text-base font-semibold text-white shadow-md transition-all duration-200 hover:bg-[#ea6a0e] hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-[0.97]">
               Find A Therapist

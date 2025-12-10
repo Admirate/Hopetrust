@@ -1,10 +1,30 @@
 "use client";
 
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
+
 const HeroSection = () => {
+  const containerRef = useRef<HTMLElement | null>(null);
+
+  // Track scroll progress while the hero is in view
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
+
+  // Background moves slightly slower than scroll (parallax)
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  // Foreground card has a subtle counter-movement
+  const cardY = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
+
   return (
-    <section className="relative min-h-screen w-full overflow-hidden">
-      {/* Background gradient video */}
-      <video
+    <section
+      ref={containerRef}
+      className="relative min-h-screen w-full overflow-hidden"
+    >
+      {/* Background gradient video with parallax */}
+      <motion.video
+        style={{ y: backgroundY }}
         autoPlay
         muted
         loop
@@ -14,14 +34,17 @@ const HeroSection = () => {
       >
         <source src="/0_Pink_Red_1280x720.mp4" type="video/mp4" />
         Your browser does not support the video tag.
-      </video>
+      </motion.video>
 
       {/* Soft overlay to improve text contrast */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/15 to-black/25" />
 
       {/* Centered rounded rectangle with inner hero video */}
       <div className="relative z-10 flex h-full w-full items-start justify-center px-4 sm:px-6 lg:px-10 pt-16 sm:pt-24 pb-10 fade-in-optimized">
-        <div className="relative w-full max-w-[1200px] max-h-[calc(100vh-5rem)] aspect-[4/3] sm:aspect-[16/9] lg:aspect-[21/9]">
+        <motion.div
+          style={{ y: cardY }}
+          className="relative w-full max-w-[1200px] max-h-[calc(100vh-5rem)] aspect-[4/3] sm:aspect-[16/9] lg:aspect-[21/9]"
+        >
           {/* Side handles (rounded rectangles) */}
           <div className="pointer-events-none absolute inset-y-10 -left-6 hidden sm:block">
             <div className="h-full w-8 rounded-full border-2 border-white/60" />
@@ -73,7 +96,7 @@ const HeroSection = () => {
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

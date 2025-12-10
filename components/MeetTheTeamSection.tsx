@@ -1,7 +1,9 @@
- 'use client';
+"use client";
 
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion } from 'motion/react';
+import { MagicText } from './MagicText';
 
 const teamMembers = [
   { name: 'Team Member 1', role: 'Therapist' },
@@ -31,9 +33,9 @@ export default function MeetTheTeamSection() {
   return (
     <section className="bg-[#FFEFE4] py-16 sm:py-20">
       <div className="mx-auto flex max-w-5xl flex-col items-center px-4 text-center">
-        {/* Heading */}
-        <h2 className="text-3xl sm:text-4xl font-semibold text-[#111827] mb-10">
-          Meet the Team
+        {/* Heading with magic text */}
+        <h2 className="mb-10 text-3xl sm:text-4xl font-semibold text-[#111827]">
+          <MagicText text="Meet the Team" />
         </h2>
 
         {/* Carousel row */}
@@ -49,16 +51,41 @@ export default function MeetTheTeamSection() {
           </button>
 
           {/* Circles */}
-          <div className="flex flex-1 items-center justify-center gap-6 md:gap-10">
+          <motion.div
+            className="flex flex-1 items-center justify-center gap-6 md:gap-10"
+            variants={{
+              hidden: { opacity: 0 },
+              show: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.15,
+                },
+              },
+            }}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.4 }}
+          >
             {visibleMembers.map((member, idx) => (
-              <button
+              <motion.button
                 key={`${member.name}-${idx}`}
                 type="button"
                 className="flex h-32 w-32 md:h-40 md:w-40 items-center justify-center rounded-full border-[10px] border-[#F47A24] bg-white shadow-sm"
                 aria-label={member.name}
+                variants={{
+                  hidden: { opacity: 0, scale: 0.8 },
+                  show: {
+                    opacity: 1,
+                    scale: 1,
+                    transition: {
+                      duration: 0.5,
+                      ease: [0.22, 0.61, 0.36, 1],
+                    },
+                  },
+                }}
               />
             ))}
-          </div>
+          </motion.div>
 
           {/* Right arrow */}
           <button

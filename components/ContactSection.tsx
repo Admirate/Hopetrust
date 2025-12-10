@@ -1,9 +1,30 @@
+"use client";
+
+import type React from 'react';
 import Image from 'next/image';
+import { motion } from 'motion/react';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 export default function ContactSection() {
+  const { elementRef: headerRef, isVisible: headerVisible } = useScrollAnimation({
+    threshold: 0.2,
+  });
+  const { elementRef: cardRef, isVisible: cardVisible } = useScrollAnimation({
+    threshold: 0.2,
+  });
+
   return (
     <section className="w-full bg-[#F7F5EF] py-20">
-      <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 text-center">
+      <motion.div
+        ref={headerRef as React.RefObject<HTMLDivElement>}
+        initial={{ opacity: 0, y: 24 }}
+        animate={headerVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+        transition={{
+          duration: 0.6,
+          ease: [0.22, 0.61, 0.36, 1],
+        }}
+        className="mx-auto w-full max-w-5xl px-4 sm:px-6 text-center"
+      >
         {/* Heading */}
         <p className="text-[11px] tracking-[0.2em] uppercase text-[#6A8181] mb-3">
           Get in touch
@@ -17,10 +38,20 @@ export default function ContactSection() {
           Whether you have questions, need help getting started, or want to learn
           more — reach out anytime.
         </p>
-      </div>
+      </motion.div>
 
       {/* Card */}
-      <div className="mt-10 mx-auto w-full max-w-5xl px-4 sm:px-6">
+      <motion.div
+        ref={cardRef as React.RefObject<HTMLDivElement>}
+        initial={{ opacity: 0, y: 32 }}
+        animate={cardVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 32 }}
+        transition={{
+          duration: 0.7,
+          ease: [0.22, 0.61, 0.36, 1],
+          delay: 0.15,
+        }}
+        className="mt-10 mx-auto w-full max-w-5xl px-4 sm:px-6"
+      >
         <div className="w-full rounded-[32px] bg-white shadow-[0_24px_60px_rgba(0,0,0,0.06)] px-6 py-8 sm:px-10 sm:py-10 md:px-12 md:py-12">
           <div className="grid gap-10 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] items-start">
             {/* Contact details */}
@@ -147,7 +178,7 @@ export default function ContactSection() {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
