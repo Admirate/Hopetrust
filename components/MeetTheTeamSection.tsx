@@ -3,7 +3,13 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'motion/react';
+import { Bricolage_Grotesque } from 'next/font/google';
 import { MagicText } from './MagicText';
+
+const headingFont = Bricolage_Grotesque({
+  subsets: ['latin'],
+  weight: ['600'],
+});
 
 const teamMembers = [
   { name: 'Team Member 1', role: 'Therapist' },
@@ -34,7 +40,16 @@ export default function MeetTheTeamSection() {
     <section className="bg-[#FFEFE4] py-16 sm:py-20">
       <div className="mx-auto flex max-w-5xl flex-col items-center px-4 text-center">
         {/* Heading with magic text */}
-        <h2 className="mb-10 text-3xl sm:text-4xl font-semibold text-[#111827]">
+        <h2
+          className={`${headingFont.className} mb-10 text-center`}
+          style={{
+            color: '#000000',
+            fontSize: '48px',
+            lineHeight: 'normal',
+            fontWeight: 600,
+            letterSpacing: '0.724px',
+          }}
+        >
           <MagicText text="Meet the Team" />
         </h2>
 

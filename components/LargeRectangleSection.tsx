@@ -4,7 +4,7 @@ import type React from "react";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { motion } from "motion/react";
-import { Roboto_Flex } from "next/font/google";
+import { Bricolage_Grotesque, Roboto_Flex } from "next/font/google";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { cn } from "@/lib/utils";
 import VariableProximity from "./VariableProximity";
@@ -12,6 +12,11 @@ import VariableProximity from "./VariableProximity";
 const robotoFlex = Roboto_Flex({
   subsets: ["latin"],
   axes: ["opsz", "GRAD"],
+});
+
+const bodyFont = Bricolage_Grotesque({
+  subsets: ["latin"],
+  weight: ["400"],
 });
 
 export default function LargeRectangleSection() {
@@ -80,9 +85,18 @@ export default function LargeRectangleSection() {
             </div>
             <p
               className={cn(
-                "text-base sm:text-lg leading-relaxed max-w-md transition-colors duration-500",
-                isHovered ? "text-[#E5F4F4]" : "text-[#486364]",
+                bodyFont.className,
+                "transition-colors duration-500",
+                isHovered ? "text-[#E5F4F4]" : "text-[#00373E]",
               )}
+              style={{
+                fontSize: "22px",
+                lineHeight: "34px",
+                fontWeight: 400,
+                letterSpacing: "0.5px",
+                width: "476px",
+                maxWidth: "100%",
+              }}
             >
               Connect with others, share experiences, and find encouragement in
               a safe, supportive space.

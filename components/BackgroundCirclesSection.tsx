@@ -11,7 +11,7 @@ import { useRef } from 'react';
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
-  weight: ['600'],
+  weight: ['600', '700'],
 });
 
 const robotoFlex = Roboto_Flex({
@@ -42,7 +42,7 @@ const BackgroundCirclesSection = () => {
       />
 
       {/* Content area */}
-      <div className="relative z-10 flex h-full items-center justify-center px-4 sm:px-8 lg:px-16 py-16">
+      <div className="relative z-10 flex h-full items-start justify-center px-4 sm:px-8 lg:px-16 pt-28 pb-16">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 lg:flex-row lg:items-center lg:gap-16">
           {/* Left column: text + button */}
           <div
@@ -58,11 +58,27 @@ const BackgroundCirclesSection = () => {
                 containerRef={headingContainerRef}
                 radius={120}
                 falloff="linear"
-                className={`${robotoFlex.className} fluid-heading-xl font-semibold text-[#ED7428] tracking-[0.02em] text-balance leading-tight`}
+                className={`${bricolage.className} font-semibold text-[#ED7428] text-balance`}
+                style={{
+                  fontSize: '48px',
+                  lineHeight: '60px',
+                  letterSpacing: '0px',
+                  maxWidth: '483px',
+                  flexShrink: 0,
+                }}
               />
             </div>
 
-            <div className="mt-6 max-w-xl text-[#004047]">
+            <div
+              className={`${bricolage.className} mt-6 text-[#00373E]`}
+              style={{
+                fontSize: '24px',
+                lineHeight: '36px',
+                fontWeight: 700,
+                maxWidth: '511px',
+                flexShrink: 0,
+              }}
+            >
               <MagicText text="Browse therapists, book a session, and start your healing journey with trusted professionals." />
             </div>
 

@@ -1,9 +1,15 @@
-"use client";
+'use client';
 
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { Bricolage_Grotesque } from "next/font/google";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+
+const bodyFont = Bricolage_Grotesque({
+  subsets: ["latin"],
+  weight: ["400"],
+});
 
 type Testimonial = {
   quote: string;
@@ -110,9 +116,18 @@ export default function ClientsSayingSection() {
               />
             </span>
           </h2>
-          <p className="mt-3 text-sm sm:text-base leading-relaxed">
-            Positive experiences from users who have benefited from
-            therapy or wellness programs.
+          <p
+            className={`${bodyFont.className} mt-3`}
+            style={{
+              color: "#00373E",
+              fontSize: "22px",
+              lineHeight: "35.75px",
+              fontWeight: 400,
+              width: "266px",
+            }}
+          >
+            Positive experiences from users who have benefited from therapy or
+            wellness programs.
           </p>
 
           <div className="mt-8 flex items-center gap-4">
@@ -136,17 +151,26 @@ export default function ClientsSayingSection() {
         </div>
 
         {/* Right column: testimonial cards */}
-        <div className="flex w-full flex-1 items-stretch gap-6 overflow-hidden">
+        <div className="flex w-full flex-1 items-stretch gap-6">
           {visible.map((item, i) => (
             <div
               key={`${item.author}-${i}`}
-              className={`flex-1 rounded-[40px] p-8 sm:p-9 md:p-10 shadow-sm ${
+              className={`flex h-[393px] flex-1 flex-col items-start justify-between rounded-[60px] px-16 py-16 shadow-sm ${
                 i === 0
                   ? "bg-[#FFE7CC] text-[#00373E]"
                   : "bg-[#00373E] text-white"
               }`}
             >
-              <p className="text-sm sm:text-base leading-relaxed mb-6">
+              <p
+                className={`${bodyFont.className} mb-6`}
+                style={{
+                  fontSize: "20px",
+                  lineHeight: "32.5px",
+                  fontWeight: 400,
+                  width: "257px",
+                  color: "inherit",
+                }}
+              >
                 {item.quote}
               </p>
               <p className="text-xs sm:text-sm font-semibold opacity-80">

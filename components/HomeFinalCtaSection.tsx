@@ -3,7 +3,13 @@
 import type React from 'react';
 import Image from 'next/image';
 import { motion } from 'motion/react';
+import { Bricolage_Grotesque } from 'next/font/google';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+
+const ctaFont = Bricolage_Grotesque({
+  subsets: ['latin'],
+  weight: ['700'],
+});
 
 export default function HomeFinalCtaSection() {
   const { elementRef: leftRef, isVisible: leftVisible } = useScrollAnimation({
@@ -77,7 +83,15 @@ export default function HomeFinalCtaSection() {
           <div className="relative w-full min-h-[260px] sm:min-h-[320px] lg:min-h-[466px] rounded-[50px] bg-[#ED742B] text-white px-8 sm:px-10 lg:px-12 py-10 sm:py-12 overflow-hidden flex items-center">
             {/* Text content */}
             <div className="relative z-10 max-w-md space-y-3 sm:space-y-4">
-              <h2 className="text-3xl sm:text-4xl font-semibold leading-snug">
+              <h2
+                className={`${ctaFont.className} leading-snug text-center sm:text-left`}
+                style={{
+                  fontSize: '48px',
+                  fontWeight: 700,
+                  lineHeight: 'normal',
+                  letterSpacing: '0.724px',
+                }}
+              >
                 Find
                 <br />
                 Support,

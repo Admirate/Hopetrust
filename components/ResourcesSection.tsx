@@ -2,8 +2,14 @@
 
 import type React from "react";
 import { motion } from "motion/react";
+import { Bricolage_Grotesque } from "next/font/google";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { InteractiveHoverButton } from "@/components/InteractiveHoverButton";
+
+const headingFont = Bricolage_Grotesque({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
 
 const resourceCards = [
   {
@@ -44,15 +50,30 @@ export default function ResourcesSection() {
         </div>
 
         {/* Label */}
-        <p className="mt-10 text-[11px] tracking-[0.2em] uppercase text-[#7A8F8E]">
-          Explore & Learn
+        <p
+          className={`${headingFont.className} mt-10 text-center`}
+          style={{
+            color: "#00373E",
+            fontSize: "14px",
+            fontWeight: 500,
+            lineHeight: "21px",
+            letterSpacing: "0.7px",
+          }}
+        >
+          EXPLORE & LEARN
         </p>
 
         {/* Heading */}
-        <h2 className="mt-3 text-3xl sm:text-4xl font-semibold leading-snug text-[#00373E]">
-          Resources for
-          <br />
-          Your Well-being
+        <h2
+          className={`${headingFont.className} mt-3 text-center`}
+          style={{
+            color: "#00373E",
+            fontSize: "52px",
+            lineHeight: "65px",
+            fontWeight: 700,
+          }}
+        >
+          Resources for Your Well-being
         </h2>
 
         {/* Subtext */}
@@ -78,15 +99,35 @@ export default function ResourcesSection() {
                 ease: [0.22, 0.61, 0.36, 1],
                 delay: index * 0.15,
               }}
-              className="flex flex-col items-center justify-between rounded-[32px] bg-white px-8 py-10 shadow-[0_18px_40px_rgba(0,0,0,0.06)]"
+              className="mx-auto flex h-[404px] w-full max-w-[344px] flex-col items-center justify-between rounded-[59px] bg-white px-8 py-12 shadow-[0_18px_40px_rgba(0,0,0,0.06)]"
             >
               <div className="space-y-3 text-[#00373E]">
-                <h3 className="text-lg sm:text-xl font-semibold leading-snug">
+                <h3
+                  className={headingFont.className}
+                  style={{
+                    fontSize: "38px",
+                    lineHeight: "45px",
+                    fontWeight: 600,
+                    textAlign: "center",
+                    color: "#00373E",
+                  }}
+                >
                   {card.titleLine1}
                   <br />
                   {card.titleLine2}
                 </h3>
-                <p className="text-xs sm:text-sm leading-relaxed text-[#486364]">
+                <p
+                  className={headingFont.className}
+                  style={{
+                    color: "#00373E",
+                    fontSize: "18px",
+                    lineHeight: "29.25px",
+                    fontWeight: 400,
+                    textAlign: "center",
+                    width: "225px",
+                    margin: "0 auto",
+                  }}
+                >
                   {card.description}
                 </p>
               </div>

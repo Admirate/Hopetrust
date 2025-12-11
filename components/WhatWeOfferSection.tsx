@@ -1,9 +1,15 @@
-"use client";
+'use client';
 
 import type React from "react";
 import Image from "next/image";
 import { motion } from "motion/react";
+import { Bricolage_Grotesque } from "next/font/google";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+
+const headingFont = Bricolage_Grotesque({
+  subsets: ["latin"],
+  weight: ["600"],
+});
 
 const items = [
   { label: "Therapy", icon: "/asset4.png" },
@@ -21,7 +27,15 @@ export default function WhatWeOfferSection() {
   return (
     <section className="w-full bg-[#F9E6D0] py-12 sm:py-16">
       <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center gap-6 px-4 sm:px-8 lg:px-[106px]">
-        <h2 className="fluid-heading-xl font-semibold text-[#004047] text-balance mb-4 md:mb-6">
+        <h2
+          className={`${headingFont.className} mb-4 text-center md:mb-6`}
+          style={{
+            color: "#00373E",
+            fontSize: "48px",
+            lineHeight: "72px",
+            fontWeight: 600,
+          }}
+        >
           What We Offer
         </h2>
 

@@ -2,6 +2,12 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
+import { Bricolage_Grotesque } from "next/font/google";
+
+const heroFont = Bricolage_Grotesque({
+  subsets: ["latin"],
+  weight: ["600", "700"],
+});
 
 const HeroSection = () => {
   const containerRef = useRef<HTMLElement | null>(null);
@@ -73,23 +79,34 @@ const HeroSection = () => {
 
             {/* Content overlay */}
             <div className="relative flex min-h-full flex-col items-center justify-center px-5 sm:px-10 lg:px-20 py-10 sm:py-14 gap-4 sm:gap-6 text-center text-white">
-              <h1 className="fluid-heading-hero font-semibold text-balance fade-in-optimized">
+              <h1
+                className={`${heroFont.className} font-semibold text-balance fade-in-optimized`}
+                style={{
+                  fontSize: "48px",
+                  letterSpacing: "0.724px",
+                  lineHeight: "normal",
+                }}
+              >
                 A place for{" "}
-                <span className="text-yellow-300">hope</span>,<br />
+                <span style={{ color: "#FFDF00" }}>hope</span>,<br />
                 healing, and renewal.
               </h1>
 
-              <div className="space-y-1 fluid-body-lg font-semibold text-balance fade-in-optimized">
-                <p>A gentle reminder:</p>
-                <p>
-                  We&apos;re here if you need us{" "}
-                  <span className="hidden sm:inline">—</span>
-                  <span className="block sm:inline">
-                    {" "}
-                    message us anytime
-                  </span>
-                </p>
-              </div>
+              <p
+                className={`${heroFont.className} text-balance fade-in-optimized`}
+                style={{
+                  color: "#FFFAD4",
+                  fontSize: "24px",
+                  fontWeight: 700,
+                  letterSpacing: "0.724px",
+                  lineHeight: "normal",
+                  maxWidth: "338px",
+                  textAlign: "center",
+                }}
+              >
+                A gentle reminder: We&apos;re here if you need us — message us
+                anytime
+              </p>
 
               <button className="mt-4 inline-flex items-center justify-center rounded-full bg-[#00343A] px-8 sm:px-10 py-3 text-sm sm:text-base font-semibold text-white shadow-lg transition-all duration-200 hover:bg-[#02424a] hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0 active:scale-[0.97] fade-in-optimized">
                 Chat with us

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type JourneyCard = {
   title: string;
@@ -36,24 +36,14 @@ const cards: JourneyCard[] = [
   },
 ];
 
-const CAROUSEL_INTERVAL_MS = 2000;
-
 export default function RectangleSection() {
   const [activeIndex, setActiveIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % cards.length);
-    }, CAROUSEL_INTERVAL_MS);
-
-    return () => clearInterval(interval);
-  }, []);
 
   const activeCard = cards[activeIndex];
 
   return (
     <section className="w-full bg-transparent py-12 sm:py-16">
-      <div className="mx-auto w-full max-w-[1294px] h-[562px] rounded-[54px] bg-white shadow-[0_24px_60px_rgba(0,0,0,0.06)] overflow-hidden relative">
+      <div className="relative mx-auto h-[562px] w-full max-w-[1294px] overflow-hidden rounded-[54px] bg-white shadow-[0_24px_60px_rgba(0,0,0,0.06)]">
         {/* Background video */}
         <video
           className="absolute inset-0 h-full w-full object-cover"
@@ -67,21 +57,21 @@ export default function RectangleSection() {
         </video>
 
         {/* Overlay content */}
-        <div className="relative z-10 h-full w-full px-6 sm:px-10 lg:px-16 py-10">
+        <div className="relative z-10 h-full w-full px-6 py-10 sm:px-10 lg:px-16">
           {/* Section title centered at top */}
           <div className="absolute inset-x-0 top-6 flex justify-center">
-            <h2 className="text-[26px] sm:text-[32px] font-semibold text-[#00373E]">
+            <h2 className="text-[26px] font-semibold text-[#00373E] sm:text-[32px]">
               How Your Journey Unfolds
             </h2>
           </div>
 
           <div className="flex h-full">
-            {/* Left text carousel - vertically centered, left aligned */}
-            <div className="flex h-full flex-col justify-center max-w-[546px] text-left text-[#00373E] space-y-6 sm:space-y-7">
-              <h2 className="text-[32px] sm:text-[36px] font-semibold leading-[42px]">
+            {/* Left text - vertically centered, left aligned */}
+            <div className="flex h-full max-w-[546px] flex-col justify-center space-y-6 text-left text-[#00373E] sm:space-y-7">
+              <h2 className="text-[32px] font-semibold leading-[42px] sm:text-[36px]">
                 {activeCard.title}
               </h2>
-              <div className="space-y-2.5 text-[24px] sm:text-[24px] leading-[34px] font-semibold">
+              <div className="space-y-2.5 text-[24px] font-semibold leading-[34px] sm:text-[24px]">
                 {activeCard.lines.map((line, idx) => (
                   <p key={idx}>{line}</p>
                 ))}
@@ -90,10 +80,10 @@ export default function RectangleSection() {
 
             {/* Right side: inline video on the far right, visually blended with the box */}
             <div className="flex flex-1 items-center justify-end">
-              <div className="w-[214px] h-[286px] rounded-[32px] overflow-hidden">
+              <div className="h-[286px] w-[214px] overflow-hidden rounded-[32px]">
                 <video
                   src="/FINal.mp4"
-                  className="h-full w-full object-cover transform scale-[1.08]"
+                  className="h-full w-full scale-[1.08] transform object-cover"
                   autoPlay
                   muted
                   playsInline
@@ -105,7 +95,7 @@ export default function RectangleSection() {
             </div>
           </div>
 
-          {/* Progress indicator - fixed at bottom center of the video/card */}
+          {/* Progress indicator - bottom center */}
           <div className="pointer-events-auto absolute inset-x-0 bottom-6 flex justify-center gap-3">
             {cards.map((_, index) => (
               <button

@@ -1,16 +1,11 @@
-'use client';
+`use client`;
 
-import { useEffect, useRef, useState } from "react";
-import { IBM_Plex_Mono, Ibarra_Real_Nova } from "next/font/google";
+import { useState } from "react";
+import { Bricolage_Grotesque } from "next/font/google";
 
-const ibmMono = IBM_Plex_Mono({
+const headingFont = Bricolage_Grotesque({
   subsets: ["latin"],
-  weight: ["600"],
-});
-
-const ibarra = Ibarra_Real_Nova({
-  subsets: ["latin"],
-  weight: ["600"],
+  weight: ["600", "700"],
 });
 
 const journeySteps = [
@@ -55,115 +50,104 @@ const journeySteps = [
 ];
 
 export default function HowJourneyUnfoldsSection() {
-  const sectionRef = useRef<HTMLElement | null>(null);
   const [stepIndex, setStepIndex] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const el = sectionRef.current;
-      if (!el || typeof window === "undefined") return;
-
-      const viewportHeight = window.innerHeight || 1;
-      const sectionTop = el.offsetTop;
-      const scrollY = window.scrollY;
-
-      // Total height we want to "pin" for all steps
-      const totalHeight = journeySteps.length * viewportHeight;
-      const sectionBottom = sectionTop + totalHeight;
-
-      // Only react while we're within the section's scroll window
-      if (scrollY < sectionTop) {
-        setStepIndex(0);
-        return;
-      }
-      if (scrollY >= sectionBottom) {
-        setStepIndex(journeySteps.length - 1);
-        return;
-      }
-
-      const scrolledInside = scrollY - sectionTop;
-      const index = Math.min(
-        journeySteps.length - 1,
-        Math.floor(scrolledInside / viewportHeight + 0.0001)
-      );
-
-      setStepIndex(index);
-    };
-
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   const current = journeySteps[stepIndex];
 
+  const thumbWidth = 100 / journeySteps.length;
+
   return (
-    <section
-      ref={sectionRef}
-      style={{ height: `${journeySteps.length * 100}vh` }}
-      className="relative bg-white"
-    >
-      <div className="sticky top-24 md:top-28 lg:top-32">
-        <div className="mx-auto flex max-w-5xl flex-col items-center px-4 text-center">
-          {/* Small looping video icon */}
-          <div className="mb-6 md:mb-8">
-            <div className="h-18 w-18 md:h-24 md:w-24 lg:h-28 lg:w-28 overflow-hidden">
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="h-full w-full object-cover"
-              >
-                <source src="/FINal.mp4" type="video/mp4" />
-              </video>
-            </div>
+    <section className="relative bg-white py-16 md:py-20">
+      <div className="mx-auto flex max-w-5xl flex-col items-center px-4 text-center">
+        {/* Small looping video icon */}
+        <div className="mb-6 md:mb-8">
+          <div className="h-18 w-18 md:h-24 md:w-24 lg:h-28 lg:w-28 overflow-hidden">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="h-full w-full object-cover"
+            >
+              <source src="/FINal.mp4" type="video/mp4" />
+            </video>
           </div>
+        </div>
 
-          {/* Heading */}
-          <h2
-            className={`${ibmMono.className} fluid-heading-hero font-semibold text-[#ED7428] text-balance`}
-          >
-            How Your Journey Unfolds
-          </h2>
+        {/* Heading */}
+        <h2
+          className={`${headingFont.className} text-center`}
+          style={{
+            color: "#00373E",
+            fontSize: "48px",
+            lineHeight: "normal",
+            fontWeight: 600,
+            letterSpacing: "0.724px",
+          }}
+        >
+          How Your Journey Unfolds
+        </h2>
 
-          {/* Scroll-driven body text */}
-          <div className="mt-8 md:mt-10">
-            <div className="mb-4 text-sm md:text-base font-medium tracking-[0.25em] uppercase text-[#ED7428]">
-              Step {current.step}
-            </div>
-            <div className="relative left-1/2 w-screen -translate-x-1/2 bg-gradient-to-b from-white to-[#FFFAD4] py-8 md:py-10">
-              <div className="mx-auto max-w-5xl px-4">
-                <div
-                className={`${ibarra.className} fluid-body-xl font-semibold text-black transition-opacity duration-300 text-balance`}
-                >
-                  {current.step === 4 ? (
-                    <>
-                      <p>Session timings</p>
-                      <p>
-                        Individual therapy —{" "}
-                        <span className="text-[#ED7428]">60</span>{" "}
-                        <span className="text-[#FFDF00]">minutes</span>
-                      </p>
-                      <p>
-                        Couples therapy —{" "}
-                        <span className="text-[#ED7428]">90</span>{" "}
-                        <span className="text-[#FFDF00]">minutes</span>
-                      </p>
-                      <p>
-                        Psychiatry —{" "}
-                        <span className="text-[#ED7428]">30</span>{" "}
-                        <span className="text-[#FFDF00]">minutes</span>
-                      </p>
-                      <p>Your progress continues after each session.</p>
-                      <p>One step at a time.</p>
-                    </>
-                  ) : (
-                    current.lines.map((line, i) => <p key={i}>{line}</p>)
-                  )}
-                </div>
+        {/* Body text */}
+        <div className="mt-8 md:mt-10 w-full">
+          <div className="mb-4 text-sm md:text-base font-medium tracking-[0.25em] uppercase text-[#ED7428]">
+            Step {current.step}
+          </div>
+          <div className="relative left-1/2 w-screen -translate-x-1/2 bg-gradient-to-b from-white to-[#FFFAD4] py-8 md:py-10">
+            <div className="mx-auto max-w-5xl px-4">
+              <div
+                className={`${headingFont.className} transition-opacity duration-300 text-[#00373E] text-balance`}
+                style={{
+                  fontSize: "24px",
+                  fontWeight: 700,
+                  lineHeight: "normal",
+                  letterSpacing: "0.724px",
+                }}
+              >
+                {current.step === 4 ? (
+                  <>
+                    <p>Session timings</p>
+                    <p>Individual therapy — 60 minutes</p>
+                    <p>Couples therapy — 90 minutes</p>
+                    <p>Psychiatry — 30 minutes</p>
+                    <p>Your progress continues after each session.</p>
+                    <p>One step at a time.</p>
+                  </>
+                ) : (
+                  current.lines.map((line, i) => <p key={i}>{line}</p>)
+                )}
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Capsule slider controls */}
+        <div className="mt-8 flex w-full justify-center">
+          <div className="relative flex w-full max-w-md items-center rounded-full bg-[#FFE7CF] px-1 py-1 shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+            {/* Moving thumb */}
+            <div
+              className="pointer-events-none absolute inset-y-1 rounded-full bg-[#ED7428] transition-transform duration-300"
+              style={{
+                width: `${thumbWidth}%`,
+                transform: `translateX(${stepIndex * 100}%)`,
+              }}
+            />
+
+            {/* Step buttons */}
+            {journeySteps.map((step, index) => {
+              const isActive = index === stepIndex;
+              return (
+                <button
+                  key={step.step}
+                  type="button"
+                  onClick={() => setStepIndex(index)}
+                  className={`relative z-10 flex-1 px-3 py-2 text-xs sm:text-sm font-semibold transition-colors ${
+                    isActive ? "text-white" : "text-[#ED7428]"
+                  }`}
+                >
+                  Step {step.step}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
