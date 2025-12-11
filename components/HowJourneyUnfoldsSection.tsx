@@ -57,24 +57,24 @@ export default function HowJourneyUnfoldsSection() {
 
   return (
     <section className="relative bg-white py-16 md:py-20">
-      <div className="mx-auto flex max-w-5xl flex-col items-center px-4 text-center">
-        {/* Small looping video icon */}
-        <div className="mb-6 md:mb-8">
-          <div className="h-18 w-18 md:h-24 md:w-24 lg:h-28 lg:w-28 overflow-hidden">
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="h-full w-full object-cover"
-            >
-              <source src="/FINal.mp4" type="video/mp4" />
-            </video>
+        <div className="mx-auto flex max-w-5xl flex-col items-center px-4 text-center">
+          {/* Small looping video icon */}
+          <div className="mb-6 md:mb-8">
+            <div className="h-18 w-18 md:h-24 md:w-24 lg:h-28 lg:w-28 overflow-hidden">
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="h-full w-full object-cover"
+              >
+                <source src="/FINal.mp4" type="video/mp4" />
+              </video>
+            </div>
           </div>
-        </div>
 
-        {/* Heading */}
-        <h2
+          {/* Heading */}
+          <h2
           className={`${headingFont.className} text-center`}
           style={{
             color: "#00373E",
@@ -83,18 +83,18 @@ export default function HowJourneyUnfoldsSection() {
             fontWeight: 600,
             letterSpacing: "0.724px",
           }}
-        >
-          How Your Journey Unfolds
-        </h2>
+          >
+            How Your Journey Unfolds
+          </h2>
 
         {/* Body text */}
         <div className="mt-8 md:mt-10 w-full">
-          <div className="mb-4 text-sm md:text-base font-medium tracking-[0.25em] uppercase text-[#ED7428]">
-            Step {current.step}
-          </div>
-          <div className="relative left-1/2 w-screen -translate-x-1/2 bg-gradient-to-b from-white to-[#FFFAD4] py-8 md:py-10">
-            <div className="mx-auto max-w-5xl px-4">
-              <div
+            <div className="mb-4 text-sm md:text-base font-medium tracking-[0.25em] uppercase text-[#ED7428]">
+              Step {current.step}
+            </div>
+            <div className="relative left-1/2 w-screen -translate-x-1/2 bg-gradient-to-b from-white to-[#FFFAD4] py-8 md:py-10">
+              <div className="mx-auto max-w-5xl px-4">
+                <div
                 className={`${headingFont.className} transition-opacity duration-300 text-[#00373E] text-balance`}
                 style={{
                   fontSize: "24px",
@@ -102,22 +102,22 @@ export default function HowJourneyUnfoldsSection() {
                   lineHeight: "normal",
                   letterSpacing: "0.724px",
                 }}
-              >
-                {current.step === 4 ? (
-                  <>
-                    <p>Session timings</p>
+                >
+                  {current.step === 4 ? (
+                    <>
+                      <p>Session timings</p>
                     <p>Individual therapy — 60 minutes</p>
                     <p>Couples therapy — 90 minutes</p>
                     <p>Psychiatry — 30 minutes</p>
-                    <p>Your progress continues after each session.</p>
-                    <p>One step at a time.</p>
-                  </>
-                ) : (
-                  current.lines.map((line, i) => <p key={i}>{line}</p>)
-                )}
+                      <p>Your progress continues after each session.</p>
+                      <p>One step at a time.</p>
+                    </>
+                  ) : (
+                    current.lines.map((line, i) => <p key={i}>{line}</p>)
+                  )}
+                </div>
               </div>
             </div>
-          </div>
         </div>
 
         {/* Capsule slider controls */}
