@@ -1,7 +1,6 @@
 import Header from '@/components/Header';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import FadeInSection from '@/components/FadeInSection';
 
 // Re-use CTA via code-split chunk
 const HomeFinalCtaSection = dynamic(
@@ -14,8 +13,7 @@ export default function About() {
       <Header />
       <main className="min-h-screen pt-20">
         {/* First section with BACKGROUND CIRCLES.png as background */}
-        <FadeInSection>
-          <section className="relative min-h-screen w-full overflow-hidden">
+        <section className="relative min-h-screen w-full overflow-hidden">
           <Image
             src="/BACKGROUND CIRCLES.png"
             alt="Decorative background circles"
@@ -73,24 +71,11 @@ export default function About() {
               </div>
             </div>
 
-            {/* Bottom-centered Our Team strip */}
-            <div className="flex flex-col items-center text-center pb-6">
-              <h3 className="text-3xl sm:text-4xl font-semibold text-[#ED7428] mb-4">
-                Our Team
-              </h3>
-              <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-lg sm:text-xl">
-                <span className="font-semibold text-gray-900">Therapists.</span>
-                <span className="text-gray-300">Counsellors.</span>
-                <span className="text-gray-300">Psychologists.</span>
-                <span className="text-gray-300">Medical professionals.</span>
-              </div>
-            </div>
+            {/* Bottom-centered Our Team strip removed */}
           </div>
         </section>
-        </FadeInSection>
 
         {/* Services cards + long illustration box */}
-        <FadeInSection delay={100}>
         <section className="w-full bg-white py-16">
           <div className="mx-auto w-full max-w-[1246px] px-4 sm:px-8 lg:px-0 flex flex-col gap-10">
             {/* Three colored cards (Frame 37 layout) */}
@@ -181,10 +166,8 @@ export default function About() {
             </div>
           </div>
         </section>
-        </FadeInSection>
 
         {/* How it Works section */}
-        <FadeInSection delay={150}>
         <section className="w-full bg-white py-20">
           <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-8 lg:px-0 flex flex-col gap-10">
             {/* Heading */}
@@ -279,10 +262,8 @@ export default function About() {
             </div>
           </div>
         </section>
-        </FadeInSection>
 
         {/* Media and Gallery section */}
-        <FadeInSection delay={200}>
         <section className="w-full bg-white py-20">
           <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-8 lg:px-0 flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
             {/* Overlapping images on the left */}
@@ -328,12 +309,9 @@ export default function About() {
             </div>
           </div>
         </section>
-        </FadeInSection>
 
         {/* Final CTA + footer-style links section (last section on page) */}
-        <FadeInSection delay={250}>
-          <HomeFinalCtaSection />
-        </FadeInSection>
+        <HomeFinalCtaSection />
       </main>
     </>
   );
