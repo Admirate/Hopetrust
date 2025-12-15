@@ -4,9 +4,9 @@ import type React from 'react';
 import { Bricolage_Grotesque, Roboto_Flex } from 'next/font/google';
 import TiltedCard from './TiltedCard';
 import VariableProximity from './VariableProximity';
+import { AuroraBackground } from './AuroraBackground';
 import { useScrollAnimation, fadeInUp } from '@/hooks/useScrollAnimation';
 import { useRef } from 'react';
-import LiquidEther from './LiquidEther';
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -31,29 +31,8 @@ const BackgroundCirclesSection = () => {
 
   return (
     <section className="relative w-full overflow-hidden" style={{ minHeight: '100vh' }}>
-      {/* Liquid Ether background - full bleed behind content */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 0,
-        }}
-      >
-        <LiquidEther
-          colors={['#ffa629', '#ff881a', '#faf200']}
-          mouseForce={20}
-          cursorSize={100}
-          resolution={0.5}
-          autoDemo={true}
-          autoSpeed={0.5}
-          autoIntensity={2.2}
-          className="!pointer-events-auto"
-          style={{ width: '100%', height: '100%' }}
-        />
-      </div>
+      {/* Aurora background - full bleed behind content */}
+      <AuroraBackground className="pointer-events-none absolute inset-0 -z-10 h-full w-full" showRadialGradient />
 
       {/* Content area */}
       <div className="relative z-10 flex h-full items-start justify-center px-4 sm:px-8 lg:px-16 pt-28 pb-16">
