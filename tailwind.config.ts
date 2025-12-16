@@ -80,6 +80,10 @@ const config: Config = {
             height: '0',
           },
         },
+        'cursor-blink': {
+          '0%, 49%': { opacity: '1' },
+          '50%, 100%': { opacity: '0' },
+        },
         aurora: {
           from: {
             backgroundPosition: '50% 50%, 50% 50%',
@@ -102,6 +106,7 @@ const config: Config = {
         'accordion-up': 'accordion-up 0.2s ease-out',
         // Increase aurora movement speed by reducing duration
         aurora: 'aurora 60s linear infinite',
+        'cursor-blink': 'cursor-blink 1s step-end infinite',
         'fade-in': 'fade-in 0.5s ease-out',
         'slide-in': 'slide-in 0.3s ease-out',
       },

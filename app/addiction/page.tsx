@@ -1,6 +1,6 @@
  'use client';
 
-import { useState } from 'react';
+ import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Image from 'next/image';
 import { motion } from 'motion/react';
@@ -44,8 +44,37 @@ const ROAD_STEPS = [
   },
 ];
 
+const EASE_OUT_QUINT: [number, number, number, number] = [0.22, 0.61, 0.36, 1];
+
+const FADE_IN_VIEWPORT = {
+  once: true,
+  amount: 0.35,
+} as const;
+
+const getFadeInTransition = (delaySeconds: number = 0) => ({
+  duration: 0.6,
+  delay: delaySeconds,
+  ease: EASE_OUT_QUINT,
+});
+
+const ROAD_AUTO_ROTATE_MS = 3000;
+
 export default function AddictionPage() {
   const [activeRoadStep, setActiveRoadStep] = useState(0);
+
+  useEffect(() => {
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+
+    if (prefersReducedMotion) return;
+
+    const intervalId = window.setInterval(() => {
+      setActiveRoadStep((currentStep) => (currentStep + 1) % ROAD_STEPS.length);
+    }, ROAD_AUTO_ROTATE_MS);
+
+    return () => window.clearInterval(intervalId);
+  }, []);
 
   return (
     <>
@@ -57,10 +86,10 @@ export default function AddictionPage() {
             {/* Left: centered text content */}
             <motion.div
               className="w-full md:w-1/2 space-y-5 md:space-y-6 text-left"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.5, ease: [0.22, 0.61, 0.36, 1] }}
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={FADE_IN_VIEWPORT}
+              transition={getFadeInTransition(0)}
             >
               <p
                 className={`${bricolageBody.className} text-[32px] sm:text-[40px] lg:text-[48px] font-semibold text-black uppercase`}
@@ -89,14 +118,10 @@ export default function AddictionPage() {
             {/* Right: hero image placeholder (you can replace when ready) */}
             <motion.div
               className="w-full md:w-1/2 flex justify-center md:justify-end"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{
-                duration: 0.5,
-                delay: 0.1,
-                ease: [0.22, 0.61, 0.36, 1],
-              }}
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={FADE_IN_VIEWPORT}
+              transition={getFadeInTransition(0.1)}
             >
               <div className="relative w-full max-w-md h-64 sm:h-72 md:h-80 lg:h-96 rounded-[32px] overflow-hidden bg-white">
                 <Image
@@ -119,10 +144,10 @@ export default function AddictionPage() {
               {/* Left text block */}
               <motion.div
                 className="w-full md:w-1/2 space-y-4 text-left"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.5, ease: [0.22, 0.61, 0.36, 1] }}
+                initial={{ opacity: 0, x: -40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={FADE_IN_VIEWPORT}
+                transition={getFadeInTransition(0)}
               >
                 <h2 className="text-2xl sm:text-3xl font-semibold text-[#ED7428]">
                   Why Hope Trust
@@ -146,10 +171,10 @@ export default function AddictionPage() {
               {/* Right: dark green rounded square with illustration_4.png */}
               <motion.div
                 className="w-full md:w-1/2 flex justify-center md:justify-end"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 0.61, 0.36, 1] }}
+                initial={{ opacity: 0, x: 40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={FADE_IN_VIEWPORT}
+                transition={getFadeInTransition(0.1)}
               >
                 <div className="relative w-[260px] sm:w-[320px] lg:w-[406px] aspect-[406/442] rounded-[60px] bg-[#00373E] flex items-center justify-center shadow-[0_24px_60px_rgba(0,0,0,0.15)]">
                   <div className="relative w-[180px] sm:w-[220px] lg:w-[268px] aspect-[268/409]">
@@ -166,16 +191,16 @@ export default function AddictionPage() {
             </div>
 
             {/* Bottom row: long rounded rectangle with text + illustration */}
-            <motion.div
-              className="w-full"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 0.61, 0.36, 1] }}
-            >
+            <div className="w-full">
               <div className="relative w-full rounded-[60px] bg-[#F9E6D0] px-6 sm:px-10 lg:px-16 py-6 sm:py-8 lg:py-10 flex flex-col gap-10 md:flex-row md:items-center md:justify-between lg:min-h-[380px]">
                 {/* Left text content */}
-                <div className="max-w-2xl text-left">
+                <motion.div
+                  className="max-w-2xl text-left"
+                  initial={{ opacity: 0, x: -40 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={FADE_IN_VIEWPORT}
+                  transition={getFadeInTransition(0.05)}
+                >
                   <h3
                     className={`${bricolageBody.className} text-[32px] sm:text-[40px] lg:text-[48px] font-semibold text-[#00373E]`}
                     style={{ letterSpacing: '0.724px' }}
@@ -196,10 +221,16 @@ export default function AddictionPage() {
                   >
                     Each concern receives a tailored treatment approach.
                   </p>
-                </div>
+                </motion.div>
 
                 {/* Right image block */}
-                <div className="flex w-full md:w-auto md:ml-4 justify-end">
+                <motion.div
+                  className="flex w-full md:w-auto md:ml-4 justify-end"
+                  initial={{ opacity: 0, x: 40 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={FADE_IN_VIEWPORT}
+                  transition={getFadeInTransition(0.15)}
+                >
                   <div className="relative w-[229px] aspect-[229/322] translate-x-2 sm:translate-x-3 lg:translate-x-4">
                     <Image
                       src="/illustration10.png"
@@ -210,9 +241,9 @@ export default function AddictionPage() {
                       priority={false}
                     />
                   </div>
-                </div>
+                </motion.div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </section>
 
@@ -322,8 +353,8 @@ export default function AddictionPage() {
                     key={item.step}
                     type="button"
                     onClick={() => setActiveRoadStep(index)}
-                    className={`flex min-w-[180px] flex-1 flex-col items-center justify-between rounded-[6px] px-4 text-center sm:min-w-[200px] transition-all duration-200 ${
-                      isActive ? 'bg-[#FFE3C7] py-10' : 'bg-[#FEF2EB] py-8'
+                    className={`flex h-[260px] min-w-[180px] flex-1 flex-col items-center justify-between rounded-[6px] px-4 py-10 text-center sm:min-w-[200px] transition-colors duration-200 ${
+                      isActive ? 'bg-[#FFE3C7]' : 'bg-[#FEF2EB]'
                     }`}
                   >
                     <p

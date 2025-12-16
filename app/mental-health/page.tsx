@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 import Image from 'next/image';
 import { Bricolage_Grotesque } from 'next/font/google';
@@ -28,7 +28,7 @@ type FocusConfig = {
 const FOCUS_SECTIONS: Record<FocusKey, FocusConfig> = {
   therapy: {
     label: 'Therapy',
-    heading: 'THERAPY',
+    heading: 'Therapy',
     paragraphs: [
       'A quiet space to understand what is happening within you.',
       'Therapy helps you notice patterns, make sense of your concerns and move toward clarity and steadiness at your own pace.',
@@ -41,7 +41,7 @@ const FOCUS_SECTIONS: Record<FocusKey, FocusConfig> = {
   },
   medications: {
     label: 'Medications',
-    heading: 'MEDICATIONS',
+    heading: 'Medications',
     paragraphs: [
       'If medication can support your wellbeing, our psychiatrists explain it simply. You understand why it is suggested, how it works and what to expect. Your progress is reviewed gently and decisions are made together.',
     ],
@@ -53,7 +53,7 @@ const FOCUS_SECTIONS: Record<FocusKey, FocusConfig> = {
   },
   couples: {
     label: 'Couples Therapy',
-    heading: 'COUPLES THERAPY',
+    heading: 'Couples Therapy',
     paragraphs: [
       'A space for partners to slow down, talk openly and understand each other with less conflict.',
       'The focus is on communication, trust and rebuilding connection.',
@@ -67,7 +67,7 @@ const FOCUS_SECTIONS: Record<FocusKey, FocusConfig> = {
   },
   family: {
     label: 'Family Therapy',
-    heading: 'FAMILY THERAPY',
+    heading: 'Family Therapy',
     paragraphs: [
       'Family therapy offers a calm space to work through misunderstandings, repeated arguments or changes that feel heavy at home.',
       'The aim is healthier communication and balance.',
@@ -130,53 +130,10 @@ const focusBoldBodyFont = Bricolage_Grotesque({
   weight: ['700'],
 });
 
-const TYPING_SPEED_MS = 18;
-
-type TypingParagraphProps = {
-  text: string;
-  start: boolean;
-  className?: string;
-  style?: React.CSSProperties;
-};
-
-function TypingParagraph({
-  text,
-  start,
-  className,
-  style,
-}: TypingParagraphProps) {
-  const [displayed, setDisplayed] = useState(start ? "" : text);
-
-  useEffect(() => {
-    if (!start) return;
-    setDisplayed("");
-    let index = 0;
-    const id = window.setInterval(() => {
-      index += 1;
-      setDisplayed(text.slice(0, index));
-      if (index >= text.length) {
-        window.clearInterval(id);
-      }
-    }, TYPING_SPEED_MS);
-
-    return () => {
-      window.clearInterval(id);
-    };
-  }, [start, text]);
-
-  return (
-    <p className={className} style={style}>
-      {displayed}
-    </p>
-  );
-}
-
 export default function MentalHealthPage() {
   const [activeFocus, setActiveFocus] = useState<FocusKey>('therapy');
   const [activeAssessment, setActiveAssessment] =
     useState<AssessmentKey>('adhd');
-  const [hasAssessmentCardInView, setHasAssessmentCardInView] =
-    useState(false);
 
   const heroRef = useRef<HTMLElement | null>(null);
   const { scrollYProgress } = useScroll({
@@ -350,7 +307,6 @@ export default function MentalHealthPage() {
           <div className="mx-auto w-full max-w-[1225px] px-4 sm:px-6 lg:px-8 pt-10">
             <motion.div
               viewport={{ once: true, amount: 0.3 }}
-              onViewportEnter={() => setHasAssessmentCardInView(true)}
               className="relative rounded-[63px] bg-white px-6 sm:px-10 lg:px-16 py-10 sm:py-12 shadow-[0_24px_60px_rgba(0,0,0,0.03)]"
             >
               {/* Top tabs */}
@@ -385,19 +341,9 @@ export default function MentalHealthPage() {
                   <h3 className="text-[40px] font-semibold tracking-[0.724px] text-[#E26B20]">
                     {ASSESSMENTS[activeAssessment].label}
                   </h3>
-                  {ASSESSMENTS[activeAssessment].paragraphs.map((p) => {
-                    const shouldStart =
-                      activeAssessment === 'adhd'
-                        ? hasAssessmentCardInView
-                        : true;
-                    return (
-                      <TypingParagraph
-                        key={`${activeAssessment}-${p}`}
-                        text={p}
-                        start={shouldStart}
-                      />
-                    );
-                  })}
+                  {ASSESSMENTS[activeAssessment].paragraphs.map((p) => (
+                    <p key={`${activeAssessment}-${p}`}>{p}</p>
+                  ))}
                 </div>
               </div>
             </motion.div>
