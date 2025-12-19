@@ -278,7 +278,7 @@ export default function About() {
               >
                 <div className="relative w-full max-w-md aspect-[3/4] rounded-[32px] bg-white shadow-[0_30px_80px_rgba(0,0,0,0.25)] overflow-hidden">
                   <Image
-                    src="/Madam.png"
+                    src="\about us new.png"
                     alt="Hope Trust therapist"
                     fill
                     className="object-cover"
@@ -299,7 +299,7 @@ export default function About() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-11">
               {/* Left card */}
               <motion.div
-                className="flex flex-col items-center justify-center gap-6 rounded-[45px] bg-[#F9E6D0] px-10 py-16 shadow-sm w-full sm:w-[386px] sm:h-[367px] text-center"
+                className="flex flex-col items-center justify-center gap-6 rounded-[45px] bg-[#F9E6D0] px-10 py-16 shadow-sm w-full sm:w-[386px] sm:h-[367px] text-center hover:-translate-y-2 hover:shadow-xl transition-all duration-300 cursor-default"
                 initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.35 }}
@@ -323,7 +323,7 @@ export default function About() {
 
               {/* Middle card */}
               <motion.div
-                className="flex flex-col items-center justify-center gap-6 rounded-[45px] bg-[#00373E] px-10 py-16 shadow-sm w-full sm:w-[386px] sm:h-[367px] text-center"
+                className="flex flex-col items-center justify-center gap-6 rounded-[45px] bg-[#00373E] px-10 py-16 shadow-sm w-full sm:w-[386px] sm:h-[367px] text-center hover:-translate-y-2 hover:shadow-xl transition-all duration-300 cursor-default"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.35 }}
@@ -351,7 +351,7 @@ export default function About() {
 
               {/* Right card */}
               <motion.div
-                className="flex flex-col items-center justify-center gap-6 rounded-[45px] bg-[#FFFFFF] px-10 py-16 shadow-sm w-full sm:w-[386px] sm:h-[367px] text-center"
+                className="flex flex-col items-center justify-center gap-6 rounded-[45px] bg-[#FFFFFF] px-10 py-16 shadow-sm w-full sm:w-[386px] sm:h-[367px] text-center hover:-translate-y-2 hover:shadow-xl transition-all duration-300 cursor-default"
                 initial={{ opacity: 0, x: 40 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.35 }}
@@ -407,7 +407,7 @@ export default function About() {
                       Our wellness coaches support you in creating sustainable
                       routines for mental, emotional, and physical well-being.
                     </p>
-                    <button className="inline-flex items-center justify-center rounded-full bg-[#00373E] px-6 sm:px-8 py-2.5 text-sm sm:text-base font-semibold text-white shadow-md hover:bg-[#024a53] transition-colors">
+                    <button className="inline-flex items-center justify-center rounded-full bg-[#00373E] px-6 sm:px-8 py-2.5 text-sm sm:text-base font-semibold text-white shadow-md hover:bg-[#024a53] transition-all duration-200 active:scale-95">
                       Learn More
                     </button>
                   </motion.div>
@@ -465,7 +465,7 @@ export default function About() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
               {/* Step 1 */}
               <motion.div
-                className="flex flex-col items-center text-center gap-6 rounded-[24px] bg-[#FFEBD7] px-10 py-10 shadow-sm"
+                className="flex flex-col items-center text-center justify-between gap-6 rounded-[24px] bg-[#FFEBD7] px-10 py-10 shadow-sm h-full hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.35 }}
@@ -489,7 +489,7 @@ export default function About() {
 
               {/* Step 2 */}
               <motion.div
-                className="flex flex-col items-center text-center gap-6 rounded-[24px] bg-[#FFEBD7] px-10 py-10 shadow-sm"
+                className="flex flex-col items-center text-center justify-between gap-6 rounded-[24px] bg-[#FFEBD7] px-10 py-10 shadow-sm h-full hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.35 }}
@@ -517,7 +517,7 @@ export default function About() {
 
               {/* Step 3 */}
               <motion.div
-                className="flex flex-col items-center text-center gap-6 rounded-[24px] bg-[#FFEBD7] px-10 py-10 shadow-sm"
+                className="flex flex-col items-center text-center justify-between gap-6 rounded-[24px] bg-[#FFEBD7] px-10 py-10 shadow-sm h-full hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.35 }}

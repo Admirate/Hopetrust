@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 
 type JourneyCard = {
   title: string;
@@ -68,14 +69,25 @@ export default function RectangleSection() {
           <div className="flex h-full">
             {/* Left text - vertically centered, left aligned */}
             <div className="flex h-full max-w-[546px] flex-col justify-center space-y-6 text-left text-[#00373E] sm:space-y-7">
-              <h2 className="text-[32px] font-semibold leading-[42px] sm:text-[36px]">
-                {activeCard.title}
-              </h2>
-              <div className="space-y-2.5 text-[24px] font-semibold leading-[34px] sm:text-[24px]">
-                {activeCard.lines.map((line, idx) => (
-                  <p key={idx}>{line}</p>
-                ))}
-              </div>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeIndex}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="space-y-6 sm:space-y-7"
+                >
+                  <h2 className="text-[32px] font-semibold leading-[42px] sm:text-[36px]">
+                    {activeCard.title}
+                  </h2>
+                  <div className="space-y-2.5 text-[24px] font-semibold leading-[34px] sm:text-[24px]">
+                    {activeCard.lines.map((line, idx) => (
+                      <p key={idx}>{line}</p>
+                    ))}
+                  </div>
+                </motion.div>
+              </AnimatePresence>
             </div>
 
             {/* Right side: inline video on the far right, visually blended with the box */}
@@ -102,7 +114,7 @@ export default function RectangleSection() {
                 key={index}
                 type="button"
                 onClick={() => setActiveIndex(index)}
-                className={`h-2 rounded-full transition-all duration-300 ${
+                className={`h-2 rounded-full transition-all duration-300 hover:scale-110 active:scale-95 ${
                   index === activeIndex
                     ? "w-20 bg-[#F97316]"
                     : "w-14 bg-[#FFE3CF] hover:bg-[#FFD2B5]"
