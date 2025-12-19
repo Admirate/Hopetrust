@@ -346,7 +346,7 @@ export default function About() {
 
               {/* Right card */}
               <motion.div
-                className="flex flex-col items-center justify-center gap-6 rounded-[45px] bg-[#FFFFFF] px-10 py-16 shadow-sm w-full sm:w-[386px] sm:h-[367px] text-center hover:-translate-y-2 hover:shadow-xl transition-all duration-300 cursor-default"
+                className="flex flex-col items-center justify-center gap-6 rounded-[45px] bg-[#FFFBF6] px-10 py-16 shadow-sm ring-1 ring-black/5 w-full sm:w-[386px] sm:h-[367px] text-center hover:-translate-y-2 hover:shadow-xl transition-all duration-300 cursor-default"
                 initial={{ opacity: 0, x: 40 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.35 }}
