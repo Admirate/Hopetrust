@@ -8,6 +8,7 @@ import { motion } from 'motion/react';
 import { Bricolage_Grotesque, IBM_Plex_Sans } from 'next/font/google';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import ProximityText from '@/components/ProximityText';
+import OurTeamSection from '@/components/OurTeamSection';
 
 // Re-use CTA via code-split chunk
 const HomeFinalCtaSection = dynamic(
@@ -201,16 +202,8 @@ export default function About() {
     <>
       <Header />
       <main className="min-h-screen pt-20">
-        {/* First section with BACKGROUND CIRCLES.png as background */}
+        {/* First section */}
         <section className="relative min-h-screen w-full overflow-hidden">
-          <Image
-            src="/BACKGROUND CIRCLES.png"
-            alt="Decorative background circles"
-            fill
-            className="object-cover"
-            priority={false}
-          />
-
           <div className="relative z-10 flex h-full w-full flex-col justify-between px-4 sm:px-8 lg:px-16 py-12 gap-10">
             <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 lg:flex-row lg:items-center">
               {/* Left column: text content */}
@@ -276,12 +269,12 @@ export default function About() {
                   ease: [0.22, 0.61, 0.36, 1],
                 }}
               >
-                <div className="relative w-full max-w-md aspect-[3/4] rounded-[32px] bg-white shadow-[0_30px_80px_rgba(0,0,0,0.25)] overflow-hidden">
+                <div className="relative w-full max-w-2xl lg:max-w-3xl aspect-square">
                   <Image
                     src="\about us new.png"
                     alt="Hope Trust therapist"
                     fill
-                    className="object-cover"
+                    className="object-contain"
                     priority
                   />
                 </div>
@@ -291,6 +284,8 @@ export default function About() {
             {/* Bottom-centered Our Team strip removed */}
           </div>
         </section>
+
+        <OurTeamSection />
 
         {/* Services cards + long illustration box */}
         <section className="w-full bg-white py-16">

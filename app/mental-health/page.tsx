@@ -47,7 +47,7 @@ const FOCUS_SECTIONS: Record<FocusKey, FocusConfig> = {
     ],
     issues:
       'Anxiety, Depression, Stress, Anger Management, Loneliness, Procrastination, Grief, Trauma, Interpersonal Challenges',
-    cardBg: '#FFF0D5',
+    cardBg: '#F8F1BC',
     imageSrc: '/medications.png',
     imageAlt: 'Medications illustration',
   },
@@ -61,7 +61,7 @@ const FOCUS_SECTIONS: Record<FocusKey, FocusConfig> = {
     ],
     issues:
       'Communication, Conflict Resolution, Trust Building, Empathy',
-    cardBg: '#FFE6DA',
+    cardBg: '#EDE6B1',
     imageSrc: '/couple therapy.png',
     imageAlt: 'Couples therapy illustration',
   },
@@ -74,7 +74,7 @@ const FOCUS_SECTIONS: Record<FocusKey, FocusConfig> = {
     ],
     issues:
       'Family Conflicts, Boundaries, Generational Gaps, Parent Child Communication',
-    cardBg: '#FFEED7',
+    cardBg: '#DFD58F',
     imageSrc: '/family therapy.png',
     imageAlt: 'Family therapy illustration',
   },
@@ -202,14 +202,22 @@ export default function MentalHealthPage() {
                 <div className="flex bg-[#FFE3C7]">
                   {(Object.keys(FOCUS_SECTIONS) as FocusKey[]).map((key) => {
                     const isActive = key === activeFocus;
+                    const activeBgClass =
+                      key === 'medications'
+                        ? 'bg-[#F8F1BC]'
+                        : key === 'couples'
+                          ? 'bg-[#EDE6B1]'
+                          : key === 'family'
+                            ? 'bg-[#DFD58F]'
+                            : 'bg-[#FFF4D9]';
                     return (
                       <button
                         key={key}
                         type="button"
                         onClick={() => setActiveFocus(key)}
-                        className={`flex-1 px-4 py-4 text-xs sm:text-sm md:text-base font-semibold transition-colors ${
+                        className={`flex-1 px-4 py-4 text-xs sm:text-sm md:text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4 ${
                           isActive
-                            ? 'bg-[#FFF4D9] text-[#ED7428]'
+                            ? `${activeBgClass} text-[#ED7428]`
                             : 'bg-transparent text-[#00373E] hover:bg-[#FFEED2]'
                         }`}
                       >

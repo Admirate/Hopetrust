@@ -2,6 +2,12 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { Bricolage_Grotesque } from "next/font/google";
+
+const bricolage = Bricolage_Grotesque({
+  subsets: ["latin"],
+  weight: ["700"],
+});
 
 type JourneyCard = {
   title: string;
@@ -61,7 +67,9 @@ export default function RectangleSection() {
         <div className="relative z-10 h-full w-full px-6 py-10 sm:px-10 lg:px-16">
           {/* Section title centered at top */}
           <div className="absolute inset-x-0 top-6 flex justify-center">
-            <h2 className="text-[26px] font-semibold text-[#00373E] sm:text-[32px]">
+            <h2
+              className={`${bricolage.className} text-[26px] font-bold text-[#00373E] sm:text-[32px]`}
+            >
               How Your Journey Unfolds
             </h2>
           </div>
@@ -78,10 +86,14 @@ export default function RectangleSection() {
                   transition={{ duration: 0.5, ease: "easeInOut" }}
                   className="space-y-6 sm:space-y-7"
                 >
-                  <h2 className="text-[32px] font-semibold leading-[42px] sm:text-[36px]">
+                  <h2
+                    className={`${bricolage.className} text-[32px] font-bold leading-[42px] sm:text-[36px]`}
+                  >
                     {activeCard.title}
                   </h2>
-                  <div className="space-y-2.5 text-[24px] font-semibold leading-[34px] sm:text-[24px]">
+                  <div
+                    className={`${bricolage.className} space-y-2.5 text-[24px] font-bold leading-normal tracking-[0.724px] text-[#00373E]`}
+                  >
                     {activeCard.lines.map((line, idx) => (
                       <p key={idx}>{line}</p>
                     ))}

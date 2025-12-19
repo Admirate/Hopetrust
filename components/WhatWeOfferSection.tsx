@@ -64,7 +64,11 @@ export default function WhatWeOfferSection() {
                   className="object-contain opacity-100"
                 />
               </div>
-              <p className="bold-body text-[#00373E] group-hover:text-[#005c66] transition-colors duration-200">
+              <p
+                className={`bold-body text-[#00373E] group-hover:text-[#005c66] transition-colors duration-200 ${
+                  item.label === "Queer Affirmative Care" ? "text-center" : ""
+                }`}
+              >
                 {item.label}
               </p>
             </motion.div>

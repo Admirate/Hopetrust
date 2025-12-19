@@ -271,20 +271,26 @@ export default function AddictionPage() {
               transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 0.61, 0.36, 1] }}
             >
               {/* Step 1 with circular highlight */}
-              <div className="relative flex items-center justify-center">
-                <div className="absolute -z-10 h-[96px] w-[96px] rounded-full border-[14px] border-[#FCDDC4]" />
-                <button className="flex h-[68px] w-[302px] max-w-full items-center justify-center rounded-[10px] bg-[#ED7428] px-6 text-sm sm:text-base font-semibold text-white shadow-md">
-                  A full assessment
-                </button>
-              </div>
+              <button
+                type="button"
+                className="flex h-[68px] w-[302px] max-w-full items-center justify-center rounded-[10px] bg-[#ED7428] px-6 text-sm sm:text-base font-semibold text-white shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4"
+              >
+                A full assessment
+              </button>
 
               {/* Step 2 */}
-              <button className="flex h-[68px] w-[302px] max-w-full items-center justify-center rounded-[10px] bg-[#ED7428] px-6 text-sm sm:text-base font-semibold text-white shadow-md">
+              <button
+                type="button"
+                className="flex h-[68px] w-[302px] max-w-full items-center justify-center rounded-[10px] bg-[#ED7428] px-6 text-sm sm:text-base font-semibold text-white shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4"
+              >
                 A personalised plan
               </button>
 
               {/* Step 3 */}
-              <button className="flex h-[68px] w-[302px] max-w-full items-center justify-center rounded-[10px] bg-[#ED7428] px-6 text-sm sm:text-base font-semibold text-white shadow-md">
+              <button
+                type="button"
+                className="flex h-[68px] w-[302px] max-w-full items-center justify-center rounded-[10px] bg-[#ED7428] px-6 text-sm sm:text-base font-semibold text-white shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4"
+              >
                 Therapy sessions
               </button>
             </motion.div>
