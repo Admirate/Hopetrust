@@ -211,7 +211,7 @@ export default function About() {
                 className="w-full lg:w-1/2 text-[#00373E]"
                 initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.35 }}
+                viewport={{ once: true, amount: 0.15 }}
                 transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
               >
                 {/* ABOUT US heading */}
@@ -262,7 +262,7 @@ export default function About() {
                 className="w-full lg:w-1/2 flex justify-center lg:justify-end"
                 initial={{ opacity: 0, x: 40 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.35 }}
+                viewport={{ once: true, amount: 0.15 }}
                 transition={{
                   duration: 0.6,
                   delay: 0.1,
@@ -294,10 +294,11 @@ export default function About() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-11">
               {/* Left card */}
               <motion.div
-                className="flex flex-col items-center justify-center gap-6 rounded-[45px] bg-[#F9E6D0] px-10 py-16 shadow-sm w-full sm:w-[386px] sm:h-[367px] text-center hover:-translate-y-2 hover:shadow-xl transition-all duration-300 cursor-default"
+                className="flex flex-col items-center justify-center gap-6 rounded-[45px] bg-[#F9E6D0] px-10 py-16 shadow-sm w-full sm:w-[386px] sm:h-[367px] text-center cursor-default"
                 initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.35 }}
+                whileHover={{ y: -8, boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)" }}
+                viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
               >
                 <Image
@@ -318,10 +319,11 @@ export default function About() {
 
               {/* Middle card */}
               <motion.div
-                className="flex flex-col items-center justify-center gap-6 rounded-[45px] bg-[#00373E] px-10 py-16 shadow-sm w-full sm:w-[386px] sm:h-[367px] text-center hover:-translate-y-2 hover:shadow-xl transition-all duration-300 cursor-default"
+                className="flex flex-col items-center justify-center gap-6 rounded-[45px] bg-[#00373E] px-10 py-16 shadow-sm w-full sm:w-[386px] sm:h-[367px] text-center cursor-default"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.35 }}
+                whileHover={{ y: -8, boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)" }}
+                viewport={{ once: true, amount: 0.2 }}
                 transition={{
                   duration: 0.6,
                   delay: 0.08,
@@ -346,10 +348,11 @@ export default function About() {
 
               {/* Right card */}
               <motion.div
-                className="flex flex-col items-center justify-center gap-6 rounded-[45px] bg-[#FFFBF6] px-10 py-16 shadow-sm ring-1 ring-black/5 w-full sm:w-[386px] sm:h-[367px] text-center hover:-translate-y-2 hover:shadow-xl transition-all duration-300 cursor-default"
+                className="flex flex-col items-center justify-center gap-6 rounded-[45px] bg-[#FFFBF6] px-10 py-16 shadow-sm ring-1 ring-black/5 w-full sm:w-[386px] sm:h-[367px] text-center cursor-default"
                 initial={{ opacity: 0, x: 40 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.35 }}
+                whileHover={{ y: -8, boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)" }}
+                viewport={{ once: true, amount: 0.2 }}
                 transition={{
                   duration: 0.6,
                   delay: 0.16,
@@ -382,7 +385,7 @@ export default function About() {
                     className="w-full md:w-1/2 text-left"
                     initial={{ opacity: 0, x: -40 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, amount: 0.35 }}
+                    viewport={{ once: true, amount: 0.15 }}
                     transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
                   >
                     <h3
@@ -412,7 +415,7 @@ export default function About() {
                     className="w-full md:w-1/2 relative min-h-[200px] sm:min-h-[260px] lg:min-h-[300px]"
                     initial={{ opacity: 0, x: 40 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, amount: 0.35 }}
+                    viewport={{ once: true, amount: 0.15 }}
                     transition={{
                       duration: 0.6,
                       delay: 0.1,
@@ -441,7 +444,7 @@ export default function About() {
               className="text-center"
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.35 }}
+              viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.55, ease: [0.22, 0.61, 0.36, 1] }}
             >
               <h2
@@ -460,10 +463,11 @@ export default function About() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
               {/* Step 1 */}
               <motion.div
-                className="flex flex-col items-center text-center justify-between gap-6 rounded-[24px] bg-[#FFEBD7] px-10 py-10 shadow-sm h-full hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+                className="flex flex-col items-center text-center justify-between gap-6 rounded-[24px] bg-[#FFEBD7] px-10 py-10 shadow-sm h-full cursor-default"
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.35 }}
+                whileHover={{ y: -4, boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)" }}
+                viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
               >
                 <p
@@ -484,10 +488,11 @@ export default function About() {
 
               {/* Step 2 */}
               <motion.div
-                className="flex flex-col items-center text-center justify-between gap-6 rounded-[24px] bg-[#FFEBD7] px-10 py-10 shadow-sm h-full hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+                className="flex flex-col items-center text-center justify-between gap-6 rounded-[24px] bg-[#FFEBD7] px-10 py-10 shadow-sm h-full cursor-default"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.35 }}
+                whileHover={{ y: -4, boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)" }}
+                viewport={{ once: true, amount: 0.2 }}
                 transition={{
                   duration: 0.6,
                   delay: 0.08,
@@ -512,10 +517,11 @@ export default function About() {
 
               {/* Step 3 */}
               <motion.div
-                className="flex flex-col items-center text-center justify-between gap-6 rounded-[24px] bg-[#FFEBD7] px-10 py-10 shadow-sm h-full hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+                className="flex flex-col items-center text-center justify-between gap-6 rounded-[24px] bg-[#FFEBD7] px-10 py-10 shadow-sm h-full cursor-default"
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.35 }}
+                whileHover={{ y: -4, boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)" }}
+                viewport={{ once: true, amount: 0.2 }}
                 transition={{
                   duration: 0.6,
                   delay: 0.16,
@@ -549,7 +555,7 @@ export default function About() {
                 className="rounded-[32px] bg-[#F06D00] text-white px-8 sm:px-14 py-8 text-center"
                 initial={{ opacity: 0, y: 18 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.35 }}
+                viewport={{ once: true, amount: 0.15 }}
                 transition={{
                   duration: 0.6,
                   delay: 0.12,
@@ -588,7 +594,7 @@ export default function About() {
               className="relative w-full max-w-[520px] aspect-[4/3]"
               initial={{ opacity: 0, x: -40 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.35 }}
+              viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
             >
               {/* Back image */}
@@ -619,7 +625,7 @@ export default function About() {
               className="w-full lg:w-1/2 text-left"
               initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.35 }}
+              viewport={{ once: true, amount: 0.15 }}
               transition={{
                 duration: 0.6,
                 delay: 0.1,

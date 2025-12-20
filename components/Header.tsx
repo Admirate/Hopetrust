@@ -22,7 +22,7 @@ const leftNavItems: NavItem[] = [
 const rightNavItems: NavItem[] = [
   { label: 'Blogs', href: '/blogs', hasDropdown: false },
   { label: 'Resources', href: '#', hasDropdown: true },
-  { label: 'Contact Us', href: '#', hasDropdown: false },
+  { label: 'Contact Us', href: '/contact', hasDropdown: false },
 ];
 
 export default function Header() {

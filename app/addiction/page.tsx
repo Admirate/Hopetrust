@@ -57,24 +57,8 @@ const getFadeInTransition = (delaySeconds: number = 0) => ({
   ease: EASE_OUT_QUINT,
 });
 
-const ROAD_AUTO_ROTATE_MS = 3000;
-
 export default function AddictionPage() {
   const [activeRoadStep, setActiveRoadStep] = useState(0);
-
-  useEffect(() => {
-    const prefersReducedMotion =
-      typeof window !== 'undefined' &&
-      window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
-
-    if (prefersReducedMotion) return;
-
-    const intervalId = window.setInterval(() => {
-      setActiveRoadStep((currentStep) => (currentStep + 1) % ROAD_STEPS.length);
-    }, ROAD_AUTO_ROTATE_MS);
-
-    return () => window.clearInterval(intervalId);
-  }, []);
 
   return (
     <>
