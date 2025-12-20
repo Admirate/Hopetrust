@@ -4,7 +4,7 @@ import React from 'react';
 import Header from '@/components/Header';
 import { motion, AnimatePresence } from 'motion/react';
 import { Bricolage_Grotesque } from 'next/font/google';
-import { Mail, Phone, MapPin, Send, MessageSquare } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, MessageSquare, Briefcase, Users, Heart, Star, Sparkles, Upload } from 'lucide-react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 
@@ -17,103 +17,28 @@ const bricolage = Bricolage_Grotesque({
   weight: ['400', '500', '600', '700'],
 });
 
-const contactInfo = [
+const perks = [
   {
-    gif: '/email.gif',
-    staticIcon: <Mail className="w-6 h-6" />,
-    label: 'Email Us',
-    value: 'frontoffice@hopetrustindia.com',
-    href: 'mailto:frontoffice@hopetrustindia.com',
+    icon: <Users className="w-6 h-6" />,
+    title: 'Expert Team',
+    desc: 'Work alongside leading psychologists and psychiatrists.',
     color: 'bg-blue-50 text-blue-600',
   },
   {
-    gif: '/call.gif',
-    staticIcon: <Phone className="w-6 h-6" />,
-    label: 'Call Us',
-    value: '+91 90008 50001 / +91 90007 20003',
-    href: 'tel:+919000850001',
-    color: 'bg-green-50 text-green-600',
+    icon: <Heart className="w-6 h-6" />,
+    title: 'Purpose Driven',
+    desc: 'Make a real difference in people\'s path to recovery.',
+    color: 'bg-red-50 text-red-600',
   },
   {
-    gif: '/map.gif',
-    staticIcon: <MapPin className="w-6 h-6" />,
-    label: 'Visit Us',
-    value: 'C/o, UCCHVAS Rehabilitation Center, Plot no. 564-A-36-111, Opp. Lotus Pond Road, MLA Colony, Banjara Hills, Hyderabad-500034.',
-    href: 'https://www.google.com/maps/dir/?api=1&destination=UCCHVAS+Rehabilitation+Center+Banjara+Hills+Hyderabad',
+    icon: <Sparkles className="w-6 h-6" />,
+    title: 'Growth Culture',
+    desc: 'Continuous learning and professional development.',
     color: 'bg-orange-50 text-orange-600',
   },
 ];
 
-const ContactCard = ({ info, idx }: { info: typeof contactInfo[0], idx: number }) => {
-  const [isHovered, setIsHovered] = React.useState(false);
-
-  return (
-    <motion.a
-      href={info.href}
-      target={info.label === 'Visit Us' ? '_blank' : undefined}
-      rel={info.label === 'Visit Us' ? 'noopener noreferrer' : undefined}
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ 
-        duration: 0.8, 
-        delay: idx * 0.15,
-        ease: [0.22, 1, 0.36, 1] 
-      }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      whileHover={{ 
-        y: -12,
-        scale: 1.02,
-      }}
-      className="group relative bg-white/80 backdrop-blur-sm p-10 rounded-[48px] shadow-[0_20px_50px_rgba(0,0,0,0.03)] flex flex-col items-center text-center transition-all duration-500 border border-white/50 hover:border-orange-200 hover:shadow-[0_30px_70px_rgba(249,115,22,0.1)] overflow-hidden"
-    >
-      {/* Background Glow Effect */}
-      <div className="absolute -top-24 -right-24 w-48 h-48 bg-orange-100/30 rounded-full blur-3xl group-hover:bg-orange-200/40 transition-colors duration-700" />
-      
-      <div className={`p-5 rounded-3xl mb-6 ${info.color} relative w-20 h-20 flex items-center justify-center shadow-inner`}>
-        <AnimatePresence mode="wait">
-          {isHovered ? (
-            <motion.div
-              key="gif"
-              initial={{ opacity: 0, scale: 0.5, rotate: -15 }}
-              animate={{ opacity: 1, scale: 1.1, rotate: 0 }}
-              exit={{ opacity: 0, scale: 0.5 }}
-              transition={{ type: "spring", stiffness: 300, damping: 15 }}
-              className="absolute inset-0 flex items-center justify-center p-2"
-            >
-              <Image 
-                src={info.gif} 
-                alt={info.label} 
-                width={56} 
-                height={56} 
-                className="object-contain drop-shadow-md"
-                unoptimized
-              />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="static"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              className="flex items-center justify-center"
-            >
-              <div className="scale-125">{info.staticIcon}</div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-      
-      <h3 className="text-2xl font-bold text-[#00373E] mb-3 group-hover:text-[#F97316] transition-colors duration-300">{info.label}</h3>
-      <p className="text-[#486364] leading-relaxed text-lg px-2 group-hover:text-[#00373E] transition-colors duration-300">{info.value}</p>
-      
-      {/* Bottom accent line */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-1.5 bg-orange-500 rounded-full transition-all duration-500 group-hover:w-1/3" />
-    </motion.a>
-  );
-};
-
-const CustomSubmitButton = ({ status }: { status: 'idle' | 'sending' | 'sent' }) => {
+const CustomSubmitButton = ({ status, text = "Submit Application" }: { status: 'idle' | 'sending' | 'sent', text?: string }) => {
   return (
     <div className="custom-button-wrapper">
       <style dangerouslySetInnerHTML={{ __html: `
@@ -135,7 +60,7 @@ const CustomSubmitButton = ({ status }: { status: 'idle' | 'sending' | 'sent' })
           justify-content: center;
           position: relative;
           transition: all 0.3s ease;
-          min-width: 200px;
+          min-width: 240px;
           padding: 20px;
           height: 68px;
           font-family: inherit;
@@ -373,7 +298,7 @@ const CustomSubmitButton = ({ status }: { status: 'idle' | 'sending' | 'sent' })
             </svg>
           </div>
           <p>
-            {"SendMessage".split("").map((char, i) => (
+            {text.replace(/\s+/g, '').split("").map((char, i) => (
               <span key={i} style={{ '--i': i } as React.CSSProperties}>{char}</span>
             ))}
           </p>
@@ -398,13 +323,12 @@ const CustomSubmitButton = ({ status }: { status: 'idle' | 'sending' | 'sent' })
   );
 };
 
-export default function ContactPage() {
+export default function JoinUsPage() {
   const [formStatus, setFormStatus] = React.useState<'idle' | 'sending' | 'sent'>('idle');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setFormStatus('sending');
-    // Simulate sending
     setTimeout(() => setFormStatus('sent'), 1500);
   };
 
@@ -413,192 +337,205 @@ export default function ContactPage() {
       <Header />
       <main className={`${bricolage.className} min-h-screen pt-20 bg-white`}>
         {/* Hero Section */}
-        <section className="relative py-20 overflow-hidden bg-[#F7F5EF]">
-          <div className="absolute top-0 right-0 w-1/3 h-full opacity-10 pointer-events-none">
-            <Image src="/Asset 10.png" alt="Decorative" fill className="object-contain object-right-top" />
+        <section className="relative py-24 overflow-hidden bg-[#FEF2EB]">
+          <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
+            <Image src="/BACKGROUND CIRCLES.png" alt="Decorative" fill className="object-cover" />
           </div>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6 }}
+              className="inline-flex items-center gap-2 bg-orange-100 text-orange-600 px-4 py-2 rounded-full text-sm font-bold mb-6"
+            >
+              <Star className="w-4 h-4 fill-current" />
+              <span>We are hiring</span>
+            </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-4xl md:text-6xl font-bold text-[#00373E] mb-6"
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-5xl md:text-7xl font-bold text-[#00373E] mb-8"
             >
-              Get in Touch
+              Join the <span className="text-[#F97316]">Hope</span> Team
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-lg text-[#486364] max-w-2xl mx-auto"
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-xl text-[#486364] max-w-3xl mx-auto leading-relaxed"
             >
-              In-Clinic / Online Appointments
-              <br />
-              <span className="text-sm font-medium opacity-80">
-                (Office Hours 9 AM – 8 PM Monday to Saturday)
-              </span>
+              Help us shape the future of mental health and addiction recovery. We&apos;re looking for passionate individuals who want to make a difference.
             </motion.p>
           </div>
         </section>
 
-        {/* Training Enquiries Strip */}
-        <section className="bg-[#00373E] py-6">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-white">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-white/10 rounded-lg">
-                  <Mail className="w-5 h-5 text-orange-400" />
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-wider text-white/60">Training Enquiries</p>
-                  <a href="mailto:training@hopetrustindia.com" className="font-semibold hover:text-orange-400 transition-colors">
-                    training@hopetrustindia.com
-                  </a>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-white/10 rounded-lg">
-                  <Phone className="w-5 h-5 text-orange-400" />
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-wider text-white/60">Contact Number</p>
-                  <a href="tel:+919866822240" className="font-semibold hover:text-orange-400 transition-colors">
-                    +91 98668 22240
-                  </a>
-                </div>
-              </div>
-              <div className="hidden md:block h-8 w-px bg-white/20"></div>
-              <div className="text-sm text-white/80">
-                Professional courses and workshops
-              </div>
-            </div>
+        {/* Why Join Us Section */}
+        <section className="py-24 bg-white relative overflow-hidden">
+          {/* Subtle background glow */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-4xl opacity-[0.03] pointer-events-none">
+            <div className="w-full h-full bg-orange-500 rounded-full blur-[120px]" />
           </div>
-        </section>
-
-        {/* Contact Info Grid */}
-        <section className="py-16 -mt-12 relative z-20">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {contactInfo.map((info, idx) => (
-                <ContactCard key={info.label} info={info} idx={idx} />
+          
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+              {perks.map((perk, idx) => (
+                <motion.div
+                  key={perk.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ 
+                    duration: 0.8, 
+                    delay: idx * 0.15,
+                    ease: [0.22, 1, 0.36, 1] 
+                  }}
+                  whileHover={{ y: -15, scale: 1.02 }}
+                  className="group bg-white/50 backdrop-blur-sm p-12 rounded-[48px] shadow-[0_20px_50px_rgba(0,0,0,0.03)] border border-transparent hover:border-orange-100 hover:shadow-[0_30px_70px_rgba(249,115,22,0.08)] transition-all duration-500 text-center relative overflow-hidden"
+                >
+                  <div className={`w-20 h-20 rounded-3xl ${perk.color} flex items-center justify-center mx-auto mb-8 shadow-inner transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}>
+                    {perk.icon}
+                  </div>
+                  <h3 className="text-2xl font-bold text-[#00373E] mb-4 group-hover:text-[#F97316] transition-colors duration-300">{perk.title}</h3>
+                  <p className="text-[#486364] leading-relaxed text-lg group-hover:text-[#00373E] transition-colors duration-300">{perk.desc}</p>
+                  
+                  {/* Decorative dot */}
+                  <div className="absolute top-6 right-6 w-2 h-2 rounded-full bg-orange-200 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Form and Map Section */}
-        <section className="py-16 bg-white">
+        {/* Application Form Section */}
+        <section className="py-24 bg-[#F7F5EF] relative">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-              {/* Form Side */}
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
+            <div className="flex flex-col lg:flex-row gap-20 items-stretch">
+              {/* Left Side Info */}
+              <motion.div 
+                initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="bg-[#FFF5ED] p-8 md:p-12 rounded-[48px]"
+                transition={{ duration: 0.8 }}
+                className="lg:w-1/2 flex flex-col justify-center space-y-10"
               >
-                <div className="mb-8">
-                  <h2 className="text-3xl font-bold text-[#00373E] mb-4">Send us a Message</h2>
-                  <p className="text-[#486364]">Fill out the form below and our team will get back to you shortly.</p>
+                <div className="space-y-6">
+                  <h2 className="text-4xl md:text-6xl font-bold text-[#00373E] leading-[1.1]">Ready to start your <span className="italic text-orange-500">journey?</span></h2>
+                  <p className="text-xl text-[#486364] leading-relaxed max-w-xl">
+                    We are always on the lookout for talented therapists, counsellors, and administrative professionals who share our vision of compassionate care.
+                  </p>
                 </div>
-
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="space-y-2">
-                    <label className="text-[11px] font-bold uppercase tracking-widest text-[#6A8181] ml-2">Full Name</label>
-                    <input
-                      required
-                      type="text"
-                      placeholder="John Doe"
-                      className="w-full bg-white border-2 border-transparent shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] px-6 py-4 rounded-2xl focus:outline-none focus:border-orange-500 focus:shadow-[0_0_20px_rgba(249,115,22,0.1)] transition-all duration-300"
-                    />
+                
+                <div className="space-y-8 relative">
+                  {/* Vertical connecting line */}
+                  <div className="absolute left-6 top-4 bottom-4 w-0.5 bg-orange-200/50 hidden sm:block" />
+                  
+                  <div className="flex items-center gap-6 group relative">
+                    <div className="w-12 h-12 rounded-2xl bg-[#00373E] text-white flex items-center justify-center font-bold text-lg shadow-lg z-10 group-hover:scale-110 transition-transform duration-300">1</div>
+                    <div className="flex flex-col">
+                      <span className="font-bold text-xl text-[#00373E]">Apply Online</span>
+                      <span className="text-[#6A8181]">Fill out the simple form on the right</span>
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-[11px] font-bold uppercase tracking-widest text-[#6A8181] ml-2">Phone Number</label>
-                    <input
-                      required
-                      type="tel"
-                      placeholder="+91 98765 43210"
-                      className="w-full bg-white border-2 border-transparent shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] px-6 py-4 rounded-2xl focus:outline-none focus:border-orange-500 focus:shadow-[0_0_20px_rgba(249,115,22,0.1)] transition-all duration-300"
-                    />
+                  
+                  <div className="flex items-center gap-6 group relative">
+                    <div className="w-12 h-12 rounded-2xl bg-[#00373E] text-white flex items-center justify-center font-bold text-lg shadow-lg z-10 group-hover:scale-110 transition-transform duration-300">2</div>
+                    <div className="flex flex-col">
+                      <span className="font-bold text-xl text-[#00373E]">HR Review</span>
+                      <span className="text-[#6A8181]">Our team reviews your profile within 48 hours</span>
+                    </div>
                   </div>
-                  <div className="space-y-2 md:col-span-2">
-                    <label className="text-[11px] font-bold uppercase tracking-widest text-[#6A8181] ml-2">Email Address</label>
-                    <input
-                      required
-                      type="email"
-                      placeholder="john@example.com"
-                      className="w-full bg-white border-2 border-transparent shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] px-6 py-4 rounded-2xl focus:outline-none focus:border-orange-500 focus:shadow-[0_0_20px_rgba(249,115,22,0.1)] transition-all duration-300"
-                    />
+                  
+                  <div className="flex items-center gap-6 group relative">
+                    <div className="w-12 h-12 rounded-2xl bg-[#00373E] text-white flex items-center justify-center font-bold text-lg shadow-lg z-10 group-hover:scale-110 transition-transform duration-300">3</div>
+                    <div className="flex flex-col">
+                      <span className="font-bold text-xl text-[#00373E]">Clinical Interview</span>
+                      <span className="text-[#6A8181]">Meet our clinical heads for a deep dive</span>
+                    </div>
                   </div>
-                  <div className="space-y-2 md:col-span-2">
-                    <label className="text-[11px] font-bold uppercase tracking-widest text-[#6A8181] ml-2">Your Message</label>
-                    <textarea
-                      required
-                      rows={5}
-                      placeholder="How can we help you today?"
-                      className="w-full bg-white border-2 border-transparent shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] px-6 py-4 rounded-2xl focus:outline-none focus:border-orange-500 focus:shadow-[0_0_20px_rgba(249,115,22,0.1)] transition-all duration-300 resize-none"
-                    />
-                  </div>
-
-                  <div className="md:col-span-2 pt-4 flex justify-center lg:justify-start">
-                    <CustomSubmitButton status={formStatus} text="Send Message" />
-                  </div>
-                </form>
+                </div>
               </motion.div>
 
-              {/* Map/Info Side */}
+              {/* Right Side Form */}
               <motion.div
-                initial={{ opacity: 0, x: 30 }}
+                initial={{ opacity: 0, x: 40 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="space-y-8"
+                transition={{ duration: 0.8 }}
+                className="lg:w-1/2 w-full bg-white/80 backdrop-blur-md p-10 md:p-14 rounded-[60px] shadow-[0_40px_100px_rgba(0,0,0,0.06)] border border-white relative overflow-hidden"
               >
-                <a 
-                  href="https://www.google.com/maps/dir/?api=1&destination=UCCHVAS+Rehabilitation+Center+Banjara+Hills+Hyderabad"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block group relative rounded-[48px] overflow-hidden h-[400px] border-8 border-[#F7F5EF] shadow-lg grayscale hover:grayscale-0 transition-all duration-700 cursor-pointer"
-                >
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.827258327178!2d78.423985!3d17.41725!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb972e9a366667%3A0x7d6c6e76d99a4666!2sHope%20Trust!5e0!3m2!1sen!2sin!4v1710000000000!5m2!1sen!2sin"
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    title="Hope Trust Location"
-                    className="pointer-events-none"
-                  ></iframe>
-                  <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                    <div className="bg-[#00373E] text-white px-6 py-2 rounded-full font-bold shadow-xl flex items-center gap-2">
-                      <MapPin className="w-4 h-4" />
-                      Get Directions
+                {/* Decorative background shape */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-orange-50 rounded-bl-[100px] pointer-events-none" />
+                
+                <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-2 group">
+                      <label className="text-[11px] font-bold uppercase tracking-widest text-[#6A8181] ml-2">Full Name</label>
+                      <input
+                        required
+                        type="text"
+                        placeholder="Your Name"
+                        className="w-full bg-[#F9F9F9] border-2 border-transparent px-6 py-4 rounded-[24px] focus:ring-0 focus:border-orange-500 focus:bg-white transition-all outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
+                      />
+                    </div>
+                    <div className="space-y-2 group">
+                      <label className="text-[11px] font-bold uppercase tracking-widest text-[#6A8181] ml-2">Email Address</label>
+                      <input
+                        required
+                        type="email"
+                        placeholder="your@email.com"
+                        className="w-full bg-[#F9F9F9] border-2 border-transparent px-6 py-4 rounded-[24px] focus:ring-0 focus:border-orange-500 focus:bg-white transition-all outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
+                      />
                     </div>
                   </div>
-                </a>
+                  
+                  <div className="space-y-2 group">
+                    <label className="text-[11px] font-bold uppercase tracking-widest text-[#6A8181] ml-2">Position Interested In</label>
+                    <div className="relative">
+                      <select
+                        required
+                        className="w-full bg-[#F9F9F9] border-2 border-transparent px-6 py-4 rounded-[24px] focus:ring-0 focus:border-orange-500 focus:bg-white transition-all outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] appearance-none cursor-pointer"
+                      >
+                        <option value="">Select a role</option>
+                        <option value="therapist">Psychologist / Therapist</option>
+                        <option value="psychiatrist">Psychiatrist</option>
+                        <option value="counsellor">Counsellor</option>
+                        <option value="admin">Administration</option>
+                        <option value="other">Other</option>
+                      </select>
+                      <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-[#6A8181]">
+                        <Users className="w-5 h-5" />
+                      </div>
+                    </div>
+                  </div>
 
-                <div className="bg-[#00373E] p-8 md:p-10 rounded-[40px] text-white relative overflow-hidden">
-                  <div className="relative z-10">
-                    <div className="flex items-center gap-3 mb-4">
-                      <MessageSquare className="text-orange-400" />
-                      <h3 className="text-2xl font-bold">24/7 Support</h3>
+                  <div className="space-y-2 group">
+                    <label className="text-[11px] font-bold uppercase tracking-widest text-[#6A8181] ml-2">Portfolio / CV Link</label>
+                    <div className="relative">
+                      <input
+                        required
+                        type="url"
+                        placeholder="https://linkedin.com/in/..."
+                        className="w-full bg-[#F9F9F9] border-2 border-transparent px-6 py-4 rounded-[24px] focus:ring-0 focus:border-orange-500 focus:bg-white transition-all outline-none pl-14 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
+                      />
+                      <Upload className="w-5 h-5 absolute left-6 top-1/2 -translate-y-1/2 text-[#6A8181]" />
                     </div>
-                    <p className="text-white/80 mb-6 leading-relaxed">
-                      Our helpline is available round the clock for emergencies. We are committed to providing immediate support to those in crisis.
-                    </p>
-                    <a
-                      href="tel:+919000850001"
-                      className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 px-6 py-3 rounded-xl transition-all font-semibold"
-                    >
-                      <Phone className="w-5 h-5 text-orange-400" />
-                      Appointments: +91 90008 50001
-                    </a>
                   </div>
-                  {/* Decorative element */}
-                  <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-orange-500/20 rounded-full blur-3xl"></div>
-                </div>
+
+                  <div className="space-y-2 group">
+                    <label className="text-[11px] font-bold uppercase tracking-widest text-[#6A8181] ml-2">Brief Introduction</label>
+                    <textarea
+                      required
+                      rows={4}
+                      placeholder="Tell us why you'd like to join Hope Trust..."
+                      className="w-full bg-[#F9F9F9] border-2 border-transparent px-6 py-4 rounded-[24px] focus:ring-0 focus:border-orange-500 focus:bg-white transition-all outline-none resize-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
+                    />
+                  </div>
+
+                  <div className="pt-4">
+                    <CustomSubmitButton status={formStatus} />
+                  </div>
+                </form>
               </motion.div>
             </div>
           </div>
