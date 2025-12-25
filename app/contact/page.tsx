@@ -113,7 +113,7 @@ const ContactCard = ({ info, idx }: { info: typeof contactInfo[0], idx: number }
   );
 };
 
-const CustomSubmitButton = ({ status }: { status: 'idle' | 'sending' | 'sent' }) => {
+const CustomSubmitButton = ({ status, text }: { status: 'idle' | 'sending' | 'sent', text: string }) => {
   return (
     <div className="custom-button-wrapper">
       <style dangerouslySetInnerHTML={{ __html: `
@@ -373,7 +373,7 @@ const CustomSubmitButton = ({ status }: { status: 'idle' | 'sending' | 'sent' })
             </svg>
           </div>
           <p>
-            {"SendMessage".split("").map((char, i) => (
+            {text.replace(/\s+/g, "").split("").map((char, i) => (
               <span key={i} style={{ '--i': i } as React.CSSProperties}>{char}</span>
             ))}
           </p>
