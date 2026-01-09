@@ -120,10 +120,14 @@ export default function Page() {
 
           {/* Cards Grid */}
           <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
-            {Array.from({ length: 6 }).map((_, index) => (
             <TherapistCard />
-       ))}
+            <TherapistCard />
+            <TherapistCard />
+            <TherapistCard />
+            <TherapistCard />
+            <TherapistCard />
           </div>
+
         </section>
 
         {/* Footer CTA */}
