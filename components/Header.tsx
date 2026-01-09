@@ -22,6 +22,7 @@ const leftNavItems: NavItem[] = [
 const rightNavItems: NavItem[] = [
   { label: 'Blogs', href: '/blogs', hasDropdown: false },
   { label: 'Resources', href: '#', hasDropdown: true },
+   { label: 'Book Your Session', href: '/book-your-session', hasDropdown: false },
   { label: 'Contact Us', href: '/contact', hasDropdown: false },
 ];
 
