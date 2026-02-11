@@ -30,13 +30,13 @@ export default function ContactSection() {
           Get in touch
         </p>
         <h2 className="text-3xl sm:text-4xl font-semibold leading-snug text-[#00373E]">
-          We&apos;re Here to
+          We&apos;re here to
           <br />
-          Support You
+          support you
         </h2>
         <p className="mt-4 text-sm sm:text-base leading-relaxed text-[#486364] max-w-2xl mx-auto">
-          Whether you have questions, need help getting started, or want to learn
-          more — reach out anytime.
+          Whether you have questions, need help getting started, or want to
+          learn more — reach out anytime.
         </p>
       </motion.div>
 
@@ -62,18 +62,26 @@ export default function ContactSection() {
 
               <div>
                 <p className="font-semibold">Email:</p>
-                <p className="mt-0.5 text-[#111827]">support@hopetrust.com</p>
+                <p className="mt-0.5 text-[#111827]">
+                  frontoffice@hopetrustindia.com
+                </p>
               </div>
 
               <div>
                 <p className="font-semibold">Phone:</p>
-                <p className="mt-0.5 text-[#111827]">+1 (123) 456-7890</p>
+                <p className="mt-0.5 text-[#111827]">
+                  +91 9000850001 / +91 90007 20003
+                </p>
               </div>
 
               <div>
                 <p className="font-semibold">Address:</p>
-                <p className="mt-0.5 text-[#111827]">
-                  123 Wellness Way, Calm City, CA 90210
+                <p className="mt-0.5 text-[#111827] leading-relaxed">
+                  C/o, UCCHVAS Rehabilitation Center
+                  <br />
+                  Plot no. 564-A-36-111, Opp. Lotus Pond Road
+                  <br />
+                  MLA Colony, Banjara Hills, Hyderabad – 500034
                 </p>
               </div>
 
@@ -140,7 +148,7 @@ export default function ContactSection() {
             {/* Form card */}
             <div className="rounded-[28px] bg-[#FFF5ED] px-5 py-6 sm:px-7 sm:py-7 text-left text-sm sm:text-base">
               <h3 className="mb-5 text-base sm:text-lg font-semibold text-[#00373E] text-center sm:text-left">
-                Send Us a Message
+                Send us a message
               </h3>
 
               <form className="space-y-5">

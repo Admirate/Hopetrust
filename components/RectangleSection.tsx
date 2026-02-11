@@ -20,7 +20,7 @@ const cards: JourneyCard[] = [
     lines: ["Online or in person."],
   },
   {
-    title: "Book through WhatsApp or the website.",
+    title: "Book through whatsApp or the website.",
     lines: [
       "Select the therapist you feel right with.",
       "Pick a date and a time that works for you.",
@@ -28,7 +28,7 @@ const cards: JourneyCard[] = [
   },
   {
     title:
-      "If online, a private link is shared through mail or WhatsApp.",
+      "If online, a private link is shared through mail or whatsApp.",
     lines: ["Choose how you want to start.", "Online or in person."],
   },
   {
@@ -70,7 +70,7 @@ export default function RectangleSection() {
             <h2
               className={`${bricolage.className} text-[26px] font-bold text-[#00373E] sm:text-[32px]`}
             >
-              How Your Journey Unfolds
+              How your journey unfolds
             </h2>
           </div>
 

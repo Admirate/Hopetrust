@@ -85,8 +85,8 @@ export default function AddictionPage() {
                 className={`${bricolageBody.className} text-[18px] sm:text-[26px] lg:text-[32px] font-semibold leading-snug`}
                 style={{ letterSpacing: '0.724px' }}
               >
-                <span className="text-[#00373E]">When Stopping</span>{' '}
-                <span className="text-[#E26B20]">Is Not Simple</span>
+                <span className="text-[#00373E]">When stopping</span>{' '}
+                <span className="text-[#E26B20]">is not simple</span>
               </h1>
               <div className="space-y-2 text-sm sm:text-base text-[#004047] max-w-md">
                 <p>Addiction is not about willpower.</p>
@@ -189,7 +189,7 @@ export default function AddictionPage() {
                     className={`${bricolageBody.className} text-[32px] sm:text-[40px] lg:text-[48px] font-semibold text-[#00373E]`}
                     style={{ letterSpacing: '0.724px' }}
                   >
-                    Areas We Support
+                    Areas we support
                   </h3>
                   <p
                     className={`${bricolageBody.className} mt-4 text-[16px] sm:text-[18px] md:text-[20px] lg:text-[24px] text-[#00373E] leading-relaxed max-w-[720px]`}
@@ -243,7 +243,7 @@ export default function AddictionPage() {
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.5, ease: [0.22, 0.61, 0.36, 1] }}
             >
-              What Treatment Involves
+              What treatment involves
             </motion.h2>
 
             {/* Three treatment steps */}

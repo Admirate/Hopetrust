@@ -36,7 +36,7 @@ export default function WhatWeOfferSection() {
             fontWeight: 600,
           }}
         >
-          What We Offer
+          What we offer
         </h2>
 
         <div

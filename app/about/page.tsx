@@ -450,7 +450,7 @@ export default function About() {
               <h2
                 className={`${aboutHeadingFont.className} mx-auto inline-block whitespace-nowrap text-center text-[48px] font-semibold leading-normal tracking-[0.724px] text-[#00373E]`}
               >
-                How it Works
+                How it works
               </h2>
               <p
                 className={`${aboutStoryBodyFont.className} mx-auto mt-3 h-[48px] w-full max-w-[306px] text-center text-[20px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}

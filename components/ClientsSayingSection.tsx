@@ -51,7 +51,7 @@ export default function ClientsSayingSection() {
 
     hasStartedTypingRef.current = true;
 
-    const fullText = "What Our Clients\nAre Saying";
+    const fullText = "What our clients\nare saying";
     let currentIndex = 0;
 
     const interval = setInterval(() => {

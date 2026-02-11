@@ -45,7 +45,7 @@ const BackgroundCirclesSection = () => {
           >
             <div ref={headingContainerRef} className="relative inline-block">
               <VariableProximity
-                label="We Help You Prioritize Your Mental Health"
+                label="We help you prioritise your mental health"
                 fromFontVariationSettings="'GRAD' 0, 'opsz' 14"
                 toFontVariationSettings="'GRAD' 100, 'opsz' 40"
                 containerRef={headingContainerRef}

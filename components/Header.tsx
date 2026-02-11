@@ -13,7 +13,7 @@ type NavItem = {
 };
 
 const leftNavItems: NavItem[] = [
-  { label: 'About us', href: '/about', hasDropdown: false },
+  { label: 'About Us', href: '/about', hasDropdown: false },
   { label: 'Mental Health', href: '/mental-health', hasDropdown: false },
   { label: 'Addiction Services', href: '/addiction', hasDropdown: false },
   { label: 'Join Us', href: '/join-us', hasDropdown: false },
@@ -76,9 +76,9 @@ export default function Header() {
               <Image
                 src="/logo1.png"
                 alt="Hope Trust Logo"
-                width={72}
-                height={72}
-                className="h-12 w-12 md:h-16 md:w-16 object-contain"
+                width={120}
+                height={120}
+                className="h-16 w-16 md:h-24 md:w-24 object-contain"
                 priority
                 quality={100}
               />
@@ -109,13 +109,15 @@ export default function Header() {
           <div className="border-t border-gray-200 lg:hidden">
             <div className="space-y-1 py-4">
               {allItems.map((item) => {
-                const normalizePath = (path: string) => path.replace(/\/$/, '') || '/';
+                const normalizePath = (path: string) =>
+                  path.replace(/\/$/, "") || "/";
                 const currentPath = normalizePath(pathname);
                 const targetPath = normalizePath(item.href);
-                
-                const isActive = 
-                  item.href !== '#' && 
-                  (currentPath === targetPath || (currentPath.startsWith(`${targetPath}/`)));
+
+                const isActive =
+                  item.href !== "#" &&
+                  (currentPath === targetPath ||
+                    currentPath.startsWith(`${targetPath}/`));
 
                 return (
                   <Link
@@ -123,8 +125,8 @@ export default function Header() {
                     href={item.href}
                     className={`flex items-center justify-between px-4 py-3 text-base font-semibold transition-colors ${
                       isActive
-                        ? 'text-orange-500 bg-gray-50'
-                        : 'text-gray-800 hover:bg-gray-50'
+                        ? "text-orange-500 bg-gray-50"
+                        : "text-gray-800 hover:bg-gray-50"
                     }`}
                     onClick={() => setIsMenuOpen(false)}
                   >

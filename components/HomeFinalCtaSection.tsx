@@ -54,7 +54,6 @@ export default function HomeFinalCtaSection() {
               <div className="space-y-3">
                 <p>Instagram</p>
                 <p>Facebook</p>
-                <p>YouTube</p>
                 <p>LinkedIn</p>
               </div>
               <div className="space-y-3">
@@ -86,23 +85,29 @@ export default function HomeFinalCtaSection() {
               <h2
                 className={`${ctaFont.className} leading-snug text-center sm:text-left`}
                 style={{
-                  fontSize: '48px',
+                  fontSize: "48px",
                   fontWeight: 700,
-                  lineHeight: 'normal',
-                  letterSpacing: '0.724px',
+                  lineHeight: "normal",
+                  letterSpacing: "0.724px",
                 }}
               >
                 Find
                 <br />
-                Support,
+                support,
                 <br />
-                Guidance,
+                guidance,
                 <br />
-                and Balance.
+                and balance.
               </h2>
-              <button className="mt-4 inline-flex items-center justify-center rounded-full bg-white px-8 sm:px-10 py-3 text-sm sm:text-base font-semibold text-[#00373E] shadow-md hover:bg-[#FFF5EC] transition-colors">
-                Find Support Now
-              </button>
+              <div className="flex flex-col sm:flex-row gap-3 mt-4">
+                <button className="mt-4 inline-flex items-center justify-center rounded-full bg-white px-8 sm:px-10 py-3 text-sm sm:text-base font-semibold text-[#00373E] shadow-md hover:bg-[#FFF5EC] transition-colors">
+                  Find Support Now
+                </button>
+
+                <button className="mt-4 inline-flex items-center justify-center rounded-full bg-white px-8 sm:px-10 py-3 text-sm sm:text-base font-semibold text-[#00373E] shadow-md hover:bg-[#FFF5EC] transition-colors">
+                  Subscribe to our Newsletter
+                </button>
+              </div>
             </div>
 
             {/* Illustration on the right */}

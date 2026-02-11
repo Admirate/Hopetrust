@@ -34,11 +34,11 @@ export default function Page() {
         <section className="min-h-screen bg-[#F6EFE8] w-full px-3 sm:px-4 md:px-6 lg:px-8 py-10">
           {/* Heading */}
           <h1
-  className={`
+            className={`
     ${bookHeadingFont.className}
     mx-auto
     mb-8 sm:mb-10
-
+    mt-[20px]
     max-w-[568px]
     text-center
 
@@ -47,14 +47,13 @@ export default function Page() {
 
     text-[#00373E]
   `}
->
-  Book your{" "}
-  <span className="relative inline-block">
-    sessions
-    <span className="absolute left-0 -bottom-2 h-[3px] w-full bg-[#F06D00]" />
-  </span>
-</h1>
-
+          >
+            Book your{" "}
+            <span className="relative inline-block">
+              sessions
+              <span className="absolute left-0 -bottom-2 h-[3px] w-full bg-[#F06D00]" />
+            </span>
+          </h1>
 
           {/* Filters */}
           <div className="mb-10 w-full">
@@ -119,12 +118,11 @@ export default function Page() {
           </div>
 
           {/* Cards Grid */}
-         <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
             {Array.from({ length: 6 }).map((_, index) => (
               <TherapistCard key={index} />
             ))}
           </div>
-
         </section>
 
         {/* Footer CTA */}

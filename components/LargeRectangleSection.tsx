@@ -74,7 +74,7 @@ export default function LargeRectangleSection() {
             </p>
             <div ref={headingContainerRef} className="relative inline-block">
               <VariableProximity
-                label={"You're Not Alone on This Journey"}
+                label={"You're not alone on this journey"}
                 fromFontVariationSettings="'GRAD' 0, 'opsz' 14"
                 toFontVariationSettings="'GRAD' 100, 'opsz' 40"
                 containerRef={headingContainerRef}

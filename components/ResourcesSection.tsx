@@ -73,7 +73,7 @@ export default function ResourcesSection() {
             fontWeight: 700,
           }}
         >
-          Resources for Your Well-being
+          Resources for your well-being
         </h2>
 
         {/* Subtext */}
