@@ -242,7 +242,7 @@ const CustomSubmitButton = ({ status, text = "Submit Application" }: { status: '
           display: flex;
           position: relative;
         }
-        .custom-button-wrapper .state--default span:nth-child(4) {
+        .custom-button-wrapper .state--default span:nth-child(6) {
           margin-right: 5px;
         }
         .custom-button-wrapper .state--sent {

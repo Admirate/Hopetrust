@@ -12,7 +12,7 @@ const HomeFinalCtaSection = dynamic(
   () => import('@/components/HomeFinalCtaSection')
 );
 
-type FocusKey = 'therapy' | 'medications' | 'couples' | 'family';
+type FocusKey = 'therapy' | 'psychiatry' | 'couples' | 'family';
 type AssessmentKey = 'adhd' | 'student' | 'queer';
 
 type FocusConfig = {
@@ -39,9 +39,9 @@ const FOCUS_SECTIONS: Record<FocusKey, FocusConfig> = {
     imageSrc: '/mental health therapy.png',
     imageAlt: 'Therapy illustration',
   },
-  medications: {
-    label: 'Medications',
-    heading: 'Medications',
+  psychiatry: {
+    label: 'Psychiatry',
+    heading: 'Psychiatry',
     paragraphs: [
       'If medication can support your wellbeing, our psychiatrists explain it simply. You understand why it is suggested, how it works and what to expect. Your progress is reviewed gently and decisions are made together.',
     ],
@@ -203,13 +203,13 @@ export default function MentalHealthPage() {
                   {(Object.keys(FOCUS_SECTIONS) as FocusKey[]).map((key) => {
                     const isActive = key === activeFocus;
                     const activeBgClass =
-                      key === 'medications'
-                        ? 'bg-[#F8F1BC]'
-                        : key === 'couples'
-                          ? 'bg-[#EDE6B1]'
-                          : key === 'family'
-                            ? 'bg-[#DFD58F]'
-                            : 'bg-[#FFF4D9]';
+                      key === "psychiatry"
+                        ? "bg-[#F8F1BC]"
+                        : key === "couples"
+                          ? "bg-[#EDE6B1]"
+                          : key === "family"
+                            ? "bg-[#DFD58F]"
+                            : "bg-[#FFF4D9]";
                     return (
                       <button
                         key={key}
