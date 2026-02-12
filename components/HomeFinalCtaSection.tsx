@@ -43,7 +43,9 @@ export default function HomeFinalCtaSection() {
                 className="object-contain"
               />
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-y-4 sm:gap-y-0 sm:gap-x-12 text-sm text-[#00373E]">
+            <div
+              className={`${ctaFont.className} grid grid-cols-1 sm:grid-cols-3 gap-y-4 sm:gap-y-0 sm:gap-x-12 text-[#00373E] text-[20px] leading-[34px] tracking-[0.5px] font-normal`}
+            >
               <div className="space-y-3">
                 <p>About</p>
                 <p>Services</p>
@@ -51,11 +53,13 @@ export default function HomeFinalCtaSection() {
                 <p>Resources</p>
                 <p>Contact</p>
               </div>
+
               <div className="space-y-3">
                 <p>Instagram</p>
                 <p>Facebook</p>
                 <p>LinkedIn</p>
               </div>
+
               <div className="space-y-3">
                 <p>Terms Of Use</p>
                 <p>Privacy Policy</p>
@@ -102,10 +106,6 @@ export default function HomeFinalCtaSection() {
               <div className="flex flex-col sm:flex-row gap-3 mt-4">
                 <button className="mt-4 inline-flex items-center justify-center rounded-full bg-white px-8 sm:px-10 py-3 text-sm sm:text-base font-semibold text-[#00373E] shadow-md hover:bg-[#FFF5EC] transition-colors">
                   Find Support Now
-                </button>
-
-                <button className="mt-4 inline-flex items-center justify-center rounded-full bg-white px-8 sm:px-10 py-3 text-sm sm:text-base font-semibold text-[#00373E] shadow-md hover:bg-[#FFF5EC] transition-colors">
-                  Subscribe to our Newsletter
                 </button>
               </div>
             </div>

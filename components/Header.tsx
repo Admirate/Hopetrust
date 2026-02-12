@@ -5,6 +5,12 @@ import { usePathname } from 'next/navigation';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Bricolage_Grotesque } from "next/font/google";
+
+const navFont = Bricolage_Grotesque({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
 
 type NavItem = {
   label: string;
@@ -49,7 +55,7 @@ export default function Header() {
       <Link
         key={item.label}
         href={item.href}
-        className={`group relative flex items-center gap-1 text-sm md:text-base font-semibold transition-all duration-200 hover:-translate-y-0.5 ${
+        className={`  ${navFont.className} group relative flex items-center gap-1 text-sm md:text-base font-semibold transition-all duration-200 hover:-translate-y-0.5 ${
           isActive ? 'text-orange-500' : 'text-gray-800 hover:text-orange-500'
         }`}
       >
@@ -69,7 +75,7 @@ export default function Header() {
   return (
     <header className="fixed top-0 z-50 w-full bg-white/95 shadow-sm backdrop-blur">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between py-4 md:py-5">
+        <div className=" flex items-center justify-between py-4 md:py-5">
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="relative flex-shrink-0">
@@ -123,7 +129,7 @@ export default function Header() {
                   <Link
                     key={item.label}
                     href={item.href}
-                    className={`flex items-center justify-between px-4 py-3 text-base font-semibold transition-colors ${
+                    className={`${navFont.className} flex items-center justify-between px-4 py-3 text-base font-semibold transition-colors ${
                       isActive
                         ? "text-orange-500 bg-gray-50"
                         : "text-gray-800 hover:bg-gray-50"

@@ -77,24 +77,34 @@ export default function AddictionPage() {
             >
               <p
                 className={`${bricolageBody.className} text-[32px] sm:text-[40px] lg:text-[48px] font-semibold text-black uppercase`}
-                style={{ letterSpacing: '0.724px' }}
+                style={{ letterSpacing: "0.724px" }}
               >
                 Addiction
               </p>
               <h1
                 className={`${bricolageBody.className} text-[18px] sm:text-[26px] lg:text-[32px] font-semibold leading-snug`}
-                style={{ letterSpacing: '0.724px' }}
+                style={{ letterSpacing: "0.724px" }}
               >
-                <span className="text-[#00373E]">When stopping</span>{' '}
+                <span className="text-[#00373E]">When stopping</span>{" "}
                 <span className="text-[#E26B20]">is not simple</span>
               </h1>
-              <div className="space-y-2 text-sm sm:text-base text-[#004047] max-w-md">
-                <p>Addiction is not about willpower.</p>
-                <p>It affects behaviour, health, and relationships.</p>
-                <p>Most people need structured support to recover.</p>
-                <p>That is normal and treatable.</p>
+              <div
+                className={`${bricolageBody.className}  w-full md:w-[589px] space-y-2 font-medium leading-[24px] tracking-[0.72px]`}
+              >
+                <p className="!text-[24px] ">
+                  Addiction is not about willpower.
+                </p>
+                <p className="!text-[24px] ">
+                  It affects behaviour, health, and relationships.
+                </p>
+                <p className="!text-[24px] ">
+                  Most people need structured support to recover.
+                </p>
+                <p className="!text-[24px] ">That is normal and treatable.</p>
               </div>
-              <button className="mt-4 inline-flex items-center justify-center rounded-full bg-[#F97316] px-6 sm:px-8 py-2.5 text-sm sm:text-base font-semibold text-white shadow-md transition-all duration-200 hover:bg-[#ea6a0e] hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-[0.97]">
+              <button
+                className={`${bricolageBody.className} mt-4 inline-flex items-center justify-center w-[158px] h-[48px] rounded-[23px] bg-[#F97316] text-[20px] font-medium text-white shadow-md transition-all duration-200 hover:bg-[#ea6a0e] hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-[0.97]`}
+              >
                 Chat with us
               </button>
             </motion.div>
@@ -133,12 +143,14 @@ export default function AddictionPage() {
                 viewport={FADE_IN_VIEWPORT}
                 transition={getFadeInTransition(0)}
               >
-                <h2 className="text-2xl sm:text-3xl font-semibold text-[#ED7428]">
+                <h2
+                  className={`${bricolageBody.className} text-[48px] leading-[48px] tracking-[0.72px] font-semibold text-[#ED7428]`}
+                >
                   Why Hope Trust
                 </h2>
                 <div
                   className={`${bricolageBody.className} space-y-3 text-[#00373E] max-w-[548px]`}
-                  style={{ letterSpacing: '0.724px' }}
+                  style={{ letterSpacing: "0.724px" }}
                 >
                   <p className="text-[16px] sm:text-[18px] md:text-[20px] lg:text-[24px] leading-relaxed">
                     Hope Trust has supported addiction recovery since 2002.
@@ -187,13 +199,13 @@ export default function AddictionPage() {
                 >
                   <h3
                     className={`${bricolageBody.className} text-[32px] sm:text-[40px] lg:text-[48px] font-semibold text-[#00373E]`}
-                    style={{ letterSpacing: '0.724px' }}
+                    style={{ letterSpacing: "0.724px" }}
                   >
                     Areas we support
                   </h3>
                   <p
                     className={`${bricolageBody.className} mt-4 text-[16px] sm:text-[18px] md:text-[20px] lg:text-[24px] text-[#00373E] leading-relaxed max-w-[720px]`}
-                    style={{ letterSpacing: '0.724px' }}
+                    style={{ letterSpacing: "0.724px" }}
                   >
                     Alcohol use | Smoking and vaping | Drug use | Prescription
                     misuse | Gaming and internet dependence | Gambling |
@@ -201,7 +213,7 @@ export default function AddictionPage() {
                   </p>
                   <p
                     className={`${bricolageBody.className} mt-6 text-[16px] sm:text-[18px] md:text-[20px] lg:text-[24px] font-bold text-[#00373E] max-w-[679px]`}
-                    style={{ letterSpacing: '0.724px' }}
+                    style={{ letterSpacing: "0.724px" }}
                   >
                     Each concern receives a tailored treatment approach.
                   </p>
@@ -221,7 +233,7 @@ export default function AddictionPage() {
                       alt="Decorative illustration"
                       fill
                       className="object-contain object-right"
-                      style={{ transform: 'scaleX(-1)' }}
+                      style={{ transform: "scaleX(-1)" }}
                       priority={false}
                     />
                   </div>
@@ -237,7 +249,7 @@ export default function AddictionPage() {
             {/* Heading */}
             <motion.h2
               className={`${bricolageBody.className} text-center text-[48px] font-semibold text-[#00373E]`}
-              style={{ letterSpacing: '0.724px' }}
+              style={{ letterSpacing: "0.724px" }}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
@@ -252,28 +264,33 @@ export default function AddictionPage() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 0.61, 0.36, 1] }}
+              transition={{
+                duration: 0.5,
+                delay: 0.1,
+                ease: [0.22, 0.61, 0.36, 1],
+              }}
             >
               {/* Step 1 with circular highlight */}
               <button
                 type="button"
-                className="flex h-[68px] w-[302px] max-w-full items-center justify-center rounded-[10px] bg-[#ED7428] px-6 text-sm sm:text-base font-semibold text-white shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4"
+                className={`flex h-[68px] w-[302px] max-w-full items-center justify-center rounded-[10px] bg-[#ED7428] px-6 shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4
+  ${bricolageBody.className} text-[24px] leading-[24px] tracking-[0.72px] font-bold text-center text-white`}
               >
                 A full assessment
               </button>
 
-              {/* Step 2 */}
               <button
                 type="button"
-                className="flex h-[68px] w-[302px] max-w-full items-center justify-center rounded-[10px] bg-[#ED7428] px-6 text-sm sm:text-base font-semibold text-white shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4"
+                className={`flex h-[68px] w-[302px] max-w-full items-center justify-center rounded-[10px] bg-[#ED7428] px-6 shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4
+  ${bricolageBody.className} text-[24px] leading-[24px] tracking-[0.72px] font-bold text-center text-white`}
               >
                 A personalised plan
               </button>
 
-              {/* Step 3 */}
               <button
                 type="button"
-                className="flex h-[68px] w-[302px] max-w-full items-center justify-center rounded-[10px] bg-[#ED7428] px-6 text-sm sm:text-base font-semibold text-white shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4"
+                className={`flex h-[68px] w-[302px] max-w-full items-center justify-center rounded-[10px] bg-[#ED7428] px-6 shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4
+  ${bricolageBody.className} text-[24px] leading-[24px] tracking-[0.72px] font-bold text-center text-white`}
               >
                 Therapy sessions
               </button>
@@ -282,11 +299,15 @@ export default function AddictionPage() {
             {/* Supporting bullet-style lines */}
             <motion.div
               className={`${bricolageBody.className} mt-4 space-y-1 text-center text-[18px] sm:text-[20px] lg:text-[24px] font-medium text-[#5E5E5E]`}
-              style={{ letterSpacing: '0.724px' }}
+              style={{ letterSpacing: "0.724px" }}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 0.61, 0.36, 1] }}
+              transition={{
+                duration: 0.5,
+                delay: 0.2,
+                ease: [0.22, 0.61, 0.36, 1],
+              }}
             >
               <p>Medical support when required</p>
               <p>Relapse prevention skills</p>
@@ -297,11 +318,15 @@ export default function AddictionPage() {
             {/* Final reassurance line */}
             <motion.p
               className={`${bricolageBody.className} mt-6 text-center text-[24px] sm:text-[28px] lg:text-[36px] font-semibold text-[#ED7428]`}
-              style={{ letterSpacing: '0.724px' }}
+              style={{ letterSpacing: "0.724px" }}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, delay: 0.3, ease: [0.22, 0.61, 0.36, 1] }}
+              transition={{
+                duration: 0.5,
+                delay: 0.3,
+                ease: [0.22, 0.61, 0.36, 1],
+              }}
             >
               Everything is explained clearly and at your pace.
             </motion.p>
@@ -314,9 +339,9 @@ export default function AddictionPage() {
             {/* Heading */}
             <h2
               className={`${roadHeadingFont.className} text-center text-[40px] sm:text-[52px] lg:text-[64px] font-semibold text-[#ED7428]`}
-              style={{ letterSpacing: '0.724px' }}
+              style={{ letterSpacing: "0.724px" }}
             >
-              Road to Recovery
+              Road to recovery
             </h2>
 
             {/* Central image area */}
@@ -335,35 +360,106 @@ export default function AddictionPage() {
         {/* Recovery steps strip */}
         <section className="w-full bg-white pb-16 sm:pb-20">
           <div className="mx-auto w-full max-w-[1184px] px-4 sm:px-8 lg:px-12">
-            <div className="flex gap-4 overflow-x-auto pb-2 sm:justify-between">
+            <div className="flex gap-3 overflow-x-auto pb-2 sm:justify-between">
               {ROAD_STEPS.map((item, index) => {
                 const isActive = index === activeRoadStep;
+
                 return (
                   <button
                     key={item.step}
                     type="button"
                     onClick={() => setActiveRoadStep(index)}
-                    className={`flex h-[260px] min-w-[180px] flex-1 flex-col items-center justify-between rounded-[6px] px-4 py-10 text-center sm:min-w-[200px] transition-colors duration-200 ${
-                      isActive ? 'bg-[#FFE3C7]' : 'bg-[#FEF2EB]'
-                    }`}
+                    className={`
+                   flex flex-col items-center justify-between
+                   px-4 py-10 text-center transition-all duration-300
+               ${
+                 isActive
+                   ? "bg-[#00373E] w-[288px] h-[342px] rounded-[16px] -translate-y-[12px] shadow-[0_8px_24px_rgba(0,0,0,0.18)]"
+                   : "bg-[#FFF3EA] w-[260px] h-[308px] rounded-[12px]"
+               }
+             `}
                   >
+                    {/* top text */}
                     <p
-                      className={`${bricolageBody.className} text-[14px] sm:text-[16px] leading-relaxed ${
-                        isActive ? 'text-[#00373E]' : 'text-[#ED7428]'
-                      }`}
+                      className={`${bricolageBody.className}
+                text-[14px] sm:text-[16px] leading-relaxed text-[#ED7428]`}
                     >
                       {item.text}
                     </p>
+
                     <p
-                      className={`${bricolageBody.className} mt-6 text-[18px] sm:text-[22px] font-semibold ${
-                        isActive ? 'text-[#ED7428]' : 'text-[#FED7B0]'
-                      }`}
+                      className={`${bricolageBody.className}
+                mt-6 text-[24px]  font-semibold
+                ${isActive ? "text-[#FFDCC8]" : "text-[#FED7B0]"}
+              `}
                     >
                       {item.step}
                     </p>
                   </button>
                 );
               })}
+            </div>
+          </div>
+        </section>
+
+        {/* Aftercare section */}
+        <section>
+          <div className="relative w-full h-[597px] bg-[radial-gradient(circle_at_50%_100%,#FFFAD4_0%,rgba(255,250,212,0.7)_40%,rgba(255,250,212,0)_70%)] overflow-hidden">
+            {/* Title */}
+            <h1
+              className={`${roadHeadingFont.className} text-center text-[64px] leading-[64px] font-semibold tracking-[0] pt-16`}
+            >
+              Aftercare
+            </h1>
+            {/* Concentric Circles Container */}
+            <div className="absolute" style={{ top: "353px", left: "435px" }}>
+              {/* Outermost circle - #FFFAD4 */}
+              <div
+                className="absolute rounded-full"
+                style={{
+                  width: "618px",
+                  height: "619px",
+                  background: "#FFFAD4",
+                  top: "0px",
+                  left: "0px",
+                }}
+              />
+
+              {/* Second circle - #FFF6B4 */}
+              <div
+                className="absolute rounded-full"
+                style={{
+                  width: "530px",
+                  height: "530px",
+                  background: "#FFF6B4",
+                  top: "44.5px",
+                  left: "44px",
+                }}
+              />
+
+              {/* Third circle - #FFEB5F */}
+              <div
+                className="absolute rounded-full"
+                style={{
+                  width: "421px",
+                  height: "421px",
+                  background: "#FFEB5F",
+                  top: "99px",
+                  left: "92px",
+                }}
+              />
+
+              {/* Innermost circle - #FFDF00 */}
+              <div
+                className="absolute rounded-full"
+                style={{
+                  width: "321px",
+                  height: "321px",
+                  background: "#FFDF00",
+                  top: "149px",
+                  left: "142px",
+                }}
+              />
             </div>
           </div>
         </section>

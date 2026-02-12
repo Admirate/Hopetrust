@@ -16,7 +16,7 @@ const robotoFlex = Roboto_Flex({
 
 const bodyFont = Bricolage_Grotesque({
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["500","700"],
 });
 
 export default function LargeRectangleSection() {
@@ -66,21 +66,31 @@ export default function LargeRectangleSection() {
           >
             <p
               className={cn(
-                "text-[11px] tracking-[0.22em] uppercase transition-colors duration-500",
-                isHovered ? "text-[#E0F2F2]" : "text-[#6A8181]",
+                bodyFont.className,
+                "transition-colors duration-500",
+                isHovered ? "text-[#E0F2F2]" : "text-[#00373E]",
               )}
+              style={{
+                fontSize: "14px",
+                lineHeight: "14px",
+                fontWeight: 500,
+                letterSpacing: "0.5px",
+              }}
             >
-              Community
+              Newsletter
             </p>
             <div ref={headingContainerRef} className="relative inline-block">
               <VariableProximity
-                label={"You're not alone on this journey"}
+                label={"Regular insights to enhance your life experience!"}
                 fromFontVariationSettings="'GRAD' 0, 'opsz' 14"
                 toFontVariationSettings="'GRAD' 100, 'opsz' 40"
                 containerRef={headingContainerRef}
                 radius={120}
                 falloff="linear"
-                className={`${robotoFlex.className} whitespace-pre-line text-4xl sm:text-[2.6rem] font-semibold leading-snug`}
+                className={`${bodyFont.className} whitespace-pre-line text-4xl sm:text-[2.6rem] font-semibold leading-snug`}
+                style={{
+                  fontWeight: 700,
+                }}
               />
             </div>
             <p
@@ -112,7 +122,7 @@ export default function LargeRectangleSection() {
                   : "bg-[#00373E] text-white hover:bg-[#024a53]",
               )}
             >
-              Join The Community
+              Subscribe to our newsletter
             </button>
           </div>
 

@@ -88,11 +88,12 @@ export default function OurTeamSection({
                 return (
                   <span
                     key={category.value}
-                    aria-current={isActive ? 'true' : undefined}
+                    aria-current={isActive ? "true" : undefined}
                     className={cn(
-                      'select-none text-center text-[18px] font-semibold leading-none tracking-[0.724px] transition-colors',
-                      isActive ? 'text-black' : 'text-[#D9D9D9]',
-                      'sm:text-[22px]'
+                      headingFont.className,
+                      "select-none text-center text-[18px] font-semibold leading-none tracking-[0.724px] transition-colors",
+                      isActive ? "text-black" : "text-[#D9D9D9]",
+                      "sm:text-[22px]",
                     )}
                   >
                     {category.label}

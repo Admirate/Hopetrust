@@ -8,7 +8,7 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const bodyFont = Bricolage_Grotesque({
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["700"],
 });
 
 type Testimonial = {
@@ -104,7 +104,9 @@ export default function ClientsSayingSection() {
           ref={headingRef as React.RefObject<HTMLDivElement>}
           className="w-full max-w-md space-y-4 text-[#00373E]"
         >
-          <h2 className="text-3xl sm:text-4xl font-semibold leading-tight whitespace-pre-line min-h-[3.5rem]">
+          <h2
+            className={` ${bodyFont.className} text-3xl sm:text-4xl font-semibold leading-tight whitespace-pre-line min-h-[3.5rem]`}
+          >
             {firstLine}
             <br />
             <span className="inline-flex items-center">

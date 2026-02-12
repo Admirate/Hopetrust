@@ -77,7 +77,9 @@ export default function ResourcesSection() {
         </h2>
 
         {/* Subtext */}
-        <p className="mt-4 max-w-xl mx-auto text-sm sm:text-base leading-relaxed text-[#476063]">
+        <p
+          className={`${headingFont.className} mt-4 mx-auto max-w-[90%] sm:max-w-2xl text-center text-[18px] sm:text-[20px] lg:text-[22px] leading-[34px] tracking-[0.5px] font-normal text-[#486364]`}
+        >
           Explore expert insights, self-care guides, and tools to support your
           mental health.
         </p>
@@ -91,9 +93,7 @@ export default function ResourcesSection() {
             <motion.div
               key={card.titleLine1}
               initial={{ opacity: 0, y: 24 }}
-              animate={
-                isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }
-              }
+              animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
               transition={{
                 duration: 0.5,
                 ease: [0.22, 0.61, 0.36, 1],

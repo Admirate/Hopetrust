@@ -8,7 +8,7 @@ import { MagicText } from './MagicText';
 
 const headingFont = Bricolage_Grotesque({
   subsets: ['latin'],
-  weight: ['600'],
+  weight: ['600','500'],
 });
 
 const teamMembers = [
@@ -43,14 +43,14 @@ export default function MeetTheTeamSection() {
         <h2
           className={`${headingFont.className} mb-10 text-center`}
           style={{
-            color: '#000000',
-            fontSize: '48px',
-            lineHeight: 'normal',
+            color: "#000000",
+            fontSize: "48px",
+            lineHeight: "normal",
             fontWeight: 600,
-            letterSpacing: '0.724px',
+            letterSpacing: "0.724px",
           }}
         >
-          <MagicText text="Meet the Team" />
+          Meet the team
         </h2>
 
         {/* Carousel row */}
@@ -114,7 +114,17 @@ export default function MeetTheTeamSection() {
         </div>
 
         {/* Body text */}
-        <div className="mt-10 max-w-xl text-[13px] sm:text-sm leading-relaxed text-[#111827]">
+        {/* Body text */}
+        <div
+          className={`${headingFont.className} mt-10 text-center`}
+          style={{
+            fontSize: "24px",
+            lineHeight: "24px", // 100%
+            fontWeight: 500,
+            letterSpacing: "0.72px",
+            color: "#111827",
+          }}
+        >
           <p>The people who support your healing.</p>
           <p>Choose the person you connect with.</p>
           <p>Begin your journey with Hope.</p>

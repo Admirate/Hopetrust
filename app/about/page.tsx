@@ -25,9 +25,9 @@ const aboutStoryLabelFont = Bricolage_Grotesque({
   weight: ['400'],
 });
 
-const aboutStoryHeadingFont = IBM_Plex_Sans({
-  subsets: ['latin'],
-  weight: ['600'],
+const aboutStoryHeadingFont = Bricolage_Grotesque({
+  subsets: ["latin"],
+  weight: ["600"],
 });
 
 const aboutStoryBodyFont = Bricolage_Grotesque({
@@ -233,7 +233,7 @@ export default function About() {
                   className={`${aboutStoryHeadingFont.className} mb-5 w-full text-[28px] font-semibold leading-normal text-[#00373E] sm:w-[542px] sm:text-[36px]`}
                 >
                   <ProximityText
-                    text={'Hope Trust began in 2002\nwith a simple intention'}
+                    text={"Hope Trust began in 2002\nwith a simple intention"}
                     radius={140}
                     liftPx={6}
                   />
@@ -243,8 +243,8 @@ export default function About() {
                 <p
                   className={`${aboutStoryBodyFont.className} mt-2 self-stretch text-[24px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
                 >
-                  To offer a calm and steady space for healing. People come to us
-                  with different struggles.
+                  To offer a calm and steady space for healing. People come to
+                  us with different struggles.
                 </p>
                 <p
                   className={`${aboutStoryBodyFont.className} mt-4 self-stretch text-[24px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
@@ -297,7 +297,11 @@ export default function About() {
                 className="flex flex-col items-center justify-center gap-6 rounded-[45px] bg-[#F9E6D0] px-10 py-16 shadow-sm w-full sm:w-[386px] sm:h-[367px] text-center cursor-default"
                 initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                whileHover={{ y: -8, boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)" }}
+                whileHover={{
+                  y: -8,
+                  boxShadow:
+                    "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
+                }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
               >
@@ -322,7 +326,11 @@ export default function About() {
                 className="flex flex-col items-center justify-center gap-6 rounded-[45px] bg-[#00373E] px-10 py-16 shadow-sm w-full sm:w-[386px] sm:h-[367px] text-center cursor-default"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ y: -8, boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)" }}
+                whileHover={{
+                  y: -8,
+                  boxShadow:
+                    "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
+                }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{
                   duration: 0.6,
@@ -351,7 +359,11 @@ export default function About() {
                 className="flex flex-col items-center justify-center gap-6 rounded-[45px] bg-[#FFFBF6] px-10 py-16 shadow-sm ring-1 ring-black/5 w-full sm:w-[386px] sm:h-[367px] text-center cursor-default"
                 initial={{ opacity: 0, x: 40 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                whileHover={{ y: -8, boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)" }}
+                whileHover={{
+                  y: -8,
+                  boxShadow:
+                    "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
+                }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{
                   duration: 0.6,
@@ -391,13 +403,14 @@ export default function About() {
                     <h3
                       className={`${aboutHeadingFont.className} mb-4 w-full text-[40px] font-semibold leading-normal tracking-[0.5px] text-[#00373E] sm:w-[515px]`}
                     >
-                      Wellness Coaching
+                      Wellness coaching
                     </h3>
                     <p
                       className={`${aboutStoryBodyRegularFont.className} mb-4 w-full text-[20px] font-normal leading-[26px] tracking-[0.5px] text-[#00373E] sm:w-[617px]`}
                     >
                       Personalized guidance to help you build healthier habits,
-                      manage stress, and achieve balance in all areas of your life.
+                      manage stress, and achieve balance in all areas of your
+                      life.
                     </p>
                     <p
                       className={`${aboutStoryBodyRegularFont.className} mb-6 w-full text-[20px] font-normal leading-[26px] tracking-[0.5px] text-[#00373E] sm:w-[617px]`}
@@ -466,7 +479,11 @@ export default function About() {
                 className="flex flex-col items-center text-center justify-between gap-6 rounded-[24px] bg-[#FFEBD7] px-10 py-10 shadow-sm h-full cursor-default"
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                whileHover={{ y: -4, boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)" }}
+                whileHover={{
+                  y: -4,
+                  boxShadow:
+                    "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+                }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
               >
@@ -491,7 +508,11 @@ export default function About() {
                 className="flex flex-col items-center text-center justify-between gap-6 rounded-[24px] bg-[#FFEBD7] px-10 py-10 shadow-sm h-full cursor-default"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ y: -4, boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)" }}
+                whileHover={{
+                  y: -4,
+                  boxShadow:
+                    "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+                }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{
                   duration: 0.6,
@@ -520,7 +541,11 @@ export default function About() {
                 className="flex flex-col items-center text-center justify-between gap-6 rounded-[24px] bg-[#FFEBD7] px-10 py-10 shadow-sm h-full cursor-default"
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                whileHover={{ y: -4, boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)" }}
+                whileHover={{
+                  y: -4,
+                  boxShadow:
+                    "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+                }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{
                   duration: 0.6,
@@ -565,18 +590,35 @@ export default function About() {
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 mb-6 border-b border-white/40 pb-6">
                   <div>
                     <p className="text-2xl font-semibold">60 minutes</p>
-                    <p className="mt-1 text-sm">Individual therapy</p>
+                    <p
+                      className={`${aboutStoryBodyFont.className} mt-1 text-[20px] font-medium`}
+                    >
+                      Individual therapy
+                    </p>
                   </div>
+
                   <div>
                     <p className="text-2xl font-semibold">90 minutes</p>
-                    <p className="mt-1 text-sm">Couples therapy</p>
+                    <p
+                      className={`${aboutStoryBodyFont.className} mt-1 text-[20px] font-medium`}
+                    >
+                      Couples therapy
+                    </p>
                   </div>
+
                   <div>
                     <p className="text-2xl font-semibold">30 minutes</p>
-                    <p className="mt-1 text-sm">Psychiatry</p>
+                    <p
+                      className={`${aboutStoryBodyFont.className} mt-1 text-[20px] font-medium`}
+                    >
+                      Psychiatry
+                    </p>
                   </div>
                 </div>
-                <p className="text-sm">
+
+                <p
+                  className={`${aboutStoryBodyFont.className} text-[20px] font-medium`}
+                >
                   Your progress continues after each session.
                   <br />
                   One step at a time.
@@ -636,7 +678,7 @@ export default function About() {
               <h2
                 className={`${aboutHeadingFont.className} mb-4 text-center text-[48px] font-semibold leading-normal tracking-[0.724px] text-black lg:text-left`}
               >
-                Media and Gallery
+                Media and gallery
               </h2>
               <p
                 className={`${aboutStoryBodyFont.className} mb-4 text-[24px] font-medium leading-normal tracking-[0.724px] text-black`}
@@ -655,15 +697,15 @@ export default function About() {
                   onDone={() => setMediaTypingPhase(3)}
                   segments={[
                     {
-                      text: 'Our work.',
+                      text: "Our work.",
                       className: `${aboutStoryBodyBoldFont.className} text-[24px] font-bold leading-normal tracking-[0.724px] text-[#ED7428]`,
                     },
                     {
-                      text: ' ',
+                      text: " ",
                       className: `${aboutStoryBodyBoldFont.className} text-[24px] font-bold leading-normal tracking-[0.724px] text-[#ED7428]`,
                     },
                     {
-                      text: 'Our people.',
+                      text: "Our people.",
                       className: `${aboutStoryBodyBoldFont.className} text-[24px] font-bold leading-normal tracking-[0.724px] text-[#D7D7D7]`,
                     },
                   ]}

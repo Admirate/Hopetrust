@@ -14,7 +14,7 @@ const headingFont = Bricolage_Grotesque({
 const items = [
   { label: "Therapy", icon: "/asset4.png" },
   { label: "Addiction Care", icon: "/asset1.png" },
-  { label: "Medications", icon: "/asset2.png" },
+  { label: "Psychiatry", icon: "/asset2.png" },
   { label: "For Couples", icon: "/asset3.png" },
   { label: "Queer Affirmative Care", icon: "/asset5.png" },
 ];
@@ -65,7 +65,7 @@ export default function WhatWeOfferSection() {
                 />
               </div>
               <p
-                className={`bold-body text-[#00373E] group-hover:text-[#005c66] transition-colors duration-200 ${
+                className={`${headingFont.className} text-[#00373E] group-hover:text-[#005c66] transition-colors duration-200 ${
                   item.label === "Queer Affirmative Care" ? "text-center" : ""
                 }`}
               >
