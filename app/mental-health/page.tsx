@@ -174,11 +174,11 @@ export default function MentalHealthPage() {
             style={{ y: textY }}
             className="relative z-10 flex h-full w-full flex-col items-center justify-center px-4 sm:px-6 lg:px-8 text-center text-white"
           >
-            <h1 className="text-[48px] font-semibold tracking-[0.18em] uppercase">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold tracking-[0.18em]  uppercase">
               Mental Health
             </h1>
 
-            <div className="mt-8 text-[72px] font-semibold">
+            <div className="mt-6 sm:mt-8 text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-semibold leading-tight">
               <p>
                 <span>Therapy</span>
                 <span className="mx-3 text-white/60">|</span>
@@ -194,121 +194,119 @@ export default function MentalHealthPage() {
         </section>
 
         {/* Focus area strip + card */}
-          <section className="w-full bg-[#F7F6F4]">
-            <div className="mx-auto flex w-full justify-center px-4 sm:px-8 lg:px-12 pt-10 pb-16">
-              {/* Outer card */}
-              <div className="flex h-[650px] w-full max-w-[1170px] flex-col rounded-[84px] bg-transparent overflow-hidden">
-                {/* Top strip with tabs */}
-                <div className="flex bg-[#FFE3C7]">
-                  {(Object.keys(FOCUS_SECTIONS) as FocusKey[]).map((key) => {
-                    const isActive = key === activeFocus;
-                    const activeBgClass =
-                      key === "psychiatry"
-                        ? "bg-[#F8F1BC]"
-                        : key === "couples"
-                          ? "bg-[#EDE6B1]"
-                          : key === "family"
-                            ? "bg-[#DFD58F]"
-                            : "bg-[#FFF4D9]";
-                    return (
-                      <button
-                        key={key}
-                        type="button"
-                        onClick={() => setActiveFocus(key)}
-                        className={`flex-1 px-4 py-4 text-xs sm:text-sm md:text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4 ${
-                          isActive
-                            ? `${activeBgClass} text-[#ED7428]`
-                            : 'bg-transparent text-[#00373E] hover:bg-[#FFEED2]'
-                        }`}
-                      >
-                        {FOCUS_SECTIONS[key].label}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Content card */}
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeFocus}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{
-                      duration: 0.4,
-                      ease: [0.22, 0.61, 0.36, 1],
-                    }}
-                    className="flex-1 px-6 py-10 sm:px-10 sm:py-12 shadow-[0_24px_60px_rgba(0,0,0,0.06)] flex flex-col md:flex-row items-center gap-8 md:gap-12"
-                    style={{ backgroundColor: FOCUS_SECTIONS[activeFocus].cardBg }}
-                  >
-                    {/* Left illustration */}
-                    <div className="w-full md:w-[30%] flex justify-center">
-                      <div className="relative w-[140px] h-[180px] sm:w-[170px] sm:h-[210px]">
-                        <Image
-                          src={FOCUS_SECTIONS[activeFocus].imageSrc}
-                          alt={FOCUS_SECTIONS[activeFocus].imageAlt}
-                          fill
-                          className="object-contain"
-                          priority={false}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Right text */}
-                    <div className="w-full md:w-[70%] text-left text-[#00373E] space-y-4">
-                      <h2
-                        className={focusHeadingFont.className}
-                        style={{
-                          color: '#E26B20',
-                          fontSize: '48px',
-                          fontWeight: 600,
-                          lineHeight: 'normal',
-                          letterSpacing: '0.724px',
-                          maxWidth: '341px',
-                        }}
-                      >
-                        {FOCUS_SECTIONS[activeFocus].heading}
-                      </h2>
-                      <div
-                        style={{
-                          maxWidth: '744px',
-                        }}
-                      >
-                        {FOCUS_SECTIONS[activeFocus].paragraphs.map((para) => (
-                          <p
-                            key={para}
-                            className={focusBodyFont.className}
-                            style={{
-                              fontSize: '24px',
-                              fontWeight: 500,
-                              lineHeight: 'normal',
-                              letterSpacing: '0.724px',
-                              color: '#00373E',
-                              marginBottom: '12px',
-                            }}
-                          >
-                            {para}
-                          </p>
-                        ))}
-                      </div>
-                      <p
-                        className={focusBoldBodyFont.className}
-                        style={{
-                          fontSize: '24px',
-                          fontWeight: 700,
-                          lineHeight: 'normal',
-                          letterSpacing: '0.724px',
-                          color: '#00373E',
-                        }}
-                      >
-                        {FOCUS_SECTIONS[activeFocus].issues}
-                      </p>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
+        <section className="w-full bg-[#F7F6F4]">
+          <div className="mx-auto flex w-full justify-center px-4 sm:px-8 lg:px-12 pt-10 pb-16">
+            {/* Outer card */}
+            <div className="flex h-auto md:h-[650px] w-full max-w-[1170px] flex-col rounded-[40px] md:rounded-[84px] bg-transparent overflow-hidden">
+              {/* Top strip with tabs */}
+              <div className="flex bg-[#FFE3C7]">
+                {(Object.keys(FOCUS_SECTIONS) as FocusKey[]).map((key) => {
+                  const isActive = key === activeFocus;
+                  const activeBgClass =
+                    key === "psychiatry"
+                      ? "bg-[#F8F1BC]"
+                      : key === "couples"
+                        ? "bg-[#EDE6B1]"
+                        : key === "family"
+                          ? "bg-[#DFD58F]"
+                          : "bg-[#FFF4D9]";
+                  return (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => setActiveFocus(key)}
+                      className={`flex-1 px-2 py-3 md:px-4 md:py-4 text-[10px] sm:text-xs md:text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4 ${
+                        isActive
+                          ? `${activeBgClass} text-[#ED7428]`
+                          : "bg-transparent text-[#00373E] hover:bg-[#FFEED2]"
+                      }`}
+                    >
+                      {FOCUS_SECTIONS[key].label}
+                    </button>
+                  );
+                })}
               </div>
+
+              {/* Content card */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeFocus}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{
+                    duration: 0.4,
+                    ease: [0.22, 0.61, 0.36, 1],
+                  }}
+                  className="flex-1 px-5 py-8 sm:px-10 sm:py-12 shadow-[0_24px_60px_rgba(0,0,0,0.06)] flex flex-col md:flex-row items-center gap-6 md:gap-12"
+                  style={{
+                    backgroundColor: FOCUS_SECTIONS[activeFocus].cardBg,
+                  }}
+                >
+                  {/* Left illustration */}
+                  <div className="w-full md:w-[30%] flex justify-center">
+                    <div className="relative w-[110px] h-[140px] sm:w-[140px] sm:h-[180px] md:w-[170px] md:h-[210px]">
+                      <Image
+                        src={FOCUS_SECTIONS[activeFocus].imageSrc}
+                        alt={FOCUS_SECTIONS[activeFocus].imageAlt}
+                        fill
+                        className="object-contain"
+                        priority={false}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Right text */}
+                  <div className="w-full md:w-[70%] text-left text-[#00373E] space-y-3 md:space-y-4">
+                    <h2
+                      className={focusHeadingFont.className}
+                      style={{
+                        color: "#E26B20",
+                        fontSize: "clamp(28px, 5vw, 48px)",
+                        fontWeight: 600,
+                        lineHeight: "normal",
+                        letterSpacing: "0.724px",
+                        maxWidth: "341px",
+                      }}
+                    >
+                      {FOCUS_SECTIONS[activeFocus].heading}
+                    </h2>
+                    <div style={{ maxWidth: "744px" }}>
+                      {FOCUS_SECTIONS[activeFocus].paragraphs.map((para) => (
+                        <p
+                          key={para}
+                          className={focusBodyFont.className}
+                          style={{
+                            fontSize: "clamp(14px, 2.5vw, 24px)",
+                            fontWeight: 500,
+                            lineHeight: "normal",
+                            letterSpacing: "0.724px",
+                            color: "#00373E",
+                            marginBottom: "12px",
+                          }}
+                        >
+                          {para}
+                        </p>
+                      ))}
+                    </div>
+                    <p
+                      className={focusBoldBodyFont.className}
+                      style={{
+                        fontSize: "clamp(14px, 2.5vw, 24px)",
+                        fontWeight: 700,
+                        lineHeight: "normal",
+                        letterSpacing: "0.724px",
+                        color: "#00373E",
+                      }}
+                    >
+                      {FOCUS_SECTIONS[activeFocus].issues}
+                    </p>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
             </div>
-          </section>
+          </div>
+        </section>
 
         {/* Assessment cards section */}
         <section className="w-full bg-[#F7F6F4] pb-16 sm:pb-20">
@@ -320,26 +318,26 @@ export default function MentalHealthPage() {
               {/* Top tabs */}
               <div className="flex flex-col gap-6 sm:gap-8">
                 <div className="flex flex-wrap items-center justify-start gap-8 text-base sm:text-xl font-semibold">
-                  {(
-                    ['adhd', 'student', 'queer'] as AssessmentKey[]
-                  ).map((key) => {
-                    const isActive = key === activeAssessment;
-                    const label = ASSESSMENTS[key].label;
-                    return (
-                      <button
-                        key={key}
-                        type="button"
-                        onClick={() => setActiveAssessment(key)}
-                        className={`transition-colors ${
-                          isActive
-                            ? 'text-[#ED7428]'
-                            : 'text-[#E0DFDD] hover:text-[#ED7428]'
-                        }`}
-                      >
-                        {label}
-                      </button>
-                    );
-                  })}
+                  {(["adhd", "student", "queer"] as AssessmentKey[]).map(
+                    (key) => {
+                      const isActive = key === activeAssessment;
+                      const label = ASSESSMENTS[key].label;
+                      return (
+                        <button
+                          key={key}
+                          type="button"
+                          onClick={() => setActiveAssessment(key)}
+                          className={`transition-colors ${
+                            isActive
+                              ? "text-[#ED7428]"
+                              : "text-[#E0DFDD] hover:text-[#ED7428]"
+                          }`}
+                        >
+                          {label}
+                        </button>
+                      );
+                    },
+                  )}
                 </div>
 
                 {/* Copy for active assessment */}

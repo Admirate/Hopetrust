@@ -67,7 +67,7 @@ export default function LargeRectangleSection() {
             <p
               className={cn(
                 bodyFont.className,
-                "transition-colors duration-500",
+                "transition-colors duration-500 mt-3",
                 isHovered ? "text-[#E0F2F2]" : "text-[#00373E]",
               )}
               style={{

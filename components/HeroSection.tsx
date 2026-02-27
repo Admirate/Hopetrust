@@ -79,36 +79,40 @@ const HeroSection = () => {
 
             {/* Content overlay */}
             <div className="relative flex min-h-full flex-col items-center justify-center px-5 sm:px-10 lg:px-20 py-10 sm:py-14 gap-4 sm:gap-6 text-center text-white">
+              {/* Heading */}
               <h1
-                className={`${heroFont.className} font-semibold text-balance fade-in-optimized`}
-                style={{
-                  fontSize: "48px",
-                  letterSpacing: "0.724px",
-                  lineHeight: "normal",
-                }}
+                className={`${heroFont.className} font-semibold text-center 
+    text-2xl sm:text-3xl md:text-4xl lg:text-5xl 
+    leading-tight tracking-wide fade-in-optimized`}
               >
-                A place for{" "}
-                <span style={{ color: "#FFDF00" }}>hope</span>,<br />
+                A place for <span className="text-[#FFDF00]">hope</span>,
+                <br className="hidden sm:block" />
                 healing, and renewal.
               </h1>
 
+              {/* Subtext */}
               <p
-                className={`${heroFont.className} text-balance fade-in-optimized`}
-                style={{
-                  color: "#FFFAD4",
-                  fontSize: "24px",
-                  fontWeight: 700,
-                  letterSpacing: "0.724px",
-                  lineHeight: "normal",
-                  maxWidth: "338px",
-                  textAlign: "center",
-                }}
+                className={`${heroFont.className} fade-in-optimized 
+    text-sm sm:text-base lg:text-xl 
+    font-bold tracking-wide 
+    text-[#FFFAD4] 
+    max-w-xs sm:max-w-md lg:max-w-lg`}
               >
                 A gentle reminder: We&apos;re here if you need us — message us
                 anytime
               </p>
 
-              <button className="mt-4 inline-flex items-center justify-center rounded-full bg-[#00343A] px-8 sm:px-10 py-3 text-sm sm:text-base font-semibold text-white shadow-lg transition-all duration-200 hover:bg-[#02424a] hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0 active:scale-[0.97] fade-in-optimized">
+              {/* Button */}
+              <button
+                className="mt-4 inline-flex items-center justify-center 
+  w-full sm:w-auto 
+  rounded-full bg-[#00343A] 
+  px-6 sm:px-10 py-3 
+  text-sm sm:text-base font-semibold text-white 
+  shadow-lg transition-all duration-200 
+  hover:bg-[#02424a] hover:-translate-y-0.5 hover:shadow-xl 
+  active:translate-y-0 active:scale-[0.97] fade-in-optimized"
+              >
                 Chat with us
               </button>
             </div>

@@ -68,13 +68,13 @@ export default function RectangleSection() {
           {/* Section title centered at top */}
           <div className="absolute inset-x-0 top-6 flex justify-center">
             <h2
-              className={`${bricolage.className} text-[26px] font-bold text-[#00373E] sm:text-[32px]`}
+              className={`${bricolage.className} text-[26px] px-6 font-bold text-[#00373E] sm:text-[32px]`}
             >
               How your journey unfolds
             </h2>
           </div>
 
-          <div className="flex h-full">
+          <div className="flex h-full mt-8 sm:mt-0">
             {/* Left text - vertically centered, left aligned */}
             <div className="flex h-full max-w-[546px] flex-col justify-center space-y-6 text-left text-[#00373E] sm:space-y-7">
               <AnimatePresence mode="wait">

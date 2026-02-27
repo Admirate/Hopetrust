@@ -73,42 +73,40 @@ export default function ContactSection() {
                 Contact Details:
               </h3>
 
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-5 lg:space-y-6 text-sm sm:text-base lg:text-lg leading-6 sm:leading-7 lg:leading-8 tracking-wide">
                 {/* Email */}
                 <p
-                  className={`${headingFont.className} text-[16px] sm:text-[18px] lg:text-[20px] leading-[28px] lg:leading-[34px] tracking-[0.5px] font-bold text-[#00373E]`}
+                  className={`${headingFont.className} font-bold text-[#00373E]`}
                 >
                   Email:
-                  <span
-                    className={`${headingFont.className} ml-2 text-[#111827] text-[16px] sm:text-[18px] lg:text-[20px] leading-[28px] lg:leading-[34px] tracking-[0.5px] font-normal`}
-                  >
+                  <span className="ml-2 font-normal text-[#111827] break-all">
                     frontoffice@hopetrustindia.com
                   </span>
                 </p>
 
                 {/* Phone */}
                 <p
-                  className={`${headingFont.className} text-[16px] sm:text-[18px] lg:text-[20px] leading-[28px] lg:leading-[34px] tracking-[0.5px] font-bold text-[#00373E]`}
+                  className={`${headingFont.className} font-bold text-[#00373E]`}
                 >
                   Phone:
-                  <span
-                    className={`${headingFont.className} ml-2 text-[#111827] text-[16px] sm:text-[18px] lg:text-[20px] leading-[28px] lg:leading-[34px] tracking-[0.5px] font-normal`}
-                  >
-                    +91 9000850001 / +91 90007 20003
+                  <span className="ml-2 font-normal text-[#111827]">
+                    +91 9000850001 / +91 9000720003
                   </span>
                 </p>
 
                 {/* Address */}
                 <p
-                  className={`${headingFont.className} text-[16px] sm:text-[18px] lg:text-[20px] leading-[28px] lg:leading-[34px] tracking-[0.5px] font-bold text-[#00373E]`}
+                  className={`${headingFont.className} font-bold text-[#00373E]`}
                 >
                   Address:
-                  <span
-                    className={`${headingFont.className} ml-2 text-[#111827] text-[16px] sm:text-[18px] lg:text-[20px] leading-[28px] lg:leading-[34px] tracking-[0.5px] font-normal`}
-                  >
-                    C/o, UCCHVAS Rehabilitation Center, Plot no. 564-A-36-111,
-                    Opp. Lotus Pond Road, MLA Colony, Banjara Hills,
-                    <br /> Hyderabad – 500034
+                  <span className="font-normal text-[#111827] block">
+                    C/o, UCCHVAS Rehabilitation Center,
+                    <br />
+                    Plot no. 564-A-36-111,
+                    <br />
+                    Opp. Lotus Pond Road, MLA Colony,
+                    <br />
+                    Banjara Hills, Hyderabad – 500034
                   </span>
                 </p>
               </div>
@@ -141,51 +139,56 @@ export default function ContactSection() {
               </div>
 
               <p
-                className={`${headingFont.className} pt-4 text-[16px] sm:text-[18px] lg:text-[20px] leading-[28px] lg:leading-[34px] tracking-[0.5px] font-normal text-[#00373E]`}
+                className={`${headingFont.className} pt-3 sm:pt-4 text-sm sm:text-base lg:text-lg leading-6 sm:leading-7 lg:leading-8 tracking-wide text-[#00373E]`}
               >
                 We typically respond within 12 hours.
               </p>
             </div>
 
             {/* Form card */}
-            <div>
+            <div className="px-3 sm:px-0">
               <h3
-                className={`${headingFont.className} mb-5 text-[20px] leading-[34px] tracking-[0.5px] font-bold text-[#00373E] text-center`}
+                className={`${headingFont.className} mb-4 sm:mb-5 text-lg sm:text-xl lg:text-2xl font-bold text-[#00373E] text-center`}
               >
                 Send us a message
               </h3>
 
-              {/* Pink form box */}
+              {/* Form Box */}
               <div
-                className={`${headingFont.className} rounded-[28px] bg-[#FFF5ED] px-4 py-5 sm:px-7 sm:py-7 text-left`}
+                className={`${headingFont.className} rounded-2xl sm:rounded-[28px] bg-[#FFF5ED] px-4 py-5 sm:px-7 sm:py-7`}
               >
-                <form className="space-y-5">
+                <form className="space-y-4 sm:space-y-5">
+                  {/* Email */}
                   <div>
-                    <label className="block text-[12px] sm:text-[14px] lg:text-[18px] leading-[14px] tracking-[0.5px] font-medium uppercase text-[#6A8181] mb-2">
+                    <label className="block text-xs sm:text-sm lg:text-base font-medium uppercase text-[#6A8181] mb-2">
                       Email
                     </label>
+
                     <input
                       type="email"
-                      className={`${headingFont.className} w-full border-b border-[#D1D5DB] bg-transparent px-0 pb-1 text-[16px] sm:text-[18px] lg:text-[20px] leading-[28px] lg:leading-[34px] tracking-[0.5px] font-normal text-[#111827] focus:outline-none focus:border-[#00373E]`}
+                      className="w-full border-b border-[#D1D5DB] bg-transparent pb-2 text-sm sm:text-base lg:text-lg text-[#111827] focus:outline-none focus:border-[#00373E]"
                       placeholder="Email"
                     />
                   </div>
 
+                  {/* Message */}
                   <div>
-                    <label className="block text-[12px] sm:text-[14px] lg:text-[18px] leading-[14px] tracking-[0.5px] font-medium uppercase text-[#6A8181] mb-2">
+                    <label className="block text-xs sm:text-sm lg:text-base font-medium uppercase text-[#6A8181] mb-2">
                       Message
                     </label>
+
                     <textarea
-                      rows={2}
-                      className={`${headingFont.className} w-full border-b border-[#D1D5DB] bg-transparent px-0 pb-1 text-[16px] sm:text-[18px] lg:text-[20px] leading-[28px] lg:leading-[34px] tracking-[0.5px] font-normal text-[#111827] resize-none focus:outline-none focus:border-[#00373E]`}
+                      rows={3}
+                      className="w-full border-b border-[#D1D5DB] bg-transparent pb-2 text-sm sm:text-base lg:text-lg text-[#111827] resize-none focus:outline-none focus:border-[#00373E]"
                       placeholder="Message"
                     />
                   </div>
 
+                  {/* Button */}
                   <div className="pt-2 flex justify-center sm:justify-start">
                     <button
                       type="submit"
-                      className={`${headingFont.className} w-full sm:w-[320px] lg:w-[450px] h-[54px] px-[39px] py-[15px] flex items-center justify-center gap-[10px] rounded-full bg-[#00373E] text-white text-[14px] font-medium tracking-[0.5px] shadow-md hover:bg-[#024a53] transition-colors`}
+                      className="w-full sm:w-auto min-h-[48px] px-6 sm:px-10 py-3 rounded-full bg-[#00373E] text-white text-sm sm:text-base font-medium tracking-wide shadow-md hover:bg-[#024a53] transition-colors"
                     >
                       Send Message
                     </button>

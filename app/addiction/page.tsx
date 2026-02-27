@@ -89,7 +89,7 @@ export default function AddictionPage() {
                 <span className="text-[#E26B20]">is not simple</span>
               </h1>
               <div
-                className={`${bricolageBody.className}  w-full md:w-[589px] space-y-2 font-medium leading-[24px] tracking-[0.72px]`}
+                className={`${bricolageBody.className}  w-full lg:w-[589px] space-y-2 font-medium leading-[24px] tracking-[0.72px]`}
               >
                 <p className="!text-[24px] ">
                   Addiction is not about willpower.
@@ -360,24 +360,23 @@ export default function AddictionPage() {
         {/* Recovery steps strip */}
         <section className="w-full bg-white pb-16 sm:pb-20">
           <div className="mx-auto w-full max-w-[1184px] px-4 sm:px-8 lg:px-12">
-            <div className="flex gap-3 overflow-x-auto pb-2 sm:justify-between">
+            <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
               {ROAD_STEPS.map((item, index) => {
                 const isActive = index === activeRoadStep;
-
                 return (
                   <button
                     key={item.step}
                     type="button"
                     onClick={() => setActiveRoadStep(index)}
                     className={`
-                   flex flex-col items-center justify-between
-                   px-4 py-10 text-center transition-all duration-300
-               ${
-                 isActive
-                   ? "bg-[#00373E] w-[288px] h-[342px] rounded-[16px] -translate-y-[12px] shadow-[0_8px_24px_rgba(0,0,0,0.18)]"
-                   : "bg-[#FFF3EA] w-[260px] h-[308px] rounded-[12px]"
-               }
-             `}
+              flex flex-col items-center justify-between flex-shrink-0
+              px-4 py-10 text-center transition-all duration-300
+              ${
+                isActive
+                  ? "bg-[#00373E] w-[288px] h-[342px] rounded-[16px] -translate-y-[12px] shadow-[0_8px_24px_rgba(0,0,0,0.18)]"
+                  : "bg-[#FFF3EA] w-[260px] h-[308px] rounded-[12px]"
+              }
+            `}
                   >
                     {/* top text */}
                     <p
@@ -386,10 +385,9 @@ export default function AddictionPage() {
                     >
                       {item.text}
                     </p>
-
                     <p
                       className={`${bricolageBody.className}
-                mt-6 text-[24px]  font-semibold
+                mt-6 text-[24px] font-semibold
                 ${isActive ? "text-[#FFDCC8]" : "text-[#FED7B0]"}
               `}
                     >
@@ -411,53 +409,73 @@ export default function AddictionPage() {
             >
               Aftercare
             </h1>
-            {/* Concentric Circles Container */}
-            <div className="absolute" style={{ top: "353px", left: "435px" }}>
+
+            {/* Concentric Circles Container — centered at bottom */}
+            <div
+              className="absolute"
+              style={{
+                bottom: "0px",
+                left: "50%",
+                transform: "translateX(-50%)",
+              }}
+            >
               {/* Outermost circle - #FFFAD4 */}
               <div
-                className="absolute rounded-full"
+                className="rounded-full"
                 style={{
-                  width: "618px",
-                  height: "619px",
+                  width: "clamp(280px, 42vw, 618px)",
+                  height: "clamp(280px, 42vw, 618px)",
                   background: "#FFFAD4",
-                  top: "0px",
-                  left: "0px",
+                  position: "absolute",
+                  bottom: "0",
+                  left: "50%",
+                  transform: "translateX(-50%) translateY(50%)",
                 }}
               />
-
               {/* Second circle - #FFF6B4 */}
               <div
-                className="absolute rounded-full"
+                className="rounded-full"
                 style={{
-                  width: "530px",
-                  height: "530px",
+                  width: "clamp(240px, 36vw, 530px)",
+                  height: "clamp(240px, 36vw, 530px)",
                   background: "#FFF6B4",
-                  top: "44.5px",
-                  left: "44px",
+                  position: "absolute",
+                  bottom: "0",
+                  left: "50%",
+                  transform: "translateX(-50%) translateY(50%)",
                 }}
               />
-
               {/* Third circle - #FFEB5F */}
               <div
-                className="absolute rounded-full"
+                className="rounded-full"
                 style={{
-                  width: "421px",
-                  height: "421px",
+                  width: "clamp(190px, 29vw, 421px)",
+                  height: "clamp(190px, 29vw, 421px)",
                   background: "#FFEB5F",
-                  top: "99px",
-                  left: "92px",
+                  position: "absolute",
+                  bottom: "0",
+                  left: "50%",
+                  transform: "translateX(-50%) translateY(50%)",
                 }}
               />
-
               {/* Innermost circle - #FFDF00 */}
               <div
-                className="absolute rounded-full"
+                className="rounded-full"
                 style={{
-                  width: "321px",
-                  height: "321px",
+                  width: "clamp(145px, 22vw, 321px)",
+                  height: "clamp(145px, 22vw, 321px)",
                   background: "#FFDF00",
-                  top: "149px",
-                  left: "142px",
+                  position: "absolute",
+                  bottom: "0",
+                  left: "50%",
+                  transform: "translateX(-50%) translateY(50%)",
+                }}
+              />
+              {/* Spacer to give the container height */}
+              <div
+                style={{
+                  width: "clamp(280px, 42vw, 618px)",
+                  height: "clamp(140px, 21vw, 309px)",
                 }}
               />
             </div>

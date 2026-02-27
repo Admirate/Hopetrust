@@ -105,7 +105,7 @@ export default function ClientsSayingSection() {
           className="w-full max-w-md space-y-4 text-[#00373E]"
         >
           <h2
-            className={` ${bodyFont.className} text-3xl sm:text-4xl font-semibold leading-tight whitespace-pre-line min-h-[3.5rem]`}
+            className={`${bodyFont.className} text-2xl sm:text-3xl lg:text-4xl font-semibold leading-tight whitespace-pre-line min-h-[3rem] sm:min-h-[3.5rem]`}
           >
             {firstLine}
             <br />
@@ -119,14 +119,7 @@ export default function ClientsSayingSection() {
             </span>
           </h2>
           <p
-            className={`${bodyFont.className} mt-3`}
-            style={{
-              color: "#00373E",
-              fontSize: "22px",
-              lineHeight: "35.75px",
-              fontWeight: 400,
-              width: "266px",
-            }}
+            className={`${bodyFont.className} mt-3 text-base sm:text-lg lg:text-xl leading-7 sm:leading-8 max-w-sm`}
           >
             Positive experiences from users who have benefited from therapy or
             wellness programs.
@@ -157,7 +150,7 @@ export default function ClientsSayingSection() {
           {visible.map((item, i) => (
             <div
               key={`${item.author}-${i}`}
-              className={`flex h-[393px] flex-1 flex-col items-start justify-between rounded-[60px] px-16 py-16 shadow-sm ${
+              className={`flex flex-col justify-between rounded-[28px] sm:rounded-[40px] lg:rounded-[60px] p-6 sm:p-10 lg:p-16 shadow-sm min-h-[260px] sm:min-h-[320px] flex-1 ${
                 i === 0
                   ? "bg-[#FFE7CC] text-[#00373E]"
                   : "bg-[#00373E] text-white"
