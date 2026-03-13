@@ -7,6 +7,10 @@ import { Bricolage_Grotesque } from 'next/font/google';
 import { Mail, Phone, MapPin, Send, MessageSquare } from 'lucide-react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import { getAssetUrl } from '@/lib/assets';
+import { supabase } from '@/lib/supabase';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 const HomeFinalCtaSection = dynamic(
   () => import('@/components/HomeFinalCtaSection')
@@ -19,7 +23,7 @@ const bricolage = Bricolage_Grotesque({
 
 const contactInfo = [
   {
-    gif: '/email.gif',
+    gif: getAssetUrl('email.gif'),
     staticIcon: <Mail className="w-6 h-6" />,
     label: 'Email Us',
     value: 'frontoffice@hopetrustindia.com',
@@ -27,7 +31,7 @@ const contactInfo = [
     color: 'bg-blue-50 text-blue-600',
   },
   {
-    gif: '/call.gif',
+    gif: getAssetUrl('call.gif'),
     staticIcon: <Phone className="w-6 h-6" />,
     label: 'Call Us',
     value: '+91 90008 50001 / +91 90007 20003',
@@ -35,7 +39,7 @@ const contactInfo = [
     color: 'bg-green-50 text-green-600',
   },
   {
-    gif: '/map.gif',
+    gif: getAssetUrl('map.gif'),
     staticIcon: <MapPin className="w-6 h-6" />,
     label: 'Visit Us',
     value: 'C/o, UCCHVAS Rehabilitation Center, Plot no. 564-A-36-111, Opp. Lotus Pond Road, MLA Colony, Banjara Hills, Hyderabad-500034.',
@@ -398,14 +402,46 @@ const CustomSubmitButton = ({ status, text }: { status: 'idle' | 'sending' | 'se
   );
 };
 
+const contactSchema = z.object({
+  full_name: z.string().min(2, 'Name must be at least 2 characters'),
+  phone: z.string().min(10, 'Please enter a valid phone number'),
+  email: z.string().email('Please enter a valid email address'),
+  message: z.string().min(10, 'Message must be at least 10 characters'),
+});
+
 export default function ContactPage() {
   const [formStatus, setFormStatus] = React.useState<'idle' | 'sending' | 'sent'>('idle');
+  const [formData, setFormData] = React.useState({
+    full_name: '',
+    phone: '',
+    email: '',
+    message: '',
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const result = contactSchema.safeParse(formData);
+    if (!result.success) {
+      toast.error(result.error.errors[0].message);
+      return;
+    }
     setFormStatus('sending');
-    // Simulate sending
-    setTimeout(() => setFormStatus('sent'), 1500);
+    try {
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert(result.data);
+      if (error) throw error;
+      setFormStatus('sent');
+      toast.success('Message sent successfully! We\'ll get back to you soon.');
+      setFormData({ full_name: '', phone: '', email: '', message: '' });
+    } catch {
+      setFormStatus('idle');
+      toast.error('Failed to send message. Please try again.');
+    }
   };
 
   return (
@@ -415,7 +451,7 @@ export default function ContactPage() {
         {/* Hero Section */}
         <section className="relative py-20 overflow-hidden bg-[#F7F5EF]">
           <div className="absolute top-0 right-0 w-1/3 h-full opacity-10 pointer-events-none">
-            <Image src="/Asset 10.png" alt="Decorative" fill className="object-contain object-right-top" />
+            <Image src={getAssetUrl("Asset 10.png")} alt="Decorative" fill className="object-contain object-right-top" />
           </div>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center relative z-10">
             <motion.h1
@@ -509,6 +545,9 @@ export default function ContactPage() {
                     <input
                       required
                       type="text"
+                      name="full_name"
+                      value={formData.full_name}
+                      onChange={handleChange}
                       placeholder="John Doe"
                       className="w-full bg-white border-2 border-transparent shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] px-6 py-4 rounded-2xl focus:outline-none focus:border-orange-500 focus:shadow-[0_0_20px_rgba(249,115,22,0.1)] transition-all duration-300"
                     />
@@ -518,6 +557,9 @@ export default function ContactPage() {
                     <input
                       required
                       type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
                       placeholder="+91 98765 43210"
                       className="w-full bg-white border-2 border-transparent shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] px-6 py-4 rounded-2xl focus:outline-none focus:border-orange-500 focus:shadow-[0_0_20px_rgba(249,115,22,0.1)] transition-all duration-300"
                     />
@@ -527,6 +569,9 @@ export default function ContactPage() {
                     <input
                       required
                       type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
                       placeholder="john@example.com"
                       className="w-full bg-white border-2 border-transparent shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] px-6 py-4 rounded-2xl focus:outline-none focus:border-orange-500 focus:shadow-[0_0_20px_rgba(249,115,22,0.1)] transition-all duration-300"
                     />
@@ -536,6 +581,9 @@ export default function ContactPage() {
                     <textarea
                       required
                       rows={5}
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
                       placeholder="How can we help you today?"
                       className="w-full bg-white border-2 border-transparent shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] px-6 py-4 rounded-2xl focus:outline-none focus:border-orange-500 focus:shadow-[0_0_20px_rgba(249,115,22,0.1)] transition-all duration-300 resize-none"
                     />

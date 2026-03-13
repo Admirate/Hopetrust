@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Bricolage_Grotesque } from 'next/font/google';
 import Header from '@/components/Header';
 import dynamic from 'next/dynamic';
+import { getAssetUrl } from '@/lib/assets';
 
 // Code-split shared CTA
 const HomeFinalCtaSection = dynamic(
@@ -36,7 +37,7 @@ const FOCUS_SECTIONS: Record<FocusKey, FocusConfig> = {
     issues:
       'Anxiety, Depression, Stress, Anger Management, Loneliness, Procrastination, Grief, Trauma, Interpersonal Challenges',
     cardBg: '#F9E6D0',
-    imageSrc: '/mental health therapy.png',
+    imageSrc: getAssetUrl('mental health therapy.png'),
     imageAlt: 'Therapy illustration',
   },
   psychiatry: {
@@ -48,7 +49,7 @@ const FOCUS_SECTIONS: Record<FocusKey, FocusConfig> = {
     issues:
       'Anxiety, Depression, Stress, Anger Management, Loneliness, Procrastination, Grief, Trauma, Interpersonal Challenges',
     cardBg: '#F8F1BC',
-    imageSrc: '/medications.png',
+    imageSrc: getAssetUrl('medications.png'),
     imageAlt: 'Medications illustration',
   },
   couples: {
@@ -62,7 +63,7 @@ const FOCUS_SECTIONS: Record<FocusKey, FocusConfig> = {
     issues:
       'Communication, Conflict Resolution, Trust Building, Empathy',
     cardBg: '#EDE6B1',
-    imageSrc: '/couple therapy.png',
+    imageSrc: getAssetUrl('couple therapy.png'),
     imageAlt: 'Couples therapy illustration',
   },
   family: {
@@ -75,7 +76,7 @@ const FOCUS_SECTIONS: Record<FocusKey, FocusConfig> = {
     issues:
       'Family Conflicts, Boundaries, Generational Gaps, Parent Child Communication',
     cardBg: '#DFD58F',
-    imageSrc: '/family therapy.png',
+    imageSrc: getAssetUrl('family therapy.png'),
     imageAlt: 'Family therapy illustration',
   },
 };
@@ -162,7 +163,7 @@ export default function MentalHealthPage() {
             className="absolute inset-0 h-full w-full object-cover"
             preload="metadata"
           >
-            <source src="/mentalhealthherovideo.mp4" type="video/mp4" />
+            <source src={getAssetUrl("mentalhealthherovideo.mp4")} type="video/mp4" />
             Your browser does not support the video tag.
           </motion.video>
 

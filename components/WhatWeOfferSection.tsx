@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import { Bricolage_Grotesque } from "next/font/google";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { getAssetUrl } from '@/lib/assets';
 
 const headingFont = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -12,11 +13,11 @@ const headingFont = Bricolage_Grotesque({
 });
 
 const items = [
-  { label: "Therapy", icon: "/asset4.png" },
-  { label: "Addiction Care", icon: "/asset1.png" },
-  { label: "Psychiatry", icon: "/asset2.png" },
-  { label: "For Couples", icon: "/asset3.png" },
-  { label: "Queer Affirmative Care", icon: "/asset5.png" },
+  { label: "Therapy", icon: getAssetUrl("asset4.png") },
+  { label: "Addiction Care", icon: getAssetUrl("asset1.png") },
+  { label: "Psychiatry", icon: getAssetUrl("asset2.png") },
+  { label: "For Couples", icon: getAssetUrl("asset3.png") },
+  { label: "Queer Affirmative Care", icon: getAssetUrl("asset5.png") },
 ];
 
 export default function WhatWeOfferSection() {

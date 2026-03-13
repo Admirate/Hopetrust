@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { IBM_Plex_Mono, Ibarra_Real_Nova } from 'next/font/google';
+import { getAssetUrl } from '@/lib/assets';
 
 const headingFont = IBM_Plex_Mono({
   subsets: ['latin'],
@@ -51,7 +52,7 @@ export default function ConnectShareSection() {
               }}
             >
               <Image
-                src="/3 lines.png"
+                src={getAssetUrl("3 lines.png")}
                 alt="Decorative lines"
                 fill
                 className="object-contain"
@@ -70,7 +71,7 @@ export default function ConnectShareSection() {
               }}
             >
               <Image
-                src="/curvy line.png"
+                src={getAssetUrl("curvy line.png")}
                 alt="Curvy decorative line"
                 fill
                 className="object-contain"
@@ -79,7 +80,7 @@ export default function ConnectShareSection() {
             </div>
 
             <Image
-              src="/pexels-olly-3756168 1.png"
+              src={getAssetUrl("pexels-olly-3756168 1.png")}
               alt="Person enjoying sunflowers"
               fill
               className="object-cover shadow-lg"

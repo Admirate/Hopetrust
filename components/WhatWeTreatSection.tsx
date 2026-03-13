@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useScrollAnimation, fadeInUp, scaleIn } from '@/hooks/useScrollAnimation';
+import { getAssetUrl } from '@/lib/assets';
 
 export default function WhatWeTreatSection() {
   const treatmentAreas = [
@@ -9,7 +10,7 @@ export default function WhatWeTreatSection() {
       title: "ALCOHOL AND SUBSTANCE USE",
       icon: (
         <Image
-          src="/alcohol.png"
+          src={getAssetUrl("alcohol.png")}
           alt="Alcohol and Substance Use"
           width={84}
           height={84}
@@ -21,7 +22,7 @@ export default function WhatWeTreatSection() {
       title: "BEHAVIORAL ADDICTIONS (GAMING, GAMBLING)",
       icon: (
         <Image
-          src="/gambling.png"
+          src={getAssetUrl("gambling.png")}
           alt="Behavioral Addictions - Gaming, Gambling"
           width={84}
           height={84}
@@ -33,7 +34,7 @@ export default function WhatWeTreatSection() {
       title: "EMOTIONAL AND MENTAL HEALTH CONCERNS",
       icon: (
         <Image
-          src="/heart.png"
+          src={getAssetUrl("heart.png")}
           alt="Emotional and Mental Health Concerns"
           width={84}
           height={84}
@@ -45,7 +46,7 @@ export default function WhatWeTreatSection() {
       title: "RELATIONSHIP AND FAMILY CHALLENGES",
       icon: (
         <Image
-          src="/social.png"
+          src={getAssetUrl("social.png")}
           alt="Relationship and Family Challenges"
           width={84}
           height={84}

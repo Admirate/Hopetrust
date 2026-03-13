@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { motion } from 'motion/react';
 import { Bricolage_Grotesque } from 'next/font/google';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { getAssetUrl } from '@/lib/assets';
 
 const ctaFont = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -36,7 +37,7 @@ export default function HomeFinalCtaSection() {
           <div className="w-full lg:w-[570px] min-h-[266px] sm:min-h-[366px] lg:min-h-[466px] rounded-[50px] bg-white shadow-[0_24px_60px_rgba(0,0,0,0.06)] px-8 sm:px-10 lg:px-12 py-8 sm:py-10 flex flex-col gap-8">
             <div>
               <Image
-                src="/logo1.png"
+                src={getAssetUrl("logo1.png")}
                 alt="Hope Trust logo"
                 width={64}
                 height={64}
@@ -113,7 +114,7 @@ export default function HomeFinalCtaSection() {
             {/* Illustration on the right */}
             <div className="pointer-events-none absolute inset-y-0 right-0 w-1/2">
               <Image
-                src="/illustration_7.png"
+                src={getAssetUrl("illustration_7.png")}
                 alt="Decorative flowers illustration"
                 fill
                 className="object-contain object-right"

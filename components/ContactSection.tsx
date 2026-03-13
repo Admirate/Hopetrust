@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Bricolage_Grotesque } from "next/font/google";
 import { motion } from "motion/react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { getAssetUrl } from '@/lib/assets';
 
 const headingFont = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -113,25 +114,25 @@ export default function ContactSection() {
 
               <div className="flex items-center gap-4 pt-2">
                 <Image
-                  src="/Asset 16.png"
+                  src={getAssetUrl("Asset 16.png")}
                   alt="LinkedIn icon"
                   width={24}
                   height={24}
                 />
                 <Image
-                  src="/Asset 17.png"
+                  src={getAssetUrl("Asset 17.png")}
                   alt="Facebook icon"
                   width={24}
                   height={24}
                 />
                 <Image
-                  src="/Asset 18.png"
+                  src={getAssetUrl("Asset 18.png")}
                   alt="Instagram icon"
                   width={24}
                   height={24}
                 />
                 <Image
-                  src="/Asset 19.png"
+                  src={getAssetUrl("Asset 19.png")}
                   alt="WhatsApp icon"
                   width={24}
                   height={24}

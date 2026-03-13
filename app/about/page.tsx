@@ -9,6 +9,7 @@ import { Bricolage_Grotesque, IBM_Plex_Sans } from 'next/font/google';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import ProximityText from '@/components/ProximityText';
 import OurTeamSection from '@/components/OurTeamSection';
+import { getAssetUrl } from '@/lib/assets';
 
 // Re-use CTA via code-split chunk
 const HomeFinalCtaSection = dynamic(
@@ -271,7 +272,7 @@ export default function About() {
               >
                 <div className="relative w-full max-w-2xl lg:max-w-3xl aspect-square">
                   <Image
-                    src="\about us new.png"
+                    src={getAssetUrl("about us new.png")}
                     alt="Hope Trust therapist"
                     fill
                     className="object-contain"
@@ -306,7 +307,7 @@ export default function About() {
                 transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
               >
                 <Image
-                  src="/Asset 15.png"
+                  src={getAssetUrl("Asset 15.png")}
                   alt="Listener icon"
                   width={96}
                   height={96}
@@ -339,7 +340,7 @@ export default function About() {
                 }}
               >
                 <Image
-                  src="/Asset 14.png"
+                  src={getAssetUrl("Asset 14.png")}
                   alt="Guidance icon"
                   width={96}
                   height={96}
@@ -372,7 +373,7 @@ export default function About() {
                 }}
               >
                 <Image
-                  src="/Asset 13.png"
+                  src={getAssetUrl("Asset 13.png")}
                   alt="Process icon"
                   width={96}
                   height={96}
@@ -436,7 +437,7 @@ export default function About() {
                     }}
                   >
                     <Image
-                      src="/Frame 5.png"
+                      src={getAssetUrl("Frame 5.png")}
                       alt="Wellness coaching illustration"
                       fill
                       className="object-contain md:object-cover md:object-right"
@@ -495,7 +496,7 @@ export default function About() {
                   Select the therapist you feel right with.
                 </p>
                 <Image
-                  src="/Asset 12.png"
+                  src={getAssetUrl("Asset 12.png")}
                   alt="Booking via WhatsApp or website"
                   width={80}
                   height={80}
@@ -528,7 +529,7 @@ export default function About() {
                   that works for you.
                 </p>
                 <Image
-                  src="/Asset 11.png"
+                  src={getAssetUrl("Asset 11.png")}
                   alt="Pick a date and time"
                   width={80}
                   height={80}
@@ -565,7 +566,7 @@ export default function About() {
                   for your session.
                 </p>
                 <Image
-                  src="/Asset 10.png"
+                  src={getAssetUrl("Asset 10.png")}
                   alt="Online or in-person session"
                   width={80}
                   height={80}
@@ -642,7 +643,7 @@ export default function About() {
               {/* Back image */}
               <div className="absolute inset-y-4 left-0 right-20 rounded-[32px] overflow-hidden shadow-[0_24px_60px_rgba(0,0,0,0.25)]">
                 <Image
-                  src="/therapy.png"
+                  src={getAssetUrl("therapy.png")}
                   alt="Therapist with client"
                   fill
                   className="object-cover"
@@ -653,7 +654,7 @@ export default function About() {
               {/* Front image */}
               <div className="absolute inset-y-0 left-16 right-0 rounded-[32px] overflow-hidden shadow-[0_24px_60px_rgba(0,0,0,0.35)]">
                 <Image
-                  src="/Madam.png"
+                  src={getAssetUrl("Madam.png")}
                   alt="Hope Trust team member"
                   fill
                   className="object-cover"

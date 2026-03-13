@@ -7,6 +7,7 @@ import VariableProximity from './VariableProximity';
 import { AuroraBackground } from './AuroraBackground';
 import { useScrollAnimation, fadeInUp } from '@/hooks/useScrollAnimation';
 import { useRef } from 'react';
+import { getAssetUrl } from '@/lib/assets';
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -154,7 +155,7 @@ const BackgroundCirclesSection = () => {
           >
             <div className="relative w-full max-w-[479px] aspect-[479/491] rounded-[52px] bg-[#F97316] shadow-[0_24px_60px_rgba(0,0,0,0.2)] overflow-hidden">
               <TiltedCard
-                imageSrc="/2.jpg"
+                imageSrc={getAssetUrl("2.jpg")}
                 altText="Illustration of a person with overlapping feelings"
                 containerHeight="100%"
                 containerWidth="100%"

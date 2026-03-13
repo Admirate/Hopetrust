@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useScrollAnimation, fadeInUp, fadeInLeft, fadeInRight } from '@/hooks/useScrollAnimation';
+import { getAssetUrl } from '@/lib/assets';
 
 const ServicesSection = () => {
   const { elementRef: titleRef, isVisible: titleVisible } = useScrollAnimation();
@@ -15,7 +16,7 @@ const ServicesSection = () => {
       {/* Pink lines background */}
       <div className="absolute inset-0 pointer-events-none">
         <Image
-          src="/lines.png"
+          src={getAssetUrl("lines.png")}
           alt="Decorative background lines"
           fill
           className="object-cover opacity-30"
@@ -32,7 +33,7 @@ const ServicesSection = () => {
           {/* Card 1: Therapy and Counseling */}
           <div ref={card1Ref} className="bg-white rounded-2xl shadow-lg overflow-hidden" style={fadeInLeft(card1Visible, 300)}>
             <div className="relative h-96">
-              <Image src="/therapy.png" alt="Therapy and Counseling" fill className="object-cover" />
+              <Image src={getAssetUrl("therapy.png")} alt="Therapy and Counseling" fill className="object-cover" />
               <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end p-6">
                 <div>
                   <h3 className="text-white font-bold text-xl flex items-center">
@@ -47,7 +48,7 @@ const ServicesSection = () => {
           {/* Card 2: Home-based Recovery Programs */}
           <div ref={card2Ref} className="bg-white rounded-2xl shadow-lg overflow-hidden" style={fadeInUp(card2Visible, 400)}>
             <div className="relative h-96">
-              <Image src="/children.png" alt="Home-based Recovery Programs" fill className="object-cover" />
+              <Image src={getAssetUrl("children.png")} alt="Home-based Recovery Programs" fill className="object-cover" />
               <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end p-6">
                 <div>
                   <h3 className="text-white font-bold text-xl flex items-center">
@@ -62,7 +63,7 @@ const ServicesSection = () => {
           {/* Card 3: Addiction Recovery Care */}
           <div ref={card3Ref} className="bg-white rounded-2xl shadow-lg overflow-hidden" style={fadeInRight(card3Visible, 500)}>
             <div className="relative h-96">
-              <Image src="/addiction.png" alt="Addiction Recovery Care" fill className="object-cover" />
+              <Image src={getAssetUrl("addiction.png")} alt="Addiction Recovery Care" fill className="object-cover" />
               <div className="absolute inset-0 bg-black bg-opacity-40 flex items-end p-6">
                 <div>
                   <h3 className="text-white font-bold text-xl flex items-center">

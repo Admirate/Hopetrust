@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Bricolage_Grotesque } from "next/font/google";
+import { getAssetUrl } from '@/lib/assets';
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -54,7 +55,7 @@ export default function RectangleSection() {
         {/* Background video */}
         <video
           className="absolute inset-0 h-full w-full object-cover"
-          src="/Sun shine.mp4"
+          src={getAssetUrl("Sun shine.mp4")}
           autoPlay
           muted
           playsInline
@@ -106,7 +107,7 @@ export default function RectangleSection() {
             <div className="flex flex-1 items-center justify-end">
               <div className="h-[286px] w-[214px] overflow-hidden rounded-[32px]">
                 <video
-                  src="/FINal.mp4"
+                  src={getAssetUrl("FINal.mp4")}
                   className="h-full w-full scale-[1.08] transform object-cover"
                   autoPlay
                   muted

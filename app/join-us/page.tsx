@@ -7,6 +7,10 @@ import { Bricolage_Grotesque } from 'next/font/google';
 import { Mail, Phone, MapPin, Send, MessageSquare, Briefcase, Users, Heart, Star, Sparkles, Upload } from 'lucide-react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import { getAssetUrl } from '@/lib/assets';
+import { supabase } from '@/lib/supabase';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 const HomeFinalCtaSection = dynamic(
   () => import('@/components/HomeFinalCtaSection')
@@ -323,13 +327,48 @@ const CustomSubmitButton = ({ status, text = "Submit Application" }: { status: '
   );
 };
 
+const joinUsSchema = z.object({
+  full_name: z.string().min(2, 'Name must be at least 2 characters'),
+  email: z.string().email('Please enter a valid email address'),
+  position: z.string().min(1, 'Please select a position'),
+  cv_link: z.string().url('Please enter a valid URL'),
+  introduction: z.string().min(20, 'Introduction must be at least 20 characters'),
+});
+
 export default function JoinUsPage() {
   const [formStatus, setFormStatus] = React.useState<'idle' | 'sending' | 'sent'>('idle');
+  const [formData, setFormData] = React.useState({
+    full_name: '',
+    email: '',
+    position: '',
+    cv_link: '',
+    introduction: '',
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const result = joinUsSchema.safeParse(formData);
+    if (!result.success) {
+      toast.error(result.error.errors[0].message);
+      return;
+    }
     setFormStatus('sending');
-    setTimeout(() => setFormStatus('sent'), 1500);
+    try {
+      const { error } = await supabase
+        .from('joinus_applications')
+        .insert(result.data);
+      if (error) throw error;
+      setFormStatus('sent');
+      toast.success('Application submitted! We\'ll review it within 48 hours.');
+      setFormData({ full_name: '', email: '', position: '', cv_link: '', introduction: '' });
+    } catch {
+      setFormStatus('idle');
+      toast.error('Failed to submit application. Please try again.');
+    }
   };
 
   return (
@@ -339,7 +378,7 @@ export default function JoinUsPage() {
         {/* Hero Section */}
         <section className="relative py-24 overflow-hidden bg-[#FEF2EB]">
           <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
-            <Image src="/BACKGROUND CIRCLES.png" alt="Decorative" fill className="object-cover" />
+            <Image src={getAssetUrl("BACKGROUND CIRCLES.png")} alt="Decorative" fill className="object-cover" />
           </div>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center relative z-10">
             <motion.div
@@ -474,6 +513,9 @@ export default function JoinUsPage() {
                       <input
                         required
                         type="text"
+                        name="full_name"
+                        value={formData.full_name}
+                        onChange={handleChange}
                         placeholder="Your Name"
                         className="w-full bg-[#F9F9F9] border-2 border-transparent px-6 py-4 rounded-[24px] focus:ring-0 focus:border-orange-500 focus:bg-white transition-all outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
                       />
@@ -483,6 +525,9 @@ export default function JoinUsPage() {
                       <input
                         required
                         type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
                         placeholder="your@email.com"
                         className="w-full bg-[#F9F9F9] border-2 border-transparent px-6 py-4 rounded-[24px] focus:ring-0 focus:border-orange-500 focus:bg-white transition-all outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
                       />
@@ -494,6 +539,9 @@ export default function JoinUsPage() {
                     <div className="relative">
                       <select
                         required
+                        name="position"
+                        value={formData.position}
+                        onChange={handleChange}
                         className="w-full bg-[#F9F9F9] border-2 border-transparent px-6 py-4 rounded-[24px] focus:ring-0 focus:border-orange-500 focus:bg-white transition-all outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] appearance-none cursor-pointer"
                       >
                         <option value="">Select a role</option>
@@ -515,6 +563,9 @@ export default function JoinUsPage() {
                       <input
                         required
                         type="url"
+                        name="cv_link"
+                        value={formData.cv_link}
+                        onChange={handleChange}
                         placeholder="https://linkedin.com/in/..."
                         className="w-full bg-[#F9F9F9] border-2 border-transparent px-6 py-4 rounded-[24px] focus:ring-0 focus:border-orange-500 focus:bg-white transition-all outline-none pl-14 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
                       />
@@ -527,6 +578,9 @@ export default function JoinUsPage() {
                     <textarea
                       required
                       rows={4}
+                      name="introduction"
+                      value={formData.introduction}
+                      onChange={handleChange}
                       placeholder="Tell us why you'd like to join Hope Trust..."
                       className="w-full bg-[#F9F9F9] border-2 border-transparent px-6 py-4 rounded-[24px] focus:ring-0 focus:border-orange-500 focus:bg-white transition-all outline-none resize-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
                     />

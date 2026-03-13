@@ -5,6 +5,7 @@ import Header from '@/components/Header';
 import Image from 'next/image';
 import { motion } from 'motion/react';
 import { Bricolage_Grotesque, IBM_Plex_Sans } from 'next/font/google';
+import { getAssetUrl } from '@/lib/assets';
 
 const bricolageBody = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -20,27 +21,27 @@ const ROAD_STEPS = [
   {
     text: 'You reach out and say you need help.',
     step: 'Step 1',
-    image: '/1road.png',
+    image: getAssetUrl('1road.png'),
   },
   {
     text: 'We speak with you and understand what is going on.',
     step: 'Step 2',
-    image: '/2road.png',
+    image: getAssetUrl('2road.png'),
   },
   {
     text: 'We create a clear recovery plan that fits your needs.',
     step: 'Step 3',
-    image: '/3road.png',
+    image: getAssetUrl('3road.png'),
   },
   {
     text: 'You attend therapy online from wherever you feel comfortable.',
     step: 'Step 4',
-    image: '/4road.png',
+    image: getAssetUrl('4road.png'),
   },
   {
     text: 'Your support person can join if it helps.',
     step: 'Step 5',
-    image: '/5road.png',
+    image: getAssetUrl('5road.png'),
   },
 ];
 
@@ -119,7 +120,7 @@ export default function AddictionPage() {
             >
               <div className="relative w-full max-w-md h-64 sm:h-72 md:h-80 lg:h-96 rounded-[32px] overflow-hidden bg-white">
                 <Image
-                  src="/Group 28.png"
+                  src={getAssetUrl("Group 28.png")}
                   alt="Illustration representing addiction recovery support"
                   fill
                   className="object-cover"
@@ -175,7 +176,7 @@ export default function AddictionPage() {
                 <div className="relative w-[260px] sm:w-[320px] lg:w-[406px] aspect-[406/442] rounded-[60px] bg-[#00373E] flex items-center justify-center shadow-[0_24px_60px_rgba(0,0,0,0.15)]">
                   <div className="relative w-[180px] sm:w-[220px] lg:w-[268px] aspect-[268/409]">
                     <Image
-                      src="/illustration_4.png"
+                      src={getAssetUrl("illustration_4.png")}
                       alt="Illustration of hopeful mind and recovery"
                       fill
                       className="object-contain"
@@ -229,7 +230,7 @@ export default function AddictionPage() {
                 >
                   <div className="relative w-[229px] aspect-[229/322] translate-x-2 sm:translate-x-3 lg:translate-x-4">
                     <Image
-                      src="/illustration10.png"
+                      src={getAssetUrl("illustration10.png")}
                       alt="Decorative illustration"
                       fill
                       className="object-contain object-right"

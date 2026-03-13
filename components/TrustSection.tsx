@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useScrollAnimation, fadeInUp, fadeInLeft, fadeInRight } from '@/hooks/useScrollAnimation';
+import { getAssetUrl } from '@/lib/assets';
 
 const GradientBlobs = () => {
   return (
@@ -79,7 +80,7 @@ export default function TrustSection() {
       {/* Pink lines background */}
       <div className="absolute inset-0 pointer-events-none">
         <Image
-          src="/lines.png"
+          src={getAssetUrl("lines.png")}
           alt="Decorative background lines"
           fill
           className="object-cover opacity-50"

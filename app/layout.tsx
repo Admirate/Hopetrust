@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import WebVitals from '@/components/WebVitals';
 import LenisProvider from '@/components/LenisProvider';
+import { Toaster } from 'sonner';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -57,6 +58,7 @@ export default function RootLayout({
         <LenisProvider>
           {children}
           <WebVitals />
+          <Toaster position="bottom-right" richColors />
         </LenisProvider>
       </body>
     </html>

@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { Bricolage_Grotesque } from "next/font/google";
+import { getAssetUrl } from '@/lib/assets';
 
 const heroFont = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -38,7 +39,7 @@ const HeroSection = () => {
         className="absolute inset-0 h-full w-full object-cover"
         preload="metadata"
       >
-        <source src="/0_Pink_Red_1280x720.mp4" type="video/mp4" />
+        <source src={getAssetUrl("0_Pink_Red_1280x720.mp4")} type="video/mp4" />
         Your browser does not support the video tag.
       </motion.video>
 
@@ -71,7 +72,7 @@ const HeroSection = () => {
                 className="h-full w-full object-cover"
                 preload="metadata"
               >
-                <source src="/final hero video.mp4" type="video/mp4" />
+                <source src={getAssetUrl("final hero video.mp4")} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
               <div className="absolute inset-0 bg-black/45" />
