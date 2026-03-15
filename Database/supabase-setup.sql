@@ -34,3 +34,18 @@ create policy "Allow anonymous inserts" on joinus_applications
   for insert to anon with check (true);
 
 -- No SELECT/UPDATE/DELETE policies for anon = data only accessible via dashboard or service key
+
+-- 5. Storage bucket for CV / portfolio uploads (create in Dashboard > Storage)
+-- Bucket name: cv-uploads
+-- Make it PUBLIC so the uploaded file URLs are accessible
+insert into storage.buckets (id, name, public)
+  values ('cv-uploads', 'cv-uploads', true)
+  on conflict (id) do nothing;
+
+-- Allow anonymous uploads to the cv-uploads bucket
+create policy "Allow anonymous uploads" on storage.objects
+  for insert to anon with check (bucket_id = 'cv-uploads');
+
+-- Allow public reads from cv-uploads
+create policy "Allow public reads" on storage.objects
+  for select to anon using (bucket_id = 'cv-uploads');

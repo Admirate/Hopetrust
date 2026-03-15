@@ -417,18 +417,29 @@ export default function ContactPage() {
     email: '',
     message: '',
   });
+  const [fieldErrors, setFieldErrors] = React.useState<Record<string, string>>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (fieldErrors[name]) {
+      setFieldErrors(prev => { const n = { ...prev }; delete n[name]; return n; });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = contactSchema.safeParse(formData);
     if (!result.success) {
+      const errors: Record<string, string> = {};
+      result.error.errors.forEach(err => {
+        if (err.path[0]) errors[err.path[0] as string] = err.message;
+      });
+      setFieldErrors(errors);
       toast.error(result.error.errors[0].message);
       return;
     }
+    setFieldErrors({});
     setFormStatus('sending');
     try {
       const [supabaseResult] = await Promise.allSettled([
@@ -559,50 +570,50 @@ export default function ContactPage() {
                   <div className="space-y-2">
                     <label className="text-[11px] font-bold uppercase tracking-widest text-[#6A8181] ml-2">Full Name</label>
                     <input
-                      required
                       type="text"
                       name="full_name"
                       value={formData.full_name}
                       onChange={handleChange}
                       placeholder="John Doe"
-                      className="w-full bg-white border-2 border-transparent shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] px-6 py-4 rounded-2xl focus:outline-none focus:border-orange-500 focus:shadow-[0_0_20px_rgba(249,115,22,0.1)] transition-all duration-300"
+                      className={`w-full bg-white border-2 ${fieldErrors.full_name ? 'border-red-400' : 'border-transparent'} shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] px-6 py-4 rounded-2xl focus:outline-none focus:border-orange-500 focus:shadow-[0_0_20px_rgba(249,115,22,0.1)] transition-all duration-300`}
                     />
+                    {fieldErrors.full_name && <p className="text-red-500 text-xs ml-2">{fieldErrors.full_name}</p>}
                   </div>
                   <div className="space-y-2">
                     <label className="text-[11px] font-bold uppercase tracking-widest text-[#6A8181] ml-2">Phone Number</label>
                     <input
-                      required
                       type="tel"
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="+91 98765 43210"
-                      className="w-full bg-white border-2 border-transparent shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] px-6 py-4 rounded-2xl focus:outline-none focus:border-orange-500 focus:shadow-[0_0_20px_rgba(249,115,22,0.1)] transition-all duration-300"
+                      className={`w-full bg-white border-2 ${fieldErrors.phone ? 'border-red-400' : 'border-transparent'} shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] px-6 py-4 rounded-2xl focus:outline-none focus:border-orange-500 focus:shadow-[0_0_20px_rgba(249,115,22,0.1)] transition-all duration-300`}
                     />
+                    {fieldErrors.phone && <p className="text-red-500 text-xs ml-2">{fieldErrors.phone}</p>}
                   </div>
                   <div className="space-y-2 md:col-span-2">
                     <label className="text-[11px] font-bold uppercase tracking-widest text-[#6A8181] ml-2">Email Address</label>
                     <input
-                      required
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="john@example.com"
-                      className="w-full bg-white border-2 border-transparent shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] px-6 py-4 rounded-2xl focus:outline-none focus:border-orange-500 focus:shadow-[0_0_20px_rgba(249,115,22,0.1)] transition-all duration-300"
+                      className={`w-full bg-white border-2 ${fieldErrors.email ? 'border-red-400' : 'border-transparent'} shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] px-6 py-4 rounded-2xl focus:outline-none focus:border-orange-500 focus:shadow-[0_0_20px_rgba(249,115,22,0.1)] transition-all duration-300`}
                     />
+                    {fieldErrors.email && <p className="text-red-500 text-xs ml-2">{fieldErrors.email}</p>}
                   </div>
                   <div className="space-y-2 md:col-span-2">
                     <label className="text-[11px] font-bold uppercase tracking-widest text-[#6A8181] ml-2">Your Message</label>
                     <textarea
-                      required
                       rows={5}
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
                       placeholder="How can we help you today?"
-                      className="w-full bg-white border-2 border-transparent shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] px-6 py-4 rounded-2xl focus:outline-none focus:border-orange-500 focus:shadow-[0_0_20px_rgba(249,115,22,0.1)] transition-all duration-300 resize-none"
+                      className={`w-full bg-white border-2 ${fieldErrors.message ? 'border-red-400' : 'border-transparent'} shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] px-6 py-4 rounded-2xl focus:outline-none focus:border-orange-500 focus:shadow-[0_0_20px_rgba(249,115,22,0.1)] transition-all duration-300 resize-none`}
                     />
+                    {fieldErrors.message && <p className="text-red-500 text-xs ml-2">{fieldErrors.message}</p>}
                   </div>
 
                   <div className="md:col-span-2 pt-4 flex justify-center lg:justify-start">

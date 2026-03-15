@@ -327,11 +327,17 @@ const CustomSubmitButton = ({ status, text = "Submit Application" }: { status: '
   );
 };
 
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+const ALLOWED_FILE_TYPES = [
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+];
+
 const joinUsSchema = z.object({
   full_name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Please enter a valid email address'),
   position: z.string().min(1, 'Please select a position'),
-  cv_link: z.string().url('Please enter a valid URL'),
   introduction: z.string().min(20, 'Introduction must be at least 20 characters'),
 });
 
@@ -341,29 +347,76 @@ export default function JoinUsPage() {
     full_name: '',
     email: '',
     position: '',
-    cv_link: '',
     introduction: '',
   });
+  const [cvFile, setCvFile] = React.useState<File | null>(null);
+  const [fieldErrors, setFieldErrors] = React.useState<Record<string, string>>({});
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (fieldErrors[name]) {
+      setFieldErrors(prev => { const n = { ...prev }; delete n[name]; return n; });
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] ?? null;
+    if (!file) return;
+    if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+      setFieldErrors(prev => ({ ...prev, cv_file: 'Only PDF and Word documents are allowed' }));
+      e.target.value = '';
+      return;
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      setFieldErrors(prev => ({ ...prev, cv_file: 'File size must be under 5 MB' }));
+      e.target.value = '';
+      return;
+    }
+    setCvFile(file);
+    setFieldErrors(prev => { const n = { ...prev }; delete n.cv_file; return n; });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     const result = joinUsSchema.safeParse(formData);
+    const errors: Record<string, string> = {};
     if (!result.success) {
-      toast.error(result.error.errors[0].message);
+      result.error.errors.forEach(err => {
+        if (err.path[0]) errors[err.path[0] as string] = err.message;
+      });
+    }
+    if (!cvFile) errors.cv_file = 'Please upload your CV / portfolio';
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      toast.error(Object.values(errors)[0]);
       return;
     }
+    setFieldErrors({});
     setFormStatus('sending');
+
     try {
+      const timestamp = Date.now();
+      const safeName = cvFile!.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+      const filePath = `${timestamp}_${safeName}`;
+      const { error: uploadError } = await supabase.storage
+        .from('cv-uploads')
+        .upload(filePath, cvFile!, { cacheControl: '3600', upsert: false });
+      if (uploadError) throw new Error(`File upload failed: ${uploadError.message}`);
+
+      const { data: urlData } = supabase.storage.from('cv-uploads').getPublicUrl(filePath);
+      const cvUrl = urlData.publicUrl;
+
+      const insertData = { ...result.data!, cv_link: cvUrl };
+
       const [supabaseResult] = await Promise.allSettled([
-        supabase.from('joinus_applications').insert(result.data),
+        supabase.from('joinus_applications').insert(insertData),
         fetch('/__forms.html', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams({ 'form-name': 'joinus', ...result.data }).toString(),
+          body: new URLSearchParams({ 'form-name': 'joinus', ...insertData }).toString(),
         }),
       ]);
       if (supabaseResult.status === 'fulfilled' && supabaseResult.value.error) {
@@ -371,10 +424,12 @@ export default function JoinUsPage() {
       }
       setFormStatus('sent');
       toast.success('Application submitted! We\'ll review it within 48 hours.');
-      setFormData({ full_name: '', email: '', position: '', cv_link: '', introduction: '' });
-    } catch {
+      setFormData({ full_name: '', email: '', position: '', introduction: '' });
+      setCvFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    } catch (err) {
       setFormStatus('idle');
-      toast.error('Failed to submit application. Please try again.');
+      toast.error(err instanceof Error ? err.message : 'Failed to submit application. Please try again.');
     }
   };
 
@@ -528,26 +583,26 @@ export default function JoinUsPage() {
                     <div className="space-y-2 group">
                       <label className="text-[11px] font-bold uppercase tracking-widest text-[#6A8181] ml-2">Full Name</label>
                       <input
-                        required
                         type="text"
                         name="full_name"
                         value={formData.full_name}
                         onChange={handleChange}
                         placeholder="Your Name"
-                        className="w-full bg-[#F9F9F9] border-2 border-transparent px-6 py-4 rounded-[24px] focus:ring-0 focus:border-orange-500 focus:bg-white transition-all outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
+                        className={`w-full bg-[#F9F9F9] border-2 ${fieldErrors.full_name ? 'border-red-400' : 'border-transparent'} px-6 py-4 rounded-[24px] focus:ring-0 focus:border-orange-500 focus:bg-white transition-all outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]`}
                       />
+                      {fieldErrors.full_name && <p className="text-red-500 text-xs ml-2">{fieldErrors.full_name}</p>}
                     </div>
                     <div className="space-y-2 group">
                       <label className="text-[11px] font-bold uppercase tracking-widest text-[#6A8181] ml-2">Email Address</label>
                       <input
-                        required
                         type="email"
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="your@email.com"
-                        className="w-full bg-[#F9F9F9] border-2 border-transparent px-6 py-4 rounded-[24px] focus:ring-0 focus:border-orange-500 focus:bg-white transition-all outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
+                        className={`w-full bg-[#F9F9F9] border-2 ${fieldErrors.email ? 'border-red-400' : 'border-transparent'} px-6 py-4 rounded-[24px] focus:ring-0 focus:border-orange-500 focus:bg-white transition-all outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]`}
                       />
+                      {fieldErrors.email && <p className="text-red-500 text-xs ml-2">{fieldErrors.email}</p>}
                     </div>
                   </div>
                   
@@ -555,11 +610,10 @@ export default function JoinUsPage() {
                     <label className="text-[11px] font-bold uppercase tracking-widest text-[#6A8181] ml-2">Position Interested In</label>
                     <div className="relative">
                       <select
-                        required
                         name="position"
                         value={formData.position}
                         onChange={handleChange}
-                        className="w-full bg-[#F9F9F9] border-2 border-transparent px-6 py-4 rounded-[24px] focus:ring-0 focus:border-orange-500 focus:bg-white transition-all outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] appearance-none cursor-pointer"
+                        className={`w-full bg-[#F9F9F9] border-2 ${fieldErrors.position ? 'border-red-400' : 'border-transparent'} px-6 py-4 rounded-[24px] focus:ring-0 focus:border-orange-500 focus:bg-white transition-all outline-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] appearance-none cursor-pointer`}
                       >
                         <option value="">Select a role</option>
                         <option value="therapist">Psychologist / Therapist</option>
@@ -572,35 +626,60 @@ export default function JoinUsPage() {
                         <Users className="w-5 h-5" />
                       </div>
                     </div>
+                    {fieldErrors.position && <p className="text-red-500 text-xs ml-2">{fieldErrors.position}</p>}
                   </div>
 
                   <div className="space-y-2 group">
-                    <label className="text-[11px] font-bold uppercase tracking-widest text-[#6A8181] ml-2">Portfolio / CV Link</label>
-                    <div className="relative">
+                    <label className="text-[11px] font-bold uppercase tracking-widest text-[#6A8181] ml-2">Upload CV / Portfolio</label>
+                    <div
+                      className={`relative flex items-center gap-4 bg-[#F9F9F9] border-2 border-dashed ${fieldErrors.cv_file ? 'border-red-400' : 'border-gray-300'} px-6 py-5 rounded-[24px] transition-all cursor-pointer hover:border-orange-400 hover:bg-orange-50/30`}
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-orange-100 text-orange-500 flex items-center justify-center">
+                        <Upload className="w-5 h-5" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        {cvFile ? (
+                          <p className="text-sm font-medium text-[#00373E] truncate">{cvFile.name}</p>
+                        ) : (
+                          <p className="text-sm text-[#6A8181]">Click to upload PDF or Word document (max 5 MB)</p>
+                        )}
+                      </div>
+                      {cvFile && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCvFile(null);
+                            if (fileInputRef.current) fileInputRef.current.value = '';
+                          }}
+                          className="flex-shrink-0 text-gray-400 hover:text-red-500 transition-colors"
+                        >
+                          ✕
+                        </button>
+                      )}
                       <input
-                        required
-                        type="url"
-                        name="cv_link"
-                        value={formData.cv_link}
-                        onChange={handleChange}
-                        placeholder="https://linkedin.com/in/..."
-                        className="w-full bg-[#F9F9F9] border-2 border-transparent px-6 py-4 rounded-[24px] focus:ring-0 focus:border-orange-500 focus:bg-white transition-all outline-none pl-14 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
+                        ref={fileInputRef}
+                        type="file"
+                        accept=".pdf,.doc,.docx"
+                        onChange={handleFileChange}
+                        className="hidden"
                       />
-                      <Upload className="w-5 h-5 absolute left-6 top-1/2 -translate-y-1/2 text-[#6A8181]" />
                     </div>
+                    {fieldErrors.cv_file && <p className="text-red-500 text-xs ml-2">{fieldErrors.cv_file}</p>}
                   </div>
 
                   <div className="space-y-2 group">
                     <label className="text-[11px] font-bold uppercase tracking-widest text-[#6A8181] ml-2">Brief Introduction</label>
                     <textarea
-                      required
                       rows={4}
                       name="introduction"
                       value={formData.introduction}
                       onChange={handleChange}
                       placeholder="Tell us why you'd like to join Hope Trust..."
-                      className="w-full bg-[#F9F9F9] border-2 border-transparent px-6 py-4 rounded-[24px] focus:ring-0 focus:border-orange-500 focus:bg-white transition-all outline-none resize-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
+                      className={`w-full bg-[#F9F9F9] border-2 ${fieldErrors.introduction ? 'border-red-400' : 'border-transparent'} px-6 py-4 rounded-[24px] focus:ring-0 focus:border-orange-500 focus:bg-white transition-all outline-none resize-none shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]`}
                     />
+                    {fieldErrors.introduction && <p className="text-red-500 text-xs ml-2">{fieldErrors.introduction}</p>}
                   </div>
 
                   <div className="pt-4">
