@@ -431,10 +431,17 @@ export default function ContactPage() {
     }
     setFormStatus('sending');
     try {
-      const { error } = await supabase
-        .from('contact_submissions')
-        .insert(result.data);
-      if (error) throw error;
+      const [supabaseResult] = await Promise.allSettled([
+        supabase.from('contact_submissions').insert(result.data),
+        fetch('/__forms.html', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({ 'form-name': 'contact', ...result.data }).toString(),
+        }),
+      ]);
+      if (supabaseResult.status === 'fulfilled' && supabaseResult.value.error) {
+        throw supabaseResult.value.error;
+      }
       setFormStatus('sent');
       toast.success('Message sent successfully! We\'ll get back to you soon.');
       setFormData({ full_name: '', phone: '', email: '', message: '' });
@@ -447,6 +454,15 @@ export default function ContactPage() {
   return (
     <>
       <Header />
+      {/* Hidden form for Netlify build-time detection */}
+      <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
+        <input name="bot-field" />
+        <input name="full_name" />
+        <input name="phone" />
+        <input name="email" />
+        <textarea name="message" />
+      </form>
+
       <main className={`${bricolage.className} min-h-screen pt-20 bg-white`}>
         {/* Hero Section */}
         <section className="relative py-20 overflow-hidden bg-[#F7F5EF]">

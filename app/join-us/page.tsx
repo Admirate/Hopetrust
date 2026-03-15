@@ -358,10 +358,17 @@ export default function JoinUsPage() {
     }
     setFormStatus('sending');
     try {
-      const { error } = await supabase
-        .from('joinus_applications')
-        .insert(result.data);
-      if (error) throw error;
+      const [supabaseResult] = await Promise.allSettled([
+        supabase.from('joinus_applications').insert(result.data),
+        fetch('/__forms.html', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({ 'form-name': 'joinus', ...result.data }).toString(),
+        }),
+      ]);
+      if (supabaseResult.status === 'fulfilled' && supabaseResult.value.error) {
+        throw supabaseResult.value.error;
+      }
       setFormStatus('sent');
       toast.success('Application submitted! We\'ll review it within 48 hours.');
       setFormData({ full_name: '', email: '', position: '', cv_link: '', introduction: '' });
@@ -374,6 +381,16 @@ export default function JoinUsPage() {
   return (
     <>
       <Header />
+      {/* Hidden form for Netlify build-time detection */}
+      <form name="joinus" data-netlify="true" netlify-honeypot="bot-field" hidden>
+        <input name="bot-field" />
+        <input name="full_name" />
+        <input name="email" />
+        <select name="position"><option value=""></option></select>
+        <input name="cv_link" />
+        <textarea name="introduction" />
+      </form>
+
       <main className={`${bricolage.className} min-h-screen pt-20 bg-white`}>
         {/* Hero Section */}
         <section className="relative py-24 overflow-hidden bg-[#FEF2EB]">
