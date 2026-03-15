@@ -145,7 +145,7 @@ export default function AddictionPage() {
                 transition={getFadeInTransition(0)}
               >
                 <h2
-                  className={`${bricolageBody.className} text-[48px] leading-[48px] tracking-[0.72px] font-semibold text-[#ED7428]`}
+                  className={`${bricolageBody.className} text-3xl sm:text-4xl lg:text-[48px] leading-tight sm:leading-[48px] tracking-[0.72px] font-semibold text-[#ED7428]`}
                 >
                   Why Hope Trust
                 </h2>
@@ -189,7 +189,7 @@ export default function AddictionPage() {
 
             {/* Bottom row: long rounded rectangle with text + illustration */}
             <div className="w-full">
-              <div className="relative w-full rounded-[60px] bg-[#F9E6D0] px-6 sm:px-10 lg:px-16 py-6 sm:py-8 lg:py-10 flex flex-col gap-10 md:flex-row md:items-center md:justify-between lg:min-h-[380px]">
+              <div className="relative w-full rounded-[28px] sm:rounded-[40px] lg:rounded-[60px] bg-[#F9E6D0] px-6 sm:px-10 lg:px-16 py-6 sm:py-8 lg:py-10 flex flex-col gap-10 md:flex-row md:items-center md:justify-between lg:min-h-[380px]">
                 {/* Left text content */}
                 <motion.div
                   className="max-w-2xl text-left"
@@ -249,7 +249,7 @@ export default function AddictionPage() {
           <div className="mx-auto flex w-full max-w-[1184px] flex-col items-center gap-10 px-4 sm:px-8 lg:px-12">
             {/* Heading */}
             <motion.h2
-              className={`${bricolageBody.className} text-center text-[48px] font-semibold text-[#00373E]`}
+              className={`${bricolageBody.className} text-center text-3xl sm:text-4xl lg:text-[48px] font-semibold text-[#00373E]`}
               style={{ letterSpacing: "0.724px" }}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -274,24 +274,24 @@ export default function AddictionPage() {
               {/* Step 1 with circular highlight */}
               <button
                 type="button"
-                className={`flex h-[68px] w-[302px] max-w-full items-center justify-center rounded-[10px] bg-[#ED7428] px-6 shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4
-  ${bricolageBody.className} text-[24px] leading-[24px] tracking-[0.72px] font-bold text-center text-white`}
+                className={`flex h-auto sm:h-[68px] w-full sm:w-[302px] max-w-full items-center justify-center rounded-[10px] bg-[#ED7428] px-6 shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4
+  ${bricolageBody.className} text-base sm:text-lg lg:text-[24px] leading-snug sm:leading-[24px] tracking-[0.72px] font-bold text-center text-white`}
               >
                 A full assessment
               </button>
 
               <button
                 type="button"
-                className={`flex h-[68px] w-[302px] max-w-full items-center justify-center rounded-[10px] bg-[#ED7428] px-6 shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4
-  ${bricolageBody.className} text-[24px] leading-[24px] tracking-[0.72px] font-bold text-center text-white`}
+                className={`flex h-auto sm:h-[68px] w-full sm:w-[302px] max-w-full items-center justify-center rounded-[10px] bg-[#ED7428] px-6 shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4
+  ${bricolageBody.className} text-base sm:text-lg lg:text-[24px] leading-snug sm:leading-[24px] tracking-[0.72px] font-bold text-center text-white`}
               >
                 A personalised plan
               </button>
 
               <button
                 type="button"
-                className={`flex h-[68px] w-[302px] max-w-full items-center justify-center rounded-[10px] bg-[#ED7428] px-6 shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4
-  ${bricolageBody.className} text-[24px] leading-[24px] tracking-[0.72px] font-bold text-center text-white`}
+                className={`flex h-auto sm:h-[68px] w-full sm:w-[302px] max-w-full items-center justify-center rounded-[10px] bg-[#ED7428] px-6 shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4
+  ${bricolageBody.className} text-base sm:text-lg lg:text-[24px] leading-snug sm:leading-[24px] tracking-[0.72px] font-bold text-center text-white`}
               >
                 Therapy sessions
               </button>
@@ -374,8 +374,8 @@ export default function AddictionPage() {
               px-4 py-10 text-center transition-all duration-300
               ${
                 isActive
-                  ? "bg-[#00373E] w-[288px] h-[342px] rounded-[16px] -translate-y-[12px] shadow-[0_8px_24px_rgba(0,0,0,0.18)]"
-                  : "bg-[#FFF3EA] w-[260px] h-[308px] rounded-[12px]"
+                  ? "bg-[#00373E] w-[240px] sm:w-[260px] lg:w-[288px] h-[280px] sm:h-[310px] lg:h-[342px] rounded-[16px] -translate-y-[12px] shadow-[0_8px_24px_rgba(0,0,0,0.18)]"
+                  : "bg-[#FFF3EA] w-[200px] sm:w-[230px] lg:w-[260px] h-[250px] sm:h-[280px] lg:h-[308px] rounded-[12px]"
               }
             `}
                   >
@@ -403,10 +403,10 @@ export default function AddictionPage() {
 
         {/* Aftercare section */}
         <section>
-          <div className="relative w-full h-[597px] bg-[radial-gradient(circle_at_50%_100%,#FFFAD4_0%,rgba(255,250,212,0.7)_40%,rgba(255,250,212,0)_70%)] overflow-hidden">
+          <div className="relative w-full min-h-[400px] sm:min-h-[500px] lg:h-[597px] bg-[radial-gradient(circle_at_50%_100%,#FFFAD4_0%,rgba(255,250,212,0.7)_40%,rgba(255,250,212,0)_70%)] overflow-hidden">
             {/* Title */}
             <h1
-              className={`${roadHeadingFont.className} text-center text-[64px] leading-[64px] font-semibold tracking-[0] pt-16`}
+              className={`${roadHeadingFont.className} text-center text-4xl sm:text-5xl lg:text-[64px] leading-tight sm:leading-[64px] font-semibold tracking-[0] pt-16`}
             >
               Aftercare
             </h1>

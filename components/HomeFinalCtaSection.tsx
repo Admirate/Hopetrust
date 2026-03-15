@@ -34,7 +34,7 @@ export default function HomeFinalCtaSection() {
           }}
           className="w-full lg:w-1/2 flex justify-start"
         >
-          <div className="w-full lg:w-[570px] min-h-[266px] sm:min-h-[366px] lg:min-h-[466px] rounded-[50px] bg-white shadow-[0_24px_60px_rgba(0,0,0,0.06)] px-8 sm:px-10 lg:px-12 py-8 sm:py-10 flex flex-col gap-8">
+          <div className="w-full lg:w-[570px] min-h-[266px] sm:min-h-[366px] lg:min-h-[466px] rounded-[28px] sm:rounded-[40px] lg:rounded-[50px] bg-white shadow-[0_24px_60px_rgba(0,0,0,0.06)] px-6 sm:px-10 lg:px-12 py-6 sm:py-8 lg:py-10 flex flex-col gap-6 sm:gap-8">
             <div>
               <Image
                 src={getAssetUrl("logo1.png")}
@@ -45,7 +45,7 @@ export default function HomeFinalCtaSection() {
               />
             </div>
             <div
-              className={`${ctaFont.className} grid grid-cols-1 sm:grid-cols-3 gap-y-4 sm:gap-y-0 sm:gap-x-12 text-[#00373E] text-[20px] leading-[34px] tracking-[0.5px] font-normal`}
+              className={`${ctaFont.className} grid grid-cols-2 sm:grid-cols-3 gap-y-3 sm:gap-y-0 gap-x-6 sm:gap-x-12 text-[#00373E] text-sm sm:text-base lg:text-[20px] leading-relaxed sm:leading-[34px] tracking-wide font-normal`}
             >
               <div className="space-y-3">
                 <p>About</p>
@@ -84,17 +84,11 @@ export default function HomeFinalCtaSection() {
           }}
           className="w-full lg:w-1/2"
         >
-          <div className="relative w-full min-h-[260px] sm:min-h-[320px] lg:min-h-[466px] rounded-[50px] bg-[#ED742B] text-white px-8 sm:px-10 lg:px-12 py-10 sm:py-12 overflow-hidden flex items-center">
+          <div className="relative w-full min-h-[260px] sm:min-h-[320px] lg:min-h-[466px] rounded-[28px] sm:rounded-[40px] lg:rounded-[50px] bg-[#ED742B] text-white px-6 sm:px-10 lg:px-12 py-8 sm:py-12 overflow-hidden flex items-center">
             {/* Text content */}
             <div className="relative z-10 max-w-md space-y-3 sm:space-y-4">
               <h2
-                className={`${ctaFont.className} leading-snug text-center sm:text-left`}
-                style={{
-                  fontSize: "48px",
-                  fontWeight: 700,
-                  lineHeight: "normal",
-                  letterSpacing: "0.724px",
-                }}
+                className={`${ctaFont.className} leading-snug text-center sm:text-left text-3xl sm:text-4xl lg:text-[48px] font-bold tracking-wide`}
               >
                 Find
                 <br />

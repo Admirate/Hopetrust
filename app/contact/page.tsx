@@ -69,7 +69,7 @@ const ContactCard = ({ info, idx }: { info: typeof contactInfo[0], idx: number }
         y: -12,
         scale: 1.02,
       }}
-      className="group relative bg-white/80 backdrop-blur-sm p-10 rounded-[48px] shadow-[0_20px_50px_rgba(0,0,0,0.03)] flex flex-col items-center text-center transition-all duration-500 border border-white/50 hover:border-orange-200 hover:shadow-[0_30px_70px_rgba(249,115,22,0.1)] overflow-hidden"
+      className="group relative bg-white/80 backdrop-blur-sm p-6 sm:p-8 lg:p-10 rounded-[28px] sm:rounded-[36px] lg:rounded-[48px] shadow-[0_20px_50px_rgba(0,0,0,0.03)] flex flex-col items-center text-center transition-all duration-500 border border-white/50 hover:border-orange-200 hover:shadow-[0_30px_70px_rgba(249,115,22,0.1)] overflow-hidden"
     >
       {/* Background Glow Effect */}
       <div className="absolute -top-24 -right-24 w-48 h-48 bg-orange-100/30 rounded-full blur-3xl group-hover:bg-orange-200/40 transition-colors duration-700" />
@@ -532,7 +532,7 @@ export default function ContactPage() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="bg-[#FFF5ED] p-8 md:p-12 rounded-[48px]"
+                className="bg-[#FFF5ED] p-6 sm:p-8 md:p-12 rounded-[28px] sm:rounded-[36px] lg:rounded-[48px]"
               >
                 <div className="mb-8">
                   <h2 className="text-3xl font-bold text-[#00373E] mb-4">Send us a Message</h2>

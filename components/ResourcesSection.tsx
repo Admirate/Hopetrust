@@ -65,13 +65,7 @@ export default function ResourcesSection() {
 
         {/* Heading */}
         <h2
-          className={`${headingFont.className} mt-3 text-center`}
-          style={{
-            color: "#00373E",
-            fontSize: "52px",
-            lineHeight: "65px",
-            fontWeight: 700,
-          }}
+          className={`${headingFont.className} mt-3 text-center text-3xl sm:text-4xl lg:text-[52px] leading-tight sm:leading-snug lg:leading-[65px] font-bold text-[#00373E]`}
         >
           Resources for your well-being
         </h2>
@@ -99,34 +93,18 @@ export default function ResourcesSection() {
                 ease: [0.22, 0.61, 0.36, 1],
                 delay: index * 0.15,
               }}
-              className="mx-auto flex h-[404px] w-full max-w-[344px] flex-col items-center justify-between rounded-[59px] bg-white px-8 py-12 shadow-[0_18px_40px_rgba(0,0,0,0.06)]"
+              className="mx-auto flex min-h-[320px] sm:min-h-[360px] lg:h-[404px] w-full max-w-[344px] flex-col items-center justify-between rounded-[32px] sm:rounded-[44px] lg:rounded-[59px] bg-white px-6 sm:px-8 py-8 sm:py-10 lg:py-12 shadow-[0_18px_40px_rgba(0,0,0,0.06)]"
             >
               <div className="space-y-3 text-[#00373E]">
                 <h3
-                  className={headingFont.className}
-                  style={{
-                    fontSize: "38px",
-                    lineHeight: "45px",
-                    fontWeight: 600,
-                    textAlign: "center",
-                    color: "#00373E",
-                  }}
+                  className={`${headingFont.className} text-2xl sm:text-3xl lg:text-[38px] leading-tight sm:leading-snug lg:leading-[45px] font-semibold text-center text-[#00373E]`}
                 >
                   {card.titleLine1}
                   <br />
                   {card.titleLine2}
                 </h3>
                 <p
-                  className={headingFont.className}
-                  style={{
-                    color: "#00373E",
-                    fontSize: "18px",
-                    lineHeight: "29.25px",
-                    fontWeight: 400,
-                    textAlign: "center",
-                    width: "225px",
-                    margin: "0 auto",
-                  }}
+                  className={`${headingFont.className} text-sm sm:text-base lg:text-lg leading-relaxed sm:leading-[29.25px] font-normal text-center text-[#00373E] max-w-[225px] mx-auto`}
                 >
                   {card.description}
                 </p>

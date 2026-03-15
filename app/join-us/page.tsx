@@ -430,7 +430,7 @@ export default function JoinUsPage() {
                     ease: [0.22, 1, 0.36, 1] 
                   }}
                   whileHover={{ y: -15, scale: 1.02 }}
-                  className="group bg-white/50 backdrop-blur-sm p-12 rounded-[48px] shadow-[0_20px_50px_rgba(0,0,0,0.03)] border border-transparent hover:border-orange-100 hover:shadow-[0_30px_70px_rgba(249,115,22,0.08)] transition-all duration-500 text-center relative overflow-hidden"
+                  className="group bg-white/50 backdrop-blur-sm p-8 sm:p-10 lg:p-12 rounded-[28px] sm:rounded-[36px] lg:rounded-[48px] shadow-[0_20px_50px_rgba(0,0,0,0.03)] border border-transparent hover:border-orange-100 hover:shadow-[0_30px_70px_rgba(249,115,22,0.08)] transition-all duration-500 text-center relative overflow-hidden"
                 >
                   <div className={`w-20 h-20 rounded-3xl ${perk.color} flex items-center justify-center mx-auto mb-8 shadow-inner transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}>
                     {perk.icon}
@@ -501,7 +501,7 @@ export default function JoinUsPage() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
-                className="lg:w-1/2 w-full bg-white/80 backdrop-blur-md p-10 md:p-14 rounded-[60px] shadow-[0_40px_100px_rgba(0,0,0,0.06)] border border-white relative overflow-hidden"
+                className="lg:w-1/2 w-full bg-white/80 backdrop-blur-md p-6 sm:p-10 md:p-14 rounded-[28px] sm:rounded-[40px] lg:rounded-[60px] shadow-[0_40px_100px_rgba(0,0,0,0.06)] border border-white relative overflow-hidden"
               >
                 {/* Decorative background shape */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-orange-50 rounded-bl-[100px] pointer-events-none" />

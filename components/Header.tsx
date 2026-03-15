@@ -28,8 +28,7 @@ const leftNavItems: NavItem[] = [
 
 const rightNavItems: NavItem[] = [
   { label: 'Blogs', href: '/blogs', hasDropdown: false },
-  { label: 'Resources', href: '#', hasDropdown: true },
-   { label: 'Book Your Session', href: '/book-your-session', hasDropdown: false },
+  { label: 'Book Your Session', href: '/book-your-session', hasDropdown: false },
   { label: 'Contact Us', href: '/contact', hasDropdown: false },
 ];
 
@@ -93,13 +92,8 @@ export default function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden flex-1 items-center justify-between lg:flex">
-            <div className="ml-6 flex items-center gap-6 xl:gap-10">
-              {leftNavItems.map(renderNavItem)}
-            </div>
-            <div className="flex items-center gap-6 xl:gap-10">
-              {rightNavItems.map(renderNavItem)}
-            </div>
+          <nav className="hidden items-center gap-6 xl:gap-8 lg:flex">
+            {[...leftNavItems, ...rightNavItems].map(renderNavItem)}
           </nav>
 
           {/* Mobile menu button */}

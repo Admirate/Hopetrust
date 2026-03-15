@@ -29,13 +29,7 @@ export default function WhatWeOfferSection() {
     <section className="w-full bg-[#F9E6D0] py-12 sm:py-16">
       <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center gap-6 px-4 sm:px-8 lg:px-[106px]">
         <h2
-          className={`${headingFont.className} mb-4 text-center md:mb-6`}
-          style={{
-            color: "#00373E",
-            fontSize: "48px",
-            lineHeight: "72px",
-            fontWeight: 600,
-          }}
+          className={`${headingFont.className} mb-4 text-center md:mb-6 text-3xl sm:text-4xl lg:text-[48px] leading-tight sm:leading-snug lg:leading-[72px] font-semibold text-[#00373E]`}
         >
           What we offer
         </h2>

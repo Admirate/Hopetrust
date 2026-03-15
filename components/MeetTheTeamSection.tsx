@@ -41,14 +41,7 @@ export default function MeetTheTeamSection() {
       <div className="mx-auto flex max-w-5xl flex-col items-center px-4 text-center">
         {/* Heading with magic text */}
         <h2
-          className={`${headingFont.className} mb-10 text-center`}
-          style={{
-            color: "#000000",
-            fontSize: "48px",
-            lineHeight: "normal",
-            fontWeight: 600,
-            letterSpacing: "0.724px",
-          }}
+          className={`${headingFont.className} mb-8 sm:mb-10 text-center text-3xl sm:text-4xl lg:text-[48px] leading-normal font-semibold tracking-wide text-black`}
         >
           Meet the team
         </h2>
@@ -85,7 +78,7 @@ export default function MeetTheTeamSection() {
               <motion.button
                 key={`${member.name}-${idx}`}
                 type="button"
-                className="flex h-32 w-32 md:h-40 md:w-40 items-center justify-center rounded-full border-[10px] border-[#F47A24] bg-white shadow-sm"
+                className="flex h-24 w-24 sm:h-32 sm:w-32 md:h-40 md:w-40 items-center justify-center rounded-full border-[6px] sm:border-[8px] md:border-[10px] border-[#F47A24] bg-white shadow-sm"
                 aria-label={member.name}
                 variants={{
                   hidden: { opacity: 0, scale: 0.8 },
@@ -116,14 +109,7 @@ export default function MeetTheTeamSection() {
         {/* Body text */}
         {/* Body text */}
         <div
-          className={`${headingFont.className} mt-10 text-center`}
-          style={{
-            fontSize: "24px",
-            lineHeight: "24px", // 100%
-            fontWeight: 500,
-            letterSpacing: "0.72px",
-            color: "#111827",
-          }}
+          className={`${headingFont.className} mt-8 sm:mt-10 text-center text-base sm:text-lg lg:text-2xl leading-relaxed sm:leading-normal font-medium tracking-wide text-[#111827]`}
         >
           <p>The people who support your healing.</p>
           <p>Choose the person you connect with.</p>

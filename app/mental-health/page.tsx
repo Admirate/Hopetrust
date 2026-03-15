@@ -198,7 +198,7 @@ export default function MentalHealthPage() {
         <section className="w-full bg-[#F7F6F4]">
           <div className="mx-auto flex w-full justify-center px-4 sm:px-8 lg:px-12 pt-10 pb-16">
             {/* Outer card */}
-            <div className="flex h-auto md:h-[650px] w-full max-w-[1170px] flex-col rounded-[40px] md:rounded-[84px] bg-transparent overflow-hidden">
+            <div className="flex h-auto md:h-[650px] w-full max-w-[1170px] flex-col rounded-[28px] sm:rounded-[44px] md:rounded-[84px] bg-transparent overflow-hidden">
               {/* Top strip with tabs */}
               <div className="flex bg-[#FFE3C7]">
                 {(Object.keys(FOCUS_SECTIONS) as FocusKey[]).map((key) => {
@@ -343,9 +343,9 @@ export default function MentalHealthPage() {
 
                 {/* Copy for active assessment */}
                 <div
-                  className={`${assessmentBodyFont.className} mt-2 max-w-[1058px] text-[24px] leading-relaxed text-[#5E5E5E] tracking-[0.724px] space-y-4`}
+                  className={`${assessmentBodyFont.className} mt-2 max-w-[1058px] text-base sm:text-lg lg:text-[24px] leading-relaxed text-[#5E5E5E] tracking-[0.724px] space-y-4`}
                 >
-                  <h3 className="text-[40px] font-semibold tracking-[0.724px] text-[#E26B20]">
+                  <h3 className="text-2xl sm:text-3xl lg:text-[40px] font-semibold tracking-[0.724px] text-[#E26B20]">
                     {ASSESSMENTS[activeAssessment].label}
                   </h3>
                   {ASSESSMENTS[activeAssessment].paragraphs.map((p) => (

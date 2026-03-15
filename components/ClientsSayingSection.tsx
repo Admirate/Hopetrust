@@ -146,25 +146,18 @@ export default function ClientsSayingSection() {
         </div>
 
         {/* Right column: testimonial cards */}
-        <div className="flex w-full flex-1 items-stretch gap-6">
+        <div className="flex w-full flex-1 flex-col sm:flex-row items-stretch gap-6">
           {visible.map((item, i) => (
             <div
               key={`${item.author}-${i}`}
-              className={`flex flex-col justify-between rounded-[28px] sm:rounded-[40px] lg:rounded-[60px] p-6 sm:p-10 lg:p-16 shadow-sm min-h-[260px] sm:min-h-[320px] flex-1 ${
+              className={`flex flex-col justify-between rounded-[28px] sm:rounded-[40px] lg:rounded-[60px] p-6 sm:p-8 lg:p-16 shadow-sm min-h-[220px] sm:min-h-[280px] lg:min-h-[320px] flex-1 ${
                 i === 0
                   ? "bg-[#FFE7CC] text-[#00373E]"
-                  : "bg-[#00373E] text-white"
+                  : "bg-[#00373E] text-white hidden sm:flex"
               }`}
             >
               <p
-                className={`${bodyFont.className} mb-6`}
-                style={{
-                  fontSize: "20px",
-                  lineHeight: "32.5px",
-                  fontWeight: 400,
-                  width: "257px",
-                  color: "inherit",
-                }}
+                className={`${bodyFont.className} mb-6 text-base sm:text-lg lg:text-xl leading-relaxed sm:leading-[32.5px] font-normal max-w-full sm:max-w-[257px]`}
               >
                 {item.quote}
               </p>

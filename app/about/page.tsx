@@ -217,14 +217,14 @@ export default function About() {
               >
                 {/* ABOUT US heading */}
                 <h1
-                  className={`${aboutHeadingFont.className} mb-6 self-stretch text-[48px] font-semibold leading-normal tracking-[0.724px] text-black`}
+                  className={`${aboutHeadingFont.className} mb-6 self-stretch text-3xl sm:text-4xl lg:text-[48px] font-semibold leading-normal tracking-[0.724px] text-black`}
                 >
                   ABOUT US
                 </h1>
 
                 {/* Our Story label */}
                 <p
-                  className={`${aboutStoryLabelFont.className} mb-4 self-stretch text-[24px] font-normal uppercase leading-normal tracking-[0.724px] text-[#00373E]`}
+                  className={`${aboutStoryLabelFont.className} mb-4 self-stretch text-lg sm:text-xl lg:text-[24px] font-normal uppercase leading-normal tracking-[0.724px] text-[#00373E]`}
                 >
                   OUR STORY
                 </p>
@@ -242,13 +242,13 @@ export default function About() {
 
                 {/* Body copy */}
                 <p
-                  className={`${aboutStoryBodyFont.className} mt-2 self-stretch text-[24px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
+                  className={`${aboutStoryBodyFont.className} mt-2 self-stretch text-base sm:text-lg lg:text-[24px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
                 >
                   To offer a calm and steady space for healing. People come to
                   us with different struggles.
                 </p>
                 <p
-                  className={`${aboutStoryBodyFont.className} mt-4 self-stretch text-[24px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
+                  className={`${aboutStoryBodyFont.className} mt-4 self-stretch text-base sm:text-lg lg:text-[24px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
                 >
                   We meet them with patience.
                   <br />
@@ -314,7 +314,7 @@ export default function About() {
                   className="object-contain"
                 />
                 <p
-                  className={`${aboutStoryBodyFont.className} h-[89px] self-stretch text-center text-[24px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
+                  className={`${aboutStoryBodyFont.className} self-stretch text-center text-[24px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
                 >
                   People who listen
                   <br />
@@ -347,7 +347,7 @@ export default function About() {
                   className="object-contain"
                 />
                 <p
-                  className={`${aboutStoryBodyFont.className} h-[89px] self-stretch text-center text-[24px] font-medium leading-normal tracking-[0.724px] text-white`}
+                  className={`${aboutStoryBodyFont.className} self-stretch text-center text-[24px] font-medium leading-normal tracking-[0.724px] text-white`}
                 >
                   People who guide
                   <br />
@@ -380,7 +380,7 @@ export default function About() {
                   className="object-contain"
                 />
                 <p
-                  className={`${aboutStoryBodyFont.className} h-[89px] self-stretch text-center text-[24px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
+                  className={`${aboutStoryBodyFont.className} self-stretch text-center text-[24px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
                 >
                   People who stay with
                   <br />
@@ -402,19 +402,19 @@ export default function About() {
                     transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
                   >
                     <h3
-                      className={`${aboutHeadingFont.className} mb-4 w-full text-[40px] font-semibold leading-normal tracking-[0.5px] text-[#00373E] sm:w-[515px]`}
+                      className={`${aboutHeadingFont.className} mb-4 w-full text-2xl sm:text-3xl lg:text-[40px] font-semibold leading-normal tracking-[0.5px] text-[#00373E] sm:w-[515px]`}
                     >
                       Wellness coaching
                     </h3>
                     <p
-                      className={`${aboutStoryBodyRegularFont.className} mb-4 w-full text-[20px] font-normal leading-[26px] tracking-[0.5px] text-[#00373E] sm:w-[617px]`}
+                      className={`${aboutStoryBodyRegularFont.className} mb-4 w-full text-sm sm:text-base lg:text-[20px] font-normal leading-[26px] tracking-[0.5px] text-[#00373E] sm:w-[617px]`}
                     >
                       Personalized guidance to help you build healthier habits,
                       manage stress, and achieve balance in all areas of your
                       life.
                     </p>
                     <p
-                      className={`${aboutStoryBodyRegularFont.className} mb-6 w-full text-[20px] font-normal leading-[26px] tracking-[0.5px] text-[#00373E] sm:w-[617px]`}
+                      className={`${aboutStoryBodyRegularFont.className} mb-6 w-full text-sm sm:text-base lg:text-[20px] font-normal leading-[26px] tracking-[0.5px] text-[#00373E] sm:w-[617px]`}
                     >
                       Our wellness coaches support you in creating sustainable
                       routines for mental, emotional, and physical well-being.
@@ -462,12 +462,12 @@ export default function About() {
               transition={{ duration: 0.55, ease: [0.22, 0.61, 0.36, 1] }}
             >
               <h2
-                className={`${aboutHeadingFont.className} mx-auto inline-block whitespace-nowrap text-center text-[48px] font-semibold leading-normal tracking-[0.724px] text-[#00373E]`}
+                className={`${aboutHeadingFont.className} mx-auto inline-block text-center text-3xl sm:text-4xl lg:text-[48px] font-semibold leading-normal tracking-[0.724px] text-[#00373E]`}
               >
                 How it works
               </h2>
               <p
-                className={`${aboutStoryBodyFont.className} mx-auto mt-3 h-[48px] w-full max-w-[306px] text-center text-[20px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
+                className={`${aboutStoryBodyFont.className} mx-auto mt-3 w-full max-w-[306px] text-center text-sm sm:text-base lg:text-[20px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
               >
                 Choose how you want to start Online or in person.
               </p>
@@ -477,7 +477,7 @@ export default function About() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
               {/* Step 1 */}
               <motion.div
-                className="flex flex-col items-center text-center justify-between gap-6 rounded-[24px] bg-[#FFEBD7] px-10 py-10 shadow-sm h-full cursor-default"
+                className="flex flex-col items-center text-center justify-between gap-6 rounded-[24px] bg-[#FFEBD7] px-6 sm:px-8 lg:px-10 py-6 sm:py-8 lg:py-10 shadow-sm h-full cursor-default"
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 whileHover={{
@@ -489,7 +489,7 @@ export default function About() {
                 transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
               >
                 <p
-                  className={`${aboutStoryBodyFont.className} w-full max-w-[325px] text-center text-[24px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
+                  className={`${aboutStoryBodyFont.className} w-full max-w-[325px] text-center text-base sm:text-lg lg:text-[24px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
                 >
                   Book through WhatsApp or the website.
                   <br />
@@ -506,7 +506,7 @@ export default function About() {
 
               {/* Step 2 */}
               <motion.div
-                className="flex flex-col items-center text-center justify-between gap-6 rounded-[24px] bg-[#FFEBD7] px-10 py-10 shadow-sm h-full cursor-default"
+                className="flex flex-col items-center text-center justify-between gap-6 rounded-[24px] bg-[#FFEBD7] px-6 sm:px-8 lg:px-10 py-6 sm:py-8 lg:py-10 shadow-sm h-full cursor-default"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 whileHover={{
@@ -522,7 +522,7 @@ export default function About() {
                 }}
               >
                 <p
-                  className={`${aboutStoryBodyFont.className} w-full max-w-[325px] text-center text-[24px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
+                  className={`${aboutStoryBodyFont.className} w-full max-w-[325px] text-center text-base sm:text-lg lg:text-[24px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
                 >
                   Pick a date and a time
                   <br />
@@ -539,7 +539,7 @@ export default function About() {
 
               {/* Step 3 */}
               <motion.div
-                className="flex flex-col items-center text-center justify-between gap-6 rounded-[24px] bg-[#FFEBD7] px-10 py-10 shadow-sm h-full cursor-default"
+                className="flex flex-col items-center text-center justify-between gap-6 rounded-[24px] bg-[#FFEBD7] px-6 sm:px-8 lg:px-10 py-6 sm:py-8 lg:py-10 shadow-sm h-full cursor-default"
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 whileHover={{
@@ -555,7 +555,7 @@ export default function About() {
                 }}
               >
                 <p
-                  className={`${aboutStoryBodyFont.className} w-full max-w-[325px] text-center text-[24px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
+                  className={`${aboutStoryBodyFont.className} w-full max-w-[325px] text-center text-base sm:text-lg lg:text-[24px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
                 >
                   If online, a private link is shared
                   <br />
@@ -592,7 +592,7 @@ export default function About() {
                   <div>
                     <p className="text-2xl font-semibold">60 minutes</p>
                     <p
-                      className={`${aboutStoryBodyFont.className} mt-1 text-[20px] font-medium`}
+                      className={`${aboutStoryBodyFont.className} mt-1 text-sm sm:text-base lg:text-[20px] font-medium`}
                     >
                       Individual therapy
                     </p>
@@ -601,7 +601,7 @@ export default function About() {
                   <div>
                     <p className="text-2xl font-semibold">90 minutes</p>
                     <p
-                      className={`${aboutStoryBodyFont.className} mt-1 text-[20px] font-medium`}
+                      className={`${aboutStoryBodyFont.className} mt-1 text-sm sm:text-base lg:text-[20px] font-medium`}
                     >
                       Couples therapy
                     </p>
@@ -610,7 +610,7 @@ export default function About() {
                   <div>
                     <p className="text-2xl font-semibold">30 minutes</p>
                     <p
-                      className={`${aboutStoryBodyFont.className} mt-1 text-[20px] font-medium`}
+                      className={`${aboutStoryBodyFont.className} mt-1 text-sm sm:text-base lg:text-[20px] font-medium`}
                     >
                       Psychiatry
                     </p>
@@ -618,7 +618,7 @@ export default function About() {
                 </div>
 
                 <p
-                  className={`${aboutStoryBodyFont.className} text-[20px] font-medium`}
+                  className={`${aboutStoryBodyFont.className} text-sm sm:text-base lg:text-[20px] font-medium`}
                 >
                   Your progress continues after each session.
                   <br />
@@ -677,12 +677,12 @@ export default function About() {
               ref={mediaTypingRef as React.RefObject<HTMLDivElement>}
             >
               <h2
-                className={`${aboutHeadingFont.className} mb-4 text-center text-[48px] font-semibold leading-normal tracking-[0.724px] text-black lg:text-left`}
+                className={`${aboutHeadingFont.className} mb-4 text-center text-3xl sm:text-4xl lg:text-[48px] font-semibold leading-normal tracking-[0.724px] text-black lg:text-left`}
               >
                 Media and gallery
               </h2>
               <p
-                className={`${aboutStoryBodyFont.className} mb-4 text-[24px] font-medium leading-normal tracking-[0.724px] text-black`}
+                className={`${aboutStoryBodyFont.className} mb-4 text-base sm:text-lg lg:text-[24px] font-medium leading-normal tracking-[0.724px] text-black`}
               >
                 <TypewriterPlain
                   text="A quiet look into our space."
@@ -699,21 +699,21 @@ export default function About() {
                   segments={[
                     {
                       text: "Our work.",
-                      className: `${aboutStoryBodyBoldFont.className} text-[24px] font-bold leading-normal tracking-[0.724px] text-[#ED7428]`,
+                      className: `${aboutStoryBodyBoldFont.className} text-base sm:text-lg lg:text-[24px] font-bold leading-normal tracking-[0.724px] text-[#ED7428]`,
                     },
                     {
                       text: " ",
-                      className: `${aboutStoryBodyBoldFont.className} text-[24px] font-bold leading-normal tracking-[0.724px] text-[#ED7428]`,
+                      className: `${aboutStoryBodyBoldFont.className} text-base sm:text-lg lg:text-[24px] font-bold leading-normal tracking-[0.724px] text-[#ED7428]`,
                     },
                     {
                       text: "Our people.",
-                      className: `${aboutStoryBodyBoldFont.className} text-[24px] font-bold leading-normal tracking-[0.724px] text-[#D7D7D7]`,
+                      className: `${aboutStoryBodyBoldFont.className} text-base sm:text-lg lg:text-[24px] font-bold leading-normal tracking-[0.724px] text-[#D7D7D7]`,
                     },
                   ]}
                 />
               </p>
               <p
-                className={`${aboutStoryBodyFont.className} text-[24px] font-medium leading-normal tracking-[0.724px] text-black`}
+                className={`${aboutStoryBodyFont.className} text-base sm:text-lg lg:text-[24px] font-medium leading-normal tracking-[0.724px] text-black`}
               >
                 <TypewriterPlain
                   text="The moments that shape Hope Trust."

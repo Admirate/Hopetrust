@@ -50,7 +50,7 @@ const HeroSection = () => {
       <div className="relative z-10 flex h-full w-full items-start justify-center px-4 sm:px-6 lg:px-10 pt-16 sm:pt-24 pb-10 fade-in-optimized">
         <motion.div
           style={{ y: cardY }}
-          className="relative w-full max-w-[1200px] max-h-[calc(100vh-5rem)] aspect-[4/3] sm:aspect-[16/9] lg:aspect-[21/9]"
+          className="relative w-full max-w-[1200px] max-h-[calc(100vh-7rem)] aspect-[9/19] sm:aspect-[16/9] lg:aspect-[21/9]"
         >
           {/* Side handles (rounded rectangles) */}
           <div className="pointer-events-none absolute inset-y-10 -left-6 hidden sm:block">

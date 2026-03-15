@@ -42,8 +42,8 @@ export default function Page() {
     max-w-[568px]
     text-center
 
-    text-[56px]
-    leading-[83px]
+    text-3xl sm:text-4xl lg:text-[56px]
+    leading-tight sm:leading-snug lg:leading-[83px]
 
     text-[#00373E]
   `}

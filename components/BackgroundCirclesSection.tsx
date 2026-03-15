@@ -65,50 +65,20 @@ const BackgroundCirclesSection = () => {
             <div ref={headingContainerRef} className="relative inline-block">
               {/* Top small stats */}
               <div
-                className={`${bricolage.className}`}
-                style={{
-                  width: "330px",
-                  marginTop: "30px", // Top = 30px
-                }}
+                className={`${bricolage.className} mt-4 sm:mt-[30px] max-w-[330px]`}
               >
-                <div
-                  style={{
-                    fontSize: "26.47px",
-                    lineHeight: "35.59px",
-                    fontWeight: 600,
-                    letterSpacing: "0px",
-                    color: "#ED7428",
-                    height: "36px",
-                  }}
-                >
+                <div className="text-lg sm:text-xl md:text-[26.47px] leading-snug sm:leading-[35.59px] font-semibold text-[#ED7428]">
                   20+ years of experience
                 </div>
 
-                <div
-                  style={{
-                    fontSize: "26.47px",
-                    lineHeight: "35.59px",
-                    fontWeight: 600,
-                    letterSpacing: "0px",
-                    color: "#ED7428",
-                    height: "36px",
-                  }}
-                >
+                <div className="text-lg sm:text-xl md:text-[26.47px] leading-snug sm:leading-[35.59px] font-semibold text-[#ED7428]">
                   15+ licensed experts
                 </div>
 
-                {/* underline */}
-                <div
-                  style={{
-                    marginTop: "8px",
-                    width: "275px",
-                    height: "5px",
-                    backgroundColor: "#ED7428",
-                  }}
-                />
+                <div className="mt-2 h-[5px] w-48 sm:w-[275px] bg-[#ED7428]" />
               </div>
 
-              <div style={{ marginTop: "24px" }}>
+              <div className="mt-4 sm:mt-6">
                 <VariableProximity
                   label="We help you prioritise your mental health"
                   fromFontVariationSettings="'GRAD' 0, 'opsz' 14"
@@ -116,11 +86,8 @@ const BackgroundCirclesSection = () => {
                   containerRef={headingContainerRef}
                   radius={120}
                   falloff="linear"
-                  className={`${bricolage.className} mt-4 font-semibold text-[#00373E] text-balance`}
+                  className={`${bricolage.className} mt-4 font-semibold text-[#00373E] text-balance text-3xl sm:text-4xl md:text-[48px] md:leading-[60px]`}
                   style={{
-                    fontSize: "48px",
-                    lineHeight: "60px",
-                    letterSpacing: "0px",
                     maxWidth: "483px",
                     flexShrink: 0,
                   }}
@@ -129,14 +96,7 @@ const BackgroundCirclesSection = () => {
             </div>
 
             <div
-              className={`${bricolage.className} mt-6 text-[#00373E]`}
-              style={{
-                fontSize: "24px",
-                lineHeight: "36px",
-                fontWeight: 700,
-                maxWidth: "511px",
-                flexShrink: 0,
-              }}
+              className={`${bricolage.className} mt-4 sm:mt-6 text-[#00373E] text-base sm:text-lg md:text-2xl leading-relaxed sm:leading-9 font-bold max-w-[511px]`}
             >
               Browse therapists, book a session, and start your healing journey
               with trusted professionals.

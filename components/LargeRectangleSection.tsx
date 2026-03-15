@@ -37,7 +37,7 @@ export default function LargeRectangleSection() {
           duration: 0.7,
           ease: [0.22, 0.61, 0.36, 1],
         }}
-        className="mx-auto w-full max-w-[1244px] h-[587px] rounded-[59px] shadow-[0_24px_60px_rgba(0,0,0,0.06)] overflow-hidden relative"
+        className="mx-4 sm:mx-6 lg:mx-auto w-auto lg:w-full max-w-[1244px] min-h-[400px] sm:min-h-[480px] lg:h-[587px] rounded-[28px] sm:rounded-[40px] lg:rounded-[59px] shadow-[0_24px_60px_rgba(0,0,0,0.06)] overflow-hidden relative"
       >
         {/* Background illustration */}
         <Image
@@ -57,7 +57,7 @@ export default function LargeRectangleSection() {
         />
 
         {/* Overlay content */}
-        <div className="relative z-10 flex h-full w-full flex-col lg:flex-row items-center px-6 sm:px-10 lg:px-16 gap-8 lg:gap-12">
+        <div className="relative z-10 flex h-full w-full flex-col lg:flex-row items-start lg:items-center px-5 sm:px-10 lg:px-16 py-8 sm:py-10 lg:py-0 gap-6 lg:gap-12">
           {/* Left text content */}
           <div
             className={cn(
@@ -88,7 +88,7 @@ export default function LargeRectangleSection() {
                 containerRef={headingContainerRef}
                 radius={120}
                 falloff="linear"
-                className={`${bodyFont.className} whitespace-pre-line text-4xl sm:text-[2.6rem] font-semibold leading-snug`}
+                className={`${bodyFont.className} whitespace-pre-line text-2xl sm:text-3xl lg:text-4xl xl:text-[2.6rem] font-semibold leading-snug`}
                 style={{
                   fontWeight: 700,
                 }}
@@ -97,17 +97,9 @@ export default function LargeRectangleSection() {
             <p
               className={cn(
                 bodyFont.className,
-                "transition-colors duration-500",
+                "transition-colors duration-500 text-sm sm:text-lg lg:text-[22px] leading-relaxed sm:leading-[34px] tracking-wide max-w-full lg:max-w-[476px]",
                 isHovered ? "text-[#E5F4F4]" : "text-[#00373E]",
               )}
-              style={{
-                fontSize: "22px",
-                lineHeight: "34px",
-                fontWeight: 400,
-                letterSpacing: "0.5px",
-                width: "476px",
-                maxWidth: "100%",
-              }}
             >
               Connect with others, share experiences, and find encouragement in
               a safe, supportive space.

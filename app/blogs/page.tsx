@@ -196,7 +196,7 @@ export default function BlogsPage() {
               Lorem Ipsum Is Sim
             </h2>
             <p
-              className={`${quoteBodyFont.className} mb-6 text-[30.45px] leading-[46.1px] text-[#001325] italic`}
+              className={`${quoteBodyFont.className} mb-6 text-lg sm:text-2xl lg:text-[30.45px] leading-relaxed sm:leading-snug lg:leading-[46.1px] text-[#001325] italic`}
             >
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry. Lorem Ipsum has been the industry&apos;s standard dummy

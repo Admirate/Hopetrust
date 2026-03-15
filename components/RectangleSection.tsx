@@ -51,7 +51,7 @@ export default function RectangleSection() {
 
   return (
     <section className="w-full bg-transparent py-12 sm:py-16">
-      <div className="relative mx-auto h-[562px] w-full max-w-[1294px] overflow-hidden rounded-[54px] bg-white shadow-[0_24px_60px_rgba(0,0,0,0.06)]">
+      <div className="relative mx-4 sm:mx-6 lg:mx-auto h-[480px] sm:h-[500px] lg:h-[562px] w-auto lg:w-full max-w-[1294px] overflow-hidden rounded-[28px] sm:rounded-[40px] lg:rounded-[54px] bg-white shadow-[0_24px_60px_rgba(0,0,0,0.06)]">
         {/* Background video */}
         <video
           className="absolute inset-0 h-full w-full object-cover"
@@ -69,15 +69,15 @@ export default function RectangleSection() {
           {/* Section title centered at top */}
           <div className="absolute inset-x-0 top-6 flex justify-center">
             <h2
-              className={`${bricolage.className} text-[26px] px-6 font-bold text-[#00373E] sm:text-[32px]`}
+              className={`${bricolage.className} text-xl sm:text-[26px] lg:text-[32px] px-4 sm:px-6 font-bold text-[#00373E] text-center`}
             >
               How your journey unfolds
             </h2>
           </div>
 
-          <div className="flex h-full mt-8 sm:mt-0">
+          <div className="flex flex-row h-full mt-12 sm:mt-0">
             {/* Left text - vertically centered, left aligned */}
-            <div className="flex h-full max-w-[546px] flex-col justify-center space-y-6 text-left text-[#00373E] sm:space-y-7">
+            <div className="flex h-full max-w-[60%] sm:max-w-[546px] flex-col justify-center space-y-4 sm:space-y-6 text-left text-[#00373E] lg:space-y-7">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={activeIndex}
@@ -85,15 +85,15 @@ export default function RectangleSection() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
-                  className="space-y-6 sm:space-y-7"
+                  className="space-y-4 sm:space-y-7"
                 >
                   <h2
-                    className={`${bricolage.className} text-[32px] font-bold leading-[42px] sm:text-[36px]`}
+                    className={`${bricolage.className} text-lg sm:text-[28px] lg:text-[36px] font-bold leading-snug sm:leading-[42px]`}
                   >
                     {activeCard.title}
                   </h2>
                   <div
-                    className={`${bricolage.className} space-y-2.5 text-[24px] font-bold leading-normal tracking-[0.724px] text-[#00373E]`}
+                    className={`${bricolage.className} space-y-2 sm:space-y-2.5 text-sm sm:text-lg lg:text-2xl font-bold leading-normal tracking-[0.724px] text-[#00373E]`}
                   >
                     {activeCard.lines.map((line, idx) => (
                       <p key={idx}>{line}</p>
@@ -103,9 +103,9 @@ export default function RectangleSection() {
               </AnimatePresence>
             </div>
 
-            {/* Right side: inline video on the far right, visually blended with the box */}
+            {/* Right side: inline video - visible on all screens */}
             <div className="flex flex-1 items-center justify-end">
-              <div className="h-[286px] w-[214px] overflow-hidden rounded-[32px]">
+              <div className="h-[180px] w-[120px] sm:h-[200px] sm:w-[150px] lg:h-[286px] lg:w-[214px] overflow-hidden rounded-[20px] sm:rounded-[24px] lg:rounded-[32px]">
                 <video
                   src={getAssetUrl("FINal.mp4")}
                   className="h-full w-full scale-[1.08] transform object-cover"
