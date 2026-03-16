@@ -20,6 +20,10 @@ export const metadata: Metadata = {
   keywords: 'mental health, therapy, counseling, recovery, addiction, hope trust',
   authors: [{ name: 'Hope Trust' }],
   robots: 'index, follow',
+  icons: {
+    icon: 'https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/logo1.png',
+    apple: 'https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/logo1.png',
+  },
   openGraph: {
     title: 'Hope Trust - A place for hope, healing, and renewal',
     description:
