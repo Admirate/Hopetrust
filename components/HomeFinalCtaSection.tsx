@@ -6,6 +6,7 @@ import { motion } from 'motion/react';
 import { Bricolage_Grotesque } from 'next/font/google';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { getAssetUrl } from '@/lib/assets';
+import NewsletterForm from './NewsletterForm';
 
 const ctaFont = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -66,6 +67,12 @@ export default function HomeFinalCtaSection() {
                 <p>Terms Of Use</p>
                 <p>Privacy Policy</p>
               </div>
+            </div>
+            <div className="space-y-2">
+              <p className={`${ctaFont.className} text-sm font-semibold text-[#00373E]`}>
+                Subscribe to our newsletter
+              </p>
+              <NewsletterForm variant="inline" />
             </div>
             <p className="text-xs text-gray-400">
               © {new Date().getFullYear()} HopeTrust. All Rights Reserved.

@@ -9,6 +9,7 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { cn } from "@/lib/utils";
 import VariableProximity from "./VariableProximity";
 import { getAssetUrl } from '@/lib/assets';
+import NewsletterForm from './NewsletterForm';
 
 const robotoFlex = Roboto_Flex({
   subsets: ["latin"],
@@ -104,19 +105,13 @@ export default function LargeRectangleSection() {
               Connect with others, share experiences, and find encouragement in
               a safe, supportive space.
             </p>
-            <button
-              type="button"
+            <div
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
-              className={cn(
-                "mt-4 inline-flex items-center justify-center rounded-full px-7 py-2.5 text-xs sm:text-sm font-semibold shadow-md transition-colors duration-300",
-                isHovered
-                  ? "bg-white text-[#00373E]"
-                  : "bg-[#00373E] text-white hover:bg-[#024a53]",
-              )}
+              className="mt-2 max-w-full lg:max-w-[520px]"
             >
-              Subscribe to our newsletter
-            </button>
+              <NewsletterForm variant="inline" dark={isHovered} />
+            </div>
           </div>
 
           {/* Right side left empty so background image shows */}

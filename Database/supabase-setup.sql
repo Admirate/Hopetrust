@@ -35,6 +35,20 @@ create policy "Allow anonymous inserts" on joinus_applications
 
 -- No SELECT/UPDATE/DELETE policies for anon = data only accessible via dashboard or service key
 
+create table if not exists newsletter_subscribers (
+  id uuid primary key default gen_random_uuid(),
+  full_name text not null,
+  email text not null unique,
+  phone text not null,
+  subscribed_at timestamptz default now(),
+  is_active boolean default true
+);
+
+alter table newsletter_subscribers enable row level security;
+
+create policy "Allow anonymous inserts" on newsletter_subscribers
+  for insert to anon with check (true);
+
 -- 5. Storage bucket for CV / portfolio uploads (create in Dashboard > Storage)
 -- Bucket name: cv-uploads
 -- Make it PUBLIC so the uploaded file URLs are accessible
