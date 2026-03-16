@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { marked } from 'marked';
-import DOMPurify from 'isomorphic-dompurify';
+import sanitizeHtml from 'sanitize-html';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, Clock, Calendar, User, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -80,7 +80,21 @@ export default async function BlogPostPage({
 
   const { prev, next } = getAdjacentPosts(slug);
   const rawHtml = marked.parse(post.content) as string;
-  const htmlContent = DOMPurify.sanitize(rawHtml);
+  const htmlContent = sanitizeHtml(rawHtml, {
+    allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+      'img', 'figure', 'figcaption', 'iframe', 'video', 'source',
+      'h1', 'h2', 'details', 'summary',
+    ]),
+    allowedAttributes: {
+      ...sanitizeHtml.defaults.allowedAttributes,
+      img: ['src', 'alt', 'title', 'width', 'height', 'loading'],
+      a: ['href', 'title', 'target', 'rel'],
+      iframe: ['src', 'width', 'height', 'frameborder', 'allowfullscreen'],
+      video: ['src', 'controls', 'width', 'height'],
+      source: ['src', 'type'],
+    },
+    allowedSchemes: ['http', 'https', 'mailto'],
+  });
 
   return (
     <>
