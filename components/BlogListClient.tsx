@@ -222,7 +222,7 @@ export default function BlogListClient({
       </FadeInSection>
 
       {/* Category filters + Grid */}
-      <section ref={gridRef} className="w-full bg-[#F7F6F4] py-8 sm:py-10 lg:py-14">
+      <section ref={gridRef} className="w-full bg-[#F7F6F4] pt-8 pb-16 sm:py-10 lg:py-14">
         <div className="mx-auto w-full max-w-[1225px] px-4 sm:px-8 lg:px-12">
           {/* Category tabs — horizontally scrollable on mobile */}
           <div className="-mx-4 mb-6 overflow-x-auto px-4 sm:mx-0 sm:mb-8 sm:overflow-visible sm:px-0">
@@ -341,7 +341,7 @@ export default function BlogListClient({
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="mt-8 flex items-center justify-center gap-1.5 sm:mt-10 sm:gap-2">
+            <div className="mt-8 flex items-center justify-center gap-1.5 sm:mt-10 sm:gap-2" style={{ touchAction: 'manipulation' }}>
               <button
                 onClick={() => handlePageChange(Math.max(1, page - 1))}
                 disabled={page === 1}

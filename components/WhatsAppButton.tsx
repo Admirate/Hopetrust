@@ -71,7 +71,7 @@ export default function WhatsAppButton() {
   }, [busy]);
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+    <div className="pointer-events-none fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
       {/* Chat panel */}
       <div
         ref={panelRef}
@@ -132,7 +132,7 @@ export default function WhatsAppButton() {
       </div>
 
       {/* Tooltip + FAB row */}
-      <div className="flex items-center gap-3">
+      <div className="pointer-events-auto flex items-center gap-3">
         {/* Tooltip label */}
         <div
           className={`hidden whitespace-nowrap rounded-lg bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-md transition-all duration-300 sm:block ${
