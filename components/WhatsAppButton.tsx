@@ -135,7 +135,7 @@ export default function WhatsAppButton() {
       <div className="flex items-center gap-3">
         {/* Tooltip label */}
         <div
-          className={`whitespace-nowrap rounded-lg bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-md transition-all duration-300 ${
+          className={`hidden whitespace-nowrap rounded-lg bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-md transition-all duration-300 sm:block ${
             open
               ? 'pointer-events-none translate-x-2 opacity-0'
               : 'pointer-events-auto translate-x-0 opacity-100'

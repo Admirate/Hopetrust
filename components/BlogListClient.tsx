@@ -146,7 +146,7 @@ export default function BlogListClient({
             <div className="mx-auto w-full max-w-[1225px] px-4 sm:px-8 lg:px-12">
               <Link
                 href={`/blogs/${featured.slug}`}
-                className="group flex flex-col overflow-hidden rounded-2xl bg-[#F7F6F4] transition-shadow hover:shadow-xl sm:rounded-[28px] lg:flex-row"
+                className="group flex flex-col overflow-hidden rounded-2xl bg-[#F7F6F4] transition-shadow duration-300 active:scale-[0.99] active:transition-transform [@media(hover:hover)]:hover:shadow-xl sm:rounded-[28px] lg:flex-row"
               >
                 {featured.featuredImage && (
                   <div className="relative h-[200px] w-full overflow-hidden sm:h-[260px] lg:h-auto lg:w-1/2">
@@ -272,7 +272,7 @@ export default function BlogListClient({
                 <FadeInSection key={post.slug} delay={idx * 50}>
                   <Link
                     href={`/blogs/${post.slug}`}
-                    className="group flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-all hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] sm:rounded-[20px]"
+                    className="group flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-shadow duration-300 active:scale-[0.98] active:transition-transform [@media(hover:hover)]:hover:-translate-y-1 [@media(hover:hover)]:hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] sm:rounded-[20px]"
                   >
                     {/* Thumbnail */}
                     <div className="relative h-[160px] w-full overflow-hidden bg-[#EAF3FF] sm:h-[180px]">

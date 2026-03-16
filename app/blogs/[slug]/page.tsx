@@ -192,7 +192,7 @@ export default async function BlogPostPage({
               {prev ? (
                 <Link
                   href={`/blogs/${prev.slug}`}
-                  className="group flex items-start gap-2.5 rounded-xl bg-white p-4 shadow-[0_8px_24px_rgba(0,0,0,0.04)] transition-shadow hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] sm:gap-3 sm:rounded-2xl sm:p-5"
+                  className="group flex items-start gap-2.5 rounded-xl bg-white p-4 shadow-[0_8px_24px_rgba(0,0,0,0.04)] transition-shadow duration-300 active:scale-[0.98] active:transition-transform [@media(hover:hover)]:hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] sm:gap-3 sm:rounded-2xl sm:p-5"
                 >
                   <ChevronLeft className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#ED7428] transition-transform group-hover:-translate-x-1 sm:h-5 sm:w-5" />
                   <div>
@@ -208,7 +208,7 @@ export default async function BlogPostPage({
               {next ? (
                 <Link
                   href={`/blogs/${next.slug}`}
-                  className="group flex items-start gap-2.5 rounded-xl bg-white p-4 shadow-[0_8px_24px_rgba(0,0,0,0.04)] transition-shadow hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] sm:flex-row-reverse sm:gap-3 sm:rounded-2xl sm:p-5 sm:text-right"
+                  className="group flex items-start gap-2.5 rounded-xl bg-white p-4 shadow-[0_8px_24px_rgba(0,0,0,0.04)] transition-shadow duration-300 active:scale-[0.98] active:transition-transform [@media(hover:hover)]:hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] sm:flex-row-reverse sm:gap-3 sm:rounded-2xl sm:p-5 sm:text-right"
                 >
                   <ChevronRight className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#ED7428] transition-transform group-hover:translate-x-1 sm:h-5 sm:w-5" />
                   <div>
