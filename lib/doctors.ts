@@ -94,4 +94,4 @@ export const doctors: Doctor[] = [
   },
 ];
 
-export const departments = [...new Set(doctors.map((d) => d.department))];
+export const departments = Array.from(new Set(doctors.map((d) => d.department)));
