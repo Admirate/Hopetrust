@@ -110,6 +110,8 @@ export default function NewsletterForm({
           <div className="flex-1">
             <input
               type="text"
+              id="nl-inline-name"
+              name="full_name"
               placeholder="Full Name"
               value={form.full_name}
               onChange={(e) => handleChange('full_name', e.target.value)}
@@ -122,6 +124,8 @@ export default function NewsletterForm({
           <div className="flex-1">
             <input
               type="email"
+              id="nl-inline-email"
+              name="email"
               placeholder="Email Address"
               value={form.email}
               onChange={(e) => handleChange('email', e.target.value)}
@@ -134,6 +138,8 @@ export default function NewsletterForm({
           <div className="flex-1">
             <input
               type="tel"
+              id="nl-inline-phone"
+              name="phone"
               placeholder="Phone Number"
               value={form.phone}
               onChange={(e) => handleChange('phone', e.target.value)}
@@ -164,6 +170,8 @@ export default function NewsletterForm({
       <div>
         <input
           type="text"
+          id="nl-card-name"
+          name="full_name"
           placeholder="Full Name"
           value={form.full_name}
           onChange={(e) => handleChange('full_name', e.target.value)}
@@ -176,6 +184,8 @@ export default function NewsletterForm({
       <div>
         <input
           type="email"
+          id="nl-card-email"
+          name="email"
           placeholder="Email Address"
           value={form.email}
           onChange={(e) => handleChange('email', e.target.value)}
@@ -188,6 +198,8 @@ export default function NewsletterForm({
       <div>
         <input
           type="tel"
+          id="nl-card-phone"
+          name="phone"
           placeholder="Phone Number"
           value={form.phone}
           onChange={(e) => handleChange('phone', e.target.value)}

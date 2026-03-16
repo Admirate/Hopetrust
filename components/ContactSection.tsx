@@ -118,24 +118,28 @@ export default function ContactSection() {
                   alt="LinkedIn icon"
                   width={24}
                   height={24}
+                  style={{ width: '24px', height: '24px' }}
                 />
                 <Image
                   src={getAssetUrl("Asset 17.png")}
                   alt="Facebook icon"
                   width={24}
                   height={24}
+                  style={{ width: '24px', height: '24px' }}
                 />
                 <Image
                   src={getAssetUrl("Asset 18.png")}
                   alt="Instagram icon"
                   width={24}
                   height={24}
+                  style={{ width: '24px', height: '24px' }}
                 />
                 <Image
                   src={getAssetUrl("Asset 19.png")}
                   alt="WhatsApp icon"
                   width={24}
                   height={24}
+                  style={{ width: '24px', height: '24px' }}
                 />
               </div>
 
@@ -161,12 +165,14 @@ export default function ContactSection() {
                 <form className="space-y-4 sm:space-y-5">
                   {/* Email */}
                   <div>
-                    <label className="block text-xs sm:text-sm lg:text-base font-medium uppercase text-[#6A8181] mb-2">
+                    <label htmlFor="contact-email" className="block text-xs sm:text-sm lg:text-base font-medium uppercase text-[#6A8181] mb-2">
                       Email
                     </label>
 
                     <input
                       type="email"
+                      id="contact-email"
+                      name="email"
                       className="w-full border-b border-[#D1D5DB] bg-transparent pb-2 text-sm sm:text-base lg:text-lg text-[#111827] focus:outline-none focus:border-[#00373E]"
                       placeholder="Email"
                     />
@@ -174,11 +180,13 @@ export default function ContactSection() {
 
                   {/* Message */}
                   <div>
-                    <label className="block text-xs sm:text-sm lg:text-base font-medium uppercase text-[#6A8181] mb-2">
+                    <label htmlFor="contact-message" className="block text-xs sm:text-sm lg:text-base font-medium uppercase text-[#6A8181] mb-2">
                       Message
                     </label>
 
                     <textarea
+                      id="contact-message"
+                      name="message"
                       rows={3}
                       className="w-full border-b border-[#D1D5DB] bg-transparent pb-2 text-sm sm:text-base lg:text-lg text-[#111827] resize-none focus:outline-none focus:border-[#00373E]"
                       placeholder="Message"
