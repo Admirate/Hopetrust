@@ -6,6 +6,22 @@
   NODE_VERSION = "18"
   NPM_FLAGS = "--production=false"
 
+# Redirect old WordPress blog URLs (/blog/slug/) to new format (/blogs/slug/)
+[[redirects]]
+  from = "/blog/:slug"
+  to = "/blogs/:slug/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/"
+  to = "/blogs/"
+  status = 301
+
+[[redirects]]
+  from = "/blog"
+  to = "/blogs/"
+  status = 301
+
 # Handle client-side routing for SPA
 [[redirects]]
   from = "/*"

@@ -40,7 +40,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="smooth-scroll">
+    <html lang="en" className="smooth-scroll" style={{ position: 'relative' }}>
       <head>
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link

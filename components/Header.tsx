@@ -82,9 +82,10 @@ export default function Header() {
               <Image
                 src={getAssetUrl("logo1.png")}
                 alt="Hope Trust Logo"
-                width={120}
-                height={120}
-                className="h-16 w-16 md:h-24 md:w-24 object-contain"
+                width={96}
+                height={96}
+                className="object-contain"
+                style={{ width: 'auto', height: '4rem' }}
                 priority
                 quality={100}
               />

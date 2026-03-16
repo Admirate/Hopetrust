@@ -191,4 +191,66 @@
       transition-duration: 0.01ms !important;
     }
   }
+
+  /* Blog post content styles */
+  .blog-content h1 {
+    @apply mt-8 mb-3 text-xl font-bold text-[#00373E] sm:mt-10 sm:mb-4 sm:text-3xl lg:text-4xl;
+  }
+  .blog-content h2 {
+    @apply mt-6 mb-2 text-lg font-semibold text-[#00373E] sm:mt-8 sm:mb-3 sm:text-2xl lg:text-3xl;
+  }
+  .blog-content h3 {
+    @apply mt-5 mb-2 text-base font-semibold text-[#00373E] sm:mt-6 sm:text-xl lg:text-2xl;
+  }
+  .blog-content h4 {
+    @apply mt-4 mb-2 text-sm font-semibold text-[#00373E] sm:mt-5 sm:text-lg;
+  }
+  .blog-content p {
+    @apply mb-3 text-sm leading-relaxed text-[#374151] sm:mb-4 sm:text-base lg:text-lg lg:leading-8;
+  }
+  .blog-content a {
+    @apply text-[#ED7428] underline decoration-[#ED7428]/30 underline-offset-2 break-words transition-colors hover:text-[#d4631f] hover:decoration-[#ED7428];
+  }
+  .blog-content ul {
+    @apply mb-3 ml-4 list-disc space-y-1.5 text-[#374151] sm:mb-4 sm:ml-6 sm:space-y-2;
+  }
+  .blog-content ol {
+    @apply mb-3 ml-4 list-decimal space-y-1.5 text-[#374151] sm:mb-4 sm:ml-6 sm:space-y-2;
+  }
+  .blog-content li {
+    @apply text-sm leading-relaxed sm:text-base lg:text-lg;
+  }
+  .blog-content blockquote {
+    @apply my-4 border-l-2 border-[#ED7428] bg-[#FFF7ED] py-3 pl-4 pr-3 italic text-[#374151] rounded-r-lg sm:my-6 sm:border-l-4 sm:py-4 sm:pl-6 sm:pr-4;
+  }
+  .blog-content img {
+    @apply my-4 max-w-full h-auto rounded-xl object-cover shadow-md sm:my-6 sm:rounded-2xl;
+  }
+  .blog-content hr {
+    @apply my-6 border-gray-200 sm:my-8;
+  }
+  .blog-content strong {
+    @apply font-semibold text-[#00373E];
+  }
+  .blog-content table {
+    @apply my-4 min-w-full divide-y divide-gray-200 text-xs sm:my-6 sm:text-sm;
+  }
+  .blog-content th {
+    @apply bg-[#F7F6F4] px-2 py-2 text-left font-semibold text-[#00373E] sm:px-4 sm:py-3;
+  }
+  .blog-content td {
+    @apply px-2 py-2 text-[#374151] sm:px-4 sm:py-3;
+  }
+  .blog-content pre {
+    @apply my-3 overflow-x-auto rounded-lg bg-[#1e293b] p-3 text-xs text-gray-100 sm:my-4 sm:rounded-xl sm:p-4 sm:text-sm;
+  }
+  .blog-content code {
+    @apply rounded bg-gray-100 px-1 py-0.5 text-xs text-[#00373E] break-words sm:px-1.5 sm:text-sm;
+  }
+  .blog-content pre code {
+    @apply bg-transparent p-0 text-gray-100;
+  }
+  .blog-content iframe {
+    @apply max-w-full;
+  }
 }
