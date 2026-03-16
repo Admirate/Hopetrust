@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import Image from 'next/image';
@@ -35,6 +35,15 @@ const rightNavItems: NavItem[] = [
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isMenuOpen]);
 
   const allItems: NavItem[] = [...leftNavItems, ...rightNavItems];
 
@@ -73,76 +82,119 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 z-50 w-full bg-white/95 shadow-sm backdrop-blur">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className=" flex items-center justify-between py-4 md:py-5">
-          {/* Logo */}
-          <div className="flex items-center">
-            <Link href="/" className="relative flex-shrink-0">
-              <Image
-                src={getAssetUrl("logo1.png")}
-                alt="Hope Trust Logo"
-                width={96}
-                height={96}
-                className="object-contain"
-                style={{ width: 'auto', height: '4rem' }}
-                priority
-                quality={100}
-              />
-            </Link>
+    <>
+      <header className="fixed top-0 z-50 w-full bg-white/95 shadow-sm backdrop-blur">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between py-4 md:py-5">
+            {/* Logo */}
+            <div className="flex items-center">
+              <Link href="/" className="relative flex-shrink-0">
+                <Image
+                  src={getAssetUrl("logo1.png")}
+                  alt="Hope Trust Logo"
+                  width={96}
+                  height={96}
+                  className="object-contain"
+                  style={{ width: 'auto', height: '4rem' }}
+                  priority
+                  quality={100}
+                />
+              </Link>
+            </div>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden items-center gap-6 xl:gap-8 lg:flex">
+              {[...leftNavItems, ...rightNavItems].map(renderNavItem)}
+            </nav>
+
+            {/* Mobile menu button */}
+            <button
+              className="rounded-md p-2 text-gray-700 hover:bg-gray-100 hover:text-orange-500 lg:hidden"
+              onClick={() => setIsMenuOpen((open) => !open)}
+            >
+              {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
           </div>
+        </div>
+      </header>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden items-center gap-6 xl:gap-8 lg:flex">
-            {[...leftNavItems, ...rightNavItems].map(renderNavItem)}
-          </nav>
+      {/* Mobile Drawer Overlay — outside header to avoid backdrop-blur containment */}
+      <div
+        className={`fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${
+          isMenuOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
+        }`}
+        onClick={() => setIsMenuOpen(false)}
+      />
 
-          {/* Mobile menu button */}
+      {/* Mobile Drawer */}
+      <nav
+        className={`fixed top-0 right-0 z-[70] flex h-full w-[280px] flex-col bg-white shadow-2xl transition-transform duration-300 ease-in-out lg:hidden ${
+          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        {/* Drawer header */}
+        <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
+          <Link href="/" onClick={() => setIsMenuOpen(false)}>
+            <Image
+              src={getAssetUrl('logo1.png')}
+              alt="Hope Trust Logo"
+              width={96}
+              height={96}
+              className="object-contain"
+              style={{ width: 'auto', height: '3rem' }}
+              priority
+              quality={100}
+            />
+          </Link>
           <button
-            className="rounded-md p-2 text-gray-700 hover:bg-gray-100 hover:text-orange-500 lg:hidden"
-            onClick={() => setIsMenuOpen((open) => !open)}
+            onClick={() => setIsMenuOpen(false)}
+            className="rounded-md p-1.5 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+            aria-label="Close menu"
           >
-            {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
+            <X size={22} />
           </button>
         </div>
 
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="border-t border-gray-200 lg:hidden">
-            <div className="space-y-1 py-4">
-              {allItems.map((item) => {
-                const normalizePath = (path: string) =>
-                  path.replace(/\/$/, "") || "/";
-                const currentPath = normalizePath(pathname);
-                const targetPath = normalizePath(item.href);
+        {/* Nav links */}
+        <div className="flex-1 overflow-y-auto px-3 py-4">
+          {allItems.map((item) => {
+            const normalizePath = (path: string) =>
+              path.replace(/\/$/, '') || '/';
+            const currentPath = normalizePath(pathname);
+            const targetPath = normalizePath(item.href);
 
-                const isActive =
-                  item.href !== "#" &&
-                  (currentPath === targetPath ||
-                    currentPath.startsWith(`${targetPath}/`));
+            const isActive =
+              item.href !== '#' &&
+              (currentPath === targetPath ||
+                currentPath.startsWith(`${targetPath}/`));
 
-                return (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    className={`${navFont.className} flex items-center justify-between px-4 py-3 text-base font-semibold transition-colors ${
-                      isActive
-                        ? "text-orange-500 bg-gray-50"
-                        : "text-gray-800 hover:bg-gray-50"
-                    }`}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <span>{item.label}</span>
-                    {item.hasDropdown && (
-                      <ChevronDown className="h-4 w-4 stroke-[2]" />
-                    )}
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        )}
-      </div>
-    </header>
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                className={`${navFont.className} flex items-center justify-between rounded-lg px-4 py-3 text-[15px] font-semibold transition-colors ${
+                  isActive
+                    ? 'bg-orange-50 text-orange-500'
+                    : 'text-gray-700 hover:bg-gray-50 hover:text-orange-500'
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <span>{item.label}</span>
+                {item.hasDropdown && (
+                  <ChevronDown className="h-4 w-4 stroke-[2]" />
+                )}
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Drawer footer */}
+        <div className="border-t border-gray-100 px-5 py-4">
+          <p className="text-xs text-gray-400">
+            &copy; {new Date().getFullYear()} Hope Trust
+          </p>
+        </div>
+      </nav>
+    </>
   );
 }
