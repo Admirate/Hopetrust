@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { marked } from 'marked';
+import DOMPurify from 'isomorphic-dompurify';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, Clock, Calendar, User, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -78,7 +79,8 @@ export default async function BlogPostPage({
   if (!post) notFound();
 
   const { prev, next } = getAdjacentPosts(slug);
-  const htmlContent = marked.parse(post.content) as string;
+  const rawHtml = marked.parse(post.content) as string;
+  const htmlContent = DOMPurify.sanitize(rawHtml);
 
   return (
     <>

@@ -1,15 +1,34 @@
 const CRM_URL =
   "https://prodcron.askadmissionsone.in/external/carrier/hopetrust/66";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
-};
+const ALLOWED_ORIGINS = [
+  "https://hopetrustindia.com",
+  "https://www.hopetrustindia.com",
+  "http://localhost:3000",
+];
+
+function getCorsHeaders(request) {
+  const origin = request.headers.get("origin") || "";
+  const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  return {
+    "Access-Control-Allow-Origin": allowedOrigin,
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+  };
+}
 
 export default async (request) => {
+  const cors = getCorsHeaders(request);
+
   if (request.method === "OPTIONS") {
-    return new Response(null, { status: 204, headers: corsHeaders });
+    return new Response(null, { status: 204, headers: cors });
+  }
+
+  if (request.method !== "POST") {
+    return new Response(JSON.stringify({ error: "Method not allowed" }), {
+      status: 405,
+      headers: { ...cors, "Content-Type": "application/json" },
+    });
   }
 
   const token = process.env.WHATSAPP_CRM_TOKEN;
@@ -17,7 +36,7 @@ export default async (request) => {
   if (!token) {
     return new Response(JSON.stringify({ error: "CRM not configured" }), {
       status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...cors, "Content-Type": "application/json" },
     });
   }
 
@@ -35,12 +54,12 @@ export default async (request) => {
 
     return new Response(JSON.stringify(data), {
       status: res.status,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...cors, "Content-Type": "application/json" },
     });
   } catch {
     return new Response(JSON.stringify({ error: "CRM request failed" }), {
       status: 502,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...cors, "Content-Type": "application/json" },
     });
   }
 };

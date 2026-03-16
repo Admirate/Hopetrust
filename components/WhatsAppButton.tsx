@@ -49,11 +49,17 @@ export default function WhatsAppButton() {
         body: JSON.stringify({}),
       });
 
+      if (!res.ok) throw new Error('CRM request failed');
+
       const data = await res.json();
       const redirect = data?.url || data?.redirectUrl || data?.link;
 
+      const isSafeUrl =
+        typeof redirect === 'string' &&
+        (redirect.startsWith('https://') || redirect.startsWith('http://'));
+
       window.open(
-        redirect || WHATSAPP_FALLBACK,
+        isSafeUrl ? redirect : WHATSAPP_FALLBACK,
         '_blank',
         'noopener,noreferrer'
       );

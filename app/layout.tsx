@@ -5,6 +5,7 @@ import WebVitals from '@/components/WebVitals';
 import LenisProvider from '@/components/LenisProvider';
 import { Toaster } from 'sonner';
 import WhatsAppButton from '@/components/WhatsAppButton';
+import { getLogoUrl } from '@/lib/assets';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -21,8 +22,8 @@ export const metadata: Metadata = {
   authors: [{ name: 'Hope Trust' }],
   robots: 'index, follow',
   icons: {
-    icon: 'https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/logo1.png',
-    apple: 'https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/logo1.png',
+    icon: getLogoUrl(),
+    apple: getLogoUrl(),
   },
   openGraph: {
     title: 'Hope Trust - A place for hope, healing, and renewal',
