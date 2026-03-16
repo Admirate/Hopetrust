@@ -43,7 +43,7 @@ export default function HomeFinalCtaSection() {
                 width={64}
                 height={64}
                 className="object-contain"
-                style={{ width: 'auto', height: 'auto' }}
+                style={{ width: '64px', height: '64px' }}
               />
             </div>
             <div
