@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import WebVitals from '@/components/WebVitals';
 import LenisProvider from '@/components/LenisProvider';
 import { Toaster } from 'sonner';
+import WhatsAppButton from '@/components/WhatsAppButton';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -58,7 +59,8 @@ export default function RootLayout({
         <LenisProvider>
           {children}
           <WebVitals />
-          <Toaster position="bottom-right" richColors />
+          <WhatsAppButton />
+          <Toaster position="top-right" richColors />
         </LenisProvider>
       </body>
     </html>
