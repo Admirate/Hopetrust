@@ -28,41 +28,41 @@ export default function TherapistCard({ doctor }: { doctor: Doctor }) {
     <div
       className={`${cardFont.className} group relative flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl`}
     >
-      {/* Top accent bar */}
-      <div className="h-1.5 w-full bg-gradient-to-r from-[#00373E] to-[#ED7428]" />
+      {/* Large square image area */}
+      {doctor.photo ? (
+        <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
+          <img
+            src={doctor.photo}
+            alt={doctor.name}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+        </div>
+      ) : (
+        <div className="relative flex aspect-[4/3] w-full items-center justify-center overflow-hidden bg-gradient-to-br from-[#00373E] via-[#025a66] to-[#00373E]">
+          <span className="text-5xl font-bold text-white/90 sm:text-6xl">
+            {initials}
+          </span>
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#002a30] to-transparent" />
+          <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-[#ED7428]/10" />
+          <div className="absolute -bottom-4 -left-4 h-24 w-24 rounded-full bg-[#ED7428]/10" />
+        </div>
+      )}
 
       <div className="flex flex-1 flex-col p-5 sm:p-6">
-        {/* Header row */}
-        <div className="flex items-start gap-4">
-          {/* Avatar */}
-          {doctor.photo ? (
-            <img
-              src={doctor.photo}
-              alt={doctor.name}
-              className="h-16 w-16 shrink-0 rounded-full object-cover ring-2 ring-[#ED7428]/30 sm:h-20 sm:w-20"
-            />
-          ) : (
-            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#00373E] to-[#025a66] text-lg font-bold text-white ring-2 ring-[#ED7428]/30 sm:h-20 sm:w-20 sm:text-xl">
-              {initials}
-            </div>
-          )}
-
-          {/* Name + tags */}
-          <div className="min-w-0 flex-1">
-            <h3 className="text-base font-bold leading-tight text-[#00373E] sm:text-lg">
-              {doctor.name}
-            </h3>
-            <p className="mt-1 text-sm font-medium text-[#ED7428]">
-              {doctor.qualification}
-            </p>
-            <span className="mt-1.5 inline-block rounded-full bg-[#00373E]/10 px-3 py-0.5 text-xs font-medium text-[#00373E]">
-              {doctor.department}
-            </span>
-          </div>
-        </div>
+        {/* Name + qualification */}
+        <h3 className="text-lg font-bold leading-tight text-[#00373E] sm:text-xl">
+          {doctor.name}
+        </h3>
+        <p className="mt-1 text-sm font-medium text-[#ED7428]">
+          {doctor.qualification}
+        </p>
+        <span className="mt-2 inline-block w-fit rounded-full bg-[#00373E]/10 px-3 py-1 text-xs font-medium text-[#00373E]">
+          {doctor.department}
+        </span>
 
         {/* Bio */}
-        <p className="mt-4 text-[13px] leading-relaxed text-gray-600 sm:text-sm">
+        <p className="mt-3 text-[13px] leading-relaxed text-gray-600 sm:text-sm">
           {displayBio}
           {shouldTruncate && (
             <button
@@ -82,7 +82,7 @@ export default function TherapistCard({ doctor }: { doctor: Doctor }) {
           href={doctor.bookingUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-[#00373E] px-6 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:bg-[#025a66] hover:shadow-lg active:scale-[0.97]"
+          className="mt-5 flex w-full items-center justify-center gap-2 rounded-full bg-[#00373E] px-6 py-3 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:bg-[#025a66] hover:shadow-lg active:scale-[0.97]"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
