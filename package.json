@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:netlify": "netlify dev",
     "build": "next build && node scripts/generate-sitemap.mjs",
     "start": "next start",
     "lint": "next lint",
@@ -76,6 +77,11 @@
     "web-vitals": "^3.5.0",
     "zod": "^3.23.8"
   },
+  "overrides": {
+    "brace-expansion": "^3.0.0",
+    "path-to-regexp": "^8.3.1",
+    "picomatch": "^4.0.0"
+  },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
@@ -90,6 +96,7 @@
     "eslint": "^8.57.0",
     "eslint-config-next": "^15.3.4",
     "jsdom": "^28.1.0",
+    "netlify-cli": "^24.8.1",
     "turndown": "^7.2.2",
     "typescript": "5.2.2",
     "vitest": "^4.1.0"

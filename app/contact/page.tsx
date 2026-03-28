@@ -8,7 +8,6 @@ import { Mail, Phone, MapPin, Send, MessageSquare } from 'lucide-react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { getAssetUrl } from '@/lib/assets';
-import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -442,23 +441,21 @@ export default function ContactPage() {
     setFieldErrors({});
     setFormStatus('sending');
     try {
-      const [supabaseResult] = await Promise.allSettled([
-        supabase.from('contact_submissions').insert(result.data),
-        fetch('/__forms.html', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams({ 'form-name': 'contact', ...result.data }).toString(),
-        }),
-      ]);
-      if (supabaseResult.status === 'fulfilled' && supabaseResult.value.error) {
-        throw supabaseResult.value.error;
+      const res = await fetch('/api/submit-contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(result.data),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || 'Failed to send message');
       }
       setFormStatus('sent');
       toast.success('Message sent successfully! We\'ll get back to you soon.');
       setFormData({ full_name: '', phone: '', email: '', message: '' });
-    } catch {
+    } catch (err) {
       setFormStatus('idle');
-      toast.error('Failed to send message. Please try again.');
+      toast.error(err instanceof Error ? err.message : 'Failed to send message. Please try again.');
     }
   };
 

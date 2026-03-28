@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { z } from 'zod';
-import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import { Loader2, CheckCircle2 } from 'lucide-react';
 
@@ -61,22 +60,26 @@ export default function NewsletterForm({
 
     setLoading(true);
     try {
-      const { error } = await supabase
-        .from('newsletter_subscribers')
-        .insert([result.data]);
+      const res = await fetch('/api/submit-newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(result.data),
+      });
 
-      if (error) {
-        if (error.code === '23505') {
-          toast.error('You\'re already subscribed!');
-        } else {
-          toast.error('Something went wrong. Please try again.');
-        }
+      if (res.status === 409) {
+        toast.error("You're already subscribed!");
+        return;
+      }
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        toast.error(data.error || 'Something went wrong. Please try again.');
         return;
       }
 
       setSuccess(true);
       setForm({ full_name: '', email: '', phone: '' });
-      toast.success('Welcome aboard! You\'re now subscribed to our newsletter.');
+      toast.success("Welcome aboard! You're now subscribed to our newsletter.");
     } catch {
       toast.error('Something went wrong. Please try again.');
     } finally {

@@ -334,6 +334,19 @@ const ALLOWED_FILE_TYPES = [
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 ];
 
+// Magic bytes for each allowed format — defends against renamed executables
+const MAGIC_SIGNATURES: number[][] = [
+  [0x25, 0x50, 0x44, 0x46],       // PDF  — %PDF
+  [0x50, 0x4b, 0x03, 0x04],       // DOCX — PK\x03\x04 (ZIP)
+  [0xd0, 0xcf, 0x11, 0xe0],       // DOC  — OLE2 compound document
+];
+
+async function checkMagicBytes(file: File): Promise<boolean> {
+  const buffer = await file.slice(0, 8).arrayBuffer();
+  const bytes = new Uint8Array(buffer);
+  return MAGIC_SIGNATURES.some(sig => sig.every((byte, i) => bytes[i] === byte));
+}
+
 const joinUsSchema = z.object({
   full_name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Please enter a valid email address'),
@@ -361,7 +374,7 @@ export default function JoinUsPage() {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null;
     if (!file) return;
     if (!ALLOWED_FILE_TYPES.includes(file.type)) {
@@ -371,6 +384,12 @@ export default function JoinUsPage() {
     }
     if (file.size > MAX_FILE_SIZE) {
       setFieldErrors(prev => ({ ...prev, cv_file: 'File size must be under 5 MB' }));
+      e.target.value = '';
+      return;
+    }
+    const validBytes = await checkMagicBytes(file);
+    if (!validBytes) {
+      setFieldErrors(prev => ({ ...prev, cv_file: 'File content does not match a valid PDF or Word document' }));
       e.target.value = '';
       return;
     }
@@ -411,16 +430,14 @@ export default function JoinUsPage() {
 
       const insertData = { ...result.data!, cv_link: cvUrl };
 
-      const [supabaseResult] = await Promise.allSettled([
-        supabase.from('joinus_applications').insert(insertData),
-        fetch('/__forms.html', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams({ 'form-name': 'joinus', ...insertData }).toString(),
-        }),
-      ]);
-      if (supabaseResult.status === 'fulfilled' && supabaseResult.value.error) {
-        throw supabaseResult.value.error;
+      const res = await fetch('/api/submit-joinus', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(insertData),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || 'Failed to submit application');
       }
       setFormStatus('sent');
       toast.success('Application submitted! We\'ll review it within 48 hours.');
