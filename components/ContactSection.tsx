@@ -6,6 +6,7 @@ import { Bricolage_Grotesque } from "next/font/google";
 import { motion } from "motion/react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { getAssetUrl } from '@/lib/assets';
+import { siteConfig } from '@/lib/config';
 
 const headingFont = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -81,7 +82,7 @@ export default function ContactSection() {
                 >
                   Email:
                   <span className="ml-2 font-normal text-[#111827] break-all">
-                    frontoffice@hopetrustindia.com
+                    {siteConfig.contact.email}
                   </span>
                 </p>
 
@@ -91,7 +92,7 @@ export default function ContactSection() {
                 >
                   Phone:
                   <span className="ml-2 font-normal text-[#111827]">
-                    +91 9000850001 / +91 9000720003
+                    {siteConfig.contact.phone} / {siteConfig.contact.phone2}
                   </span>
                 </p>
 
@@ -101,13 +102,13 @@ export default function ContactSection() {
                 >
                   Address:
                   <span className="font-normal text-[#111827] block">
-                    C/o, UCCHVAS Rehabilitation Center,
+                    {siteConfig.contact.address.line1}
                     <br />
-                    Plot no. 564-A-36-111,
+                    {siteConfig.contact.address.line2}
                     <br />
-                    Opp. Lotus Pond Road, MLA Colony,
+                    {siteConfig.contact.address.line3}
                     <br />
-                    Banjara Hills, Hyderabad – 500034
+                    {siteConfig.contact.address.line4}
                   </span>
                 </p>
               </div>
