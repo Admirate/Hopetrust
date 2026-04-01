@@ -43,7 +43,7 @@ export default function WhatsAppButton() {
     setBusy(true);
 
     try {
-      const res = await fetch('/.netlify/functions/whatsapp-crm', {
+      const res = await fetch('/api/whatsapp-crm', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({}),

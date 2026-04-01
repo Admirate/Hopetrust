@@ -1,5 +1,4 @@
-const CRM_URL =
-  "https://prodcron.askadmissionsone.in/external/carrier/hopetrust/66";
+const CRM_URL = process.env.CRM_ENDPOINT;
 
 const ALLOWED_ORIGINS = [
   "https://hopetrustindia.com",
@@ -32,8 +31,9 @@ export default async (request) => {
   }
 
   const token = process.env.WHATSAPP_CRM_TOKEN;
+  const crmUrl = CRM_URL;
 
-  if (!token) {
+  if (!token || !crmUrl) {
     return new Response(JSON.stringify({ error: "CRM not configured" }), {
       status: 500,
       headers: { ...cors, "Content-Type": "application/json" },
@@ -41,7 +41,7 @@ export default async (request) => {
   }
 
   try {
-    const res = await fetch(CRM_URL, {
+    const res = await fetch(crmUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
