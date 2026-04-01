@@ -23,7 +23,8 @@ interface RequestBody {
 function buildNewsletterHtml(
   customMessage: string,
   recentPosts: BlogPost[],
-  unsubscribeUrl: string
+  unsubscribeUrl: string,
+  siteUrl: string
 ): string {
   const postCards = recentPosts
     .map(
@@ -78,7 +79,7 @@ function buildNewsletterHtml(
         <tr><td style="background-color: #FFF7ED; padding: 32px 40px; text-align: center;">
           <h3 style="margin: 0 0 8px 0; font-size: 20px; font-weight: 700; color: #00373E;">Need support?</h3>
           <p style="margin: 0 0 20px 0; font-size: 14px; color: #6B7280; line-height: 1.5;">Our team is here to help you on your journey to wellness.</p>
-          <a href="https://hopetrustindia.com/contact" style="display: inline-block; background-color: #00373E; color: #ffffff; padding: 12px 32px; border-radius: 50px; text-decoration: none; font-size: 14px; font-weight: 600;">Book a Session</a>
+          <a href="${siteUrl}/contact" style="display: inline-block; background-color: #00373E; color: #ffffff; padding: 12px 32px; border-radius: 50px; text-decoration: none; font-size: 14px; font-weight: 600;">Book a Session</a>
         </td></tr>
         <tr><td style="padding: 24px 40px; text-align: center; background-color: #00373E;">
           <p style="margin: 0 0 4px 0; font-size: 13px; color: #9CA3AF;">Hope Trust, Banjara Hills, Hyderabad, India</p>
@@ -109,7 +110,8 @@ Deno.serve(async (req: Request) => {
     const resend = new Resend(resendApiKey);
 
     const body: RequestBody = await req.json();
-    const { customMessage, recentPosts = [], siteUrl = "https://hopetrustindia.com" } = body;
+    const siteUrl = body.siteUrl || Deno.env.get("SITE_URL") || "https://hopetrustindia.com";
+    const { customMessage, recentPosts = [] } = body;
 
     if (!customMessage) {
       return new Response(
@@ -140,7 +142,8 @@ Deno.serve(async (req: Request) => {
         ...p,
         url: p.url.startsWith("http") ? p.url : `${siteUrl}${p.url}`,
       })),
-      `${siteUrl}/unsubscribe`
+      `${siteUrl}/unsubscribe`,
+      siteUrl
     );
 
     const BATCH_SIZE = 50;

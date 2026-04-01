@@ -8,6 +8,7 @@ import { Mail, Phone, MapPin, Send, MessageSquare } from 'lucide-react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { getAssetUrl } from '@/lib/assets';
+import { siteConfig } from '@/lib/config';
 import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -26,24 +27,25 @@ const contactInfo = [
     gif: getAssetUrl('email.gif'),
     staticIcon: <Mail className="w-6 h-6" />,
     label: 'Email Us',
-    value: 'frontoffice@hopetrustindia.com',
-    href: 'mailto:frontoffice@hopetrustindia.com',
+    value: siteConfig.contact.email,
+    href: `mailto:${siteConfig.contact.email}`,
     color: 'bg-blue-50 text-blue-600',
   },
   {
     gif: getAssetUrl('call.gif'),
     staticIcon: <Phone className="w-6 h-6" />,
     label: 'Call Us',
-    value: '+91 90008 50001 / +91 90007 20003',
-    href: 'tel:+919000850001',
+    value: `${siteConfig.contact.phone} / ${siteConfig.contact.phone2}`,
+    href: `tel:${siteConfig.contact.phone.replace(/\s/g, '')}`,
+
     color: 'bg-green-50 text-green-600',
   },
   {
     gif: getAssetUrl('map.gif'),
     staticIcon: <MapPin className="w-6 h-6" />,
     label: 'Visit Us',
-    value: 'C/o, UCCHVAS Rehabilitation Center, Plot no. 564-A-36-111, Opp. Lotus Pond Road, MLA Colony, Banjara Hills, Hyderabad-500034.',
-    href: 'https://www.google.com/maps/dir/?api=1&destination=UCCHVAS+Rehabilitation+Center+Banjara+Hills+Hyderabad',
+    value: siteConfig.contact.address.full,
+    href: siteConfig.contact.address.mapsUrl,
     color: 'bg-orange-50 text-orange-600',
   },
 ];
@@ -514,8 +516,8 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-wider text-white/60">Training Enquiries</p>
-                  <a href="mailto:training@hopetrustindia.com" className="font-semibold hover:text-orange-400 transition-colors">
-                    training@hopetrustindia.com
+                  <a href={`mailto:${siteConfig.contact.trainingEmail}`} className="font-semibold hover:text-orange-400 transition-colors">
+                    {siteConfig.contact.trainingEmail}
                   </a>
                 </div>
               </div>
@@ -525,8 +527,8 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-wider text-white/60">Contact Number</p>
-                  <a href="tel:+919866822240" className="font-semibold hover:text-orange-400 transition-colors">
-                    +91 98668 22240
+                  <a href={`tel:${siteConfig.contact.trainingPhone.replace(/\s/g, '')}`} className="font-semibold hover:text-orange-400 transition-colors">
+                    {siteConfig.contact.trainingPhone}
                   </a>
                 </div>
               </div>
@@ -631,13 +633,13 @@ export default function ContactPage() {
                 className="space-y-8"
               >
                 <a 
-                  href="https://www.google.com/maps/dir/?api=1&destination=UCCHVAS+Rehabilitation+Center+Banjara+Hills+Hyderabad"
+                  href={siteConfig.contact.address.mapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block group relative rounded-[48px] overflow-hidden h-[400px] border-8 border-[#F7F5EF] shadow-lg grayscale hover:grayscale-0 transition-all duration-700 cursor-pointer"
                 >
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.827258327178!2d78.423985!3d17.41725!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb972e9a366667%3A0x7d6c6e76d99a4666!2sHope%20Trust!5e0!3m2!1sen!2sin!4v1710000000000!5m2!1sen!2sin"
+                    src={siteConfig.maps.embedUrl}
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
@@ -664,11 +666,11 @@ export default function ContactPage() {
                       Our helpline is available round the clock for emergencies. We are committed to providing immediate support to those in crisis.
                     </p>
                     <a
-                      href="tel:+919000850001"
+                      href={`tel:${siteConfig.contact.phone.replace(/\s/g, '')}`}
                       className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 px-6 py-3 rounded-xl transition-all font-semibold"
                     >
                       <Phone className="w-5 h-5 text-orange-400" />
-                      Appointments: +91 90008 50001
+                      Appointments: {siteConfig.contact.phone}
                     </a>
                   </div>
                   {/* Decorative element */}

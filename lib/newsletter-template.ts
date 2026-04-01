@@ -9,12 +9,14 @@ interface NewsletterData {
   customMessage: string;
   recentPosts: BlogPostLink[];
   unsubscribeUrl?: string;
+  siteUrl?: string;
 }
 
 export function buildNewsletterHtml({
   customMessage,
   recentPosts,
   unsubscribeUrl = '#',
+  siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hopetrustindia.com',
 }: NewsletterData): string {
   const postCards = recentPosts
     .map(
@@ -129,7 +131,7 @@ export function buildNewsletterHtml({
               <p style="margin: 0 0 20px 0; font-size: 14px; color: #6B7280; line-height: 1.5;">
                 Our team is here to help you on your journey to wellness.
               </p>
-              <a href="https://hopetrustindia.com/contact" style="display: inline-block; background-color: #00373E; color: #ffffff; padding: 12px 32px; border-radius: 50px; text-decoration: none; font-size: 14px; font-weight: 600;">
+              <a href="${siteUrl}/contact" style="display: inline-block; background-color: #00373E; color: #ffffff; padding: 12px 32px; border-radius: 50px; text-decoration: none; font-size: 14px; font-weight: 600;">
                 Book a Session
               </a>
             </td>

@@ -8,7 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const OUT_DIR = path.join(ROOT, 'out');
 const BLOG_DIR = path.join(ROOT, 'content', 'blogs');
-const SITE_URL = 'https://hopetrustindia.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://hopetrustindia.com';
 
 const staticPages = [
   '/',

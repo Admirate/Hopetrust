@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useCallback, useEffect, useRef } from 'react';
+import { siteConfig } from '@/lib/config';
 
-const WHATSAPP_FALLBACK = 'https://wa.me/919000850001';
+const WHATSAPP_FALLBACK = siteConfig.contact.whatsappUrl;
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
