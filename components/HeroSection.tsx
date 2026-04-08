@@ -47,7 +47,7 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/15 to-black/25" />
 
       {/* Centered rounded rectangle with inner hero video */}
-      <div className="relative z-10 flex h-full w-full items-start justify-center px-4 sm:px-6 lg:px-10 pt-16 sm:pt-24 pb-10 fade-in-optimized">
+      <div className="relative z-10 flex h-full w-full items-start justify-center px-4 sm:px-6 lg:px-10 pt-36 sm:pt-40 pb-10 fade-in-optimized">
         <motion.div
           style={{ y: cardY }}
           className="relative w-full max-w-[1200px] max-h-[calc(100vh-7rem)] aspect-[9/19] sm:aspect-[16/9] lg:aspect-[21/9]"

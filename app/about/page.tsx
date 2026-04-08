@@ -201,7 +201,7 @@ export default function About() {
   return (
     <>
       <Header />
-      <main className="min-h-screen pt-20">
+      <main className="min-h-screen">
         {/* First section */}
         <section className="relative min-h-screen w-full overflow-hidden">
           <div className="relative z-10 flex h-full w-full flex-col justify-between px-4 sm:px-8 lg:px-16 py-12 gap-10">

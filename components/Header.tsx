@@ -34,6 +34,7 @@ const rightNavItems: NavItem[] = [
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -65,7 +66,9 @@ export default function Header() {
         key={item.label}
         href={item.href}
         className={`  ${navFont.className} group relative flex items-center gap-1 text-sm md:text-base font-semibold transition-all duration-200 hover:-translate-y-0.5 ${
-          isActive ? 'text-orange-500' : 'text-gray-800 hover:text-orange-500'
+          isActive
+            ? 'text-orange-500'
+            : 'text-gray-800 hover:text-orange-500'
         }`}
       >
         <span>{item.label}</span>
@@ -83,7 +86,15 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 z-50 w-full bg-white/95 shadow-sm backdrop-blur">
+      <header
+        className={`fixed top-0 z-50 w-full transition-all duration-300 ease-in-out ${
+          isHovered
+            ? 'bg-white/95 shadow-sm backdrop-blur'
+            : 'bg-transparent'
+        }`}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between py-4 md:py-5">
             {/* Logo */}
@@ -109,7 +120,7 @@ export default function Header() {
 
             {/* Mobile menu button */}
             <button
-              className="rounded-md p-2 text-gray-700 hover:bg-gray-100 hover:text-orange-500 lg:hidden"
+              className="rounded-md p-2 text-gray-700 hover:bg-gray-100 hover:text-orange-500 transition-colors duration-300 lg:hidden"
               onClick={() => setIsMenuOpen((open) => !open)}
             >
               {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
