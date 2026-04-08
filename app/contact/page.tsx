@@ -13,9 +13,7 @@ import { supabase } from '@/lib/supabase';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-const HomeFinalCtaSection = dynamic(
-  () => import('@/components/HomeFinalCtaSection')
-);
+const Footer = dynamic(() => import('@/components/Footer'));
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -681,8 +679,8 @@ export default function ContactPage() {
           </div>
         </section>
 
-        <HomeFinalCtaSection />
       </main>
+      <Footer />
     </>
   );
 }

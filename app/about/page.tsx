@@ -12,9 +12,7 @@ import OurTeamSection from '@/components/OurTeamSection';
 import { getAssetUrl } from '@/lib/assets';
 
 // Re-use CTA via code-split chunk
-const HomeFinalCtaSection = dynamic(
-  () => import('@/components/HomeFinalCtaSection')
-);
+const Footer = dynamic(() => import('@/components/Footer'));
 
 const aboutHeadingFont = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -727,8 +725,8 @@ export default function About() {
         </section>
 
         {/* Final CTA + footer-style links section (last section on page) */}
-        <HomeFinalCtaSection />
       </main>
+      <Footer />
     </>
   );
 }

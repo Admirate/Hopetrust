@@ -8,9 +8,7 @@ import { Bricolage_Grotesque, IBM_Plex_Sans } from "next/font/google";
 import { fetchDoctors, fetchDepartments, type Doctor } from "@/lib/doctors";
 import { Search, AlertCircle } from "lucide-react";
 
-const HomeFinalCtaSection = dynamic(
-  () => import("@/components/HomeFinalCtaSection")
-);
+const Footer = dynamic(() => import("@/components/Footer"));
 
 const bookHeadingFont = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -203,8 +201,8 @@ export default function Page() {
           )}
         </section>
 
-        <HomeFinalCtaSection />
       </main>
+      <Footer />
     </>
   );
 }

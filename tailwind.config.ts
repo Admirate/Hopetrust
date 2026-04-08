@@ -100,6 +100,10 @@ const config: Config = {
           '0%': { transform: 'translateX(100%)' },
           '100%': { transform: 'translateX(0)' },
         },
+        marquee: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-100%)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -109,6 +113,8 @@ const config: Config = {
         'cursor-blink': 'cursor-blink 1s step-end infinite',
         'fade-in': 'fade-in 0.5s ease-out',
         'slide-in': 'slide-in 0.3s ease-out',
+        marquee: 'marquee 30s linear infinite',
+        'marquee-logos': 'marquee 25s linear infinite',
       },
     },
   },

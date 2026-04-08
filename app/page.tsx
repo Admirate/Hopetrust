@@ -7,6 +7,9 @@ const HeroSection = dynamic(() => import('@/components/HeroSection'));
 const BackgroundCirclesSection = dynamic(
   () => import('@/components/BackgroundCirclesSection')
 );
+const ScrollingTextBanner = dynamic(
+  () => import('@/components/ScrollingTextBanner')
+);
 const WhatWeOfferSection = dynamic(
   () => import('@/components/WhatWeOfferSection')
 );
@@ -20,13 +23,10 @@ const ResourcesSection = dynamic(
 const LargeRectangleSection = dynamic(
   () => import('@/components/LargeRectangleSection')
 );
-const MeetTheTeamSection = dynamic(
-  () => import('@/components/MeetTheTeamSection')
+const AffiliationsSection = dynamic(
+  () => import('@/components/AffiliationsSection')
 );
-const ContactSection = dynamic(() => import('@/components/ContactSection'));
-const HomeFinalCtaSection = dynamic(
-  () => import('@/components/HomeFinalCtaSection')
-);
+const Footer = dynamic(() => import('@/components/Footer'));
 
 export default function Home() {
   return (
@@ -38,6 +38,7 @@ export default function Home() {
         </FadeInSection>
         {/* Let BackgroundCirclesSection handle its own element animations so the background image stays static */}
         <BackgroundCirclesSection />
+        <ScrollingTextBanner />
         <FadeInSection delay={150}>
           <WhatWeOfferSection />
         </FadeInSection>
@@ -51,14 +52,9 @@ export default function Home() {
         <ResourcesSection />
         {/* Let LargeRectangleSection handle its own card animation */}
         <LargeRectangleSection />
-        <FadeInSection delay={400}>
-          <MeetTheTeamSection />
-        </FadeInSection>
-        {/* Let ContactSection handle its own text + card animation */}
-        <ContactSection />
-        {/* Let HomeFinalCtaSection handle its own left/right card animations */}
-        <HomeFinalCtaSection />
+        <AffiliationsSection />
       </main>
+      <Footer />
     </>
   );
 }

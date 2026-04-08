@@ -115,7 +115,7 @@ const BackgroundCirclesSection = () => {
           >
             <div className="relative w-full max-w-[479px] aspect-[479/491] rounded-[52px] bg-[#F97316] shadow-[0_24px_60px_rgba(0,0,0,0.2)] overflow-hidden">
               <TiltedCard
-                imageSrc={getAssetUrl("2.jpg")}
+                imageSrc={getAssetUrl("home page girl.png")}
                 altText="Illustration of a person with overlapping feelings"
                 containerHeight="100%"
                 containerWidth="100%"

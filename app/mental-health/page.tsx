@@ -8,10 +8,7 @@ import Header from '@/components/Header';
 import dynamic from 'next/dynamic';
 import { getAssetUrl } from '@/lib/assets';
 
-// Code-split shared CTA
-const HomeFinalCtaSection = dynamic(
-  () => import('@/components/HomeFinalCtaSection')
-);
+const Footer = dynamic(() => import('@/components/Footer'));
 
 type FocusKey = 'therapy' | 'psychiatry' | 'couples' | 'family';
 type AssessmentKey = 'adhd' | 'student' | 'queer';
@@ -357,9 +354,8 @@ export default function MentalHealthPage() {
           </div>
         </section>
 
-        {/* Global footer-style support CTA */}
-        <HomeFinalCtaSection />
       </main>
+      <Footer />
     </>
   );
 }

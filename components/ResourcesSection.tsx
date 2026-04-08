@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { Bricolage_Grotesque } from "next/font/google";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { InteractiveHoverButton } from "@/components/InteractiveHoverButton";
+import { getAssetUrl } from '@/lib/assets';
 
 const headingFont = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -43,15 +44,18 @@ export default function ResourcesSection() {
   return (
     <section className="w-full bg-[#F7F5EF] py-20">
       <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 text-center relative">
-        {/* Decorative donut shape behind heading (above and behind text) */}
-        <div className="pointer-events-none absolute -top-16 left-1/2 -translate-x-1/2 -z-10">
-          <div className="h-32 w-32 sm:h-40 sm:w-40 rounded-full bg-[#FAD9A4]" />
-          <div className="absolute inset-4 rounded-full bg-[#F7F5EF]" />
+        {/* Decorative orange icon behind heading */}
+        <div className="pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 z-0">
+          <img
+            src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/orange%20Icon.png"
+            alt=""
+            className="h-56 w-56 sm:h-72 sm:w-72 object-contain opacity-90"
+          />
         </div>
 
         {/* Label */}
         <p
-          className={`${headingFont.className} mt-10 text-center`}
+          className={`${headingFont.className} relative z-10 mt-10 text-center`}
           style={{
             color: "#00373E",
             fontSize: "14px",

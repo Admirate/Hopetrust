@@ -93,7 +93,7 @@ export default function RectangleSection() {
                     {activeCard.title}
                   </h2>
                   <div
-                    className={`${bricolage.className} space-y-2 sm:space-y-2.5 text-sm sm:text-lg lg:text-2xl font-bold leading-normal tracking-[0.724px] text-[#00373E]`}
+                    className={`${bricolage.className} space-y-2 sm:space-y-2.5 text-lg sm:text-2xl lg:text-[32px] font-bold leading-normal tracking-[0.724px] text-[#00373E]`}
                   >
                     {activeCard.lines.map((line, idx) => (
                       <p key={idx}>{line}</p>

@@ -16,7 +16,7 @@ const items = [
   { label: "Therapy", icon: getAssetUrl("asset4.png") },
   { label: "Addiction Care", icon: getAssetUrl("asset1.png") },
   { label: "Psychiatry", icon: getAssetUrl("asset2.png") },
-  { label: "For Couples", icon: getAssetUrl("asset3.png") },
+  { label: "Relationships", icon: getAssetUrl("asset3.png") },
   { label: "Queer Affirmative Care", icon: getAssetUrl("asset5.png") },
 ];
 
@@ -29,7 +29,7 @@ export default function WhatWeOfferSection() {
     <section className="w-full bg-[#F9E6D0] py-12 sm:py-16">
       <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center gap-6 px-4 sm:px-8 lg:px-[106px]">
         <h2
-          className={`${headingFont.className} mb-4 text-center md:mb-6 text-3xl sm:text-4xl lg:text-[48px] leading-tight sm:leading-snug lg:leading-[72px] font-semibold text-[#00373E]`}
+          className={`${headingFont.className} mb-4 text-center md:mb-6 text-3xl sm:text-4xl lg:text-[48px] leading-tight sm:leading-snug lg:leading-[72px] font-semibold italic text-[#00373E]`}
         >
           What we offer
         </h2>
@@ -69,6 +69,19 @@ export default function WhatWeOfferSection() {
             </motion.div>
           ))}
         </div>
+
+        <p
+          className={`${headingFont.className} mt-6 text-center text-base sm:text-lg md:text-xl text-[#00373E] font-semibold`}
+        >
+          Take the first step towards support and healing.
+        </p>
+
+        <a
+          href="/book-your-session"
+          className="mt-4 inline-flex items-center justify-center rounded-full bg-[#ED7428] px-8 sm:px-10 py-3 text-sm sm:text-base font-semibold text-white shadow-md transition-all duration-200 hover:bg-[#d4631f] hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-[0.97]"
+        >
+          Book an appointment
+        </a>
       </div>
     </section>
   );

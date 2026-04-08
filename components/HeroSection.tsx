@@ -83,10 +83,10 @@ const HeroSection = () => {
               {/* Heading */}
               <h1
                 className={`${heroFont.className} font-semibold text-center 
-    text-2xl sm:text-3xl md:text-4xl lg:text-5xl 
-    leading-tight tracking-wide fade-in-optimized`}
+    text-[28px] sm:text-[36px] lg:text-[48px] leading-snug sm:leading-normal fade-in-optimized text-white`}
+                style={{ letterSpacing: '0.724px' }}
               >
-                A place for <span className="text-[#FFDF00]">hope</span>,
+                A place for <span className="text-[#EE7329]">hope</span>,
                 <br className="hidden sm:block" />
                 healing, and renewal.
               </h1>
@@ -94,10 +94,11 @@ const HeroSection = () => {
               {/* Subtext */}
               <p
                 className={`${heroFont.className} fade-in-optimized 
-    text-sm sm:text-base lg:text-xl 
-    font-bold tracking-wide 
+    text-[16px] sm:text-[20px] lg:text-[24px] leading-relaxed sm:leading-normal 
+    font-bold 
     text-[#FFFAD4] 
-    max-w-xs sm:max-w-md lg:max-w-lg`}
+    w-full max-w-[338px]`}
+                style={{ letterSpacing: '0.724px' }}
               >
                 A gentle reminder: We&apos;re here if you need us — message us
                 anytime
