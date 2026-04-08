@@ -277,11 +277,11 @@ export default function MentalHealthPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen pt-20 bg-black">
+      <main className="min-h-screen bg-black">
         {/* Hero section with background video */}
         <section
           ref={heroRef}
-          className="relative h-[calc(100vh-5rem)] w-full overflow-hidden"
+          className="relative h-screen w-full overflow-hidden"
         >
           {/* Background video */}
           <motion.video
