@@ -13,6 +13,7 @@ import { getAssetUrl } from '@/lib/assets';
 
 // Re-use CTA via code-split chunk
 const Footer = dynamic(() => import('@/components/Footer'));
+const ScrollingTextBanner = dynamic(() => import('@/components/ScrollingTextBanner'));
 
 const aboutHeadingFont = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -282,18 +283,114 @@ export default function About() {
 
             {/* Bottom-centered Our Team strip removed */}
           </div>
+          <ScrollingTextBanner />
         </section>
 
         <OurTeamSection />
 
-        {/* Services cards + long illustration box */}
+        {/* Our Story detailed section */}
+        <section className="w-full bg-[#FFF9F4] py-16 sm:py-20">
+          <div className="mx-auto w-full max-w-5xl px-4 sm:px-8 lg:px-0 flex flex-col gap-16 sm:gap-20">
+            {/* Heading */}
+            <h2
+              className={`${aboutHeadingFont.className} text-center text-3xl sm:text-4xl lg:text-[48px] font-semibold leading-normal tracking-[0.724px] text-[#00373E]`}
+            >
+              Our story
+            </h2>
+
+            {/* Row 1: image left, text right */}
+            <div className="flex flex-col md:flex-row items-center gap-8 md:gap-14">
+              <motion.div
+                className="w-full md:w-1/2 rounded-[28px] sm:rounded-[40px] overflow-hidden shadow-lg"
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
+              >
+                <Image
+                  src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/aboutus_new_image_!.png"
+                  alt="Hope Trust story"
+                  width={560}
+                  height={400}
+                  className="w-full h-auto object-cover"
+                />
+              </motion.div>
+              <motion.div
+                className="w-full md:w-1/2"
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 0.61, 0.36, 1] }}
+              >
+                <p
+                  className={`${aboutStoryBodyFont.className} text-base sm:text-lg lg:text-[20px] font-medium leading-relaxed sm:leading-[32px] tracking-[0.5px] text-[#00373E]`}
+                >
+                  Hope Trust was born from a family&apos;s long and painful journey through
+                  addiction and recovery. After 25 years of struggle and healing, one belief
+                  emerged: no one should have to walk this path alone. That belief led to the
+                  founding of Hope Trust in 2002.
+                </p>
+              </motion.div>
+            </div>
+
+            {/* Row 2: text left, image right */}
+            <div className="flex flex-col-reverse md:flex-row items-center gap-8 md:gap-14">
+              <motion.div
+                className="w-full md:w-1/2"
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
+              >
+                <p
+                  className={`${aboutStoryBodyFont.className} text-base sm:text-lg lg:text-[20px] font-medium leading-relaxed sm:leading-[32px] tracking-[0.5px] text-[#00373E]`}
+                >
+                  What began as an in-patient center grew into a trusted provider of ethical,
+                  evidence-based mental health and addiction treatment. Today, with a
+                  multidisciplinary team of over 30 professionals and both in-clinic and
+                  online services, Hope Trust is more than a treatment center—it is a community
+                  built on healing, trust, and the belief that recovery is possible.
+                </p>
+              </motion.div>
+              <motion.div
+                className="w-full md:w-1/2 rounded-[28px] sm:rounded-[40px] overflow-hidden shadow-lg"
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 0.61, 0.36, 1] }}
+              >
+                <Image
+                  src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/aboutus_new_image_2.png"
+                  alt="Hope Trust community"
+                  width={560}
+                  height={400}
+                  className="w-full h-auto object-cover"
+                />
+              </motion.div>
+            </div>
+
+            {/* Bottom quote */}
+            <motion.p
+              className={`${aboutStoryBodyFont.className} mx-auto max-w-[1092px] text-center text-base sm:text-lg lg:text-[24px] font-medium leading-normal sm:leading-[29px] tracking-[0.724px] text-[#ED7428]`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
+            >
+              From one family&apos;s journey to a global network of care, Hope Trust stands for one simple
+              belief: recovery is possible, and a meaningful life can be rebuilt—with the right support.
+            </motion.p>
+          </div>
+
+          <ScrollingTextBanner />
+        </section>
         <section className="w-full bg-white py-16">
           <div className="mx-auto w-full max-w-[1246px] px-4 sm:px-8 lg:px-0 flex flex-col gap-10">
             {/* Three colored cards (Frame 37 layout) */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-11">
               {/* Left card */}
               <motion.div
-                className="flex flex-col items-center justify-center gap-6 rounded-[45px] bg-[#F9E6D0] px-10 py-16 shadow-sm w-full sm:w-[386px] sm:h-[367px] text-center cursor-default"
+                className="flex flex-col items-center justify-center gap-4 sm:gap-6 rounded-[32px] sm:rounded-[45px] bg-[#F9E6D0] px-6 sm:px-10 py-10 sm:py-16 shadow-sm w-full sm:w-[386px] sm:h-[367px] text-center cursor-default"
                 initial={{ opacity: 0, x: -40 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 whileHover={{
@@ -312,7 +409,7 @@ export default function About() {
                   className="object-contain"
                 />
                 <p
-                  className={`${aboutStoryBodyFont.className} self-stretch text-center text-[24px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
+                  className={`${aboutStoryBodyFont.className} self-stretch text-center text-lg sm:text-xl lg:text-[24px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
                 >
                   People who listen
                   <br />
@@ -322,7 +419,7 @@ export default function About() {
 
               {/* Middle card */}
               <motion.div
-                className="flex flex-col items-center justify-center gap-6 rounded-[45px] bg-[#00373E] px-10 py-16 shadow-sm w-full sm:w-[386px] sm:h-[367px] text-center cursor-default"
+                className="flex flex-col items-center justify-center gap-4 sm:gap-6 rounded-[32px] sm:rounded-[45px] bg-[#00373E] px-6 sm:px-10 py-10 sm:py-16 shadow-sm w-full sm:w-[386px] sm:h-[367px] text-center cursor-default"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 whileHover={{
@@ -345,7 +442,7 @@ export default function About() {
                   className="object-contain"
                 />
                 <p
-                  className={`${aboutStoryBodyFont.className} self-stretch text-center text-[24px] font-medium leading-normal tracking-[0.724px] text-white`}
+                  className={`${aboutStoryBodyFont.className} self-stretch text-center text-lg sm:text-xl lg:text-[24px] font-medium leading-normal tracking-[0.724px] text-white`}
                 >
                   People who guide
                   <br />
@@ -355,7 +452,7 @@ export default function About() {
 
               {/* Right card */}
               <motion.div
-                className="flex flex-col items-center justify-center gap-6 rounded-[45px] bg-[#FFFBF6] px-10 py-16 shadow-sm ring-1 ring-black/5 w-full sm:w-[386px] sm:h-[367px] text-center cursor-default"
+                className="flex flex-col items-center justify-center gap-4 sm:gap-6 rounded-[32px] sm:rounded-[45px] bg-[#FFFBF6] px-6 sm:px-10 py-10 sm:py-16 shadow-sm ring-1 ring-black/5 w-full sm:w-[386px] sm:h-[367px] text-center cursor-default"
                 initial={{ opacity: 0, x: 40 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 whileHover={{
@@ -378,7 +475,7 @@ export default function About() {
                   className="object-contain"
                 />
                 <p
-                  className={`${aboutStoryBodyFont.className} self-stretch text-center text-[24px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
+                  className={`${aboutStoryBodyFont.className} self-stretch text-center text-lg sm:text-xl lg:text-[24px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
                 >
                   People who stay with
                   <br />
@@ -400,19 +497,19 @@ export default function About() {
                     transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
                   >
                     <h3
-                      className={`${aboutHeadingFont.className} mb-4 w-full text-2xl sm:text-3xl lg:text-[40px] font-semibold leading-normal tracking-[0.5px] text-[#00373E] sm:w-[515px]`}
+                      className={`${aboutHeadingFont.className} mb-4 w-full max-w-[515px] text-2xl sm:text-3xl lg:text-[40px] font-semibold leading-normal tracking-[0.5px] text-[#00373E]`}
                     >
                       Wellness coaching
                     </h3>
                     <p
-                      className={`${aboutStoryBodyRegularFont.className} mb-4 w-full text-sm sm:text-base lg:text-[20px] font-normal leading-[26px] tracking-[0.5px] text-[#00373E] sm:w-[617px]`}
+                      className={`${aboutStoryBodyRegularFont.className} mb-4 w-full max-w-[617px] text-sm sm:text-base lg:text-[20px] font-normal leading-[26px] tracking-[0.5px] text-[#00373E]`}
                     >
                       Personalized guidance to help you build healthier habits,
                       manage stress, and achieve balance in all areas of your
                       life.
                     </p>
                     <p
-                      className={`${aboutStoryBodyRegularFont.className} mb-6 w-full text-sm sm:text-base lg:text-[20px] font-normal leading-[26px] tracking-[0.5px] text-[#00373E] sm:w-[617px]`}
+                      className={`${aboutStoryBodyRegularFont.className} mb-6 w-full max-w-[617px] text-sm sm:text-base lg:text-[20px] font-normal leading-[26px] tracking-[0.5px] text-[#00373E]`}
                     >
                       Our wellness coaches support you in creating sustainable
                       routines for mental, emotional, and physical well-being.
@@ -588,7 +685,7 @@ export default function About() {
               >
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 mb-6 border-b border-white/40 pb-6">
                   <div>
-                    <p className="text-2xl font-semibold">60 minutes</p>
+                    <p className="text-xl sm:text-2xl font-semibold">60 minutes</p>
                     <p
                       className={`${aboutStoryBodyFont.className} mt-1 text-sm sm:text-base lg:text-[20px] font-medium`}
                     >
@@ -597,7 +694,7 @@ export default function About() {
                   </div>
 
                   <div>
-                    <p className="text-2xl font-semibold">90 minutes</p>
+                    <p className="text-xl sm:text-2xl font-semibold">90 minutes</p>
                     <p
                       className={`${aboutStoryBodyFont.className} mt-1 text-sm sm:text-base lg:text-[20px] font-medium`}
                     >
@@ -606,7 +703,7 @@ export default function About() {
                   </div>
 
                   <div>
-                    <p className="text-2xl font-semibold">30 minutes</p>
+                    <p className="text-xl sm:text-2xl font-semibold">30 minutes</p>
                     <p
                       className={`${aboutStoryBodyFont.className} mt-1 text-sm sm:text-base lg:text-[20px] font-medium`}
                     >
@@ -632,14 +729,14 @@ export default function About() {
           <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-8 lg:px-0 flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
             {/* Overlapping images on the left */}
             <motion.div
-              className="relative w-full max-w-[520px] aspect-[4/3]"
+              className="relative w-full max-w-[340px] sm:max-w-[520px] aspect-[4/3]"
               initial={{ opacity: 0, x: -40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
             >
               {/* Back image */}
-              <div className="absolute inset-y-4 left-0 right-20 rounded-[32px] overflow-hidden shadow-[0_24px_60px_rgba(0,0,0,0.25)]">
+              <div className="absolute inset-y-4 left-0 right-12 sm:right-20 rounded-[20px] sm:rounded-[32px] overflow-hidden shadow-[0_24px_60px_rgba(0,0,0,0.25)]">
                 <Image
                   src={getAssetUrl("therapy.png")}
                   alt="Therapist with client"
@@ -650,7 +747,7 @@ export default function About() {
               </div>
 
               {/* Front image */}
-              <div className="absolute inset-y-0 left-16 right-0 rounded-[32px] overflow-hidden shadow-[0_24px_60px_rgba(0,0,0,0.35)]">
+              <div className="absolute inset-y-0 left-10 sm:left-16 right-0 rounded-[20px] sm:rounded-[32px] overflow-hidden shadow-[0_24px_60px_rgba(0,0,0,0.35)]">
                 <Image
                   src={getAssetUrl("Madam.png")}
                   alt="Hope Trust team member"

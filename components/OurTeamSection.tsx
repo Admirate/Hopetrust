@@ -66,13 +66,26 @@ export default function OurTeamSection({
   }, [autoRotateMs, categoryValues]);
 
   return (
-    <section className={cn('w-full bg-white py-12 sm:py-16', className)}>
-      <div className="mx-auto w-full max-w-6xl px-4 sm:px-8 lg:px-16">
+    <section className={cn('relative w-full overflow-hidden py-12 sm:py-16', className)}>
+      {/* Background video */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 h-full w-full object-cover"
+        preload="metadata"
+      >
+        <source src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/0_Pink_Red_1280x720.mp4" type="video/mp4" />
+      </video>
+
+      {/* Content */}
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-8 lg:px-16">
         <div className="flex flex-col items-center gap-6 sm:gap-8">
           <h2
             className={cn(
               headingFont.className,
-              'text-center text-[32px] font-semibold leading-none tracking-[0.724px] text-[#F47A24] sm:text-[48px]'
+              'text-center text-[32px] font-semibold leading-none tracking-[0.724px] text-white sm:text-[48px]'
             )}
           >
             Our Team
@@ -81,7 +94,7 @@ export default function OurTeamSection({
           <div className="w-full">
             <div
               aria-label="Our Team categories"
-              className="flex flex-wrap justify-center gap-8 text-[#D9D9D9] sm:gap-12"
+              className="flex flex-wrap justify-center gap-8 sm:gap-12"
             >
               {categories.map((category) => {
                 const isActive = category.value === activeValue;
@@ -92,7 +105,7 @@ export default function OurTeamSection({
                     className={cn(
                       headingFont.className,
                       "select-none text-center text-[18px] font-semibold leading-none tracking-[0.724px] transition-colors",
-                      isActive ? "text-black" : "text-[#D9D9D9]",
+                      isActive ? "text-[#FFDF00]" : "text-white/60",
                       "sm:text-[22px]",
                     )}
                   >
