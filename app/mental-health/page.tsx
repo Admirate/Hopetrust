@@ -312,11 +312,11 @@ export default function MentalHealthPage() {
             <div className="mt-6 sm:mt-8 text-base sm:text-lg md:text-xl lg:text-2xl font-medium leading-tight">
               <p>
                 <span>Therapy</span>
-                <span className="mx-3 text-white/60">|</span>
+                <span className="mx-1.5 sm:mx-3 text-white/60">|</span>
                 <span>Medications</span>
-                <span className="mx-3 text-white/60">|</span>
+                <span className="mx-1.5 sm:mx-3 text-white/60">|</span>
                 <span>Couples Therapy</span>
-                <span className="mx-3 text-white/60">|</span>
+                <span className="mx-1.5 sm:mx-3 text-white/60">|</span>
                 <span>Family Therapy</span>
               </p>
               <p className="mt-2">&amp; more</p>
@@ -390,7 +390,7 @@ export default function MentalHealthPage() {
         <section className="w-full bg-[#F7F6F4]">
           <div className="mx-auto flex w-full justify-center px-4 sm:px-8 lg:px-12 pt-10 pb-16">
             {/* Outer card */}
-            <div className="flex h-auto md:h-[650px] w-full max-w-[1170px] flex-col rounded-[28px] sm:rounded-[44px] md:rounded-[84px] bg-transparent overflow-hidden">
+            <div className="flex h-auto md:min-h-[650px] w-full max-w-[1170px] flex-col rounded-[28px] sm:rounded-[44px] md:rounded-[84px] bg-transparent overflow-hidden">
               {/* Top strip with tabs */}
               <div className="flex bg-[#FFE3C7]">
                 {(Object.keys(FOCUS_SECTIONS) as FocusKey[]).map((key) => {
@@ -408,7 +408,7 @@ export default function MentalHealthPage() {
                       key={key}
                       type="button"
                       onClick={() => setActiveFocus(key)}
-                      className={`flex-1 px-2 py-3 md:px-4 md:py-4 text-[10px] sm:text-xs md:text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4 ${
+                      className={`flex-1 px-1 py-2.5 sm:px-2 sm:py-3 md:px-4 md:py-4 text-[9px] sm:text-xs md:text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4 ${
                         isActive
                           ? `${activeBgClass} text-[#ED7428]`
                           : "bg-transparent text-[#00373E] hover:bg-[#FFEED2]"
@@ -527,11 +527,11 @@ export default function MentalHealthPage() {
           <div className="mx-auto w-full max-w-[1225px] px-4 sm:px-6 lg:px-8 pt-10">
             <motion.div
               viewport={{ once: true, amount: 0.3 }}
-              className="relative rounded-[63px] bg-white px-6 sm:px-10 lg:px-16 py-10 sm:py-12 shadow-[0_24px_60px_rgba(0,0,0,0.03)]"
+              className="relative rounded-[24px] sm:rounded-[40px] lg:rounded-[63px] bg-white px-6 sm:px-10 lg:px-16 py-10 sm:py-12 shadow-[0_24px_60px_rgba(0,0,0,0.03)]"
             >
               {/* Top tabs */}
               <div className="flex flex-col gap-6 sm:gap-8">
-                <div className="flex flex-wrap items-center justify-start gap-8 text-base sm:text-xl font-semibold">
+                <div className="flex flex-wrap items-center justify-start gap-4 sm:gap-8 text-sm sm:text-base lg:text-xl font-semibold">
                   {(["adhd", "student", "queer"] as AssessmentKey[]).map(
                     (key) => {
                       const isActive = key === activeAssessment;
@@ -558,7 +558,7 @@ export default function MentalHealthPage() {
                 <div
                   className={`${assessmentBodyFont.className} mt-2 max-w-[1058px] text-base sm:text-lg lg:text-[24px] leading-relaxed text-[#5E5E5E] tracking-[0.724px] space-y-4`}
                 >
-                  <h3 className="text-2xl sm:text-3xl lg:text-[40px] font-semibold tracking-[0.724px] text-[#E26B20]">
+                  <h3 className="text-xl sm:text-2xl lg:text-[40px] font-semibold tracking-[0.724px] text-[#E26B20]">
                     {ASSESSMENTS[activeAssessment].label}
                   </h3>
                   {ASSESSMENTS[activeAssessment].paragraphs.map((p) => (
