@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import Image from 'next/image';
@@ -35,6 +35,8 @@ const rightNavItems: NavItem[] = [
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
+  const lastScrollY = useRef(0);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -45,6 +47,20 @@ export default function Header() {
     }
     return () => { document.body.style.overflow = ''; };
   }, [isMenuOpen]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      if (currentY > 80 && currentY > lastScrollY.current) {
+        setIsHidden(true);
+      } else {
+        setIsHidden(false);
+      }
+      lastScrollY.current = currentY;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const allItems: NavItem[] = [...leftNavItems, ...rightNavItems];
 
@@ -87,10 +103,12 @@ export default function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 z-50 w-full transition-all duration-300 ease-in-out ${
+        className={`fixed top-0 z-50 w-full transition-all duration-300 ease-in-out bg-white/95 shadow-sm backdrop-blur lg:shadow-none ${
+          isHidden ? 'lg:-translate-y-full' : 'lg:translate-y-0'
+        } ${
           isHovered
-            ? 'bg-white/95 shadow-sm backdrop-blur'
-            : 'bg-transparent'
+            ? 'lg:bg-white/95 lg:shadow-sm lg:backdrop-blur'
+            : 'lg:bg-transparent lg:backdrop-blur-none'
         }`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
