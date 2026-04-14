@@ -15,7 +15,6 @@ const staticPages = [
   '/about/',
   '/mental-health/',
   '/addiction/',
-  '/join-us/',
   '/blogs/',
   '/book-your-session/',
   '/contact/',

@@ -1,490 +1,281 @@
  'use client';
 
- import { useEffect, useState } from 'react';
-import Header from '@/components/Header';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'motion/react';
 import Image from 'next/image';
-import { motion } from 'motion/react';
-import { Bricolage_Grotesque, IBM_Plex_Sans } from 'next/font/google';
-import { getAssetUrl } from '@/lib/assets';
+import Header from '@/components/Header';
+import dynamic from 'next/dynamic';
 
-const bricolageBody = Bricolage_Grotesque({
-  subsets: ['latin'],
-  weight: ['500', '600'],
-});
-
-const roadHeadingFont = IBM_Plex_Sans({
-  subsets: ['latin'],
-  weight: ['600'],
-});
-
-const ROAD_STEPS = [
-  {
-    text: 'You reach out and say you need help.',
-    step: 'Step 1',
-    image: getAssetUrl('1road.png'),
-  },
-  {
-    text: 'We speak with you and understand what is going on.',
-    step: 'Step 2',
-    image: getAssetUrl('2road.png'),
-  },
-  {
-    text: 'We create a clear recovery plan that fits your needs.',
-    step: 'Step 3',
-    image: getAssetUrl('3road.png'),
-  },
-  {
-    text: 'You attend therapy online from wherever you feel comfortable.',
-    step: 'Step 4',
-    image: getAssetUrl('4road.png'),
-  },
-  {
-    text: 'Your support person can join if it helps.',
-    step: 'Step 5',
-    image: getAssetUrl('5road.png'),
-  },
-];
-
-const EASE_OUT_QUINT: [number, number, number, number] = [0.22, 0.61, 0.36, 1];
-
-const FADE_IN_VIEWPORT = {
-  once: true,
-  amount: 0.35,
-} as const;
-
-const getFadeInTransition = (delaySeconds: number = 0) => ({
-  duration: 0.6,
-  delay: delaySeconds,
-  ease: EASE_OUT_QUINT,
-});
+const Footer = dynamic(() => import('@/components/Footer'));
 
 export default function AddictionPage() {
-  const [activeRoadStep, setActiveRoadStep] = useState(0);
+  const heroRef = useRef<HTMLElement | null>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  });
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
+  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '-30%']);
 
   return (
     <>
       <Header />
-      <main className="min-h-screen pt-20 bg-white">
-        {/* Hero section: text left, hero image (to be updated) right */}
-        <section className="w-full flex items-center bg-white pt-8 sm:pt-12 pb-10 sm:pb-14">
-          <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-10 px-4 sm:px-8 lg:px-12 md:flex-row md:items-center md:justify-between">
-            {/* Left: centered text content */}
-            <motion.div
-              className="w-full md:w-1/2 space-y-5 md:space-y-6 text-left"
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={FADE_IN_VIEWPORT}
-              transition={getFadeInTransition(0)}
-            >
-              <p
-                className={`${bricolageBody.className} text-[32px] sm:text-[40px] lg:text-[48px] font-semibold text-black uppercase`}
-                style={{ letterSpacing: "0.724px" }}
-              >
-                Addiction
-              </p>
-              <h1
-                className={`${bricolageBody.className} text-[18px] sm:text-[26px] lg:text-[32px] font-semibold leading-snug`}
-                style={{ letterSpacing: "0.724px" }}
-              >
-                <span className="text-[#00373E]">When stopping</span>{" "}
-                <span className="text-[#E26B20]">is not simple</span>
-              </h1>
-              <div
-                className={`${bricolageBody.className}  w-full lg:w-[589px] space-y-2 font-medium leading-[24px] tracking-[0.72px]`}
-              >
-                <p className="!text-[24px] ">
-                  Addiction is not about willpower.
-                </p>
-                <p className="!text-[24px] ">
-                  It affects behaviour, health, and relationships.
-                </p>
-                <p className="!text-[24px] ">
-                  Most people need structured support to recover.
-                </p>
-                <p className="!text-[24px] ">That is normal and treatable.</p>
-              </div>
-              <button
-                className={`${bricolageBody.className} mt-4 inline-flex items-center justify-center w-[158px] h-[48px] rounded-[23px] bg-[#F97316] text-[20px] font-medium text-white shadow-md transition-all duration-200 hover:bg-[#ea6a0e] hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 active:scale-[0.97]`}
-              >
-                Chat with us
-              </button>
-            </motion.div>
+      <main className="min-h-screen bg-white">
+        {/* Hero section with parallax background image */}
+        <section
+          ref={heroRef}
+          className="relative h-screen w-full overflow-hidden"
+        >
+          {/* Background image with parallax */}
+          <motion.div style={{ y: backgroundY }} className="absolute inset-0 h-[120%] w-full">
+            <Image
+              src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/addictionservices_heroimage.png"
+              alt="Lush green valley with flowing river"
+              fill
+              className="object-cover"
+              priority
+            />
+          </motion.div>
 
-            {/* Right: hero image placeholder (you can replace when ready) */}
-            <motion.div
-              className="w-full md:w-1/2 flex justify-center md:justify-end"
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={FADE_IN_VIEWPORT}
-              transition={getFadeInTransition(0.1)}
-            >
-              <div className="relative w-full max-w-md h-64 sm:h-72 md:h-80 lg:h-96 rounded-[32px] overflow-hidden bg-white">
+          {/* Dark overlay for readability */}
+          <div className="absolute inset-0 bg-black/35" />
+
+          {/* Centered content */}
+          <motion.div
+            style={{ y: textY }}
+            className="relative z-10 flex h-full w-full flex-col items-center justify-center px-4 sm:px-6 lg:px-8 text-center text-white"
+          >
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-semibold tracking-[0.18em] uppercase">
+              Specialised Addiction Services
+            </h1>
+          </motion.div>
+        </section>
+
+        {/* Outpatient / Online treatment intro */}
+        <section className="w-full bg-[#F7F6F4] py-14 sm:py-20">
+          <div className="mx-auto max-w-[1340px] px-4 sm:px-8 lg:px-12 flex flex-col items-center gap-10">
+            {/* Text card */}
+            <div className="w-full max-w-[1240px] min-h-[235px] rounded-[32px] sm:rounded-[59px] bg-white px-6 sm:px-12 lg:px-[100px] py-8 sm:py-10 flex items-center justify-center shadow-[0_4px_24px_rgba(0,0,0,0.04)]">
+              <p className="text-center text-base sm:text-lg lg:text-xl font-medium leading-relaxed text-[#1a1a1a]">
+                Hope Trust&apos;s outpatient/ online{' '}
+                <span className="underline underline-offset-4 decoration-[#ED7428]">addiction treatment</span>{' '}
+                programs offer you an individualised recovery plan. Clients receive psychological and social support with assessments and continuing care recommendations.
+              </p>
+            </div>
+
+            {/* Image */}
+            <div className="w-full rounded-[20px] sm:rounded-[28px] overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.08)]">
+              <Image
+                src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/addictionervices_1.png"
+                alt="Close-up representing addiction recovery"
+                width={900}
+                height={550}
+                className="w-full h-auto object-cover"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Addiction types section */}
+        <section className="w-full bg-[#F7F6F4] px-4 sm:px-8 lg:px-12 pb-16 sm:pb-24">
+          <div className="mx-auto max-w-[1240px] flex flex-col gap-16 sm:gap-20">
+
+            {/* Alcohol Addiction — icon left, text right */}
+            <div className="flex flex-col md:flex-row items-center gap-8 md:gap-14">
+              <div className="w-[140px] sm:w-[180px] flex-shrink-0">
                 <Image
-                  src={getAssetUrl("Group 28.png")}
-                  alt="Illustration representing addiction recovery support"
-                  fill
-                  className="object-cover"
-                  priority
+                  src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/addictionservices_icon1.png"
+                  alt="Alcohol addiction icon"
+                  width={180}
+                  height={180}
+                  className="w-full h-auto object-contain"
                 />
               </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Why Hope Trust + Areas We Support section */}
-        <section className="w-full py-16 sm:py-20 bg-[#FEF2EB]">
-          <div className="mx-auto flex w-full max-w-[1184px] flex-col gap-12 px-4 sm:px-8 lg:px-12">
-            {/* Top row: Why Hope Trust + dark green rounded square with illustration */}
-            <div className="flex flex-col items-center gap-10 md:flex-row md:items-start md:justify-between">
-              {/* Left text block */}
-              <motion.div
-                className="w-full md:w-1/2 space-y-4 text-left"
-                initial={{ opacity: 0, x: -40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={FADE_IN_VIEWPORT}
-                transition={getFadeInTransition(0)}
-              >
-                <h2
-                  className={`${bricolageBody.className} text-3xl sm:text-4xl lg:text-[48px] leading-tight sm:leading-[48px] tracking-[0.72px] font-semibold text-[#ED7428]`}
-                >
-                  Why Hope Trust
-                </h2>
-                <div
-                  className={`${bricolageBody.className} space-y-3 text-[#00373E] max-w-[548px]`}
-                  style={{ letterSpacing: "0.724px" }}
-                >
-                  <p className="text-[16px] sm:text-[18px] md:text-[20px] lg:text-[24px] leading-relaxed">
-                    Hope Trust has supported addiction recovery since 2002.
-                    Therapists, counsellors, and medical professionals work
-                    together to create a clear, steady plan.
-                  </p>
-                  <p className="text-[16px] sm:text-[18px] md:text-[20px] lg:text-[24px] leading-relaxed">
-                    Families are included when helpful. Care is structured and
-                    reliable.
-                  </p>
-                </div>
-              </motion.div>
-
-              {/* Right: dark green rounded square with illustration_4.png */}
-              <motion.div
-                className="w-full md:w-1/2 flex justify-center md:justify-end"
-                initial={{ opacity: 0, x: 40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={FADE_IN_VIEWPORT}
-                transition={getFadeInTransition(0.1)}
-              >
-                <div className="relative w-[260px] sm:w-[320px] lg:w-[406px] aspect-[406/442] rounded-[60px] bg-[#00373E] flex items-center justify-center shadow-[0_24px_60px_rgba(0,0,0,0.15)]">
-                  <div className="relative w-[180px] sm:w-[220px] lg:w-[268px] aspect-[268/409]">
-                    <Image
-                      src={getAssetUrl("illustration_4.png")}
-                      alt="Illustration of hopeful mind and recovery"
-                      fill
-                      className="object-contain"
-                      priority={false}
-                    />
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Bottom row: long rounded rectangle with text + illustration */}
-            <div className="w-full">
-              <div className="relative w-full rounded-[28px] sm:rounded-[40px] lg:rounded-[60px] bg-[#F9E6D0] px-6 sm:px-10 lg:px-16 py-6 sm:py-8 lg:py-10 flex flex-col gap-10 md:flex-row md:items-center md:justify-between lg:min-h-[380px]">
-                {/* Left text content */}
-                <motion.div
-                  className="max-w-2xl text-left"
-                  initial={{ opacity: 0, x: -40 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={FADE_IN_VIEWPORT}
-                  transition={getFadeInTransition(0.05)}
-                >
-                  <h3
-                    className={`${bricolageBody.className} text-[32px] sm:text-[40px] lg:text-[48px] font-semibold text-[#00373E]`}
-                    style={{ letterSpacing: "0.724px" }}
-                  >
-                    Areas we support
-                  </h3>
-                  <p
-                    className={`${bricolageBody.className} mt-4 text-[16px] sm:text-[18px] md:text-[20px] lg:text-[24px] text-[#00373E] leading-relaxed max-w-[720px]`}
-                    style={{ letterSpacing: "0.724px" }}
-                  >
-                    Alcohol use | Smoking and vaping | Drug use | Prescription
-                    misuse | Gaming and internet dependence | Gambling |
-                    Pornography and sex related concerns
-                  </p>
-                  <p
-                    className={`${bricolageBody.className} mt-6 text-[16px] sm:text-[18px] md:text-[20px] lg:text-[24px] font-bold text-[#00373E] max-w-[679px]`}
-                    style={{ letterSpacing: "0.724px" }}
-                  >
-                    Each concern receives a tailored treatment approach.
-                  </p>
-                </motion.div>
-
-                {/* Right image block */}
-                <motion.div
-                  className="flex w-full md:w-auto md:ml-4 justify-end"
-                  initial={{ opacity: 0, x: 40 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={FADE_IN_VIEWPORT}
-                  transition={getFadeInTransition(0.15)}
-                >
-                  <div className="relative w-[229px] aspect-[229/322] translate-x-2 sm:translate-x-3 lg:translate-x-4">
-                    <Image
-                      src={getAssetUrl("illustration10.png")}
-                      alt="Decorative illustration"
-                      fill
-                      className="object-contain object-right"
-                      style={{ transform: "scaleX(-1)" }}
-                      priority={false}
-                    />
-                  </div>
-                </motion.div>
+              <div className="flex-1">
+                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#00373E]">
+                  Alcohol Addiction
+                </h3>
+                <p className="mt-4 text-sm sm:text-base lg:text-lg font-medium leading-relaxed text-[#1a1a1a]">
+                  Addiction is a disease, not a moral failing. Recovery and sobriety is not about will power. It can be achieved through medical assistance and structured treatment plans. Our team of trained and licensed professionals help you in choosing the best treatment approach and support you on your journey.
+                </p>
+                <p className="mt-4 text-sm sm:text-base lg:text-lg font-medium leading-relaxed text-[#1a1a1a]">
+                  We offer different treatment packages, designed to fit your needs. List different addiction packages with their costs.
+                </p>
               </div>
             </div>
-          </div>
-        </section>
 
-        {/* What Treatment Involves section */}
-        <section className="w-full bg-white py-16 sm:py-20">
-          <div className="mx-auto flex w-full max-w-[1184px] flex-col items-center gap-10 px-4 sm:px-8 lg:px-12">
-            {/* Heading */}
-            <motion.h2
-              className={`${bricolageBody.className} text-center text-3xl sm:text-4xl lg:text-[48px] font-semibold text-[#00373E]`}
-              style={{ letterSpacing: "0.724px" }}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5, ease: [0.22, 0.61, 0.36, 1] }}
-            >
-              What treatment involves
-            </motion.h2>
-
-            {/* Three treatment steps */}
-            <motion.div
-              className="flex w-full flex-col items-center gap-6 md:flex-row md:justify-center md:gap-12"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{
-                duration: 0.5,
-                delay: 0.1,
-                ease: [0.22, 0.61, 0.36, 1],
-              }}
-            >
-              {/* Step 1 with circular highlight */}
-              <button
-                type="button"
-                className={`flex h-auto sm:h-[68px] w-full sm:w-[302px] max-w-full items-center justify-center rounded-[10px] bg-[#ED7428] px-6 shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4
-  ${bricolageBody.className} text-base sm:text-lg lg:text-[24px] leading-snug sm:leading-[24px] tracking-[0.72px] font-bold text-center text-white`}
-              >
-                A full assessment
-              </button>
-
-              <button
-                type="button"
-                className={`flex h-auto sm:h-[68px] w-full sm:w-[302px] max-w-full items-center justify-center rounded-[10px] bg-[#ED7428] px-6 shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4
-  ${bricolageBody.className} text-base sm:text-lg lg:text-[24px] leading-snug sm:leading-[24px] tracking-[0.72px] font-bold text-center text-white`}
-              >
-                A personalised plan
-              </button>
-
-              <button
-                type="button"
-                className={`flex h-auto sm:h-[68px] w-full sm:w-[302px] max-w-full items-center justify-center rounded-[10px] bg-[#ED7428] px-6 shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-4
-  ${bricolageBody.className} text-base sm:text-lg lg:text-[24px] leading-snug sm:leading-[24px] tracking-[0.72px] font-bold text-center text-white`}
-              >
-                Therapy sessions
-              </button>
-            </motion.div>
-
-            {/* Supporting bullet-style lines */}
-            <motion.div
-              className={`${bricolageBody.className} mt-4 space-y-1 text-center text-[18px] sm:text-[20px] lg:text-[24px] font-medium text-[#5E5E5E]`}
-              style={{ letterSpacing: "0.724px" }}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{
-                duration: 0.5,
-                delay: 0.2,
-                ease: [0.22, 0.61, 0.36, 1],
-              }}
-            >
-              <p>Medical support when required</p>
-              <p>Relapse prevention skills</p>
-              <p>Family guidance</p>
-              <p>Regular follow ups</p>
-            </motion.div>
-
-            {/* Final reassurance line */}
-            <motion.p
-              className={`${bricolageBody.className} mt-6 text-center text-[24px] sm:text-[28px] lg:text-[36px] font-semibold text-[#ED7428]`}
-              style={{ letterSpacing: "0.724px" }}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{
-                duration: 0.5,
-                delay: 0.3,
-                ease: [0.22, 0.61, 0.36, 1],
-              }}
-            >
-              Everything is explained clearly and at your pace.
-            </motion.p>
-          </div>
-        </section>
-
-        {/* Road to Recovery section */}
-        <section className="w-full bg-white py-16 sm:py-20">
-          <div className="mx-auto flex w-full max-w-[1184px] flex-col items-center px-4 sm:px-8 lg:px-12">
-            {/* Heading */}
-            <h2
-              className={`${roadHeadingFont.className} text-center text-[40px] sm:text-[52px] lg:text-[64px] font-semibold text-[#ED7428]`}
-              style={{ letterSpacing: "0.724px" }}
-            >
-              Road to recovery
-            </h2>
-
-            {/* Central image area */}
-            <div className="relative mt-10 w-full max-w-[506px] aspect-[253/142] overflow-hidden rounded-[32px] bg-white shadow-[0_18px_40px_rgba(0,0,0,0.06)] mx-auto">
-              <Image
-                src={ROAD_STEPS[activeRoadStep].image}
-                alt={ROAD_STEPS[activeRoadStep].step}
-                fill
-                className="object-contain"
-                priority={false}
-              />
+            {/* Nicotine and Drug Addiction — text left, icon right */}
+            <div className="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-14">
+              <div className="w-[140px] sm:w-[180px] flex-shrink-0">
+                <Image
+                  src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/addictionservices_icon2.png"
+                  alt="Nicotine and drug addiction icon"
+                  width={180}
+                  height={180}
+                  className="w-full h-auto object-contain"
+                />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#00373E]">
+                  Nicotine and Drug Addiction
+                </h3>
+                <p className="mt-4 text-sm sm:text-base lg:text-lg font-medium leading-relaxed text-[#1a1a1a]">
+                  Addiction is a disease, not a moral failing. Recovery and sobriety is not about will power. It can be achieved through medical assistance and structured treatment plans. Our team of trained and licensed professionals help you in choosing the best treatment approach and support you on your journey.
+                </p>
+                <p className="mt-4 text-sm sm:text-base lg:text-lg font-medium leading-relaxed text-[#1a1a1a]">
+                  What we can help with - Smoking, Vaping, Marijuana, Hard Drugs
+                </p>
+              </div>
             </div>
+
+            {/* Behavioural Addiction — icon left, text right */}
+            <div className="flex flex-col md:flex-row items-center gap-8 md:gap-14">
+              <div className="w-[140px] sm:w-[180px] flex-shrink-0">
+                <Image
+                  src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/addictionservices_icon3.png"
+                  alt="Behavioural addiction icon"
+                  width={180}
+                  height={180}
+                  className="w-full h-auto object-contain"
+                />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#00373E]">
+                  Behavioural Addiction
+                </h3>
+                <p className="mt-4 text-sm sm:text-base lg:text-lg font-medium leading-relaxed text-[#1a1a1a]">
+                  The mind and body can get addicted to harmful yet gratifying behaviours as well. Behavioural addictions impact the mind, body and emotions. The therapist not only helps you understand the root causes but also psychoeducates and plans customised treatments to help you recover.
+                </p>
+                <p className="mt-4 text-sm sm:text-base lg:text-lg font-medium leading-relaxed text-[#1a1a1a]">
+                  What we can help with - Gaming, Internet/Screen time, Gambling, Pornography, Sex Addiction
+                </p>
+              </div>
+            </div>
+
           </div>
         </section>
 
-        {/* Recovery steps strip */}
-        <section className="w-full bg-white pb-16 sm:pb-20">
-          <div className="mx-auto w-full max-w-[1184px] px-4 sm:px-8 lg:px-12">
-            <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-              {ROAD_STEPS.map((item, index) => {
-                const isActive = index === activeRoadStep;
-                return (
-                  <button
-                    key={item.step}
-                    type="button"
-                    onClick={() => setActiveRoadStep(index)}
-                    className={`
-              flex flex-col items-center justify-between flex-shrink-0
-              px-4 py-10 text-center transition-all duration-300
-              ${
-                isActive
-                  ? "bg-[#00373E] w-[240px] sm:w-[260px] lg:w-[288px] h-[280px] sm:h-[310px] lg:h-[342px] rounded-[16px] -translate-y-[12px] shadow-[0_8px_24px_rgba(0,0,0,0.18)]"
-                  : "bg-[#FFF3EA] w-[200px] sm:w-[230px] lg:w-[260px] h-[250px] sm:h-[280px] lg:h-[308px] rounded-[12px]"
-              }
-            `}
-                  >
-                    {/* top text */}
-                    <p
-                      className={`${bricolageBody.className}
-                text-[14px] sm:text-[16px] leading-relaxed text-[#ED7428]`}
-                    >
-                      {item.text}
-                    </p>
-                    <p
-                      className={`${bricolageBody.className}
-                mt-6 text-[24px] font-semibold
-                ${isActive ? "text-[#FFDCC8]" : "text-[#FED7B0]"}
-              `}
-                    >
-                      {item.step}
-                    </p>
-                  </button>
-                );
-              })}
+        {/* Treatment Packages */}
+        <section className="w-full bg-white py-16 sm:py-24 px-4 sm:px-8 lg:px-12">
+          <div className="mx-auto max-w-[1240px] grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+
+            {/* 30 Days Recovery Program */}
+            <div className="rounded-[20px] border-l-4 border-[#ED7428] bg-[#FAFAFA] px-6 sm:px-8 py-8 sm:py-10">
+              <h3 className="text-xl sm:text-2xl lg:text-[28px] font-semibold text-[#ED7428]">
+                30 Days Recovery Program
+              </h3>
+              <h4 className="mt-5 text-lg sm:text-xl font-bold text-[#1a1a1a]">
+                Who can benefit?
+              </h4>
+              <p className="mt-3 text-sm sm:text-base leading-relaxed text-[#1a1a1a]">
+                The 30 Days Recovery Program focuses on helping your loved one overcome addiction. We have qualified therapists who can assist you online and offline. This program focuses on both, individual and family counselling. Post the completion of this program, you can also opt for our 30 days extended program.
+              </p>
+              <h4 className="mt-5 text-base sm:text-lg font-bold text-[#1a1a1a]">
+                What do you get?
+              </h4>
+              <ul className="mt-2 space-y-1.5 text-sm sm:text-base leading-relaxed text-[#1a1a1a] list-disc pl-5">
+                <li>2 weekly sessions by an addiction counsellor</li>
+                <li>2 sessions with family</li>
+                <li>Essential Step Work with a primary counsellor</li>
+                <li>2 consultations with a psychiatrist.</li>
+                <li>Relapse prevention strategies tailored for the individual</li>
+                <li>Followed by after-care sessions which are chargeable</li>
+              </ul>
+              <p className="mt-4 text-xs sm:text-sm text-gray-500 leading-relaxed">
+                Note: Any psychometric tests required will be charged extra. Medical tests are to be arranged by the client.
+              </p>
+              <p className="mt-4 text-lg sm:text-xl font-bold text-[#1a1a1a]">
+                Package Cost: INR 26,500
+              </p>
             </div>
+
+            {/* 30 Days Extended OP / After Care Program */}
+            <div className="rounded-[20px] border-l-4 border-[#ED7428] bg-[#FAFAFA] px-6 sm:px-8 py-8 sm:py-10">
+              <h3 className="text-xl sm:text-2xl lg:text-[28px] font-semibold text-[#ED7428]">
+                30 Days Extended OP/ After Care Program
+              </h3>
+              <h4 className="mt-5 text-lg sm:text-xl font-bold text-[#1a1a1a]">
+                Who can benefit?
+              </h4>
+              <p className="mt-3 text-sm sm:text-base leading-relaxed text-[#1a1a1a]">
+                The aftercare program focuses on relapse prevention and is ideal for patients who have recently completed an inpatient program at a rehab or after completing any of our packages.
+              </p>
+              <p className="mt-3 text-sm sm:text-base leading-relaxed text-[#1a1a1a]">
+                This package offers increased after-care support to address ongoing issues arising in initial stages of recovery. It is proven to minimize risk of relapse and builds self confidence.
+              </p>
+              <ul className="mt-3 space-y-1.5 text-sm sm:text-base leading-relaxed text-[#1a1a1a] list-disc pl-5">
+                <li>Support services are offered for one hour a day, once a week for 4 weeks/one session by psychiatrist</li>
+                <li>Comprehensive evaluations, assessments, holistic treatment, and continued abstinence are some of the program&apos;s goals.</li>
+                <li>Individualized treatment plan, comprehensive care and support by a team of qualified experts.</li>
+              </ul>
+              <p className="mt-4 text-xs sm:text-sm text-gray-500 leading-relaxed">
+                Note: Any psychometric tests required will be charged extra. Medical tests are to be arranged by the client.
+              </p>
+              <p className="mt-4 text-lg sm:text-xl font-bold text-[#1a1a1a]">
+                Package Cost: INR 18,000
+              </p>
+            </div>
+
+            {/* Nicotine Cessation Program */}
+            <div className="rounded-[20px] border-l-4 border-[#ED7428] bg-[#FAFAFA] px-6 sm:px-8 py-8 sm:py-10">
+              <h3 className="text-xl sm:text-2xl lg:text-[28px] font-semibold text-[#ED7428]">
+                Nicotine Cessation Program
+              </h3>
+              <h4 className="mt-5 text-lg sm:text-xl font-bold text-[#1a1a1a]">
+                Kick the habit
+              </h4>
+              <ul className="mt-3 space-y-1.5 text-sm sm:text-base leading-relaxed text-[#1a1a1a] list-disc pl-5">
+                <li>For cigarettes and all tobacco products</li>
+                <li>Four sessions spread over 10 days with an addiction counsellor</li>
+                <li>One consultation with a psychiatrist. NRT medications may be suggested</li>
+                <li>Follow-up sessions are chargeable</li>
+              </ul>
+              <p className="mt-4 text-lg sm:text-xl font-bold text-[#1a1a1a]">
+                Package Cost: INR 10,500
+              </p>
+            </div>
+
+            {/* Gambling and Internet Cessation Program */}
+            <div className="rounded-[20px] border-l-4 border-[#ED7428] bg-[#FAFAFA] px-6 sm:px-8 py-8 sm:py-10">
+              <h3 className="text-xl sm:text-2xl lg:text-[28px] font-semibold text-[#ED7428]">
+                Gambling and Internet Cessation Program
+              </h3>
+              <h4 className="mt-5 text-lg sm:text-xl font-bold text-[#1a1a1a]">
+                What do you get?
+              </h4>
+              <ul className="mt-3 space-y-1.5 text-sm sm:text-base leading-relaxed text-[#1a1a1a] list-disc pl-5">
+                <li>Eight sessions by an addiction counsellor</li>
+                <li>Two sessions with family</li>
+                <li>Essential Step Work with a primary counsellor</li>
+                <li>1 or 2 consultations with a psychiatrist, if needed</li>
+                <li>Relapse prevention strategies tailored for the individual</li>
+                <li>Followed by after-care sessions.</li>
+              </ul>
+              <p className="mt-4 text-lg sm:text-xl font-bold text-[#1a1a1a]">
+                Package Cost: INR 26,500
+              </p>
+            </div>
+
           </div>
         </section>
-
-        {/* Aftercare section */}
-        <section>
-          <div className="relative w-full min-h-[400px] sm:min-h-[500px] lg:h-[597px] bg-[radial-gradient(circle_at_50%_100%,#FFFAD4_0%,rgba(255,250,212,0.7)_40%,rgba(255,250,212,0)_70%)] overflow-hidden">
-            {/* Title */}
-            <h1
-              className={`${roadHeadingFont.className} text-center text-4xl sm:text-5xl lg:text-[64px] leading-tight sm:leading-[64px] font-semibold tracking-[0] pt-16`}
+        {/* Alcoholics Anonymous banner */}
+        <section className="w-full">
+          <div className="relative w-full overflow-hidden bg-gradient-to-r from-[#E8788A] via-[#E8889A] to-[#F0A07A] px-6 sm:px-10 lg:px-16 py-5 sm:py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-sm sm:text-base font-medium text-white/90 text-center sm:text-left">
+              Additional support is available through Alcoholics Anonymous. Explore their resources and meetings.
+            </p>
+            <a
+              href="https://www.aa.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center rounded-full bg-[#ED7428] px-6 sm:px-8 py-2.5 text-sm sm:text-base font-semibold text-white shadow-md hover:bg-[#d4651f] transition-all duration-200 active:scale-95 flex-shrink-0"
             >
-              Aftercare
-            </h1>
-
-            {/* Concentric Circles Container — centered at bottom */}
-            <div
-              className="absolute"
-              style={{
-                bottom: "0px",
-                left: "50%",
-                transform: "translateX(-50%)",
-              }}
-            >
-              {/* Outermost circle - #FFFAD4 */}
-              <div
-                className="rounded-full"
-                style={{
-                  width: "clamp(280px, 42vw, 618px)",
-                  height: "clamp(280px, 42vw, 618px)",
-                  background: "#FFFAD4",
-                  position: "absolute",
-                  bottom: "0",
-                  left: "50%",
-                  transform: "translateX(-50%) translateY(50%)",
-                }}
-              />
-              {/* Second circle - #FFF6B4 */}
-              <div
-                className="rounded-full"
-                style={{
-                  width: "clamp(240px, 36vw, 530px)",
-                  height: "clamp(240px, 36vw, 530px)",
-                  background: "#FFF6B4",
-                  position: "absolute",
-                  bottom: "0",
-                  left: "50%",
-                  transform: "translateX(-50%) translateY(50%)",
-                }}
-              />
-              {/* Third circle - #FFEB5F */}
-              <div
-                className="rounded-full"
-                style={{
-                  width: "clamp(190px, 29vw, 421px)",
-                  height: "clamp(190px, 29vw, 421px)",
-                  background: "#FFEB5F",
-                  position: "absolute",
-                  bottom: "0",
-                  left: "50%",
-                  transform: "translateX(-50%) translateY(50%)",
-                }}
-              />
-              {/* Innermost circle - #FFDF00 */}
-              <div
-                className="rounded-full"
-                style={{
-                  width: "clamp(145px, 22vw, 321px)",
-                  height: "clamp(145px, 22vw, 321px)",
-                  background: "#FFDF00",
-                  position: "absolute",
-                  bottom: "0",
-                  left: "50%",
-                  transform: "translateX(-50%) translateY(50%)",
-                }}
-              />
-              {/* Spacer to give the container height */}
-              <div
-                style={{
-                  width: "clamp(280px, 42vw, 618px)",
-                  height: "clamp(140px, 21vw, 309px)",
-                }}
-              />
-            </div>
+              Learn More
+            </a>
           </div>
         </section>
       </main>
+      <Footer />
     </>
   );
 }
-
- 

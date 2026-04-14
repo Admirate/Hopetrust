@@ -39,8 +39,8 @@ const FOCUS_SECTIONS: Record<FocusKey, FocusConfig> = {
     imageAlt: 'Therapy illustration',
   },
   psychiatry: {
-    label: 'Psychiatry',
-    heading: 'Psychiatry',
+    label: 'Medications',
+    heading: 'Medications',
     paragraphs: [
       'If medication can support your wellbeing, our psychiatrists explain it simply. You understand why it is suggested, how it works and what to expect. Your progress is reviewed gently and decisions are made together.',
     ],
