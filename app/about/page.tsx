@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { motion } from 'motion/react';
-import { Bricolage_Grotesque, IBM_Plex_Sans } from 'next/font/google';
+import { Bricolage_Grotesque } from 'next/font/google';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import ProximityText from '@/components/ProximityText';
 import OurTeamSection from '@/components/OurTeamSection';

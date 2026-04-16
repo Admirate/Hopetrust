@@ -1,10 +1,9 @@
 "use client";
 
 import type React from 'react';
-import { Bricolage_Grotesque, Roboto_Flex } from 'next/font/google';
+import { Bricolage_Grotesque } from 'next/font/google';
 import TiltedCard from './TiltedCard';
 import VariableProximity from './VariableProximity';
-import { AuroraBackground } from './AuroraBackground';
 import { useScrollAnimation, fadeInUp } from '@/hooks/useScrollAnimation';
 import { useRef } from 'react';
 import { getAssetUrl } from '@/lib/assets';
@@ -12,11 +11,6 @@ import { getAssetUrl } from '@/lib/assets';
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
   weight: ['600', '700'],
-});
-
-const robotoFlex = Roboto_Flex({
-  subsets: ['latin'],
-  axes: ['opsz', 'GRAD'],
 });
 
 const BackgroundCirclesSection = () => {
