@@ -35,23 +35,6 @@ const BackgroundCirclesSection = () => {
       className="relative w-full overflow-hidden"
       style={{ minHeight: "100vh" }}
     >
-      <div
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{
-          background: `
-      radial-gradient(
-        ellipse 600px 450px at -5% 105%,
-        rgba(237, 116, 40, 1) 0%,
-        rgba(237, 116, 40, 0.85) 20%,
-        rgba(237, 116, 40, 0.6) 35%,
-        rgba(237, 116, 40, 0.35) 48%,
-        rgba(237, 116, 40, 0.15) 58%,
-        rgba(237, 116, 40, 0.05) 65%,
-        transparent 75%
-      )
-    `,
-        }}
-      />
 
       {/* Content area */}
       <div className="relative z-10 flex h-full items-start justify-center px-4 sm:px-8 lg:px-16 pt-28 pb-16">

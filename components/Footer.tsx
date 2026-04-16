@@ -24,6 +24,7 @@ const socialLinks = [
 const legalLinks = [
   { label: "Terms of use", href: "/terms" },
   { label: "Privacy Policy", href: "/privacy" },
+  { label: "Sitemap", href: "/sitemap" },
 ];
 
 export default function Footer() {

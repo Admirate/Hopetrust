@@ -15,9 +15,13 @@ const staticPages = [
   '/about/',
   '/mental-health/',
   '/addiction/',
+  '/training/',
+  '/corporate-wellness/',
+  '/intervention-services/',
   '/blogs/',
   '/book-your-session/',
   '/contact/',
+  '/sitemap/',
 ];
 
 function getBlogSlugs() {

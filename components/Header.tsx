@@ -17,15 +17,25 @@ type NavItem = {
   label: string;
   href: string;
   hasDropdown?: boolean;
+  children?: { label: string; href: string }[];
 };
 
 const leftNavItems: NavItem[] = [
   { label: 'About Us', href: '/about', hasDropdown: false },
   { label: 'Mental Health', href: '/mental-health', hasDropdown: false },
-  { label: 'Addiction Services', href: '/addiction', hasDropdown: false },
+  {
+    label: 'Addiction Services',
+    href: '/addiction',
+    hasDropdown: true,
+    children: [
+      { label: 'Corporate Wellness', href: '/corporate-wellness' },
+      { label: 'Intervention Services', href: '/intervention-services' },
+    ],
+  },
 ];
 
 const rightNavItems: NavItem[] = [
+  { label: 'Training', href: '/training', hasDropdown: false },
   { label: 'Blogs', href: '/blogs', hasDropdown: false },
   { label: 'Book Your Session', href: '/book-your-session', hasDropdown: false },
   { label: 'Contact Us', href: '/contact', hasDropdown: false },
@@ -35,6 +45,9 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastScrollY = useRef(0);
   const pathname = usePathname();
 
@@ -64,36 +77,100 @@ export default function Header() {
   const allItems: NavItem[] = [...leftNavItems, ...rightNavItems];
 
   const renderNavItem = (item: NavItem) => {
-    // Robust check for active state:
-    // 1. Ignore '#' links
-    // 2. Exact match (ignoring trailing slash)
-    // 3. Sub-path match (e.g. /about/team matches /about)
     const normalizePath = (path: string) => path.replace(/\/$/, '') || '/';
     const currentPath = normalizePath(pathname);
     const targetPath = normalizePath(item.href);
-    
-    const isActive = 
-      item.href !== '#' && 
-      (currentPath === targetPath || (currentPath.startsWith(`${targetPath}/`)));
+
+    const isActive =
+      item.href !== '#' &&
+      (currentPath === targetPath || currentPath.startsWith(`${targetPath}/`));
+
+    const childActive = item.children?.some((child) => {
+      const cp = normalizePath(child.href);
+      return currentPath === cp || currentPath.startsWith(`${cp}/`);
+    });
+
+    if (item.hasDropdown && item.children) {
+      return (
+        <div
+          key={item.label}
+          className="relative"
+          onMouseEnter={() => {
+            if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
+            setOpenDropdown(item.label);
+          }}
+          onMouseLeave={() => {
+            dropdownTimeoutRef.current = setTimeout(() => setOpenDropdown(null), 150);
+          }}
+        >
+          <Link
+            href={item.href}
+            className={`${navFont.className} group relative flex items-center gap-1 text-sm md:text-base font-semibold transition-all duration-200 hover:-translate-y-0.5 ${
+              isActive || childActive
+                ? 'text-orange-500'
+                : 'text-gray-800 hover:text-orange-500'
+            }`}
+          >
+            <span>{item.label}</span>
+            <ChevronDown
+              className={`h-3 w-3 md:h-3.5 md:w-3.5 stroke-[2] transition-transform duration-200 ${
+                openDropdown === item.label ? 'rotate-180' : ''
+              }`}
+            />
+            <span
+              className={`absolute bottom-0 left-0 h-[2px] w-full origin-left scale-x-0 rounded-full bg-orange-500 transition-transform duration-300 ease-out group-hover:scale-x-100 ${
+                isActive || childActive ? 'scale-x-100' : ''
+              }`}
+            />
+          </Link>
+
+          {/* Desktop dropdown */}
+          <div
+            className={`absolute left-0 top-full pt-2 transition-all duration-200 ${
+              openDropdown === item.label
+                ? 'pointer-events-auto translate-y-0 opacity-100'
+                : 'pointer-events-none -translate-y-1 opacity-0'
+            }`}
+          >
+            <div className="min-w-[200px] rounded-xl bg-white py-2 shadow-lg ring-1 ring-black/5">
+              {item.children.map((child) => {
+                const childPath = normalizePath(child.href);
+                const isChildActive = currentPath === childPath;
+                return (
+                  <Link
+                    key={child.label}
+                    href={child.href}
+                    className={`${navFont.className} block px-4 py-2.5 text-sm font-medium transition-colors ${
+                      isChildActive
+                        ? 'bg-orange-50 text-orange-500'
+                        : 'text-gray-700 hover:bg-gray-50 hover:text-orange-500'
+                    }`}
+                  >
+                    {child.label}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      );
+    }
 
     return (
       <Link
         key={item.label}
         href={item.href}
-        className={`  ${navFont.className} group relative flex items-center gap-1 text-sm md:text-base font-semibold transition-all duration-200 hover:-translate-y-0.5 ${
+        className={`${navFont.className} group relative flex items-center gap-1 text-sm md:text-base font-semibold transition-all duration-200 hover:-translate-y-0.5 ${
           isActive
             ? 'text-orange-500'
             : 'text-gray-800 hover:text-orange-500'
         }`}
       >
         <span>{item.label}</span>
-        {item.hasDropdown && (
-          <ChevronDown className="h-3 w-3 md:h-3.5 md:w-3.5 stroke-[2]" />
-        )}
-        <span 
+        <span
           className={`absolute bottom-0 left-0 h-[2px] w-full origin-left scale-x-0 rounded-full bg-orange-500 transition-transform duration-300 ease-out group-hover:scale-x-100 ${
             isActive ? 'scale-x-100' : ''
-          }`} 
+          }`}
         />
       </Link>
     );
@@ -197,21 +274,63 @@ export default function Header() {
                 currentPath.startsWith(`${targetPath}/`));
 
             return (
-              <Link
-                key={item.label}
-                href={item.href}
-                className={`${navFont.className} flex items-center justify-between rounded-lg px-4 py-3 text-[15px] font-semibold transition-colors ${
-                  isActive
-                    ? 'bg-orange-50 text-orange-500'
-                    : 'text-gray-700 hover:bg-gray-50 hover:text-orange-500'
-                }`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <span>{item.label}</span>
-                {item.hasDropdown && (
-                  <ChevronDown className="h-4 w-4 stroke-[2]" />
-                )}
-              </Link>
+              <div key={item.label}>
+                <div className="flex items-center">
+                  <Link
+                    href={item.href}
+                    className={`${navFont.className} flex flex-1 items-center rounded-lg px-4 py-3 text-[15px] font-semibold transition-colors ${
+                      isActive
+                        ? 'bg-orange-50 text-orange-500'
+                        : 'text-gray-700 hover:bg-gray-50 hover:text-orange-500'
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                  {item.hasDropdown && item.children && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setMobileExpanded((prev) =>
+                          prev === item.label ? null : item.label
+                        )
+                      }
+                      className="rounded-lg p-3 text-gray-500 hover:bg-gray-50 hover:text-orange-500"
+                      aria-label={`Expand ${item.label}`}
+                    >
+                      <ChevronDown
+                        className={`h-4 w-4 stroke-[2] transition-transform duration-200 ${
+                          mobileExpanded === item.label ? 'rotate-180' : ''
+                        }`}
+                      />
+                    </button>
+                  )}
+                </div>
+                {item.hasDropdown &&
+                  item.children &&
+                  mobileExpanded === item.label && (
+                    <div className="ml-4 border-l-2 border-orange-100 pl-2">
+                      {item.children.map((child) => {
+                        const cp = normalizePath(child.href);
+                        const isChildActive = currentPath === cp;
+                        return (
+                          <Link
+                            key={child.label}
+                            href={child.href}
+                            className={`${navFont.className} block rounded-lg px-4 py-2.5 text-[14px] font-medium transition-colors ${
+                              isChildActive
+                                ? 'bg-orange-50 text-orange-500'
+                                : 'text-gray-600 hover:bg-gray-50 hover:text-orange-500'
+                            }`}
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            {child.label}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )}
+              </div>
             );
           })}
         </div>
