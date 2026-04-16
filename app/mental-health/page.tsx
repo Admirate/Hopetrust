@@ -5,8 +5,24 @@ import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 import Image from 'next/image';
 import { Bricolage_Grotesque } from 'next/font/google';
 import Header from '@/components/Header';
+import FadeInSection from '@/components/FadeInSection';
 import dynamic from 'next/dynamic';
 import { getAssetUrl } from '@/lib/assets';
+
+const fadeFrom = (direction: 'left' | 'right' | 'up', delay = 0) => ({
+  initial: {
+    opacity: 0,
+    x: direction === 'left' ? -60 : direction === 'right' ? 60 : 0,
+    y: direction === 'up' ? 40 : 0,
+  },
+  whileInView: { opacity: 1, x: 0, y: 0 },
+  viewport: { once: true, amount: 0.25 },
+  transition: {
+    duration: 0.7,
+    ease: [0.22, 0.61, 0.36, 1] as const,
+    delay,
+  },
+});
 
 const Footer = dynamic(() => import('@/components/Footer'));
 const ScrollingTextBanner = dynamic(() => import('@/components/ScrollingTextBanner'));
@@ -303,6 +319,9 @@ export default function MentalHealthPage() {
           {/* Centered content */}
           <motion.div
             style={{ y: textY }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: [0.22, 0.61, 0.36, 1], delay: 0.2 }}
             className="relative z-10 flex h-full w-full flex-col items-center justify-center px-4 sm:px-6 lg:px-8 text-center text-white"
           >
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-semibold tracking-[0.18em] uppercase">
@@ -336,20 +355,23 @@ export default function MentalHealthPage() {
           >
             <source src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/0_Pink_Red_1280x720.mp4" type="video/mp4" />
           </video>
-          <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 sm:px-8">
+          <motion.div
+            {...fadeFrom('up')}
+            className="relative z-10 flex flex-col items-center justify-center text-center px-4 sm:px-8"
+          >
             <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-white leading-snug">
               Support for
               <br />
               the mind, emotions, relationships, &amp; everyday life.
             </p>
-          </div>
+          </motion.div>
         </section>
 
         {/* What we help with section */}
         <section className="w-full bg-[#F7F5EF] py-12 sm:py-16 lg:py-20">
           <div className="mx-auto w-full max-w-6xl px-4 sm:px-8 lg:px-12 flex flex-col md:flex-row items-center gap-8 md:gap-14">
             {/* Left: image */}
-            <div className="w-full md:w-1/2 rounded-[24px] sm:rounded-[32px] overflow-hidden shadow-lg">
+            <motion.div {...fadeFrom('left')} className="w-full md:w-1/2 rounded-[24px] sm:rounded-[32px] overflow-hidden shadow-lg">
               <Image
                 src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/mental_health_new.png"
                 alt="Therapist working with client"
@@ -357,10 +379,10 @@ export default function MentalHealthPage() {
                 height={480}
                 className="w-full h-auto object-cover"
               />
-            </div>
+            </motion.div>
 
             {/* Right: text content */}
-            <div className="w-full md:w-1/2 flex flex-col gap-5">
+            <motion.div {...fadeFrom('right', 0.15)} className="w-full md:w-1/2 flex flex-col gap-5">
               <h2 className="text-2xl sm:text-3xl lg:text-[48px] font-semibold leading-normal sm:leading-[58px] tracking-[0.724px] text-[#00373E]">
                 What we help with
               </h2>
@@ -378,15 +400,18 @@ export default function MentalHealthPage() {
                   Find a Therapist
                 </a>
               </div>
-            </div>
+            </motion.div>
           </div>
         </section>
 
         <div className="w-full bg-[#F7F5EF]">
-          <ScrollingTextBanner />
+          <FadeInSection>
+            <ScrollingTextBanner />
+          </FadeInSection>
         </div>
 
         {/* Focus area strip + card */}
+        <FadeInSection>
         <section className="w-full bg-[#F7F6F4]">
           <div className="mx-auto flex w-full justify-center px-4 sm:px-8 lg:px-12 pt-10 pb-16">
             {/* Outer card */}
@@ -500,8 +525,10 @@ export default function MentalHealthPage() {
             </div>
           </div>
         </section>
+        </FadeInSection>
 
         {/* CTA card */}
+        <FadeInSection delay={100}>
         <section className="w-full bg-[#F7F6F4] px-4 sm:px-8 lg:px-12 pb-10">
           <div className="mx-auto w-full max-w-[1170px] rounded-[28px] sm:rounded-[40px] bg-white shadow-[0_24px_60px_rgba(0,0,0,0.04)] py-10 sm:py-14 px-6 sm:px-10 text-center flex flex-col items-center gap-4">
             <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-[#00373E]">
@@ -518,15 +545,21 @@ export default function MentalHealthPage() {
             </a>
           </div>
         </section>
+        </FadeInSection>
 
         {/* Auto-carousel section */}
-        <ConcernsCarousel />
+        <FadeInSection>
+          <ConcernsCarousel />
+        </FadeInSection>
 
         {/* Assessment cards section */}
         <section className="w-full bg-[#F7F6F4] pb-16 sm:pb-20">
           <div className="mx-auto w-full max-w-[1225px] px-4 sm:px-6 lg:px-8 pt-10">
             <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, ease: [0.22, 0.61, 0.36, 1] }}
               className="relative rounded-[24px] sm:rounded-[40px] lg:rounded-[63px] bg-white px-6 sm:px-10 lg:px-16 py-10 sm:py-12 shadow-[0_24px_60px_rgba(0,0,0,0.03)]"
             >
               {/* Top tabs */}

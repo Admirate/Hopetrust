@@ -10,6 +10,7 @@ import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import ProximityText from '@/components/ProximityText';
 import OurTeamSection from '@/components/OurTeamSection';
 import { getAssetUrl } from '@/lib/assets';
+import FadeInSection from '@/components/FadeInSection';
 
 // Re-use CTA via code-split chunk
 const Footer = dynamic(() => import('@/components/Footer'));
@@ -283,20 +284,28 @@ export default function About() {
 
             {/* Bottom-centered Our Team strip removed */}
           </div>
-          <ScrollingTextBanner />
+          <FadeInSection>
+            <ScrollingTextBanner />
+          </FadeInSection>
         </section>
 
-        <OurTeamSection />
+        <FadeInSection>
+          <OurTeamSection />
+        </FadeInSection>
 
         {/* Our Story detailed section */}
         <section className="w-full bg-[#FFF9F4] py-16 sm:py-20">
           <div className="mx-auto w-full max-w-5xl px-4 sm:px-8 lg:px-0 flex flex-col gap-16 sm:gap-20">
             {/* Heading */}
-            <h2
+            <motion.h2
               className={`${aboutHeadingFont.className} text-center text-3xl sm:text-4xl lg:text-[48px] font-semibold leading-normal tracking-[0.724px] text-[#00373E]`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
             >
               Our story
-            </h2>
+            </motion.h2>
 
             {/* Row 1: image left, text right */}
             <div className="flex flex-col md:flex-row items-center gap-8 md:gap-14">
@@ -382,7 +391,9 @@ export default function About() {
             </motion.p>
           </div>
 
-          <ScrollingTextBanner />
+          <FadeInSection>
+            <ScrollingTextBanner />
+          </FadeInSection>
         </section>
         <section className="w-full bg-white py-16">
           <div className="mx-auto w-full max-w-[1246px] px-4 sm:px-8 lg:px-0 flex flex-col gap-10">

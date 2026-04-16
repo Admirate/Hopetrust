@@ -38,7 +38,9 @@ export default function Home() {
         </FadeInSection>
         {/* Let BackgroundCirclesSection handle its own element animations so the background image stays static */}
         <BackgroundCirclesSection />
-        <ScrollingTextBanner />
+        <FadeInSection>
+          <ScrollingTextBanner />
+        </FadeInSection>
         <FadeInSection delay={150}>
           <WhatWeOfferSection />
         </FadeInSection>
@@ -52,7 +54,9 @@ export default function Home() {
         <ResourcesSection />
         {/* Let LargeRectangleSection handle its own card animation */}
         <LargeRectangleSection />
-        <AffiliationsSection />
+        <FadeInSection>
+          <AffiliationsSection />
+        </FadeInSection>
       </main>
       <Footer />
     </>
