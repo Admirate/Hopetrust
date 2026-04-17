@@ -4,8 +4,18 @@ import dynamic from 'next/dynamic';
 const Footer = dynamic(() => import('@/components/Footer'));
 
 export const metadata = {
-  title: 'Training | Hope Trust',
-  description: 'Professional training programs by Hope Trust.',
+  title: 'Training | Hope Trust - Professional Development Programs',
+  description:
+    'Professional training and certification programs in mental health, addiction counselling, and therapeutic techniques by Hope Trust. Upskill with evidence-based methodologies from industry experts.',
+  keywords:
+    'mental health training, addiction counselling course, therapy certification, professional development, Hope Trust training Hyderabad',
+  openGraph: {
+    title: 'Training | Hope Trust',
+    description:
+      'Professional training programs in mental health and addiction counselling by Hope Trust.',
+    type: 'website',
+    siteName: 'Hope Trust',
+  },
 };
 
 export default function TrainingPage() {

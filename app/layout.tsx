@@ -15,12 +15,20 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Hope Trust - A place for hope, healing, and renewal',
+  title: {
+    default: 'Hope Trust - A place for hope, healing, and renewal',
+    template: '%s | Hope Trust',
+  },
   description:
     'Hope Trust has been supporting individuals and families on their path to recovery for over 20 years. Our care is respectful, evidence-based, and always personal.',
-  keywords: 'mental health, therapy, counseling, recovery, addiction, hope trust',
+  keywords:
+    'mental health, therapy, counselling, recovery, addiction treatment, Hope Trust, Hyderabad, psychiatrist, psychologist, couples therapy, family therapy',
   authors: [{ name: 'Hope Trust' }],
   robots: 'index, follow',
+  metadataBase: new URL('https://hopetrustindia.com'),
+  alternates: {
+    canonical: '/',
+  },
   icons: {
     icon: getLogoUrl(),
     apple: getLogoUrl(),
@@ -28,9 +36,17 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Hope Trust - A place for hope, healing, and renewal',
     description:
-      'Hope Trust has been supporting individuals and families on their path to recovery for over 20 years.',
+      'Hope Trust has been supporting individuals and families on their path to recovery for over 20 years. Mental health and addiction recovery services in Hyderabad.',
     type: 'website',
     siteName: 'Hope Trust',
+    locale: 'en_IN',
+    url: 'https://hopetrustindia.com',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Hope Trust - Hope, Healing, and Renewal',
+    description:
+      'Mental health and addiction recovery services in Hyderabad. Over 20 years of evidence-based, compassionate care.',
   },
 };
 
