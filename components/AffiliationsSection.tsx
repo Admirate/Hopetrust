@@ -22,8 +22,8 @@ const logos = [
 export default function AffiliationsSection() {
   return (
     <section className="w-full py-12 sm:py-16">
-      <div className="mx-auto max-w-6xl px-4">
-        <div className="mx-auto w-full max-w-[1294px] min-h-[280px] sm:min-h-[350px] lg:h-[454px] rounded-[28px] sm:rounded-[40px] lg:rounded-[54px] bg-white py-10 sm:py-14 px-6 sm:px-10 shadow-[0_18px_40px_rgba(0,0,0,0.06)] overflow-hidden flex flex-col justify-center">
+      <div className="mx-auto max-w-7xl px-4">
+        <div className="mx-auto w-full max-w-[1440px] min-h-[280px] sm:min-h-[350px] lg:h-[454px] rounded-[28px] sm:rounded-[40px] lg:rounded-[54px] bg-white py-10 sm:py-14 px-6 sm:px-10 shadow-[0_18px_40px_rgba(0,0,0,0.06)] overflow-hidden flex flex-col justify-center">
           <h2
             className={`${headingFont.className} mb-8 sm:mb-10 text-center text-2xl sm:text-3xl lg:text-4xl font-semibold italic text-[#00373E]`}
           >
