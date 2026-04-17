@@ -45,7 +45,11 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
     Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; font-src 'self' https://fonts.gstatic.com; media-src 'self' https://*.supabase.co blob: data:; connect-src 'self' https://*.supabase.co https://prodcron.askadmissionsone.in https://ingesteer.services-prod.nsvcs.net; frame-src 'self' https://www.google.com https://meet-my-doctor.firebaseapp.com; object-src 'none'; base-uri 'self'; form-action 'self'"
+    # CSP notes:
+    #   - 'unsafe-inline' in script-src: required by Next.js static export (inline hydration scripts). Cannot use nonces without a server.
+    #   - 'unsafe-inline' in style-src: required by Framer Motion (inline style attrs) and next/font (inline <style> tags).
+    #   - 'unsafe-eval' REMOVED: no code uses eval() or new Function(). This was the biggest XSS risk.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: blob:; font-src 'self' https://fonts.gstatic.com; media-src 'self' https://*.supabase.co blob: data:; connect-src 'self' https://*.supabase.co https://prodcron.askadmissionsone.in https://ingesteer.services-prod.nsvcs.net; frame-src 'self' https://www.google.com https://meet-my-doctor.firebaseapp.com; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests"
 
 # Cache static assets
 [[headers]]

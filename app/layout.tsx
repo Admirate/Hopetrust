@@ -41,12 +41,14 @@ export const metadata: Metadata = {
     siteName: 'Hope Trust',
     locale: 'en_IN',
     url: 'https://hopetrustindia.com',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Hope Trust - Hope, Healing, and Renewal',
-    description:
-      'Mental health and addiction recovery services in Hyderabad. Over 20 years of evidence-based, compassionate care.',
+    images: [
+      {
+        url: getLogoUrl(),
+        width: 512,
+        height: 512,
+        alt: 'Hope Trust logo',
+      },
+    ],
   },
 };
 
