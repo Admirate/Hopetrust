@@ -4,8 +4,18 @@ import dynamic from 'next/dynamic';
 const Footer = dynamic(() => import('@/components/Footer'));
 
 export const metadata = {
-  title: 'Intervention Services | Hope Trust',
-  description: 'Intervention services for addiction recovery by Hope Trust.',
+  title: 'Intervention Services | Hope Trust - Professional Addiction Intervention',
+  description:
+    'Professional intervention services to help families guide loved ones toward addiction treatment. Structured, compassionate intervention planning by experienced counsellors at Hope Trust, Hyderabad.',
+  keywords:
+    'addiction intervention, family intervention, professional interventionist, substance abuse help, Hope Trust intervention Hyderabad',
+  openGraph: {
+    title: 'Intervention Services | Hope Trust',
+    description:
+      'Professional intervention services to help families guide loved ones toward addiction treatment.',
+    type: 'website',
+    siteName: 'Hope Trust',
+  },
 };
 
 export default function InterventionServicesPage() {

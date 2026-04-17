@@ -4,8 +4,18 @@ import dynamic from 'next/dynamic';
 const Footer = dynamic(() => import('@/components/Footer'));
 
 export const metadata = {
-  title: 'Corporate Wellness | Hope Trust',
-  description: 'Corporate wellness programs and services by Hope Trust.',
+  title: 'Corporate Wellness | Hope Trust - Employee Mental Health Programs',
+  description:
+    'Corporate wellness programs designed to support employee mental health, reduce workplace stress, and boost productivity. Workshops, counselling, and mental health first-aid training by Hope Trust.',
+  keywords:
+    'corporate wellness, employee mental health, workplace stress, EAP, employee assistance, mental health workshops, Hope Trust corporate',
+  openGraph: {
+    title: 'Corporate Wellness | Hope Trust',
+    description:
+      'Corporate wellness programs to support employee mental health and reduce workplace stress.',
+    type: 'website',
+    siteName: 'Hope Trust',
+  },
 };
 
 export default function CorporateWellnessPage() {

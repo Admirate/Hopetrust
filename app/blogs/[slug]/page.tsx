@@ -25,6 +25,12 @@ export async function generateMetadata({
     title: `${post.title} | Hope Trust Blog`,
     description: post.excerpt,
     authors: [{ name: post.author }],
+    keywords: [
+      ...post.tags,
+      ...post.categories,
+      'Hope Trust',
+      'mental health',
+    ].join(', '),
     openGraph: {
       title: post.title,
       description: post.excerpt,
