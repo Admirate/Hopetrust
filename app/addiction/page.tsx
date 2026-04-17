@@ -1,13 +1,78 @@
  'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import Image from 'next/image';
 import Header from '@/components/Header';
 import FadeInSection from '@/components/FadeInSection';
 import dynamic from 'next/dynamic';
+import type { AddictionProgram } from '@/lib/programs';
+import { fetchPrograms } from '@/lib/programs';
 
 const Footer = dynamic(() => import('@/components/Footer'));
+
+/** Hardcoded fallback — used if Supabase is unreachable */
+const FALLBACK_PROGRAMS: Omit<AddictionProgram, 'id' | 'is_active' | 'created_at' | 'updated_at'>[] = [
+  {
+    title: '30 Days Recovery Program',
+    subtitle: 'Who can benefit?',
+    description: 'The 30 Days Recovery Program focuses on helping your loved one overcome addiction. We have qualified therapists who can assist you online and offline. This program focuses on both, individual and family counselling. Post the completion of this program, you can also opt for our 30 days extended program.',
+    features: [
+      '2 weekly sessions by an addiction counsellor',
+      '2 sessions with family',
+      'Essential Step Work with a primary counsellor',
+      '2 consultations with a psychiatrist.',
+      'Relapse prevention strategies tailored for the individual',
+      'Followed by after-care sessions which are chargeable',
+    ],
+    note: 'Note: Any psychometric tests required will be charged extra. Medical tests are to be arranged by the client.',
+    cost: 'INR 26,500',
+    display_order: 1,
+  },
+  {
+    title: '30 Days Extended OP/ After Care Program',
+    subtitle: 'Who can benefit?',
+    description: 'The aftercare program focuses on relapse prevention and is ideal for patients who have recently completed an inpatient program at a rehab or after completing any of our packages. This package offers increased after-care support to address ongoing issues arising in initial stages of recovery. It is proven to minimize risk of relapse and builds self confidence.',
+    features: [
+      'Support services are offered for one hour a day, once a week for 4 weeks/one session by psychiatrist',
+      'Comprehensive evaluations, assessments, holistic treatment, and continued abstinence are some of the program\'s goals.',
+      'Individualized treatment plan, comprehensive care and support by a team of qualified experts.',
+    ],
+    note: 'Note: Any psychometric tests required will be charged extra. Medical tests are to be arranged by the client.',
+    cost: 'INR 18,000',
+    display_order: 2,
+  },
+  {
+    title: 'Nicotine Cessation Program',
+    subtitle: 'Kick the habit',
+    description: '',
+    features: [
+      'For cigarettes and all tobacco products',
+      'Four sessions spread over 10 days with an addiction counsellor',
+      'One consultation with a psychiatrist. NRT medications may be suggested',
+      'Follow-up sessions are chargeable',
+    ],
+    note: '',
+    cost: 'INR 10,500',
+    display_order: 3,
+  },
+  {
+    title: 'Gambling and Internet Cessation Program',
+    subtitle: 'What do you get?',
+    description: '',
+    features: [
+      'Eight sessions by an addiction counsellor',
+      'Two sessions with family',
+      'Essential Step Work with a primary counsellor',
+      '1 or 2 consultations with a psychiatrist, if needed',
+      'Relapse prevention strategies tailored for the individual',
+      'Followed by after-care sessions.',
+    ],
+    note: '',
+    cost: 'INR 26,500',
+    display_order: 4,
+  },
+];
 
 const fadeFrom = (direction: 'left' | 'right' | 'up', delay = 0) => ({
   initial: {
@@ -25,6 +90,16 @@ const fadeFrom = (direction: 'left' | 'right' | 'up', delay = 0) => ({
 });
 
 export default function AddictionPage() {
+  const [programs, setPrograms] = useState<
+    Omit<AddictionProgram, 'id' | 'is_active' | 'created_at' | 'updated_at'>[] | AddictionProgram[]
+  >(FALLBACK_PROGRAMS);
+
+  useEffect(() => {
+    fetchPrograms()
+      .then((data) => { if (data.length > 0) setPrograms(data); })
+      .catch(() => { /* keep fallback */ });
+  }, []);
+
   const heroRef = useRef<HTMLElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -181,114 +256,43 @@ export default function AddictionPage() {
         {/* Treatment Packages */}
         <section className="w-full bg-white py-16 sm:py-24 px-4 sm:px-8 lg:px-12">
           <div className="mx-auto max-w-[1240px] grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
-
-            {/* 30 Days Recovery Program */}
-            <FadeInSection>
-              <div className="rounded-[20px] border-l-4 border-[#ED7428] bg-[#FAFAFA] px-6 sm:px-8 py-8 sm:py-10">
-                <h3 className="text-xl sm:text-2xl lg:text-[28px] font-semibold text-[#ED7428]">
-                  30 Days Recovery Program
-                </h3>
-                <h4 className="mt-5 text-lg sm:text-xl font-bold text-[#1a1a1a]">
-                  Who can benefit?
-                </h4>
-                <p className="mt-3 text-sm sm:text-base leading-relaxed text-[#1a1a1a]">
-                  The 30 Days Recovery Program focuses on helping your loved one overcome addiction. We have qualified therapists who can assist you online and offline. This program focuses on both, individual and family counselling. Post the completion of this program, you can also opt for our 30 days extended program.
-                </p>
-                <h4 className="mt-5 text-base sm:text-lg font-bold text-[#1a1a1a]">
-                  What do you get?
-                </h4>
-                <ul className="mt-2 space-y-1.5 text-sm sm:text-base leading-relaxed text-[#1a1a1a] list-disc pl-5">
-                  <li>2 weekly sessions by an addiction counsellor</li>
-                  <li>2 sessions with family</li>
-                  <li>Essential Step Work with a primary counsellor</li>
-                  <li>2 consultations with a psychiatrist.</li>
-                  <li>Relapse prevention strategies tailored for the individual</li>
-                  <li>Followed by after-care sessions which are chargeable</li>
-                </ul>
-                <p className="mt-4 text-xs sm:text-sm text-gray-500 leading-relaxed">
-                  Note: Any psychometric tests required will be charged extra. Medical tests are to be arranged by the client.
-                </p>
-                <p className="mt-4 text-lg sm:text-xl font-bold text-[#1a1a1a]">
-                  Package Cost: INR 26,500
-                </p>
-              </div>
-            </FadeInSection>
-
-            {/* 30 Days Extended OP / After Care Program */}
-            <FadeInSection delay={100}>
-              <div className="rounded-[20px] border-l-4 border-[#ED7428] bg-[#FAFAFA] px-6 sm:px-8 py-8 sm:py-10">
-                <h3 className="text-xl sm:text-2xl lg:text-[28px] font-semibold text-[#ED7428]">
-                  30 Days Extended OP/ After Care Program
-                </h3>
-                <h4 className="mt-5 text-lg sm:text-xl font-bold text-[#1a1a1a]">
-                  Who can benefit?
-                </h4>
-                <p className="mt-3 text-sm sm:text-base leading-relaxed text-[#1a1a1a]">
-                  The aftercare program focuses on relapse prevention and is ideal for patients who have recently completed an inpatient program at a rehab or after completing any of our packages.
-                </p>
-                <p className="mt-3 text-sm sm:text-base leading-relaxed text-[#1a1a1a]">
-                  This package offers increased after-care support to address ongoing issues arising in initial stages of recovery. It is proven to minimize risk of relapse and builds self confidence.
-                </p>
-                <ul className="mt-3 space-y-1.5 text-sm sm:text-base leading-relaxed text-[#1a1a1a] list-disc pl-5">
-                  <li>Support services are offered for one hour a day, once a week for 4 weeks/one session by psychiatrist</li>
-                  <li>Comprehensive evaluations, assessments, holistic treatment, and continued abstinence are some of the program&apos;s goals.</li>
-                  <li>Individualized treatment plan, comprehensive care and support by a team of qualified experts.</li>
-                </ul>
-                <p className="mt-4 text-xs sm:text-sm text-gray-500 leading-relaxed">
-                  Note: Any psychometric tests required will be charged extra. Medical tests are to be arranged by the client.
-                </p>
-                <p className="mt-4 text-lg sm:text-xl font-bold text-[#1a1a1a]">
-                  Package Cost: INR 18,000
-                </p>
-              </div>
-            </FadeInSection>
-
-            {/* Nicotine Cessation Program */}
-            <FadeInSection delay={200}>
-              <div className="rounded-[20px] border-l-4 border-[#ED7428] bg-[#FAFAFA] px-6 sm:px-8 py-8 sm:py-10">
-                <h3 className="text-xl sm:text-2xl lg:text-[28px] font-semibold text-[#ED7428]">
-                  Nicotine Cessation Program
-                </h3>
-                <h4 className="mt-5 text-lg sm:text-xl font-bold text-[#1a1a1a]">
-                  Kick the habit
-                </h4>
-                <ul className="mt-3 space-y-1.5 text-sm sm:text-base leading-relaxed text-[#1a1a1a] list-disc pl-5">
-                  <li>For cigarettes and all tobacco products</li>
-                  <li>Four sessions spread over 10 days with an addiction counsellor</li>
-                  <li>One consultation with a psychiatrist. NRT medications may be suggested</li>
-                  <li>Follow-up sessions are chargeable</li>
-                </ul>
-                <p className="mt-4 text-lg sm:text-xl font-bold text-[#1a1a1a]">
-                  Package Cost: INR 10,500
-                </p>
-              </div>
-            </FadeInSection>
-
-            {/* Gambling and Internet Cessation Program */}
-            <FadeInSection delay={300}>
-              <div className="rounded-[20px] border-l-4 border-[#ED7428] bg-[#FAFAFA] px-6 sm:px-8 py-8 sm:py-10">
-                <h3 className="text-xl sm:text-2xl lg:text-[28px] font-semibold text-[#ED7428]">
-                  Gambling and Internet Cessation Program
-                </h3>
-                <h4 className="mt-5 text-lg sm:text-xl font-bold text-[#1a1a1a]">
-                  What do you get?
-                </h4>
-                <ul className="mt-3 space-y-1.5 text-sm sm:text-base leading-relaxed text-[#1a1a1a] list-disc pl-5">
-                  <li>Eight sessions by an addiction counsellor</li>
-                  <li>Two sessions with family</li>
-                  <li>Essential Step Work with a primary counsellor</li>
-                  <li>1 or 2 consultations with a psychiatrist, if needed</li>
-                  <li>Relapse prevention strategies tailored for the individual</li>
-                  <li>Followed by after-care sessions.</li>
-                </ul>
-                <p className="mt-4 text-lg sm:text-xl font-bold text-[#1a1a1a]">
-                  Package Cost: INR 26,500
-                </p>
-              </div>
-            </FadeInSection>
-
+            {programs.map((program, idx) => (
+              <FadeInSection key={'id' in program ? program.id : idx} delay={idx * 100}>
+                <div className="rounded-[20px] border-l-4 border-[#ED7428] bg-[#FAFAFA] px-6 sm:px-8 py-8 sm:py-10">
+                  <h3 className="text-xl sm:text-2xl lg:text-[28px] font-semibold text-[#ED7428]">
+                    {program.title}
+                  </h3>
+                  {program.subtitle && (
+                    <h4 className="mt-5 text-lg sm:text-xl font-bold text-[#1a1a1a]">
+                      {program.subtitle}
+                    </h4>
+                  )}
+                  {program.description && (
+                    <p className="mt-3 text-sm sm:text-base leading-relaxed text-[#1a1a1a]">
+                      {program.description}
+                    </p>
+                  )}
+                  {program.features.length > 0 && (
+                    <ul className="mt-3 space-y-1.5 text-sm sm:text-base leading-relaxed text-[#1a1a1a] list-disc pl-5">
+                      {program.features.map((feature, fi) => (
+                        <li key={fi}>{feature}</li>
+                      ))}
+                    </ul>
+                  )}
+                  {program.note && (
+                    <p className="mt-4 text-xs sm:text-sm text-gray-500 leading-relaxed">
+                      {program.note}
+                    </p>
+                  )}
+                  <p className="mt-4 text-lg sm:text-xl font-bold text-[#1a1a1a]">
+                    Package Cost: {program.cost}
+                  </p>
+                </div>
+              </FadeInSection>
+            ))}
           </div>
         </section>
+
         {/* Alcoholics Anonymous banner */}
         <FadeInSection>
           <section className="w-full">
