@@ -11,6 +11,53 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
 };
 
+// ── Field length limits (must match client-side constants in app/admin/page.tsx) ──
+const LIMITS = {
+  title: 200,
+  subtitle: 200,
+  description: 2000,
+  note: 500,
+  cost: 100,
+  feature_item: 300,
+  features_count: 20,
+};
+
+/** Returns an error string if any field exceeds its limit, otherwise null. */
+function validateFields({ title, subtitle, description, features, note, cost }) {
+  if (title        && title.length        > LIMITS.title)         return `Title must be ${LIMITS.title} characters or fewer`;
+  if (subtitle     && subtitle.length     > LIMITS.subtitle)      return `Subtitle must be ${LIMITS.subtitle} characters or fewer`;
+  if (description  && description.length  > LIMITS.description)   return `Description must be ${LIMITS.description} characters or fewer`;
+  if (cost         && cost.length         > LIMITS.cost)          return `Cost must be ${LIMITS.cost} characters or fewer`;
+  if (note         && note.length         > LIMITS.note)          return `Note must be ${LIMITS.note} characters or fewer`;
+  if (Array.isArray(features)) {
+    if (features.length > LIMITS.features_count)
+      return `Maximum ${LIMITS.features_count} features allowed`;
+    for (const f of features)
+      if (typeof f === 'string' && f.length > LIMITS.feature_item)
+        return `Each feature must be ${LIMITS.feature_item} characters or fewer`;
+  }
+  return null;
+}
+
+/** Fire-and-forget audit log write. Never throws — never blocks the response. */
+async function writeAuditLog(supabase, req, { action, actorEmail, resourceId = null, metadata = {} }) {
+  try {
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+            || req.headers.get('x-nf-client-connection-ip')
+            || null;
+    await supabase.from('admin_audit_log').insert({
+      action,
+      actor_email: actorEmail ?? null,
+      resource_type: 'program',
+      resource_id: resourceId,
+      metadata,
+      ip_address: ip,
+    });
+  } catch (err) {
+    console.error('[audit]', err);
+  }
+}
+
 function jsonResponse(body, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
@@ -70,6 +117,9 @@ export default async (req) => {
         return jsonResponse({ error: 'Title and cost are required' }, 400);
       }
 
+      const fieldError = validateFields({ title, subtitle, description, features, note, cost });
+      if (fieldError) return jsonResponse({ error: fieldError }, 400);
+
       const { data, error } = await supabase
         .from('addiction_programs')
         .insert({
@@ -86,6 +136,7 @@ export default async (req) => {
         .single();
 
       if (error) return jsonResponse({ error: error.message }, 500);
+      await writeAuditLog(supabase, req, { action: 'CREATE', actorEmail: user.email, resourceId: data.id, metadata: { title: data.title } });
       return jsonResponse({ program: data }, 201);
     } catch (err) {
       return jsonResponse({ error: 'Invalid request body' }, 400);
@@ -105,6 +156,9 @@ export default async (req) => {
         return jsonResponse({ error: 'Title and cost are required' }, 400);
       }
 
+      const fieldError = validateFields({ title, subtitle, description, features, note, cost });
+      if (fieldError) return jsonResponse({ error: fieldError }, 400);
+
       const { data, error } = await supabase
         .from('addiction_programs')
         .update({
@@ -122,6 +176,7 @@ export default async (req) => {
         .single();
 
       if (error) return jsonResponse({ error: error.message }, 500);
+      await writeAuditLog(supabase, req, { action: 'UPDATE', actorEmail: user.email, resourceId: id, metadata: { title: data.title } });
       return jsonResponse({ program: data });
     } catch (err) {
       return jsonResponse({ error: 'Invalid request body' }, 400);
@@ -143,6 +198,7 @@ export default async (req) => {
       .eq('id', id);
 
     if (error) return jsonResponse({ error: error.message }, 500);
+    await writeAuditLog(supabase, req, { action: 'DELETE', actorEmail: user.email, resourceId: id });
     return jsonResponse({ success: true });
   }
 
