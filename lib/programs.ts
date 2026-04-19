@@ -1,3 +1,11 @@
+/** Thrown by any programs API call that receives HTTP 401. Callers should auto-logout. */
+export class UnauthorizedError extends Error {
+  constructor() {
+    super('Session expired. Please log in again.');
+    this.name = 'UnauthorizedError';
+  }
+}
+
 export interface AddictionProgram {
   id: string;
   title: string;
@@ -35,6 +43,7 @@ export async function createProgram(
     },
     body: JSON.stringify(program),
   });
+  if (res.status === 401) throw new UnauthorizedError();
   if (!res.ok) {
     const err = await res.json();
     throw new Error(err.error || 'Failed to create program');
@@ -56,6 +65,7 @@ export async function updateProgram(
     },
     body: JSON.stringify(program),
   });
+  if (res.status === 401) throw new UnauthorizedError();
   if (!res.ok) {
     const err = await res.json();
     throw new Error(err.error || 'Failed to update program');
@@ -70,6 +80,7 @@ export async function deleteProgram(token: string, id: string): Promise<void> {
     method: 'DELETE',
     headers: { Authorization: `Bearer ${token}` },
   });
+  if (res.status === 401) throw new UnauthorizedError();
   if (!res.ok) {
     const err = await res.json();
     throw new Error(err.error || 'Failed to delete program');

@@ -4,9 +4,9 @@
 
 | Field            | Value                                      |
 | ---------------- | ------------------------------------------ |
-| **Date**         | April 7, 2026                              |
-| **Objective**    | Full codebase exploration and documentation |
-| **Status**       | ✅ Complete                                 |
+| **Date**         | April 7, 2026 (Session 1) / April 19, 2026 (Session 2) |
+| **Objective**    | Full codebase exploration, documentation, and ongoing update discipline |
+| **Status**       | ✅ Ongoing — docs updated each session       |
 | **Participants** | Developer + AI Assistant (Cascade)          |
 
 ---
@@ -16,6 +16,7 @@
 1. **Understand the entire codebase** — every file, folder, API, database table, and integration
 2. **Document the architecture** — tech stack, data flows, rendering strategies, security model
 3. **Create persistent documentation** — `docs/claude.md` (full project reference) and `docs/session.md` (this file)
+4. **Keep docs updated** — both `claude.md` and `session.md` are updated at the end of every session to reflect any new findings or changes
 
 ---
 
@@ -205,6 +206,199 @@
 
 ---
 
+## Session 2 — April 19, 2026
+
+### Objective
+Complete the remaining component/page/function read-through and correct errors found in the initial documentation. Establish a discipline of updating `claude.md` and `session.md` after every change.
+
+### Files Examined
+
+#### Components
+- `components/Header.tsx` — Auto-hide header, hover-reveal background, desktop dropdown for Addiction Services, mobile slide-in drawer with expandable sections
+- `components/Footer.tsx` — Orange outer wrapper, white rounded card interior, nav + social + legal links, decorative SVG, two CTA buttons
+- `components/HeroSection.tsx` — Full-screen parallax video hero using Framer Motion `useScroll`/`useTransform`; two layered videos with glassmorphism card
+- `components/NewsletterForm.tsx` — Zod-validated (name, email, phone), two variants (`inline` / `card`), dark mode, inserts to `newsletter_subscribers`, handles code `23505` duplicates
+- `components/WhatsAppButton.tsx` — Fixed FAB: green closes to orange when open; calls `/api/whatsapp-crm`, falls back to direct WhatsApp URL
+- `components/TherapistCard.tsx` — Doctor card with 4:3 image or initials avatar, expand/collapse bio, booking CTA link
+- `components/FadeInSection.tsx` — `motion.div` + `useScrollAnimation` at 20% threshold, cubic-bezier `[0.22, 0.61, 0.36, 1]`, `delay` prop in ms
+- `components/LenisProvider.tsx` — Wraps Lenis (duration 1.1, smoothWheel) in rAF loop, destroys on unmount
+- `components/WebVitals.tsx` — Production-only dynamic import of `web-vitals`; reports CLS, FID, FCP, LCP, TTFB via optional `onMetric` callback
+- `components/BlogListClient.tsx` — 12/page pagination, search (title/excerpt/categories/tags), category filter tabs, featured post hero, inline newsletter CTA, scroll-to-top on page change
+- `components/OurTeamSection.tsx` — Auto-rotates 4 team category labels every 1.8s; respects `prefers-reduced-motion`; background video; `renderContent` slot prop
+- `components/ResourcesSection.tsx` — 3 resource cards with staggered Framer Motion entrance; `InteractiveHoverButton` CTAs
+
+#### Netlify Functions (newly documented)
+- `netlify/functions/admin-login.mjs` — bcrypt password verify → 24h JWT; service_role Supabase query; generic error messages prevent email enumeration
+- `netlify/functions/admin-programs.mjs` — GET public; POST/PUT/DELETE require `Authorization: Bearer <jwt>`; full CRUD on `addiction_programs`
+
+#### Pages (newly documented)
+- `app/admin/page.tsx` (~740 lines) — Login form → JWT stored in `sessionStorage`; dashboard with add/edit/delete programs UI
+- `app/corporate-wellness/page.tsx` — Placeholder "coming soon"
+- `app/intervention-services/page.tsx` — Placeholder "coming soon"
+- `app/sitemap/page.tsx` — Human-readable sitemap with Bricolage Grotesque font
+- `app/error.tsx` — Global error boundary with Try Again + Back to Home
+- `app/not-found.tsx` — Custom 404
+
+#### Test Files
+- `app/__tests__/contact.test.tsx` — 5 tests: renders form, renders contact cards, validation errors, successful Supabase submit, Supabase error handling
+- `components/__tests__/Header.test.tsx` — 4 tests: logo renders, nav links render, mobile toggle exists, correct link count
+- `lib/assets.test.ts` — 4 tests: correct URL format, leading slash stripping, space encoding, special char encoding
+- `lib/utils.test.ts` — 6 tests: merge, conditional, Tailwind conflict resolution, empty, null/undefined, array inputs
+
+#### Infrastructure
+- `public/_headers` — Netlify CDN-only CSP (separate from `netlify.toml` because `netlify dev` skips it, allowing HMR `eval()`)
+- `public/__forms.html` — Hidden Netlify Forms declarations for `contact` and `joinus` forms (spam filtering + email backup)
+- `vitest.setup.ts` — Mocks `IntersectionObserver` and `ResizeObserver` for jsdom environment
+
+#### Supabase Edge Function
+- `supabase/functions/send-newsletter/index.ts` — Deno runtime; batched Resend sends (50/batch, 1s delay); builds inline HTML template (separate from `lib/newsletter-template.ts`)
+
+### Corrections Made to `claude.md`
+
+| Issue | Fix |
+| ----- | --- |
+| `app/join-us/page.tsx` listed (route removed) | Removed from directory tree and routes table; noted in `joinus_applications` table description |
+| `lib/performance.ts` listed (file does not exist) | Removed entirely from Key Library Modules |
+| `hooks/use-toast.ts` listed (file does not exist) | Removed from hooks directory listing |
+| `lib/programs.ts` missing | Added to directory tree and Key Library Modules |
+| `netlify/functions/` only showed `whatsapp-crm.mjs` | Added `admin-login.mjs` and `admin-programs.mjs` |
+| `Database/admin-schema.sql` missing | Added to directory tree |
+| `scripts/seed-admin.mjs` missing | Added to scripts directory listing |
+| Admin DB tables missing | Added `admin_users` and `addiction_programs` schema sections |
+| Admin Netlify functions undocumented | Added full documentation for both |
+| Routes table missing 5 pages | Added `/admin`, `/training`, `/corporate-wellness`, `/intervention-services`, `/sitemap` |
+| `ADMIN_JWT_SECRET` env var missing | Added to environment variables table |
+| Potential improvement #1 claimed no admin dashboard | Corrected — admin dashboard exists at `/admin` |
+| `app/about` route had wrong component path | Fixed to `app/about/page.tsx` |
+
+---
+
+## Session 3 — April 19, 2026
+
+### Objective
+Implement production-grade brute-force rate limiting on the admin login endpoint.
+
+### Changes Made
+
+#### `Database/admin-security.sql` (new file)
+Safe `ALTER TABLE` migration — adds two columns to `admin_users` using `ADD COLUMN IF NOT EXISTS` with defaults. Existing rows receive `failed_attempts = 0` and `locked_until = NULL`. Zero data loss.
+- `failed_attempts integer NOT NULL DEFAULT 0`
+- `locked_until timestamptz DEFAULT NULL`
+- Partial index on `locked_until WHERE locked_until IS NOT NULL` for fast lockout queries
+
+#### `netlify/functions/admin-login.mjs` (rewritten)
+Full rate-limiting implementation:
+- **Input guards:** Content-Type check, email ≤ 200 chars, password ≤ 128 chars (prevents CPU abuse from bcrypt on giant inputs)
+- **Lockout check:** If `locked_until > now()` → HTTP 429 with `Retry-After` header + `retryAfter` seconds in body
+- **Fresh-window logic:** If lockout has expired, counter is treated as 0 (user gets 5 new attempts)
+- **Failed attempt tracking:** Each wrong password increments `failed_attempts`; reaching 5 sets `locked_until = now() + 15min`
+- **Attempt feedback:** Responses include "X attempts remaining before lockout" (does NOT reveal email existence)
+- **Success reset:** On correct password, `failed_attempts` and `locked_until` are both reset to clean state before JWT is issued
+- **Helper `json()`** function deduplicated all response creation
+
+#### `app/admin/page.tsx` (LoginForm updated)
+Client-side lockout handling:
+- New `lockoutUntil` (Date | null) and `countdown` (number) states
+- `useEffect` countdown timer — ticks every second, clears interval and resets state when reaches 0
+- `handleSubmit` checks for HTTP 429 and sets `lockoutUntil` from `data.retryAfter`
+- Submit button disabled during lockout, shows "Account Locked" text
+- Error box turns **amber** (vs red) during lockout and shows `MM:SS` countdown timer
+
+### Design Decisions
+- **DB-based tracking over Redis** — No new infrastructure needed; Supabase service_role writes are fast enough for a low-traffic admin endpoint
+- **Per-email, not per-IP** — IP-based limiting would require a separate table + CIDR parsing; per-email is sufficient for a 1-2 person admin panel
+- **Lockout counter resets after window** — More user-friendly: after waiting 15 minutes, you get a fresh 5 attempts rather than being permanently locked
+
+---
+
+## Session 4 — April 19, 2026
+
+### Objective
+Implement 401 auto-logout so expired/invalid JWTs force the admin back to the login screen.
+
+### Changes Made
+
+#### `lib/programs.ts`
+- Added `export class UnauthorizedError extends Error` — custom error class with `name = 'UnauthorizedError'` and a user-facing message
+- `createProgram`, `updateProgram`, `deleteProgram` each check `if (res.status === 401) throw new UnauthorizedError()` **before** the generic `!res.ok` check
+- `fetchPrograms` is a public GET — no 401 expected, no change needed
+
+#### `app/admin/page.tsx`
+- Imported `UnauthorizedError` from `@/lib/programs`
+- **`ProgramCard`**: added `onUnauthorized: () => void` prop; `onDelete` type changed to `Promise<void>`
+  - `handleSave` — catches `UnauthorizedError` → `onUnauthorized()`
+  - `handleDelete` — **bug fix**: now properly `await`s `onDelete`, wrapped in `try/catch`; `UnauthorizedError` → `onUnauthorized()`; other errors show inline error + reset `deleting`/`confirmDelete` state (previously `setDeleting` was never reset on failure)
+- **`Dashboard.handleAdd`** — wraps `createProgram` in try/catch; `UnauthorizedError` → `onLogout()`; other errors re-thrown so `AddProgramForm` displays them
+- **`Dashboard.handleDelete`** — `UnauthorizedError` → `onLogout()`; other errors set dashboard error and re-throw so `ProgramCard` can reset its loading state
+- Passes `onUnauthorized={onLogout}` to every `ProgramCard`
+
+---
+
+## Session 5 — April 19, 2026
+
+### Objective
+Implement client-side JWT expiry check so stale tokens from session-restore (browser reopen) are detected and discarded on mount.
+
+### Changes Made
+
+#### `app/admin/page.tsx`
+- **`parseJwtExpiry(token)`** — pure helper that splits the JWT on `.`, `atob`-decodes the payload segment, parses JSON, returns `exp` (number) or `null` on any failure. No signature verification — used only to decide whether to restore a session.
+- **`AdminPage`** — added `sessionExpired` state (boolean)
+- **`useEffect` (mount)** — before restoring token from `sessionStorage`:
+  1. Calls `parseJwtExpiry(saved)`
+  2. If `exp` is null or `exp * 1000 <= Date.now()` → clears both `sessionStorage` keys + sets `sessionExpired = true`; returns early
+  3. Otherwise restores token and email as before
+- **`LoginForm`** — added optional `sessionExpired?: boolean` prop (default `false`)
+  - When `true`, renders an amber banner above the form: *"Your session has expired. Please sign in again."*
+- `AdminPage` passes `sessionExpired={sessionExpired}` to `LoginForm`
+
+---
+
+## Session 6 — April 19, 2026
+
+### Objective
+Enforce input length limits on both client and server to prevent oversized payloads.
+
+### Changes Made
+
+#### `netlify/functions/admin-programs.mjs`
+- Added `LIMITS` constant (title/subtitle 200, description 2000, note 500, cost 100, feature per-item 300, max 20 features)
+- Added `validateFields()` helper — returns descriptive error string or `null`; called in both `POST` and `PUT` handlers between required-field check and Supabase insert/update
+
+#### `app/admin/page.tsx`
+- Added `FIELD_LIMITS` constant at module top — mirrors server values exactly (single source to update)
+- Added `FIELD_LIMITS.email` (200) and `FIELD_LIMITS.password` (128) to `LoginForm` inputs
+- Added `maxLength` to every `<input>` and `<textarea>` in `AddProgramForm` and `ProgramCard` edit form
+- Features textareas intentionally have **no** `maxLength` (per-line limits can't be expressed as a single character count); instead both `AddProgramForm.handleSubmit` and `ProgramCard.handleSave` validate: lines ≤ 20, each line ≤ 300 chars
+
+---
+
+## Session 7 — April 19, 2026
+
+### Objective
+Implement an append-only audit log table and server-side writes for all admin actions.
+
+### Changes Made
+
+#### `Database/admin-audit-log.sql` (new file)
+- Creates `admin_audit_log` table with columns: `id`, `action`, `actor_email`, `resource_type`, `resource_id`, `metadata` (jsonb), `ip_address`, `created_at`
+- RLS denies `FOR ALL` to `anon` and `authenticated` — only `service_role` can read/write
+- 3 indexes: `created_at DESC`, `actor_email`, `action`
+
+#### `netlify/functions/admin-programs.mjs`
+- Added `writeAuditLog(supabase, req, opts)` — fire-and-forget, wrapped in try/catch, never blocks response
+- IP extracted from `x-forwarded-for` (first IP) with fallback to `x-nf-client-connection-ip`
+- Writes after each successful operation: `CREATE` (metadata: title), `UPDATE` (metadata: title), `DELETE`
+
+#### `netlify/functions/admin-login.mjs`
+- Added same `writeAuditLog` helper (resource_type: `'session'`)
+- `LOGIN_BLOCKED` — attempt on locked account (metadata: locked_until)
+- `LOGIN_FAILED` — wrong password, not yet locked (metadata: attempts_remaining)
+- `ACCOUNT_LOCKED` — 5th failure triggers lockout (metadata: locked_until, failed_attempts)
+- `LOGIN_SUCCESS` — after counter reset, before JWT issue
+
+---
+
 ## Architecture Decisions Identified
 
 ### 1. Static Export Strategy
@@ -284,7 +478,7 @@
 
 ### Identified During Exploration
 
-1. **No admin dashboard** — Doctor management, form submissions, and newsletter sending require direct Supabase Dashboard or API access. Could benefit from a protected `/admin` route.
+1. **Admin dashboard exists** — `/admin` route provides a JWT-secured CRUD dashboard for addiction programs. Doctor management and form submissions still require direct Supabase Dashboard access.
 
 2. **Blog requires rebuild** — Adding/editing blog posts requires committing MDX files and redeploying. A headless CMS (Sanity, Contentful) or Supabase-based blog could enable non-technical content updates.
 
@@ -296,13 +490,26 @@
 
 6. **No analytics** — No Google Analytics, Plausible, or similar analytics visible in the codebase.
 
-7. **Test coverage** — Test files exist (`__tests__/` directories, `.test.ts` files) but coverage appears minimal relative to codebase size.
+7. **Test coverage** — Coverage is minimal: contact form, Header, cn utility, and asset URL tests only.
 
-8. **Newsletter template duplication** — `lib/newsletter-template.ts` and the inline `buildNewsletterHtml` in the edge function are two separate template implementations.
+8. **Newsletter template duplication** — `lib/newsletter-template.ts` and the inline `buildNewsletterHtml` in the Supabase edge function are two separate template implementations.
 
-9. **No sitemap in next.config** — Sitemap is generated by a custom script rather than using Next.js built-in `sitemap.ts` (though this may be intentional given static export).
+9. **No sitemap in next.config** — Sitemap generated by custom script (intentional for static export).
 
-10. **WordPress migration artifacts** — `wpLink` field in blog frontmatter and `migrate-wp.mjs` script suggest one-time migration; these could be cleaned up.
+10. **Placeholder pages** — `/training`, `/corporate-wellness`, `/intervention-services` show "coming soon" with no real content.
+
+11. **Dead sitemap link** — `app/sitemap/page.tsx` links to `/join-us` but that route has been removed.
+
+12. **Admin JWT in sessionStorage** — Token cleared on browser close; acceptable but worth noting.
+
+### Resolved
+
+- ✅ **Brute-force / rate limiting** (Session 3) — 5-attempt lockout with 15-min window stored in `admin_users`
+- ✅ **401 auto-logout** (Session 4) — `UnauthorizedError` thrown by `lib/programs.ts`; caught in `Dashboard` and `ProgramCard` to call `onLogout()`
+- ✅ **Client-side token expiry check** (Session 5) — `parseJwtExpiry` on mount; stale tokens cleared with `sessionExpired` banner
+- ✅ **WhatsApp button on admin page** (Session 4) — `usePathname` guard in `WhatsAppButton` returns `null` on `/admin`
+- ✅ **Input length limits** (Session 6) — `LIMITS` + `validateFields` server-side; `FIELD_LIMITS` + `maxLength` + submit-time features validation client-side
+- ✅ **Audit log** (Session 7) — `admin_audit_log` table; `writeAuditLog` in both Netlify functions covering all login events and all CRUD mutations
 
 ---
 
@@ -311,7 +518,7 @@
 | File                              | Lines | Notes                           |
 | --------------------------------- | ----- | ------------------------------- |
 | `app/about/page.tsx`              | ~734  | Largest page, rich animations   |
-| `app/join-us/page.tsx`            | ~700  | Complex form with file upload   |
+| `app/admin/page.tsx`              | ~740  | Admin dashboard + login form    |
 | `app/contact/page.tsx`            | ~690  | Form + contact cards + map      |
 | `components/BlogListClient.tsx`   | ~16KB | Blog listing with filters       |
 | `content/blogs/`                  | ~395 files | Bulk of content volume     |
@@ -369,5 +576,5 @@ node scripts/test-newsletter.mjs     # Test newsletter sending
 
 ---
 
-*Last updated: April 7, 2026*
-*Generated during codebase exploration session*
+*Last updated: April 19, 2026*
+*Sessions: April 7 (initial) · April 19 ×7 (docs corrections, rate limiting, 401 auto-logout, token expiry check, input limits, audit log)*

@@ -36,15 +36,21 @@ Hopetrust/
 │   ├── page.tsx                # Homepage (10 code-split sections)
 │   ├── about/page.tsx          # About page (story, team, typewriter, wellness)
 │   ├── addiction/page.tsx      # Addiction recovery (5-step road)
+│   ├── admin/page.tsx          # Admin dashboard (JWT auth + program CRUD)
 │   ├── blogs/
 │   │   ├── page.tsx            # Blog listing (server component)
 │   │   └── [slug]/page.tsx     # Blog detail (SSG, markdown, JSON-LD)
 │   ├── book-your-session/page.tsx  # Doctor directory (Supabase-powered)
 │   ├── contact/page.tsx        # Contact form (Zod + Supabase + Netlify Forms)
-│   ├── join-us/page.tsx        # Job application form (CV upload)
+│   ├── corporate-wellness/page.tsx  # Placeholder — coming soon
+│   ├── intervention-services/page.tsx  # Placeholder — coming soon
 │   ├── mental-health/page.tsx  # Mental health services (tabs UI)
+│   ├── sitemap/page.tsx        # Human-readable sitemap page
+│   ├── training/page.tsx       # Placeholder — coming soon
+│   ├── error.tsx               # Global error boundary
+│   ├── not-found.tsx           # Custom 404 page
 │   ├── globals.css             # Global styles
-│   └── __tests__/              # App-level tests
+│   └── __tests__/              # App-level tests (contact.test.tsx)
 │
 ├── components/                 # React components
 │   ├── ui/                     # 47 shadcn/ui components (Button, Dialog, Tabs, etc.)
@@ -73,18 +79,17 @@ Hopetrust/
 ├── lib/                        # Shared utilities and services
 │   ├── supabase.ts             # Supabase client singleton (anon key)
 │   ├── doctors.ts              # fetchDoctors(), fetchDepartments()
+│   ├── programs.ts             # Addiction program CRUD via Netlify fn + UnauthorizedError class
 │   ├── blog.ts                 # Blog MDX reading (getAllPosts, getPostBySlug, etc.)
 │   ├── config.ts               # Site config (name, contact info, maps URL)
 │   ├── assets.ts               # getAssetUrl() — Supabase storage URL builder
 │   ├── newsletter-template.ts  # HTML email template builder
-│   ├── performance.ts          # useDebounce, useThrottle, IntersectionObserver utils
 │   ├── utils.ts                # cn() — Tailwind class merger
 │   ├── assets.test.ts          # Asset utility tests
 │   └── utils.test.ts           # Utils tests
 │
 ├── hooks/                      # Custom React hooks
-│   ├── useScrollAnimation.ts   # IntersectionObserver scroll animations
-│   └── use-toast.ts            # Shadcn toast hook
+│   └── useScrollAnimation.ts   # IntersectionObserver scroll animations + animation presets
 │
 ├── content/
 │   └── blogs/                  # ~395 MDX blog posts (migrated from WordPress)
@@ -92,10 +97,15 @@ Hopetrust/
 ├── Database/                   # SQL migration scripts
 │   ├── supabase-setup.sql      # Initial tables (contact, joinus, newsletter, storage)
 │   ├── doctors-table.sql       # Doctors table + seed data (12 doctors)
+│   ├── admin-schema.sql        # admin_users + addiction_programs tables + seed data
+│   ├── admin-security.sql      # Safe migration: adds failed_attempts + locked_until to admin_users
+│   ├── admin-audit-log.sql     # Audit log table + RLS (service_role write-only)
 │   └── rls-policies.sql        # Row Level Security policies
 │
 ├── netlify/
 │   └── functions/
+│       ├── admin-login.mjs     # Netlify Function: admin JWT auth
+│       ├── admin-programs.mjs  # Netlify Function: addiction programs CRUD
 │       └── whatsapp-crm.mjs    # Netlify Function: WhatsApp CRM proxy
 │
 ├── supabase/
@@ -105,6 +115,7 @@ Hopetrust/
 │
 ├── scripts/
 │   ├── generate-sitemap.mjs    # Post-build sitemap.xml + robots.txt
+│   ├── seed-admin.mjs          # CLI: create/update admin user with bcrypt hash
 │   ├── migrate-wp.mjs          # WordPress → MDX migration tool
 │   └── test-newsletter.mjs     # Newsletter send test script
 │
@@ -143,7 +154,7 @@ Stores contact form submissions from the `/contact` page.
 
 ### Table: `joinus_applications`
 
-Stores job applications from the `/join-us` page.
+Stores job applications (form accessible via public forms HTML — route removed from app).
 
 | Column         | Type         | Constraints                    |
 | -------------- | ------------ | ------------------------------ |
@@ -205,6 +216,72 @@ Stores the therapist/doctor directory displayed on `/book-your-session`.
 
 **Seed Data:** 12 doctors pre-loaded (Mrs. Rajeshwari Luther, Dr. Vidhya Sagar, Ms. Muskan Gupta, Ms. Akansha Kabra, Ms. Sneha Sesha, Ms. Arani Shankar, Dr. Nishanth Vemana, Dr. K. Aparna, Dr. Justina Wilma Fernandes, Ms. Purvi Chottai, Ms. Apeksha, Ms. Shruti Sharma).
 
+### Table: `admin_users`
+
+Stores admin login credentials. **No public access** — all RLS policies deny anonymous queries.
+
+| Column          | Type         | Constraints                         |
+| --------------- | ------------ | ----------------------------------- |
+| `id`              | uuid (PK)    | `DEFAULT gen_random_uuid()`                    |
+| `email`           | text         | NOT NULL, UNIQUE                               |
+| `password_hash`   | text         | NOT NULL (bcrypt hash, cost 12)                |
+| `failed_attempts` | integer      | NOT NULL, DEFAULT 0 (reset on successful login)|
+| `locked_until`    | timestamptz  | nullable — when set and > now(), account locked |
+| `created_at`      | timestamptz  | NOT NULL, DEFAULT now()                        |
+| `updated_at`      | timestamptz  | NOT NULL, DEFAULT now() (auto-trigger)         |
+
+**RLS Policies:** All operations (`SELECT`, `INSERT`, `UPDATE`, `DELETE`) explicitly denied for `anon` and `authenticated` roles. Only `service_role` (Netlify function) can query.
+
+**Seeded via:** `scripts/seed-admin.mjs` CLI script (bcrypt rounds = 12).
+
+**Migration:** `Database/admin-security.sql` adds `failed_attempts` and `locked_until` using `ADD COLUMN IF NOT EXISTS` — safe to run on live table, zero data loss.
+
+### Table: `addiction_programs`
+
+Stores addiction recovery program details displayed on the `/addiction` page.
+
+| Column        | Type         | Constraints                         |
+| ------------- | ------------ | ----------------------------------- |
+| `id`          | uuid (PK)    | `DEFAULT gen_random_uuid()`         |
+| `name`        | text         | NOT NULL                            |
+| `description` | text         | NOT NULL, DEFAULT ''                |
+| `duration`    | text         | NOT NULL, DEFAULT ''                |
+| `features`    | text[]       | NOT NULL, DEFAULT '{}'              |
+| `is_active`   | boolean      | NOT NULL, DEFAULT true              |
+| `created_at`  | timestamptz  | NOT NULL, DEFAULT now()             |
+| `updated_at`  | timestamptz  | NOT NULL, DEFAULT now() (auto-trigger) |
+
+**RLS Policies:**
+- `anon` role: SELECT only where `is_active = true`
+- Write operations require valid admin JWT via `admin-programs` Netlify function
+
+**Seed Data:** 4 initial programs (Inpatient Rehabilitation, Outpatient Program, Family Therapy, Aftercare Support).
+
+### Table: `admin_audit_log`
+
+Immutable append-only log of all admin actions. Written server-side only by `admin-login.mjs` and `admin-programs.mjs` using the service role key.
+
+| Column          | Type         | Constraints                                      |
+| --------------- | ------------ | ------------------------------------------------ |
+| `id`            | uuid (PK)    | `DEFAULT gen_random_uuid()`                      |
+| `action`        | text         | NOT NULL — see action enum below                 |
+| `actor_email`   | text         | nullable (null only for unauthenticated failures)|
+| `resource_type` | text         | `'program'` or `'session'`                       |
+| `resource_id`   | text         | UUID of affected program, or null for sessions   |
+| `metadata`      | jsonb        | NOT NULL, DEFAULT `'{}'`                         |
+| `ip_address`    | text         | nullable — from `x-forwarded-for` header         |
+| `created_at`    | timestamptz  | NOT NULL, DEFAULT now()                          |
+
+**Action values:**
+- Session: `LOGIN_SUCCESS`, `LOGIN_FAILED`, `ACCOUNT_LOCKED`, `LOGIN_BLOCKED`
+- Programs: `CREATE`, `UPDATE`, `DELETE`
+
+**RLS Policies:** `FOR ALL` denied to both `anon` and `authenticated` — only `service_role` can insert/select.
+
+**Indexes:** `created_at DESC`, `actor_email`, `action`
+
+---
+
 ### Storage Buckets
 
 | Bucket              | Access  | Purpose                                      |
@@ -216,7 +293,45 @@ Stores the therapist/doctor directory displayed on `/book-your-session`.
 
 ## API & Serverless Functions
 
-### 1. Netlify Function: `whatsapp-crm`
+### 1. Netlify Function: `admin-login`
+
+- **File:** `netlify/functions/admin-login.mjs`
+- **Endpoint:** `POST /.netlify/functions/admin-login`
+- **Purpose:** Authenticates admin users and issues a JWT session token.
+- **Dependencies:** `@supabase/supabase-js`, `bcryptjs`, `jsonwebtoken`
+- **Auth:** Uses `SUPABASE_SERVICE_ROLE_KEY` to query `admin_users` (bypasses RLS)
+- **Rate Limiting:** 5 failed attempts → 15-minute lockout stored in `admin_users.locked_until`. Lockout window resets after expiry (fresh 5 attempts). Returns HTTP 429 with `Retry-After` header and `retryAfter` seconds in JSON body.
+- **Flow:**
+  1. Content-Type and input length validated (email ≤ 200, password ≤ 128 chars)
+  2. Fetches `id, email, password_hash, failed_attempts, locked_until` from `admin_users`
+  3. If `locked_until > now()`: returns 429 with remaining time
+  4. If lockout expired: treats `failed_attempts` as 0 (fresh window)
+  5. `bcrypt.compare` against stored hash
+  6. On failure: increments `failed_attempts`; on 5th failure sets `locked_until = now() + 15m`
+  7. On success: resets `failed_attempts = 0, locked_until = null`; issues 24h JWT
+- **Audit Log:** Writes to `admin_audit_log` at every auth decision point:
+  - `LOGIN_BLOCKED` — attempt while account still locked
+  - `LOGIN_FAILED` — wrong password (not yet at lockout threshold)
+  - `ACCOUNT_LOCKED` — 5th failed attempt triggers lockout
+  - `LOGIN_SUCCESS` — successful authentication
+- **Error Handling:** Generic messages throughout to prevent email enumeration
+
+### 2. Netlify Function: `admin-programs`
+
+- **File:** `netlify/functions/admin-programs.mjs`
+- **Endpoint:** `GET/POST/PUT/DELETE /.netlify/functions/admin-programs`
+- **Purpose:** Full CRUD API for addiction programs on the admin dashboard.
+- **Auth:** GET is public; POST/PUT/DELETE require `Authorization: Bearer <jwt>` header (verified against `ADMIN_JWT_SECRET`)
+- **Input Validation:** All mutating requests validate field lengths server-side (title/subtitle ≤ 200, description ≤ 2000, note ≤ 500, cost ≤ 100, max 20 features each ≤ 300 chars). Client enforces the same limits via `FIELD_LIMITS` constant + `maxLength` HTML attrs.
+- **Audit Log:** Writes `CREATE` / `UPDATE` / `DELETE` to `admin_audit_log` after every successful mutation (includes `actor_email` from JWT payload, `resource_id`, `title` in metadata).
+- **Flow:**
+  - `GET` — Returns all active programs (public)
+  - `POST` — Validates fields → inserts → writes audit log
+  - `PUT` — Validates fields → updates by ID → writes audit log
+  - `DELETE` — Deletes by ID → writes audit log
+- **Required Env:** `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_JWT_SECRET`
+
+### 3. Netlify Function: `whatsapp-crm`
 
 - **File:** `netlify/functions/whatsapp-crm.mjs`
 - **Endpoint:** `POST /api/whatsapp-crm`
@@ -244,7 +359,7 @@ Stores the therapist/doctor directory displayed on `/book-your-session`.
   5. Returns `{ sent, failed, errors }` summary
 - **Required Env:** `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, `NEWSLETTER_FROM_EMAIL`
 
-### 3. Client-Side Supabase Calls (No Server API)
+### 4. Client-Side Supabase Calls (No Server API)
 
 Forms submit **directly from the browser** to Supabase using the anon key:
 
@@ -258,17 +373,21 @@ Forms submit **directly from the browser** to Supabase using the anon key:
 
 ## Page Routes & Rendering Strategy
 
-| Route                | Component                    | Rendering   | Data Source               |
-| -------------------- | ---------------------------- | ----------- | ------------------------- |
-| `/`                  | `app/page.tsx`               | Static SSG  | None (hardcoded content)  |
-| `/about`             | `app/about/page.tsx`         | Client CSR  | None (hardcoded + assets) |
-| `/mental-health`     | `app/mental-health/page.tsx` | Client CSR  | None (hardcoded content)  |
-| `/addiction`          | `app/addiction/page.tsx`     | Client CSR  | None (hardcoded content)  |
-| `/blogs`             | `app/blogs/page.tsx`         | Static SSG  | MDX files (filesystem)    |
-| `/blogs/[slug]`      | `app/blogs/[slug]/page.tsx`  | Static SSG  | MDX file by slug          |
-| `/book-your-session` | `app/book-your-session/page.tsx` | Client CSR | Supabase `doctors` table |
-| `/contact`           | `app/contact/page.tsx`       | Client CSR  | Supabase (form submit)    |
-| `/join-us`           | `app/join-us/page.tsx`       | Client CSR  | Supabase (form + upload)  |
+| Route                      | Component                          | Rendering   | Data Source                        |
+| -------------------------- | ---------------------------------- | ----------- | ---------------------------------- |
+| `/`                        | `app/page.tsx`                     | Static SSG  | None (hardcoded content)           |
+| `/about`                   | `app/about/page.tsx`               | Client CSR  | None (hardcoded + assets)          |
+| `/mental-health`           | `app/mental-health/page.tsx`       | Client CSR  | None (hardcoded content)           |
+| `/addiction`               | `app/addiction/page.tsx`           | Client CSR  | Netlify fn: active programs        |
+| `/blogs`                   | `app/blogs/page.tsx`               | Static SSG  | MDX files (filesystem)             |
+| `/blogs/[slug]`            | `app/blogs/[slug]/page.tsx`        | Static SSG  | MDX file by slug                   |
+| `/book-your-session`       | `app/book-your-session/page.tsx`   | Client CSR  | Supabase `doctors` table           |
+| `/contact`                 | `app/contact/page.tsx`             | Client CSR  | Supabase (form submit)             |
+| `/admin`                   | `app/admin/page.tsx`               | Client CSR  | Netlify fns (login + programs CRUD)|
+| `/training`                | `app/training/page.tsx`            | Static SSG  | None (placeholder)                 |
+| `/corporate-wellness`      | `app/corporate-wellness/page.tsx`  | Static SSG  | None (placeholder)                 |
+| `/intervention-services`   | `app/intervention-services/page.tsx` | Static SSG | None (placeholder)               |
+| `/sitemap`                 | `app/sitemap/page.tsx`             | Static SSG  | None (hardcoded links)             |
 
 **Note:** Since `output: 'export'` is set, ALL pages are pre-rendered at build time. Client-side pages use `'use client'` for interactivity but are still served as static HTML.
 
@@ -322,6 +441,13 @@ Singleton Supabase client using public anon key. Used by all client-side form su
 - **`fetchDoctors()`** — Queries active doctors ordered by `display_order`, maps snake_case DB columns to camelCase TypeScript types
 - **`fetchDepartments()`** — Returns unique department names from active doctors
 
+### `lib/programs.ts`
+- **`UnauthorizedError`** — Custom error class thrown when any API call returns HTTP 401. Callers catch this to trigger automatic logout.
+- **`fetchPrograms()`** — Queries active programs (public, no auth)
+- **`createProgram(token, data)`** — Creates new program; throws `UnauthorizedError` on 401
+- **`updateProgram(token, data)`** — Updates program by ID; throws `UnauthorizedError` on 401
+- **`deleteProgram(token, id)`** — Deletes program by ID; throws `UnauthorizedError` on 401
+
 ### `lib/blog.ts`
 - **`getAllPosts()`** — Reads all `.mdx` files, sorts by date descending
 - **`getAllPostsMeta()`** — Same but strips content (lighter for listing pages)
@@ -351,14 +477,6 @@ Builds a complete branded HTML email template with:
 - "Need Support?" CTA section
 - Footer with contact info + unsubscribe link
 
-### `lib/performance.ts`
-- **`useDebounce(callback, delay)`** — Debounce hook for expensive operations
-- **`useThrottle(callback, delay)`** — Throttle hook for scroll/animation events
-- **`createOptimizedObserver()`** — IntersectionObserver factory with defaults
-- **`preloadImage(src)`** — Promise-based image preloading
-- **`createVirtualizedList()`** — Virtual scrolling calculator for large lists
-- **`measurePerformance(name, fn)`** — Simple performance timing logger
-
 ---
 
 ## Custom Hooks
@@ -374,18 +492,19 @@ IntersectionObserver-based hook that returns `{ elementRef, isVisible }`. Featur
 
 ## Environment Variables
 
-| Variable                            | Scope      | Used By                        |
-| ----------------------------------- | ---------- | ------------------------------ |
-| `NEXT_PUBLIC_SUPABASE_URL`          | Client     | Supabase client + asset URLs   |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY`     | Client     | Supabase client (public key)   |
-| `NEXT_PUBLIC_WHATSAPP_NUMBER`       | Client     | WhatsApp floating button       |
-| `NEXT_PUBLIC_SITE_URL`              | Client     | Sitemap, newsletter, OG tags   |
-| `NEXT_PUBLIC_GOOGLE_MAPS_EMBED_URL` | Client     | Contact page map iframe        |
-| `CRM_ENDPOINT`                      | Server     | Netlify whatsapp-crm function  |
-| `WHATSAPP_CRM_TOKEN`               | Server     | Netlify whatsapp-crm auth      |
-| `RESEND_API_KEY`                    | Server     | Supabase newsletter function   |
-| `NEWSLETTER_FROM_EMAIL`            | Server     | Newsletter "from" address      |
-| `SUPABASE_SERVICE_ROLE_KEY`        | Server     | Newsletter function (bypass RLS) |
+| Variable                            | Scope      | Used By                                    |
+| ----------------------------------- | ---------- | ------------------------------------------ |
+| `NEXT_PUBLIC_SUPABASE_URL`          | Client     | Supabase client + asset URLs               |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY`     | Client     | Supabase client (public key)               |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER`       | Client     | WhatsApp floating button                   |
+| `NEXT_PUBLIC_SITE_URL`              | Client     | Sitemap, newsletter, OG tags               |
+| `NEXT_PUBLIC_GOOGLE_MAPS_EMBED_URL` | Client     | Contact page map iframe                    |
+| `CRM_ENDPOINT`                      | Server     | Netlify whatsapp-crm function              |
+| `WHATSAPP_CRM_TOKEN`               | Server     | Netlify whatsapp-crm auth                  |
+| `ADMIN_JWT_SECRET`                  | Server     | Sign/verify admin JWTs (admin-login + admin-programs) |
+| `RESEND_API_KEY`                    | Server     | Supabase newsletter edge function          |
+| `NEWSLETTER_FROM_EMAIL`            | Server     | Newsletter "from" address                  |
+| `SUPABASE_SERVICE_ROLE_KEY`        | Server     | admin-login, admin-programs, newsletter fn |
 
 ---
 

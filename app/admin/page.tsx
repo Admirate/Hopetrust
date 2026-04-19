@@ -4,22 +4,69 @@ import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { Trash2, Plus, LogOut, Loader2, GripVertical, Lock, Mail, Eye, EyeOff, Package, AlertTriangle, Pencil, X, Check } from 'lucide-react';
 import type { AddictionProgram } from '@/lib/programs';
-import { fetchPrograms, createProgram, updateProgram, deleteProgram } from '@/lib/programs';
+import { fetchPrograms, createProgram, updateProgram, deleteProgram, UnauthorizedError } from '@/lib/programs';
 import { getLogoUrl } from '@/lib/assets';
 
 const LOGO_URL = getLogoUrl();
 
+// ─── Field length limits (must match server-side LIMITS in admin-programs.mjs) ────
+const FIELD_LIMITS = {
+  title: 200,
+  subtitle: 200,
+  description: 2000,
+  note: 500,
+  cost: 100,
+  feature_item: 300,
+  features_count: 20,
+  email: 200,
+  password: 128,
+};
+
+// ─── JWT expiry helper (client-side only, no verification) ───────────────────
+function parseJwtExpiry(token: string): number | null {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return typeof payload.exp === 'number' ? payload.exp : null;
+  } catch {
+    return null;
+  }
+}
+
 // ─── Login Form ──────────────────────────────────────────────────────────────
 
-function LoginForm({ onLogin }: { onLogin: (token: string, email: string) => void }) {
+function LoginForm({
+  onLogin,
+  sessionExpired = false,
+}: {
+  onLogin: (token: string, email: string) => void;
+  sessionExpired?: boolean;
+}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [lockoutUntil, setLockoutUntil] = useState<Date | null>(null);
+  const [countdown, setCountdown] = useState(0);
+
+  // Live countdown ticker while locked out
+  useEffect(() => {
+    if (!lockoutUntil) return;
+    const tick = () => {
+      const remaining = Math.max(0, Math.ceil((lockoutUntil.getTime() - Date.now()) / 1000));
+      setCountdown(remaining);
+      if (remaining === 0) setLockoutUntil(null);
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [lockoutUntil]);
+
+  const isLocked = countdown > 0;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isLocked) return;
     setError('');
     setLoading(true);
 
@@ -32,6 +79,9 @@ function LoginForm({ onLogin }: { onLogin: (token: string, email: string) => voi
       const data = await res.json();
 
       if (!res.ok) {
+        if (res.status === 429 && data.retryAfter) {
+          setLockoutUntil(new Date(Date.now() + data.retryAfter * 1000));
+        }
         setError(data.error || 'Login failed');
         return;
       }
@@ -70,6 +120,13 @@ function LoginForm({ onLogin }: { onLogin: (token: string, email: string) => voi
             <p className="mt-1.5 text-sm text-[#486364]">Sign in to the Hope Trust admin panel</p>
           </div>
 
+          {sessionExpired && (
+            <div className="mb-6 flex items-start gap-2 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-700">
+              <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0" />
+              <p>Your session has expired. Please sign in again.</p>
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-[#00373E]">
@@ -81,6 +138,7 @@ function LoginForm({ onLogin }: { onLogin: (token: string, email: string) => voi
                   id="email"
                   type="email"
                   required
+                  maxLength={FIELD_LIMITS.email}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full rounded-xl border border-gray-200 bg-[#F7F6F4]/50 py-3 pl-10 pr-4 text-sm text-[#00373E] outline-none transition-all placeholder:text-gray-400 focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
@@ -99,6 +157,7 @@ function LoginForm({ onLogin }: { onLogin: (token: string, email: string) => voi
                   id="password"
                   type={showPassword ? 'text' : 'password'}
                   required
+                  maxLength={FIELD_LIMITS.password}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full rounded-xl border border-gray-200 bg-[#F7F6F4]/50 py-3 pl-10 pr-11 text-sm text-[#00373E] outline-none transition-all placeholder:text-gray-400 focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
@@ -116,21 +175,31 @@ function LoginForm({ onLogin }: { onLogin: (token: string, email: string) => voi
             </div>
 
             {error && (
-              <div className="flex items-center gap-2 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600">
-                <AlertTriangle className="h-4 w-4 flex-shrink-0" />
-                {error}
+              <div className={`flex items-start gap-2 rounded-xl px-4 py-3 text-sm ${isLocked ? 'bg-amber-50 text-amber-700' : 'bg-red-50 text-red-600'}`}>
+                <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0" />
+                <div>
+                  <p>{error}</p>
+                  {isLocked && (
+                    <p className="mt-1 font-mono font-semibold">
+                      {String(Math.floor(countdown / 60)).padStart(2, '0')}:
+                      {String(countdown % 60).padStart(2, '0')} remaining
+                    </p>
+                  )}
+                </div>
               </div>
             )}
 
             <button
               type="submit"
-              disabled={loading}
-              className="w-full rounded-xl bg-[#00373E] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-[#00373E]/20 transition-all hover:bg-[#024a53] hover:shadow-xl hover:shadow-[#00373E]/25 active:scale-[0.98] disabled:opacity-60 disabled:shadow-none"
+              disabled={loading || isLocked}
+              className="w-full rounded-xl bg-[#00373E] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-[#00373E]/20 transition-all hover:bg-[#024a53] hover:shadow-xl hover:shadow-[#00373E]/25 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none"
             >
               {loading ? (
                 <span className="inline-flex items-center gap-2">
                   <Loader2 className="h-4 w-4 animate-spin" /> Signing in...
                 </span>
+              ) : isLocked ? (
+                'Account Locked'
               ) : (
                 'Sign In'
               )}
@@ -172,18 +241,16 @@ function AddProgramForm({
     setLoading(true);
 
     try {
-      await onAdd({
-        title,
-        subtitle,
-        description,
-        features: featuresText
-          .split('\n')
-          .map((f) => f.trim())
-          .filter(Boolean),
-        note,
-        cost,
-        display_order: displayOrder,
-      });
+      const lines = featuresText.split('\n').map((f) => f.trim()).filter(Boolean);
+      if (lines.length > FIELD_LIMITS.features_count) {
+        setError(`Maximum ${FIELD_LIMITS.features_count} features allowed`);
+        return;
+      }
+      if (lines.some((f) => f.length > FIELD_LIMITS.feature_item)) {
+        setError(`Each feature must be ${FIELD_LIMITS.feature_item} characters or fewer`);
+        return;
+      }
+      await onAdd({ title, subtitle, description, features: lines, note, cost, display_order: displayOrder });
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to add program');
     } finally {
@@ -205,6 +272,7 @@ function AddProgramForm({
             </label>
             <input
               required
+              maxLength={FIELD_LIMITS.title}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="w-full rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2.5 text-sm outline-none transition-all focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
@@ -217,6 +285,7 @@ function AddProgramForm({
             </label>
             <input
               required
+              maxLength={FIELD_LIMITS.cost}
               value={cost}
               onChange={(e) => setCost(e.target.value)}
               className="w-full rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2.5 text-sm outline-none transition-all focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
@@ -229,6 +298,7 @@ function AddProgramForm({
           <div>
             <label className="mb-1 block text-sm font-medium text-[#00373E]">Subtitle</label>
             <input
+              maxLength={FIELD_LIMITS.subtitle}
               value={subtitle}
               onChange={(e) => setSubtitle(e.target.value)}
               className="w-full rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2.5 text-sm outline-none transition-all focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
@@ -249,6 +319,7 @@ function AddProgramForm({
         <div>
           <label className="mb-1 block text-sm font-medium text-[#00373E]">Description</label>
           <textarea
+            maxLength={FIELD_LIMITS.description}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={3}
@@ -273,6 +344,7 @@ function AddProgramForm({
         <div>
           <label className="mb-1 block text-sm font-medium text-[#00373E]">Note</label>
           <input
+            maxLength={FIELD_LIMITS.note}
             value={note}
             onChange={(e) => setNote(e.target.value)}
             className="w-full rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2.5 text-sm outline-none transition-all focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
@@ -316,11 +388,13 @@ function ProgramCard({
   token,
   onUpdate,
   onDelete,
+  onUnauthorized,
 }: {
   program: AddictionProgram;
   token: string;
   onUpdate: (p: AddictionProgram) => void;
-  onDelete: (id: string) => void;
+  onDelete: (id: string) => Promise<void>;
+  onUnauthorized: () => void;
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -339,6 +413,15 @@ function ProgramCard({
 
   const handleSave = async () => {
     setError('');
+    const lines = featuresText.split('\n').map(f => f.trim()).filter(Boolean);
+    if (lines.length > FIELD_LIMITS.features_count) {
+      setError(`Maximum ${FIELD_LIMITS.features_count} features allowed`);
+      return;
+    }
+    if (lines.some(f => f.length > FIELD_LIMITS.feature_item)) {
+      setError(`Each feature must be ${FIELD_LIMITS.feature_item} characters or fewer`);
+      return;
+    }
     setSaving(true);
     try {
       const updated = await updateProgram(token, {
@@ -346,7 +429,7 @@ function ProgramCard({
         title,
         subtitle,
         description,
-        features: featuresText.split('\n').map(f => f.trim()).filter(Boolean),
+        features: lines,
         note,
         cost,
         display_order: displayOrder,
@@ -354,6 +437,7 @@ function ProgramCard({
       onUpdate(updated);
       setIsEditing(false);
     } catch (e: unknown) {
+      if (e instanceof UnauthorizedError) { onUnauthorized(); return; }
       setError(e instanceof Error ? e.message : 'Failed to save');
     } finally {
       setSaving(false);
@@ -379,7 +463,14 @@ function ProgramCard({
       return;
     }
     setDeleting(true);
-    onDelete(program.id);
+    try {
+      await onDelete(program.id);
+    } catch (e: unknown) {
+      if (e instanceof UnauthorizedError) { onUnauthorized(); return; }
+      setError(e instanceof Error ? e.message : 'Failed to delete');
+      setDeleting(false);
+      setConfirmDelete(false);
+    }
   };
 
   if (isEditing) {
@@ -391,12 +482,14 @@ function ProgramCard({
         <div className="space-y-3 p-5">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <input
+              maxLength={FIELD_LIMITS.title}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2 text-sm outline-none focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
               placeholder="Title"
             />
             <input
+              maxLength={FIELD_LIMITS.cost}
               value={cost}
               onChange={(e) => setCost(e.target.value)}
               className="rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2 text-sm outline-none focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
@@ -405,6 +498,7 @@ function ProgramCard({
           </div>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <input
+              maxLength={FIELD_LIMITS.subtitle}
               value={subtitle}
               onChange={(e) => setSubtitle(e.target.value)}
               className="rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2 text-sm outline-none focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
@@ -419,6 +513,7 @@ function ProgramCard({
             />
           </div>
           <textarea
+            maxLength={FIELD_LIMITS.description}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={2}
@@ -433,6 +528,7 @@ function ProgramCard({
             placeholder="Features (one per line)"
           />
           <input
+            maxLength={FIELD_LIMITS.note}
             value={note}
             onChange={(e) => setNote(e.target.value)}
             className="w-full rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2 text-sm outline-none focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
@@ -571,17 +667,24 @@ function Dashboard({ token, email, onLogout }: { token: string; email: string; o
   const handleAdd = async (
     program: Omit<AddictionProgram, 'id' | 'is_active' | 'created_at' | 'updated_at'>
   ) => {
-    await createProgram(token, program);
-    setShowAddForm(false);
-    await loadPrograms();
+    try {
+      await createProgram(token, program);
+      setShowAddForm(false);
+      await loadPrograms();
+    } catch (e) {
+      if (e instanceof UnauthorizedError) { onLogout(); return; }
+      throw e;
+    }
   };
 
   const handleDelete = async (id: string) => {
     try {
       await deleteProgram(token, id);
       setPrograms((prev) => prev.filter((p) => p.id !== id));
-    } catch {
+    } catch (e) {
+      if (e instanceof UnauthorizedError) { onLogout(); return; }
       setError('Failed to delete program');
+      throw e;
     }
   };
 
@@ -687,6 +790,7 @@ function Dashboard({ token, email, onLogout }: { token: string; email: string; o
                   );
                 }}
                 onDelete={handleDelete}
+                onUnauthorized={onLogout}
               />
             ))}
           </div>
@@ -706,15 +810,24 @@ function Dashboard({ token, email, onLogout }: { token: string; email: string; o
 export default function AdminPage() {
   const [token, setToken] = useState<string | null>(null);
   const [email, setEmail] = useState('');
+  const [sessionExpired, setSessionExpired] = useState(false);
 
-  // Restore session from sessionStorage on mount
+  // Restore session from sessionStorage on mount — verify token is not expired
   useEffect(() => {
     const saved = sessionStorage.getItem('admin_token');
     const savedEmail = sessionStorage.getItem('admin_email');
-    if (saved && savedEmail) {
-      setToken(saved);
-      setEmail(savedEmail);
+    if (!saved || !savedEmail) return;
+
+    const exp = parseJwtExpiry(saved);
+    if (!exp || exp * 1000 <= Date.now()) {
+      sessionStorage.removeItem('admin_token');
+      sessionStorage.removeItem('admin_email');
+      setSessionExpired(true);
+      return;
     }
+
+    setToken(saved);
+    setEmail(savedEmail);
   }, []);
 
   const handleLogin = (newToken: string, userEmail: string) => {
@@ -732,7 +845,7 @@ export default function AdminPage() {
   };
 
   if (!token) {
-    return <LoginForm onLogin={handleLogin} />;
+    return <LoginForm onLogin={handleLogin} sessionExpired={sessionExpired} />;
   }
 
   return <Dashboard token={token} email={email} onLogout={handleLogout} />;

@@ -1,9 +1,16 @@
 'use client';
 
 import { useState, useCallback, useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import { siteConfig } from '@/lib/config';
 
 const WHATSAPP_FALLBACK = siteConfig.contact.whatsappUrl;
+
+export default function WhatsAppButton() {
+  const pathname = usePathname();
+  if (pathname?.startsWith('/admin')) return null;
+  return <WhatsAppButtonInner />;
+}
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -17,7 +24,7 @@ function WhatsAppIcon({ className }: { className?: string }) {
   );
 }
 
-export default function WhatsAppButton() {
+function WhatsAppButtonInner() {
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
