@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from 'motion/react';
 import Image from 'next/image';
 import Header from '@/components/Header';
 import FadeInSection from '@/components/FadeInSection';
+import { getAssetUrl } from '@/lib/assets';
 import dynamic from 'next/dynamic';
 import type { AddictionProgram } from '@/lib/programs';
 import { fetchPrograms } from '@/lib/programs';
@@ -120,7 +121,7 @@ export default function AddictionPage() {
           {/* Background image with parallax */}
           <motion.div style={{ y: backgroundY }} className="absolute inset-0 h-[120%] w-full">
             <Image
-              src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/addictionservices_heroimage.png"
+              src={getAssetUrl('addictionservices_heroimage.png')}
               alt="Lush green valley with flowing river"
               fill
               className="object-cover"
@@ -163,7 +164,7 @@ export default function AddictionPage() {
             <FadeInSection delay={150}>
               <div className="w-full rounded-[20px] sm:rounded-[28px] overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.08)]">
                 <Image
-                  src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/addictionervices_1.png"
+                  src={getAssetUrl('addictionervices_1.png')}
                   alt="Close-up representing addiction recovery"
                   width={900}
                   height={550}
@@ -182,7 +183,7 @@ export default function AddictionPage() {
             <div className="flex flex-col md:flex-row items-center gap-8 md:gap-14">
               <motion.div {...fadeFrom('left')} className="w-[140px] sm:w-[180px] flex-shrink-0">
                 <Image
-                  src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/addictionservices_icon1.png"
+                  src={getAssetUrl('addictionservices_icon1.png')}
                   alt="Alcohol addiction icon"
                   width={180}
                   height={180}
@@ -206,7 +207,7 @@ export default function AddictionPage() {
             <div className="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-14">
               <motion.div {...fadeFrom('right')} className="w-[140px] sm:w-[180px] flex-shrink-0">
                 <Image
-                  src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/addictionservices_icon2.png"
+                  src={getAssetUrl('addictionservices_icon2.png')}
                   alt="Nicotine and drug addiction icon"
                   width={180}
                   height={180}
@@ -230,7 +231,7 @@ export default function AddictionPage() {
             <div className="flex flex-col md:flex-row items-center gap-8 md:gap-14">
               <motion.div {...fadeFrom('left')} className="w-[140px] sm:w-[180px] flex-shrink-0">
                 <Image
-                  src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/addictionservices_icon3.png"
+                  src={getAssetUrl('addictionservices_icon3.png')}
                   alt="Behavioural addiction icon"
                   width={180}
                   height={180}

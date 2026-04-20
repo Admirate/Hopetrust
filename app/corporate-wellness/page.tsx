@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Bricolage_Grotesque } from 'next/font/google';
 import Header from '@/components/Header';
 import { siteConfig } from '@/lib/config';
+import { getAssetUrl } from '@/lib/assets';
 import dynamic from 'next/dynamic';
 
 const Footer = dynamic(() => import('@/components/Footer'));
@@ -92,7 +93,7 @@ export default function CorporateWellnessPage() {
           {/* Background image with parallax */}
           <motion.div style={{ y: backgroundY }} className="absolute inset-0 h-[120%] w-full">
             <Image
-              src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/corporatewelness.png"
+              src={getAssetUrl('corporatewelness.png')}
               alt="Countryside at sunset representing workplace wellness"
               fill
               className="object-cover"
@@ -220,7 +221,7 @@ export default function CorporateWellnessPage() {
             loop
             playsInline
             className="absolute inset-0 h-full w-full object-cover"
-            src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/0_Pink_Red_1280x720.mp4"
+            src={getAssetUrl('0_Pink_Red_1280x720.mp4')}
           />
           <div className="relative z-10 mx-auto max-w-[1100px] px-6 sm:px-10">
             <motion.div

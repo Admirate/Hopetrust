@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { Bricolage_Grotesque } from 'next/font/google';
 import Header from '@/components/Header';
 import FadeInSection from '@/components/FadeInSection';
+import { getAssetUrl } from '@/lib/assets';
 import dynamic from 'next/dynamic';
 
 const Footer = dynamic(() => import('@/components/Footer'));
@@ -58,7 +59,7 @@ export default function TrainingPage() {
           {/* Background image with parallax */}
           <motion.div style={{ y: backgroundY }} className="absolute inset-0 h-[120%] w-full">
             <Image
-              src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/trainigs_hero.png"
+              src={getAssetUrl('trainigs_hero.png')}
               alt="Sunset over the ocean with a silhouette representing guidance and growth"
               fill
               className="object-cover"
@@ -103,7 +104,7 @@ export default function TrainingPage() {
               <div className="w-full lg:w-1/2">
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl sm:rounded-3xl">
                   <Image
-                    src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/trainigs_1.png"
+                    src={getAssetUrl('trainigs_1.png')}
                     alt="Team of professionals joining hands together representing collaboration and support"
                     fill
                     className="object-cover"
@@ -128,7 +129,7 @@ export default function TrainingPage() {
                 <div className="flex flex-col items-start">
                   <div className="relative mb-5 h-[90px] w-[78px] sm:h-[110px] sm:w-[96px] lg:h-[139px] lg:w-[121px]">
                     <Image
-                      src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/trainings_icon.png"
+                      src={getAssetUrl('trainings_icon.png')}
                       alt="Clinical internships icon"
                       fill
                       className="object-contain"
@@ -147,7 +148,7 @@ export default function TrainingPage() {
                 <div className="flex flex-col items-start">
                   <div className="relative mb-5 h-[90px] w-[64px] sm:h-[112px] sm:w-[80px] lg:h-[142px] lg:w-[100px]">
                     <Image
-                      src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/trainings_icon_2.png"
+                      src={getAssetUrl('trainings_icon_2.png')}
                       alt="Clinical traineeship icon"
                       fill
                       className="object-contain"
@@ -184,7 +185,7 @@ export default function TrainingPage() {
               <div className="my-8 flex justify-center sm:my-10">
                 <div className="relative h-[80px] w-[117px] sm:h-[105px] sm:w-[154px] lg:h-[129px] lg:w-[189px]">
                   <Image
-                    src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/trainings_icon_3.png"
+                    src={getAssetUrl('trainings_icon_3.png')}
                     alt="Clinical traineeship icon"
                     fill
                     className="object-contain"
@@ -329,7 +330,7 @@ export default function TrainingPage() {
             loop
             playsInline
             className="absolute inset-0 h-full w-full object-cover"
-            src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/0_Pink_Red_1280x720.mp4"
+            src={getAssetUrl('0_Pink_Red_1280x720.mp4')}
           />
           <div className="relative z-10 mx-auto max-w-[1100px] px-5 sm:px-10">
             <div className="flex flex-col gap-4 py-6 sm:flex-row sm:items-center sm:gap-12 sm:py-10">

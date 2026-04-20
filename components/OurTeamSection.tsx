@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Bricolage_Grotesque } from 'next/font/google';
 
 import { cn } from '@/lib/utils';
+import { getAssetUrl } from '@/lib/assets';
 
 type TeamCategory = {
   value: 'therapists' | 'counsellors' | 'psychologists' | 'medical-professionals';
@@ -76,7 +77,7 @@ export default function OurTeamSection({
         className="absolute inset-0 h-full w-full object-cover"
         preload="metadata"
       >
-        <source src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/0_Pink_Red_1280x720.mp4" type="video/mp4" />
+        <source src={getAssetUrl('0_Pink_Red_1280x720.mp4')} type="video/mp4" />
       </video>
 
       {/* Content */}

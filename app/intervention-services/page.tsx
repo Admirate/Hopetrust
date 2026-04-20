@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Bricolage_Grotesque } from 'next/font/google';
 import Header from '@/components/Header';
 import FadeInSection from '@/components/FadeInSection';
+import { getAssetUrl } from '@/lib/assets';
 import dynamic from 'next/dynamic';
 
 const Footer = dynamic(() => import('@/components/Footer'));
@@ -46,7 +47,7 @@ export default function InterventionServicesPage() {
           {/* Background image with parallax */}
           <motion.div style={{ y: backgroundY }} className="absolute inset-0 h-[120%] w-full">
             <Image
-              src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/intervention%20services.png"
+              src={getAssetUrl('intervention services.png')}
               alt="Lush botanical background with pine and yellow flowers"
               fill
               className="object-cover"
@@ -82,7 +83,7 @@ export default function InterventionServicesPage() {
             loop
             playsInline
             className="absolute inset-0 h-full w-full object-cover"
-            src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/0_Pink_Red_1280x720.mp4"
+            src={getAssetUrl('0_Pink_Red_1280x720.mp4')}
           />
           <FadeInSection>
             <div className="relative z-10 mx-auto max-w-[1226px] px-6 sm:px-10 text-center">
@@ -165,7 +166,7 @@ export default function InterventionServicesPage() {
             <FadeInSection delay={150}>
               <div className="w-full overflow-hidden rounded-[24px]">
                 <Image
-                  src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/intervention%20services_2.png"
+                  src={getAssetUrl('intervention services_2.png')}
                   alt="Support during addiction intervention"
                   width={860}
                   height={480}

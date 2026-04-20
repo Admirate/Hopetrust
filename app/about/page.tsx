@@ -317,7 +317,7 @@ export default function About() {
                 transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
               >
                 <Image
-                  src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/aboutus_new_image_!.png"
+                  src={getAssetUrl('aboutus_new_image_!.png')}
                   alt="Hope Trust story"
                   width={560}
                   height={400}
@@ -369,7 +369,7 @@ export default function About() {
                 transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 0.61, 0.36, 1] }}
               >
                 <Image
-                  src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/aboutus_new_image_2.png"
+                  src={getAssetUrl('aboutus_new_image_2.png')}
                   alt="Hope Trust community"
                   width={560}
                   height={400}

@@ -1,22 +1,25 @@
 "use client";
 
 import { Bricolage_Grotesque } from "next/font/google";
+import { getStorageUrl } from '@/lib/assets';
 
 const headingFont = Bricolage_Grotesque({
   subsets: ["latin"],
   weight: ["600"],
 });
 
+const AFFIL_BUCKET = 'affiliations%20logo';
+
 const logos = [
-  "https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/affiliations%20logo/image%2045.png",
-  "https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/affiliations%20logo/image%2046.png",
-  "https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/affiliations%20logo/image%2047.png",
-  "https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/affiliations%20logo/image%2048.png",
-  "https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/affiliations%20logo/image%2049.png",
-  "https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/affiliations%20logo/image%2050.png",
-  "https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/affiliations%20logo/image%2051.png",
-  "https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/affiliations%20logo/image%2052.png",
-  "https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/affiliations%20logo/image%2053.png",
+  getStorageUrl(AFFIL_BUCKET, 'image 45.png'),
+  getStorageUrl(AFFIL_BUCKET, 'image 46.png'),
+  getStorageUrl(AFFIL_BUCKET, 'image 47.png'),
+  getStorageUrl(AFFIL_BUCKET, 'image 48.png'),
+  getStorageUrl(AFFIL_BUCKET, 'image 49.png'),
+  getStorageUrl(AFFIL_BUCKET, 'image 50.png'),
+  getStorageUrl(AFFIL_BUCKET, 'image 51.png'),
+  getStorageUrl(AFFIL_BUCKET, 'image 52.png'),
+  getStorageUrl(AFFIL_BUCKET, 'image 53.png'),
 ];
 
 export default function AffiliationsSection() {

@@ -147,7 +147,7 @@ const focusBoldBodyFont = Bricolage_Grotesque({
 
 const CAROUSEL_SLIDES = [
   {
-    image: "https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/mental_health_carousel.png",
+    image: getAssetUrl('mental_health_carousel.png'),
     alt: "Addiction and overlapping concerns",
     title: "Addiction and overlapping concerns",
     paragraphs: [
@@ -156,7 +156,7 @@ const CAROUSEL_SLIDES = [
     bold: "This can include gambling, internet use, gaming, shopping, food related issues, compulsive work, exercise, and other repeated behaviors that begin to cause harm.",
   },
   {
-    image: "https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/mental_health_carousel_2.png",
+    image: getAssetUrl('mental_health_carousel_2.png'),
     alt: "Couples and relationship support",
     title: "Couples and relationship support",
     paragraphs: [
@@ -166,7 +166,7 @@ const CAROUSEL_SLIDES = [
     bold: "",
   },
   {
-    image: "https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/mental_health_carousel_3.png",
+    image: getAssetUrl('mental_health_carousel_3.png'),
     alt: "LGBTQIA+ affirmative care",
     title: "LGBTQIA+ affirmative care",
     paragraphs: [
@@ -353,7 +353,7 @@ export default function MentalHealthPage() {
             className="absolute inset-0 h-full w-full object-cover"
             preload="metadata"
           >
-            <source src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/0_Pink_Red_1280x720.mp4" type="video/mp4" />
+            <source src={getAssetUrl('0_Pink_Red_1280x720.mp4')} type="video/mp4" />
           </video>
           <motion.div
             {...fadeFrom('up')}
@@ -373,7 +373,7 @@ export default function MentalHealthPage() {
             {/* Left: image */}
             <motion.div {...fadeFrom('left')} className="w-full md:w-1/2 rounded-[24px] sm:rounded-[32px] overflow-hidden shadow-lg">
               <Image
-                src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/mental_health_new.png"
+                src={getAssetUrl('mental_health_new.png')}
                 alt="Therapist working with client"
                 width={560}
                 height={480}
