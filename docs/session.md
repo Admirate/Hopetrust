@@ -576,5 +576,116 @@ node scripts/test-newsletter.mjs     # Test newsletter sending
 
 ---
 
-*Last updated: April 19, 2026*
-*Sessions: April 7 (initial) · April 19 ×7 (docs corrections, rate limiting, 401 auto-logout, token expiry check, input limits, audit log)*
+## Session 8 — April 20, 2026
+
+### Objective
+Implement full CRUD for training programs (admin dashboard + public page), make training page responsive, refactor hardcoded Supabase URLs, and implement core SEO improvements.
+
+### Changes Made
+
+#### Training Programs — Full CRUD Stack
+
+##### `Database/training-programs.sql` (new file)
+- `training_programs` table: `id`, `category` (internship/traineeship), `title`, `description`, `levels` (JSONB array), `duration`, `fee`, `format`, `display_order`, `is_active`, timestamps
+- RLS: public read of active programs, all writes via service_role only
+
+##### `netlify/functions/admin-training-programs.mjs` (new file)
+- Full CRUD Netlify function mirroring `admin-programs.mjs` pattern
+- GET (public), POST/PUT/DELETE (JWT auth required)
+- Field validation + audit log writes
+
+##### `lib/training-programs.ts` (new file)
+- TypeScript interfaces (`TrainingProgram`, `TrainingProgramLevel`)
+- CRUD functions: `fetchTrainingPrograms`, `createTrainingProgram`, `updateTrainingProgram`, `deleteTrainingProgram`
+
+##### `app/admin/page.tsx`
+- Added tabbed UI: "Addiction Programs" | "Training Programs"
+- New components: `AddTrainingProgramForm`, `TrainingProgramCard`
+- Full state management for training programs CRUD
+- Fixed duplicate `format` field in both form and card edit mode
+
+##### `app/training/page.tsx`
+- Replaced hardcoded internship/traineeship content with dynamic Supabase data
+- Card-style containers for program display
+- Auto-cycling "What you gain" text animation with `AnimatePresence`
+- **Full responsive overhaul:** hero `h-screen`, font scaling, grid gaps, card padding, level pill sizing, cycling text container height (`h-[52px]` on mobile to prevent clipping)
+
+---
+
+#### Hardcoded Supabase URL Refactor
+
+##### `lib/assets.ts`
+- Added `getStorageUrl(bucket, path)` for custom buckets
+- `getAssetUrl` now delegates to `getStorageUrl`
+
+##### 9 files updated (34 instances total)
+| File | Count | Approach |
+| --- | --- | --- |
+| `components/AffiliationsSection.tsx` | 9 | `getStorageUrl(AFFIL_BUCKET, ...)` (different bucket) |
+| `app/training/page.tsx` | 6 | `getAssetUrl(...)` |
+| `app/addiction/page.tsx` | 5 | `getAssetUrl(...)` |
+| `app/mental-health/page.tsx` | 5 | `getAssetUrl(...)` |
+| `app/intervention-services/page.tsx` | 3 | `getAssetUrl(...)` |
+| `app/about/page.tsx` | 2 | `getAssetUrl(...)` |
+| `app/corporate-wellness/page.tsx` | 2 | `getAssetUrl(...)` |
+| `components/OurTeamSection.tsx` | 1 | `getAssetUrl(...)` |
+| `components/ResourcesSection.tsx` | 1 | `getAssetUrl(...)` |
+
+Only remaining instance: the fallback value in `lib/assets.ts` itself (single source of truth).
+
+---
+
+#### SEO Implementation
+
+##### 1. Sitemap + Robots.txt (`scripts/generate-sitemap.mjs`)
+- Per-page `priority` and `changefreq` (home=weekly/1.0, services=monthly/0.9, blogs=weekly/0.8)
+- `robots.txt` now blocks `/admin/` from crawlers
+- Already wired into build via `npm run build`
+
+##### 2. JSON-LD Structured Data
+
+###### `lib/jsonld.ts` (new file)
+Reusable schema generators:
+- `getOrganizationSchema()` — `Organization` + `MedicalBusiness` with address, geo, opening hours, medical specialties
+- `getWebSiteSchema()` — `WebSite` schema
+- `getServiceSchema(opts)` — `MedicalTherapy` schema for service pages
+- `getBreadcrumbSchema(items)` — `BreadcrumbList` schema
+- `getFAQSchema(faqs)` — `FAQPage` schema (available for future use)
+
+###### `components/JsonLd.tsx` (new file)
+Lightweight `<script type="application/ld+json">` wrapper component.
+
+###### Root layout (`app/layout.tsx`)
+- `Organization` + `MedicalBusiness` schema (every page)
+- `WebSite` schema (every page)
+
+###### Service page layouts
+`MedicalTherapy` + `BreadcrumbList` JSON-LD added to:
+- `app/mental-health/layout.tsx`
+- `app/addiction/layout.tsx`
+- `app/training/layout.tsx`
+- `app/corporate-wellness/layout.tsx`
+- `app/intervention-services/layout.tsx`
+
+###### Non-service page layouts
+`BreadcrumbList` JSON-LD added to:
+- `app/about/layout.tsx`
+- `app/contact/layout.tsx`
+- `app/book-your-session/layout.tsx`
+
+##### 3. Per-Page Canonical URLs
+Added `alternates.canonical` to all 8 sub-page layouts:
+- `/about/`, `/mental-health/`, `/addiction/`, `/training/`, `/corporate-wellness/`, `/intervention-services/`, `/contact/`, `/book-your-session/`
+- Root layout already had `canonical: '/'`
+
+---
+
+### Design Decisions
+- **`getStorageUrl` vs modifying `getAssetUrl`** — Added a new generic function to support multiple buckets (affiliations logos use a different bucket) while keeping `getAssetUrl` as a convenient default-bucket wrapper
+- **JSON-LD in layouts vs pages** — Layouts are server components, so structured data is rendered at build time into static HTML (no client JS needed)
+- **Relative canonicals** — Using relative paths (e.g. `/about/`) with `metadataBase` set in root layout; Next.js resolves to full URLs automatically
+
+---
+
+*Last updated: April 20, 2026*
+*Sessions: April 7 (initial) · April 19 ×7 (docs corrections, rate limiting, 401 auto-logout, token expiry check, input limits, audit log) · April 20 (training CRUD, responsive training page, URL refactor, SEO)*

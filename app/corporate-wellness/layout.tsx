@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import JsonLd from '@/components/JsonLd';
+import { getServiceSchema, getBreadcrumbSchema } from '@/lib/jsonld';
 
 export const metadata: Metadata = {
   title: 'Corporate Wellness | Hope Trust - Employee Mental Health Programs',
@@ -7,6 +9,9 @@ export const metadata: Metadata = {
     'Hope Trust offers corporate wellness programmes designed to support employee mental health, reduce workplace stress, and boost team wellbeing. Sessions, workshops, and structured support in Hyderabad.',
   keywords:
     'corporate wellness, employee mental health, workplace stress, EAP, employee assistance programme, mental health workshops, Hope Trust Hyderabad, team wellbeing',
+  alternates: {
+    canonical: '/corporate-wellness/',
+  },
   openGraph: {
     title: 'Corporate Wellness | Hope Trust',
     description:
@@ -17,5 +22,19 @@ export const metadata: Metadata = {
 };
 
 export default function CorporateWellnessLayout({ children }: { children: ReactNode }) {
-  return <>{children}</>;
+  return (
+    <>
+      <JsonLd data={getServiceSchema({
+        name: 'Corporate Wellness Programs',
+        description: 'Corporate wellness programmes to support employee mental health, reduce workplace stress, and boost team wellbeing in Hyderabad.',
+        url: 'https://hopetrustindia.com/corporate-wellness/',
+        serviceType: 'Corporate Wellness',
+      })} />
+      <JsonLd data={getBreadcrumbSchema([
+        { name: 'Home', url: 'https://hopetrustindia.com/' },
+        { name: 'Corporate Wellness', url: 'https://hopetrustindia.com/corporate-wellness/' },
+      ])} />
+      {children}
+    </>
+  );
 }
