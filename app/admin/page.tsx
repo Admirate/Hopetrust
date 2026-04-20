@@ -2,9 +2,11 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import { Trash2, Plus, LogOut, Loader2, GripVertical, Lock, Mail, Eye, EyeOff, Package, AlertTriangle, Pencil, X, Check } from 'lucide-react';
+import { Trash2, Plus, LogOut, Loader2, GripVertical, Lock, Mail, Eye, EyeOff, Package, AlertTriangle, Pencil, X, Check, GraduationCap } from 'lucide-react';
 import type { AddictionProgram } from '@/lib/programs';
 import { fetchPrograms, createProgram, updateProgram, deleteProgram, UnauthorizedError } from '@/lib/programs';
+import type { TrainingProgram, TrainingProgramLevel } from '@/lib/training-programs';
+import { fetchTrainingPrograms, createTrainingProgram, updateTrainingProgram, deleteTrainingProgram, UnauthorizedError as TrainingUnauthorizedError } from '@/lib/training-programs';
 import { getLogoUrl } from '@/lib/assets';
 
 const LOGO_URL = getLogoUrl();
@@ -639,12 +641,469 @@ function ProgramCard({
   );
 }
 
+// ─── Add Training Program Form ───────────────────────────────────────────────
+
+function AddTrainingProgramForm({
+  onAdd,
+  onCancel,
+}: {
+  onAdd: (program: Omit<TrainingProgram, 'id' | 'is_active' | 'created_at' | 'updated_at'>) => Promise<void>;
+  onCancel: () => void;
+}) {
+  const [category, setCategory] = useState<'internship' | 'traineeship'>('internship');
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [levels, setLevels] = useState<TrainingProgramLevel[]>([]);
+  const [duration, setDuration] = useState('');
+  const [fee, setFee] = useState('');
+  const [format, setFormat] = useState('');
+  const [displayOrder, setDisplayOrder] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const addLevel = () => setLevels([...levels, { label: '', hours: '', price: '' }]);
+  const removeLevel = (i: number) => setLevels(levels.filter((_, idx) => idx !== i));
+  const updateLevel = (i: number, field: keyof TrainingProgramLevel, value: string) => {
+    setLevels(levels.map((l, idx) => idx === i ? { ...l, [field]: value } : l));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      await onAdd({ category, title, description, levels, duration, fee, format, display_order: displayOrder });
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to add training program');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
+      <div className="bg-gradient-to-r from-[#ED7428] to-[#F59E0B] px-6 py-4">
+        <h3 className="text-lg font-bold text-white">Add Training Program</h3>
+        <p className="text-sm text-white/70">Create an internship or traineeship card</p>
+      </div>
+      <form onSubmit={handleSubmit} className="space-y-4 p-6">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div>
+            <label className="mb-1 block text-sm font-medium text-[#00373E]">
+              Category <span className="text-red-500">*</span>
+            </label>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value as 'internship' | 'traineeship')}
+              className="w-full rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2.5 text-sm outline-none transition-all focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
+            >
+              <option value="internship">Internship</option>
+              <option value="traineeship">Traineeship</option>
+            </select>
+          </div>
+          <div>
+            <label className="mb-1 block text-sm font-medium text-[#00373E]">
+              Title <span className="text-red-500">*</span>
+            </label>
+            <input
+              required
+              maxLength={200}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2.5 text-sm outline-none transition-all focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
+              placeholder="e.g. Addiction Treatment Internship"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-sm font-medium text-[#00373E]">Display Order</label>
+            <input
+              type="number"
+              value={displayOrder}
+              onChange={(e) => setDisplayOrder(Number(e.target.value))}
+              className="w-full rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2.5 text-sm outline-none transition-all focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="mb-1 block text-sm font-medium text-[#00373E]">Description</label>
+          <textarea
+            maxLength={2000}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={3}
+            className="w-full rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2.5 text-sm outline-none transition-all focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
+            placeholder="Program description"
+          />
+        </div>
+
+        {category === 'internship' && (
+          <div>
+            <label className="mb-2 block text-sm font-medium text-[#00373E]">
+              Levels <span className="text-xs text-gray-500">(pricing tiers)</span>
+            </label>
+            {levels.map((level, i) => (
+              <div key={i} className="mb-2 flex gap-2">
+                <input
+                  maxLength={100}
+                  value={level.label}
+                  onChange={(e) => updateLevel(i, 'label', e.target.value)}
+                  className="w-1/4 rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2 text-sm outline-none focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
+                  placeholder="Level 1"
+                />
+                <input
+                  maxLength={100}
+                  value={level.hours}
+                  onChange={(e) => updateLevel(i, 'hours', e.target.value)}
+                  className="w-1/3 rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2 text-sm outline-none focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
+                  placeholder="10 hours"
+                />
+                <input
+                  maxLength={100}
+                  value={level.price}
+                  onChange={(e) => updateLevel(i, 'price', e.target.value)}
+                  className="w-1/3 rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2 text-sm outline-none focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
+                  placeholder="INR 2,500"
+                />
+                <button type="button" onClick={() => removeLevel(i)} className="rounded-xl px-2 text-red-500 hover:bg-red-50">
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={addLevel}
+              className="inline-flex items-center gap-1 rounded-xl border border-dashed border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-500 hover:border-[#ED7428] hover:text-[#ED7428]"
+            >
+              <Plus className="h-3 w-3" /> Add Level
+            </button>
+          </div>
+        )}
+
+        {category === 'traineeship' && (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div>
+              <label className="mb-1 block text-sm font-medium text-[#00373E]">Duration</label>
+              <input
+                maxLength={100}
+                value={duration}
+                onChange={(e) => setDuration(e.target.value)}
+                className="w-full rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2.5 text-sm outline-none transition-all focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
+                placeholder="e.g. 3 months"
+              />
+            </div>
+            <div>
+              <label className="mb-1 block text-sm font-medium text-[#00373E]">Fee</label>
+              <input
+                maxLength={100}
+                value={fee}
+                onChange={(e) => setFee(e.target.value)}
+                className="w-full rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2.5 text-sm outline-none transition-all focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
+                placeholder="e.g. INR 17,000"
+              />
+            </div>
+          </div>
+        )}
+
+        <div>
+          <label className="mb-1 block text-sm font-medium text-[#00373E]">Format / Availability</label>
+          <input
+            maxLength={200}
+            value={format}
+            onChange={(e) => setFormat(e.target.value)}
+            className="w-full rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2.5 text-sm outline-none transition-all focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
+            placeholder="e.g. Available online and on site."
+          />
+        </div>
+
+        {error && (
+          <div className="flex items-center gap-2 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600">
+            <AlertTriangle className="h-4 w-4 flex-shrink-0" />
+            {error}
+          </div>
+        )}
+
+        <div className="flex gap-3 border-t border-gray-100 pt-4">
+          <button
+            type="submit"
+            disabled={loading}
+            className="inline-flex items-center gap-2 rounded-xl bg-[#ED7428] px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#ED7428]/20 transition-all hover:bg-[#d4651f] active:scale-[0.98] disabled:opacity-60 disabled:shadow-none"
+          >
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
+            {loading ? 'Adding...' : 'Add Training Program'}
+          </button>
+          <button
+            type="button"
+            onClick={onCancel}
+            className="rounded-xl border border-gray-200 px-6 py-2.5 text-sm font-medium text-[#00373E] transition-all hover:bg-gray-50"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
+// ─── Training Program Card ───────────────────────────────────────────────────
+
+function TrainingProgramCard({
+  program,
+  token,
+  onUpdate,
+  onDelete,
+  onUnauthorized,
+}: {
+  program: TrainingProgram;
+  token: string;
+  onUpdate: (p: TrainingProgram) => void;
+  onDelete: (id: string) => Promise<void>;
+  onUnauthorized: () => void;
+}) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
+  const [category, setCategory] = useState(program.category);
+  const [title, setTitle] = useState(program.title);
+  const [description, setDescription] = useState(program.description);
+  const [levels, setLevels] = useState<TrainingProgramLevel[]>(program.levels || []);
+  const [duration, setDuration] = useState(program.duration);
+  const [fee, setFee] = useState(program.fee);
+  const [format, setFormat] = useState(program.format);
+  const [displayOrder, setDisplayOrder] = useState(program.display_order);
+  const [error, setError] = useState('');
+
+  const addLevel = () => setLevels([...levels, { label: '', hours: '', price: '' }]);
+  const removeLevel = (i: number) => setLevels(levels.filter((_, idx) => idx !== i));
+  const updateLevel = (i: number, field: keyof TrainingProgramLevel, value: string) => {
+    setLevels(levels.map((l, idx) => idx === i ? { ...l, [field]: value } : l));
+  };
+
+  const handleSave = async () => {
+    setError('');
+    setSaving(true);
+    try {
+      const updated = await updateTrainingProgram(token, {
+        id: program.id,
+        category,
+        title,
+        description,
+        levels,
+        duration,
+        fee,
+        format,
+        display_order: displayOrder,
+      });
+      onUpdate(updated);
+      setIsEditing(false);
+    } catch (e: unknown) {
+      if (e instanceof TrainingUnauthorizedError) { onUnauthorized(); return; }
+      setError(e instanceof Error ? e.message : 'Failed to save');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setCategory(program.category);
+    setTitle(program.title);
+    setDescription(program.description);
+    setLevels(program.levels || []);
+    setDuration(program.duration);
+    setFee(program.fee);
+    setFormat(program.format);
+    setDisplayOrder(program.display_order);
+    setError('');
+    setIsEditing(false);
+  };
+
+  const handleDelete = async () => {
+    if (!confirmDelete) { setConfirmDelete(true); return; }
+    setDeleting(true);
+    try {
+      await onDelete(program.id);
+    } catch (e: unknown) {
+      if (e instanceof TrainingUnauthorizedError) { onUnauthorized(); return; }
+      setError(e instanceof Error ? e.message : 'Failed to delete');
+      setDeleting(false);
+      setConfirmDelete(false);
+    }
+  };
+
+  if (isEditing) {
+    return (
+      <div className="overflow-hidden rounded-2xl border border-[#ED7428]/30 bg-white shadow-md ring-2 ring-[#ED7428]/10">
+        <div className="bg-gradient-to-r from-[#ED7428] to-[#F59E0B] px-5 py-3">
+          <h4 className="text-sm font-bold text-white">Edit Training Program</h4>
+        </div>
+        <div className="space-y-3 p-5">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value as 'internship' | 'traineeship')}
+              className="rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2 text-sm outline-none focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
+            >
+              <option value="internship">Internship</option>
+              <option value="traineeship">Traineeship</option>
+            </select>
+            <input
+              maxLength={200}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2 text-sm outline-none focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
+              placeholder="Title"
+            />
+            <input
+              type="number"
+              value={displayOrder}
+              onChange={(e) => setDisplayOrder(Number(e.target.value))}
+              className="rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2 text-sm outline-none focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
+              placeholder="Order"
+            />
+          </div>
+          <textarea
+            maxLength={2000}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={2}
+            className="w-full rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2 text-sm outline-none focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
+            placeholder="Description"
+          />
+
+          {category === 'internship' && (
+            <div>
+              <label className="mb-1 block text-xs font-medium text-gray-500">Levels</label>
+              {levels.map((level, i) => (
+                <div key={i} className="mb-2 flex gap-2">
+                  <input maxLength={100} value={level.label} onChange={(e) => updateLevel(i, 'label', e.target.value)} className="w-1/4 rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-1.5 text-sm outline-none focus:border-[#ED7428]" placeholder="Level 1" />
+                  <input maxLength={100} value={level.hours} onChange={(e) => updateLevel(i, 'hours', e.target.value)} className="w-1/3 rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-1.5 text-sm outline-none focus:border-[#ED7428]" placeholder="10 hours" />
+                  <input maxLength={100} value={level.price} onChange={(e) => updateLevel(i, 'price', e.target.value)} className="w-1/3 rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-1.5 text-sm outline-none focus:border-[#ED7428]" placeholder="INR 2,500" />
+                  <button type="button" onClick={() => removeLevel(i)} className="rounded-xl px-2 text-red-500 hover:bg-red-50"><Trash2 className="h-3 w-3" /></button>
+                </div>
+              ))}
+              <button type="button" onClick={addLevel} className="inline-flex items-center gap-1 text-xs font-medium text-[#ED7428] hover:underline">
+                <Plus className="h-3 w-3" /> Add Level
+              </button>
+            </div>
+          )}
+
+          {category === 'traineeship' && (
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <input maxLength={100} value={duration} onChange={(e) => setDuration(e.target.value)} className="rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2 text-sm outline-none focus:border-[#ED7428]" placeholder="Duration" />
+              <input maxLength={100} value={fee} onChange={(e) => setFee(e.target.value)} className="rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2 text-sm outline-none focus:border-[#ED7428]" placeholder="Fee" />
+            </div>
+          )}
+
+          <input
+            maxLength={200}
+            value={format}
+            onChange={(e) => setFormat(e.target.value)}
+            className="w-full rounded-xl border border-gray-200 bg-[#F7F6F4]/50 px-3 py-2 text-sm outline-none focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
+            placeholder="Format / Availability note"
+          />
+
+          {error && (
+            <div className="flex items-center gap-2 rounded-lg bg-red-50 px-3 py-2 text-xs text-red-600">
+              <AlertTriangle className="h-3 w-3" />
+              {error}
+            </div>
+          )}
+
+          <div className="flex gap-2 border-t border-gray-100 pt-3">
+            <button onClick={handleSave} disabled={saving} className="inline-flex items-center gap-1.5 rounded-xl bg-[#ED7428] px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-[#ED7428]/20 transition-all hover:bg-[#d4651f] active:scale-[0.98] disabled:opacity-60">
+              {saving ? <Loader2 className="h-3 w-3 animate-spin" /> : <Check className="h-3 w-3" />}
+              {saving ? 'Saving...' : 'Save'}
+            </button>
+            <button onClick={handleCancel} className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 px-4 py-2 text-sm font-medium text-[#00373E] transition-all hover:bg-gray-50">
+              <X className="h-3 w-3" />
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all hover:shadow-lg">
+      <div className="h-1 w-full bg-gradient-to-r from-[#ED7428] to-[#F59E0B]" />
+      <div className="p-5 sm:p-6">
+        <div className="mb-4 flex items-start justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#ED7428]/10 text-xs font-bold text-[#ED7428]">
+              {program.display_order}
+            </div>
+            <div>
+              <h4 className="text-base font-bold text-[#00373E] sm:text-lg">{program.title}</h4>
+              <span className={`mt-0.5 inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
+                program.category === 'internship' ? 'bg-blue-50 text-blue-600' : 'bg-purple-50 text-purple-600'
+              }`}>
+                {program.category}
+              </span>
+            </div>
+          </div>
+          <div className="flex gap-1.5">
+            <button onClick={() => setIsEditing(true)} className="inline-flex items-center gap-1 rounded-xl bg-gray-100 px-2.5 py-1.5 text-xs font-medium text-gray-600 transition-all hover:bg-[#ED7428]/10 hover:text-[#ED7428]">
+              <Pencil className="h-3 w-3" />
+              Edit
+            </button>
+            <button
+              onClick={handleDelete}
+              disabled={deleting}
+              onBlur={() => setConfirmDelete(false)}
+              className={`inline-flex items-center gap-1 rounded-xl px-2.5 py-1.5 text-xs font-medium transition-all ${
+                confirmDelete ? 'bg-red-600 text-white shadow-lg shadow-red-600/20 hover:bg-red-700' : 'bg-gray-100 text-gray-500 hover:bg-red-50 hover:text-red-600'
+              } disabled:opacity-50`}
+            >
+              {deleting ? <Loader2 className="h-3 w-3 animate-spin" /> : <Trash2 className="h-3 w-3" />}
+              {confirmDelete ? 'Confirm' : 'Delete'}
+            </button>
+          </div>
+        </div>
+
+        {program.description && (
+          <p className="mb-3 text-sm leading-relaxed text-gray-500 line-clamp-2">{program.description}</p>
+        )}
+
+        {program.levels && program.levels.length > 0 && (
+          <div className="mb-3 space-y-1.5 rounded-xl bg-[#F7F6F4] p-3">
+            {program.levels.map((l, i) => (
+              <div key={i} className="flex items-center gap-2 text-xs text-gray-600">
+                <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#ED7428]" />
+                <span className="font-semibold">{l.label}</span> — {l.hours} — <span className="font-semibold">{l.price}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {(program.duration || program.fee) && (
+          <div className="mb-3 space-y-1 rounded-xl bg-[#F7F6F4] p-3">
+            {program.duration && <p className="text-xs text-gray-600"><span className="font-semibold">Duration:</span> {program.duration}</p>}
+            {program.fee && <p className="text-xs text-gray-600"><span className="font-semibold">Fee:</span> {program.fee}</p>}
+            {program.format && <p className="text-xs text-gray-600"><span className="font-semibold">Format:</span> {program.format}</p>}
+          </div>
+        )}
+
+        {program.format && !program.duration && !program.fee && (
+          <p className="mb-3 text-xs italic text-gray-400">{program.format}</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ─── Dashboard ───────────────────────────────────────────────────────────────
 
 function Dashboard({ token, email, onLogout }: { token: string; email: string; onLogout: () => void }) {
+  const [activeTab, setActiveTab] = useState<'addiction' | 'training'>('addiction');
   const [programs, setPrograms] = useState<AddictionProgram[]>([]);
+  const [trainingPrograms, setTrainingPrograms] = useState<TrainingProgram[]>([]);
   const [loading, setLoading] = useState(true);
+  const [trainingLoading, setTrainingLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [showAddTrainingForm, setShowAddTrainingForm] = useState(false);
   const [error, setError] = useState('');
 
   const loadPrograms = useCallback(async () => {
@@ -660,9 +1119,23 @@ function Dashboard({ token, email, onLogout }: { token: string; email: string; o
     }
   }, []);
 
+  const loadTrainingPrograms = useCallback(async () => {
+    setTrainingLoading(true);
+    setError('');
+    try {
+      const data = await fetchTrainingPrograms();
+      setTrainingPrograms(data);
+    } catch {
+      setError('Failed to load training programs');
+    } finally {
+      setTrainingLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     loadPrograms();
-  }, [loadPrograms]);
+    loadTrainingPrograms();
+  }, [loadPrograms, loadTrainingPrograms]);
 
   const handleAdd = async (
     program: Omit<AddictionProgram, 'id' | 'is_active' | 'created_at' | 'updated_at'>
@@ -684,6 +1157,30 @@ function Dashboard({ token, email, onLogout }: { token: string; email: string; o
     } catch (e) {
       if (e instanceof UnauthorizedError) { onLogout(); return; }
       setError('Failed to delete program');
+      throw e;
+    }
+  };
+
+  const handleAddTraining = async (
+    program: Omit<TrainingProgram, 'id' | 'is_active' | 'created_at' | 'updated_at'>
+  ) => {
+    try {
+      await createTrainingProgram(token, program);
+      setShowAddTrainingForm(false);
+      await loadTrainingPrograms();
+    } catch (e) {
+      if (e instanceof TrainingUnauthorizedError) { onLogout(); return; }
+      throw e;
+    }
+  };
+
+  const handleDeleteTraining = async (id: string) => {
+    try {
+      await deleteTrainingProgram(token, id);
+      setTrainingPrograms((prev) => prev.filter((p) => p.id !== id));
+    } catch (e) {
+      if (e instanceof TrainingUnauthorizedError) { onLogout(); return; }
+      setError('Failed to delete training program');
       throw e;
     }
   };
@@ -713,36 +1210,30 @@ function Dashboard({ token, email, onLogout }: { token: string; email: string; o
       </header>
 
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-8">
-        {/* Stats bar */}
-        <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <div className="rounded-2xl bg-white p-5 shadow-sm">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#ED7428]/10">
-                <Package className="h-5 w-5 text-[#ED7428]" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-[#00373E]">{programs.length}</p>
-                <p className="text-xs text-gray-500">Active Programs</p>
-              </div>
-            </div>
-          </div>
-          <div className="sm:col-span-2 flex items-center rounded-2xl bg-gradient-to-r from-[#00373E] to-[#024a53] p-5 shadow-sm">
-            <div className="flex-1">
-              <h2 className="text-lg font-bold text-white">Addiction Programs</h2>
-              <p className="text-sm text-white/60">
-                Manage treatment packages shown on the Addiction Services page
-              </p>
-            </div>
-            {!showAddForm && (
-              <button
-                onClick={() => setShowAddForm(true)}
-                className="ml-4 inline-flex items-center gap-2 rounded-xl bg-[#ED7428] px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#ED7428]/20 transition-all hover:bg-[#d4651f] hover:shadow-xl active:scale-[0.98]"
-              >
-                <Plus className="h-4 w-4" />
-                Add Program
-              </button>
-            )}
-          </div>
+        {/* Tabs */}
+        <div className="mb-8 flex gap-2 rounded-2xl bg-white p-1.5 shadow-sm">
+          <button
+            onClick={() => setActiveTab('addiction')}
+            className={`inline-flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all ${
+              activeTab === 'addiction'
+                ? 'bg-[#00373E] text-white shadow-lg'
+                : 'text-gray-500 hover:bg-gray-100 hover:text-[#00373E]'
+            }`}
+          >
+            <Package className="h-4 w-4" />
+            Addiction Programs ({programs.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('training')}
+            className={`inline-flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all ${
+              activeTab === 'training'
+                ? 'bg-[#00373E] text-white shadow-lg'
+                : 'text-gray-500 hover:bg-gray-100 hover:text-[#00373E]'
+            }`}
+          >
+            <GraduationCap className="h-4 w-4" />
+            Training Programs ({trainingPrograms.length})
+          </button>
         </div>
 
         {error && (
@@ -752,52 +1243,125 @@ function Dashboard({ token, email, onLogout }: { token: string; email: string; o
           </div>
         )}
 
-        {/* Add form */}
-        {showAddForm && (
-          <div className="mb-8">
-            <AddProgramForm onAdd={handleAdd} onCancel={() => setShowAddForm(false)} />
-          </div>
+        {/* ── Addiction Programs Tab ── */}
+        {activeTab === 'addiction' && (
+          <>
+            <div className="mb-8 flex items-center rounded-2xl bg-gradient-to-r from-[#00373E] to-[#024a53] p-5 shadow-sm">
+              <div className="flex-1">
+                <h2 className="text-lg font-bold text-white">Addiction Programs</h2>
+                <p className="text-sm text-white/60">Manage treatment packages shown on the Addiction Services page</p>
+              </div>
+              {!showAddForm && (
+                <button
+                  onClick={() => setShowAddForm(true)}
+                  className="ml-4 inline-flex items-center gap-2 rounded-xl bg-[#ED7428] px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#ED7428]/20 transition-all hover:bg-[#d4651f] hover:shadow-xl active:scale-[0.98]"
+                >
+                  <Plus className="h-4 w-4" />
+                  Add Program
+                </button>
+              )}
+            </div>
+
+            {showAddForm && (
+              <div className="mb-8">
+                <AddProgramForm onAdd={handleAdd} onCancel={() => setShowAddForm(false)} />
+              </div>
+            )}
+
+            {loading ? (
+              <div className="flex flex-col items-center justify-center py-20">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm">
+                  <Loader2 className="h-6 w-6 animate-spin text-[#ED7428]" />
+                </div>
+                <p className="mt-3 text-sm text-gray-400">Loading programs...</p>
+              </div>
+            ) : programs.length === 0 ? (
+              <div className="rounded-2xl border-2 border-dashed border-gray-300 bg-white py-16 text-center">
+                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F7F6F4]">
+                  <Package className="h-6 w-6 text-gray-400" />
+                </div>
+                <p className="text-lg font-semibold text-[#00373E]">No programs yet</p>
+                <p className="mt-1 text-sm text-gray-400">Click &quot;Add Program&quot; to create your first treatment package</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                {programs.map((program) => (
+                  <ProgramCard
+                    key={program.id}
+                    program={program}
+                    token={token}
+                    onUpdate={(updated) => {
+                      setPrograms((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
+                    }}
+                    onDelete={handleDelete}
+                    onUnauthorized={onLogout}
+                  />
+                ))}
+              </div>
+            )}
+          </>
         )}
 
-        {/* Programs grid */}
-        {loading ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm">
-              <Loader2 className="h-6 w-6 animate-spin text-[#ED7428]" />
+        {/* ── Training Programs Tab ── */}
+        {activeTab === 'training' && (
+          <>
+            <div className="mb-8 flex items-center rounded-2xl bg-gradient-to-r from-[#00373E] to-[#024a53] p-5 shadow-sm">
+              <div className="flex-1">
+                <h2 className="text-lg font-bold text-white">Training Programs</h2>
+                <p className="text-sm text-white/60">Manage internship &amp; traineeship cards on the Training page</p>
+              </div>
+              {!showAddTrainingForm && (
+                <button
+                  onClick={() => setShowAddTrainingForm(true)}
+                  className="ml-4 inline-flex items-center gap-2 rounded-xl bg-[#ED7428] px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#ED7428]/20 transition-all hover:bg-[#d4651f] hover:shadow-xl active:scale-[0.98]"
+                >
+                  <Plus className="h-4 w-4" />
+                  Add Training Program
+                </button>
+              )}
             </div>
-            <p className="mt-3 text-sm text-gray-400">Loading programs...</p>
-          </div>
-        ) : programs.length === 0 ? (
-          <div className="rounded-2xl border-2 border-dashed border-gray-300 bg-white py-16 text-center">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F7F6F4]">
-              <Package className="h-6 w-6 text-gray-400" />
-            </div>
-            <p className="text-lg font-semibold text-[#00373E]">No programs yet</p>
-            <p className="mt-1 text-sm text-gray-400">
-              Click &quot;Add Program&quot; to create your first treatment package
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-            {programs.map((program) => (
-              <ProgramCard
-                key={program.id}
-                program={program}
-                token={token}
-                onUpdate={(updated) => {
-                  setPrograms((prev) =>
-                    prev.map((p) => (p.id === updated.id ? updated : p))
-                  );
-                }}
-                onDelete={handleDelete}
-                onUnauthorized={onLogout}
-              />
-            ))}
-          </div>
+
+            {showAddTrainingForm && (
+              <div className="mb-8">
+                <AddTrainingProgramForm onAdd={handleAddTraining} onCancel={() => setShowAddTrainingForm(false)} />
+              </div>
+            )}
+
+            {trainingLoading ? (
+              <div className="flex flex-col items-center justify-center py-20">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm">
+                  <Loader2 className="h-6 w-6 animate-spin text-[#ED7428]" />
+                </div>
+                <p className="mt-3 text-sm text-gray-400">Loading training programs...</p>
+              </div>
+            ) : trainingPrograms.length === 0 ? (
+              <div className="rounded-2xl border-2 border-dashed border-gray-300 bg-white py-16 text-center">
+                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F7F6F4]">
+                  <GraduationCap className="h-6 w-6 text-gray-400" />
+                </div>
+                <p className="text-lg font-semibold text-[#00373E]">No training programs yet</p>
+                <p className="mt-1 text-sm text-gray-400">Click &quot;Add Training Program&quot; to create your first one</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                {trainingPrograms.map((tp) => (
+                  <TrainingProgramCard
+                    key={tp.id}
+                    program={tp}
+                    token={token}
+                    onUpdate={(updated) => {
+                      setTrainingPrograms((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
+                    }}
+                    onDelete={handleDeleteTraining}
+                    onUnauthorized={onLogout}
+                  />
+                ))}
+              </div>
+            )}
+          </>
         )}
       </main>
 
-      {/* Footer */}
       <footer className="mt-auto border-t border-gray-200 bg-white/50 py-4 text-center text-xs text-gray-400">
         Hope Trust India &middot; Admin Dashboard
       </footer>
