@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import JsonLd from '@/components/JsonLd';
+import { getBreadcrumbSchema } from '@/lib/jsonld';
 
 export const metadata: Metadata = {
   title: 'About Us | Hope Trust - Our Story, Team & Approach',
@@ -6,6 +8,9 @@ export const metadata: Metadata = {
     'Hope Trust began in 2002 with a simple intention — to offer a calm and steady space for healing. Learn about our 20+ year journey, our multidisciplinary team of 30+ professionals, and our evidence-based approach to mental health and addiction recovery.',
   keywords:
     'Hope Trust, about us, mental health clinic Hyderabad, addiction recovery, therapy team, evidence-based treatment, wellness coaching',
+  alternates: {
+    canonical: '/about/',
+  },
   openGraph: {
     title: 'About Us | Hope Trust',
     description:
@@ -20,5 +25,13 @@ export default function AboutLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <>
+      <JsonLd data={getBreadcrumbSchema([
+        { name: 'Home', url: 'https://hopetrustindia.com/' },
+        { name: 'About Us', url: 'https://hopetrustindia.com/about/' },
+      ])} />
+      {children}
+    </>
+  );
 }

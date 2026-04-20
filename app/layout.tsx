@@ -6,6 +6,8 @@ import LenisProvider from '@/components/LenisProvider';
 import { Toaster } from 'sonner';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import { getLogoUrl } from '@/lib/assets';
+import JsonLd from '@/components/JsonLd';
+import { getOrganizationSchema, getWebSiteSchema } from '@/lib/jsonld';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -79,6 +81,8 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.className} antialiased`}>
+        <JsonLd data={getOrganizationSchema()} />
+        <JsonLd data={getWebSiteSchema()} />
         <LenisProvider>
           {children}
           <WebVitals />

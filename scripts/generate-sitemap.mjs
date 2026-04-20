@@ -11,17 +11,17 @@ const BLOG_DIR = path.join(ROOT, 'content', 'blogs');
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://hopetrustindia.com';
 
 const staticPages = [
-  '/',
-  '/about/',
-  '/mental-health/',
-  '/addiction/',
-  '/training/',
-  '/corporate-wellness/',
-  '/intervention-services/',
-  '/blogs/',
-  '/book-your-session/',
-  '/contact/',
-  '/sitemap/',
+  { path: '/',                        changefreq: 'weekly',  priority: '1.0' },
+  { path: '/about/',                  changefreq: 'monthly', priority: '0.9' },
+  { path: '/mental-health/',          changefreq: 'monthly', priority: '0.9' },
+  { path: '/addiction/',              changefreq: 'monthly', priority: '0.9' },
+  { path: '/training/',              changefreq: 'monthly', priority: '0.9' },
+  { path: '/corporate-wellness/',    changefreq: 'monthly', priority: '0.8' },
+  { path: '/intervention-services/', changefreq: 'monthly', priority: '0.8' },
+  { path: '/blogs/',                  changefreq: 'weekly',  priority: '0.8' },
+  { path: '/book-your-session/',     changefreq: 'monthly', priority: '0.7' },
+  { path: '/contact/',               changefreq: 'monthly', priority: '0.7' },
+  { path: '/sitemap/',               changefreq: 'monthly', priority: '0.3' },
 ];
 
 function getBlogSlugs() {
@@ -39,10 +39,10 @@ function buildSitemap() {
   const urls = [
     ...staticPages.map(
       (page) => `  <url>
-    <loc>${SITE_URL}${page}</loc>
+    <loc>${SITE_URL}${page.path}</loc>
     <lastmod>${today}</lastmod>
-    <changefreq>${page === '/' ? 'weekly' : 'monthly'}</changefreq>
-    <priority>${page === '/' ? '1.0' : '0.8'}</priority>
+    <changefreq>${page.changefreq}</changefreq>
+    <priority>${page.priority}</priority>
   </url>`
     ),
     ...blogSlugs.map(
@@ -73,6 +73,7 @@ if (fs.existsSync(OUT_DIR)) {
 
 const robots = `User-agent: *
 Allow: /
+Disallow: /admin/
 
 Sitemap: ${SITE_URL}/sitemap.xml
 `;

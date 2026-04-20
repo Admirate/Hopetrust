@@ -42,11 +42,11 @@ Hopetrust/
 │   │   └── [slug]/page.tsx     # Blog detail (SSG, markdown, JSON-LD)
 │   ├── book-your-session/page.tsx  # Doctor directory (Supabase-powered)
 │   ├── contact/page.tsx        # Contact form (Zod + Supabase + Netlify Forms)
-│   ├── corporate-wellness/page.tsx  # Placeholder — coming soon
-│   ├── intervention-services/page.tsx  # Placeholder — coming soon
+│   ├── corporate-wellness/page.tsx  # Corporate wellness (parallax hero, cards, video bg)
+│   ├── intervention-services/page.tsx  # Intervention services (parallax, video, sections)
 │   ├── mental-health/page.tsx  # Mental health services (tabs UI)
 │   ├── sitemap/page.tsx        # Human-readable sitemap page
-│   ├── training/page.tsx       # Placeholder — coming soon
+│   ├── training/page.tsx       # Training programs (dynamic from Supabase, responsive)
 │   ├── error.tsx               # Global error boundary
 │   ├── not-found.tsx           # Custom 404 page
 │   ├── globals.css             # Global styles
@@ -56,6 +56,7 @@ Hopetrust/
 │   ├── ui/                     # 47 shadcn/ui components (Button, Dialog, Tabs, etc.)
 │   ├── Header.tsx              # Site header / navigation
 │   ├── Footer.tsx              # Site footer
+│   ├── JsonLd.tsx              # JSON-LD structured data script injector
 │   ├── HeroSection.tsx         # Homepage hero
 │   ├── BlogListClient.tsx      # Blog listing with filtering/pagination (~16KB)
 │   ├── TherapistCard.tsx       # Doctor/therapist card component
@@ -80,9 +81,11 @@ Hopetrust/
 │   ├── supabase.ts             # Supabase client singleton (anon key)
 │   ├── doctors.ts              # fetchDoctors(), fetchDepartments()
 │   ├── programs.ts             # Addiction program CRUD via Netlify fn + UnauthorizedError class
+│   ├── training-programs.ts    # Training program CRUD via Netlify fn (typed interfaces)
 │   ├── blog.ts                 # Blog MDX reading (getAllPosts, getPostBySlug, etc.)
 │   ├── config.ts               # Site config (name, contact info, maps URL)
-│   ├── assets.ts               # getAssetUrl() — Supabase storage URL builder
+│   ├── assets.ts               # getAssetUrl() + getStorageUrl() — Supabase storage URL builders
+│   ├── jsonld.ts               # JSON-LD structured data schema generators (Organization, Service, Breadcrumb, FAQ)
 │   ├── newsletter-template.ts  # HTML email template builder
 │   ├── utils.ts                # cn() — Tailwind class merger
 │   ├── assets.test.ts          # Asset utility tests
@@ -100,12 +103,14 @@ Hopetrust/
 │   ├── admin-schema.sql        # admin_users + addiction_programs tables + seed data
 │   ├── admin-security.sql      # Safe migration: adds failed_attempts + locked_until to admin_users
 │   ├── admin-audit-log.sql     # Audit log table + RLS (service_role write-only)
+│   ├── training-programs.sql   # Training programs table + RLS + seed data
 │   └── rls-policies.sql        # Row Level Security policies
 │
 ├── netlify/
 │   └── functions/
 │       ├── admin-login.mjs     # Netlify Function: admin JWT auth
 │       ├── admin-programs.mjs  # Netlify Function: addiction programs CRUD
+│       ├── admin-training-programs.mjs  # Netlify Function: training programs CRUD
 │       └── whatsapp-crm.mjs    # Netlify Function: WhatsApp CRM proxy
 │
 ├── supabase/
@@ -257,6 +262,29 @@ Stores addiction recovery program details displayed on the `/addiction` page.
 
 **Seed Data:** 4 initial programs (Inpatient Rehabilitation, Outpatient Program, Family Therapy, Aftercare Support).
 
+### Table: `training_programs`
+
+Stores training program details displayed on the `/training` page. Managed via admin dashboard.
+
+| Column          | Type         | Constraints                         |
+| --------------- | ------------ | ----------------------------------- |
+| `id`            | uuid (PK)    | `DEFAULT gen_random_uuid()`         |
+| `category`      | text         | NOT NULL, DEFAULT 'internship' ('internship' or 'traineeship') |
+| `title`         | text         | NOT NULL                            |
+| `description`   | text         | NOT NULL, DEFAULT ''                |
+| `levels`        | jsonb        | DEFAULT '[]' — array of `{ label, hours, price }` objects |
+| `duration`      | text         | DEFAULT ''                          |
+| `fee`           | text         | DEFAULT ''                          |
+| `format`        | text         | DEFAULT '' (e.g. 'Online and on site') |
+| `display_order` | integer      | DEFAULT 0                           |
+| `is_active`     | boolean      | DEFAULT true                        |
+| `created_at`    | timestamptz  | DEFAULT now()                       |
+| `updated_at`    | timestamptz  | DEFAULT now()                       |
+
+**RLS Policies:**
+- `anon` role: SELECT only where `is_active = true`
+- Write operations require valid admin JWT via `admin-training-programs` Netlify function
+
 ### Table: `admin_audit_log`
 
 Immutable append-only log of all admin actions. Written server-side only by `admin-login.mjs` and `admin-programs.mjs` using the service role key.
@@ -331,7 +359,17 @@ Immutable append-only log of all admin actions. Written server-side only by `adm
   - `DELETE` — Deletes by ID → writes audit log
 - **Required Env:** `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_JWT_SECRET`
 
-### 3. Netlify Function: `whatsapp-crm`
+### 3. Netlify Function: `admin-training-programs`
+
+- **File:** `netlify/functions/admin-training-programs.mjs`
+- **Endpoint:** `GET/POST/PUT/DELETE /.netlify/functions/admin-training-programs`
+- **Purpose:** Full CRUD API for training programs on the admin dashboard.
+- **Auth:** GET is public; POST/PUT/DELETE require `Authorization: Bearer <jwt>` header
+- **Input Validation:** Category must be 'internship' or 'traineeship'; title required; levels must be valid JSON array
+- **Audit Log:** Writes `CREATE` / `UPDATE` / `DELETE` to `admin_audit_log` after every successful mutation
+- **Required Env:** `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_JWT_SECRET`
+
+### 4. Netlify Function: `whatsapp-crm`
 
 - **File:** `netlify/functions/whatsapp-crm.mjs`
 - **Endpoint:** `POST /api/whatsapp-crm`
@@ -384,9 +422,9 @@ Forms submit **directly from the browser** to Supabase using the anon key:
 | `/book-your-session`       | `app/book-your-session/page.tsx`   | Client CSR  | Supabase `doctors` table           |
 | `/contact`                 | `app/contact/page.tsx`             | Client CSR  | Supabase (form submit)             |
 | `/admin`                   | `app/admin/page.tsx`               | Client CSR  | Netlify fns (login + programs CRUD)|
-| `/training`                | `app/training/page.tsx`            | Static SSG  | None (placeholder)                 |
-| `/corporate-wellness`      | `app/corporate-wellness/page.tsx`  | Static SSG  | None (placeholder)                 |
-| `/intervention-services`   | `app/intervention-services/page.tsx` | Static SSG | None (placeholder)               |
+| `/training`                | `app/training/page.tsx`            | Client CSR  | Netlify fn: training programs       |
+| `/corporate-wellness`      | `app/corporate-wellness/page.tsx`  | Client CSR  | None (hardcoded content)           |
+| `/intervention-services`   | `app/intervention-services/page.tsx` | Client CSR | None (hardcoded content)          |
 | `/sitemap`                 | `app/sitemap/page.tsx`             | Static SSG  | None (hardcoded links)             |
 
 **Note:** Since `output: 'export'` is set, ALL pages are pre-rendered at build time. Client-side pages use `'use client'` for interactivity but are still served as static HTML.
@@ -466,8 +504,25 @@ Centralized site configuration:
 - Google Maps embed URL
 
 ### `lib/assets.ts`
-- **`getAssetUrl(path)`** — Builds Supabase storage public URL for the `hopetrust assets` bucket
+- **`getStorageUrl(bucket, path)`** — Builds Supabase storage public URL for any bucket (uses `NEXT_PUBLIC_SUPABASE_URL`)
+- **`getAssetUrl(path)`** — Convenience wrapper for the `hopetrust assets` bucket (delegates to `getStorageUrl`)
 - **`getLogoUrl()`** — Returns logo URL (used in layout favicon)
+
+### `lib/jsonld.ts`
+JSON-LD structured data generators for SEO:
+- **`getOrganizationSchema()`** — `Organization` + `MedicalBusiness` with address, geo, opening hours, medical specialties, social links
+- **`getWebSiteSchema()`** — `WebSite` schema with publisher reference
+- **`getServiceSchema(opts)`** — `MedicalTherapy` schema for service pages (name, description, url, serviceType)
+- **`getBreadcrumbSchema(items)`** — `BreadcrumbList` schema from array of `{ name, url }`
+- **`getFAQSchema(faqs)`** — `FAQPage` schema from array of `{ question, answer }`
+
+### `lib/training-programs.ts`
+- **`TrainingProgramLevel`** — TypeScript interface: `{ label, hours, price }`
+- **`TrainingProgram`** — TypeScript interface for full training program record
+- **`fetchTrainingPrograms()`** — Fetches active training programs (public, no auth)
+- **`createTrainingProgram(token, data)`** — Creates new program (admin auth required)
+- **`updateTrainingProgram(token, data)`** — Updates program by ID (admin auth required)
+- **`deleteTrainingProgram(token, id)`** — Deletes program by ID (admin auth required)
 
 ### `lib/newsletter-template.ts`
 Builds a complete branded HTML email template with:
@@ -515,7 +570,7 @@ IntersectionObserver-based hook that returns `{ elementRef, isVisible }`. Featur
 npm run build    # next build && node scripts/generate-sitemap.mjs
 ```
 1. Next.js static export generates all pages into `out/`
-2. `generate-sitemap.mjs` creates `sitemap.xml` (static pages + all blog slugs) and `robots.txt`
+2. `generate-sitemap.mjs` creates `sitemap.xml` (11 static pages + all ~395 blog slugs, per-page priority/changefreq) and `robots.txt` (blocks `/admin/`)
 
 ### Netlify Configuration (`netlify.toml`)
 - **Build command:** `npm run build`
@@ -609,3 +664,46 @@ npm run build    # next build && node scripts/generate-sitemap.mjs
 - Shadows: Soft, layered (`shadow-[0_20px_50px_rgba(0,0,0,0.03)]`)
 - Animations: Scroll-triggered fade-in/slide-in, hover lift (`y: -12`), scale on hover
 - All home sections are code-split via `next/dynamic` for performance
+
+---
+
+## SEO Implementation
+
+### Global (Root Layout — `app/layout.tsx`)
+- **Metadata:** title template (`%s | Hope Trust`), description, keywords, authors, robots (`index, follow`), `metadataBase` (`https://hopetrustindia.com`)
+- **Canonical:** `alternates.canonical: '/'`
+- **OpenGraph:** title, description, type, siteName, locale (`en_IN`), url, image (logo)
+- **Icons:** favicon + apple-touch from `getLogoUrl()`
+- **JSON-LD:** `Organization` + `MedicalBusiness` schema + `WebSite` schema (every page)
+- **Font preloading:** dns-prefetch + preconnect for Google Fonts
+
+### Per-Page Layouts
+Every sub-page layout exports its own `metadata` object with:
+- **title** — unique per page
+- **description** — unique per page
+- **keywords** — relevant to the page content
+- **alternates.canonical** — relative path (resolved via `metadataBase`)
+- **openGraph** — title, description, type, siteName
+
+### JSON-LD Structured Data
+| Schema Type | Where Applied |
+| --- | --- |
+| `Organization` + `MedicalBusiness` | Root layout (all pages) |
+| `WebSite` | Root layout (all pages) |
+| `MedicalTherapy` | `/mental-health`, `/addiction`, `/training`, `/corporate-wellness`, `/intervention-services` |
+| `BreadcrumbList` | All 8 sub-page layouts |
+| `BlogPosting` | `/blogs/[slug]` (individual blog posts) |
+
+### Sitemap & Robots
+- **`scripts/generate-sitemap.mjs`** — runs post-build, generates `sitemap.xml` + `robots.txt`
+- 11 static pages with per-page `priority` (1.0 → 0.3) and `changefreq` (weekly/monthly)
+- All ~395 blog slugs included (priority 0.6)
+- `robots.txt` allows all, blocks `/admin/`, includes sitemap URL
+
+### Helper Files
+- **`lib/jsonld.ts`** — reusable schema generators (`getOrganizationSchema`, `getWebSiteSchema`, `getServiceSchema`, `getBreadcrumbSchema`, `getFAQSchema`)
+- **`components/JsonLd.tsx`** — `<script type="application/ld+json">` wrapper component
+
+---
+
+*Last updated: April 20, 2026*
