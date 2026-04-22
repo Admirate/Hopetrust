@@ -31,7 +31,7 @@ export default function WhatWeOfferSection() {
         <h2
           className={`${headingFont.className} mb-4 text-center md:mb-6 text-3xl sm:text-4xl lg:text-[48px] leading-tight sm:leading-snug lg:leading-[72px] font-semibold italic text-[#00373E]`}
         >
-          What we offer
+          What we give
         </h2>
 
         <div

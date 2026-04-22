@@ -29,9 +29,9 @@ const FALLBACK_PROGRAMS: Omit<AddictionProgram, 'id' | 'is_active' | 'created_at
       '2 weekly sessions by an addiction counsellor',
       '2 sessions with family',
       'Essential Step Work with a primary counsellor',
-      '2 consultations with a psychiatrist.',
+      '2 consultations with a psychiatrist',
       'Relapse prevention strategies tailored for the individual',
-      'Followed by after-care sessions which are chargeable',
+      'Followed by after-care sessions, which are chargeable',
     ],
     note: 'Note: Any psychometric tests required will be charged extra. Medical tests are to be arranged by the client.',
     cost: 'INR 26,500',
@@ -40,11 +40,11 @@ const FALLBACK_PROGRAMS: Omit<AddictionProgram, 'id' | 'is_active' | 'created_at
   {
     title: '30 Days Extended OP/ After Care Program',
     subtitle: 'Who can benefit?',
-    description: 'The aftercare program focuses on relapse prevention and is ideal for patients who have recently completed an inpatient program at a rehab or after completing any of our packages. This package offers increased after-care support to address ongoing issues arising in initial stages of recovery. It is proven to minimize risk of relapse and builds self confidence.',
+    description: 'The aftercare program focuses on relapse prevention and is ideal for patients who have recently completed an inpatient program at a rehab or after completing any of our packages. This package offers increased after-care support to address ongoing issues arising in initial stages of recovery. It is proven to minimize risk of relapse and builds self-confidence.',
     features: [
       'Support services are offered for one hour a day, once a week for 4 weeks/one session by psychiatrist',
-      'Comprehensive evaluations, assessments, holistic treatment, and continued abstinence are some of the program\'s goals.',
-      'Individualized treatment plan, comprehensive care and support by a team of qualified experts.',
+      'Comprehensive evaluations, assessments, holistic treatment, and continued abstinence are some of the program\'s goals',
+      'Individualized treatment plan, comprehensive care and support by a team of qualified experts',
     ],
     note: 'Note: Any psychometric tests required will be charged extra. Medical tests are to be arranged by the client.',
     cost: 'INR 18,000',
@@ -74,7 +74,7 @@ const FALLBACK_PROGRAMS: Omit<AddictionProgram, 'id' | 'is_active' | 'created_at
       'Essential Step Work with a primary counsellor',
       '1 or 2 consultations with a psychiatrist, if needed',
       'Relapse prevention strategies tailored for the individual',
-      'Followed by after-care sessions.',
+      'Followed by after-care sessions',
     ],
     note: '',
     cost: 'INR 26,500',
@@ -161,7 +161,7 @@ export default function AddictionPage() {
             <FadeInSection>
               <div className="w-full max-w-[1240px] min-h-[235px] rounded-[32px] sm:rounded-[59px] bg-white px-6 sm:px-12 lg:px-[100px] py-8 sm:py-10 flex items-center justify-center shadow-[0_4px_24px_rgba(0,0,0,0.04)]">
                 <p className="text-center text-base sm:text-lg lg:text-xl font-medium leading-relaxed text-[#1a1a1a]">
-                  Hope Trust&apos;s outpatient/ online{' '}
+                  Hope Trust&apos;s outpatient/online{' '}
                   <span className="underline underline-offset-4 decoration-[#ED7428]">addiction treatment</span>{' '}
                   programs offer you an individualised recovery plan. Clients receive psychological and social support with assessments and continuing care recommendations.
                 </p>
@@ -203,7 +203,7 @@ export default function AddictionPage() {
                   Alcohol Addiction
                 </h3>
                 <p className="mt-4 text-sm sm:text-base lg:text-lg font-medium leading-relaxed text-[#1a1a1a]">
-                  Addiction is a disease, not a moral failing. Recovery and sobriety is not about will power. It can be achieved through medical assistance and structured treatment plans. Our team of trained and licensed professionals help you in choosing the best treatment approach and support you on your journey.
+                  Addiction is a disease, not a moral failing. Recovery and sobriety is not about willpower. It can be achieved through medical assistance and structured treatment plans. Our team of trained and licensed professionals help you in choosing the best treatment approach and support you on your journey.
                 </p>
                 <p className="mt-4 text-sm sm:text-base lg:text-lg font-medium leading-relaxed text-[#1a1a1a]">
                   We offer different treatment packages, designed to fit your needs. List different addiction packages with their costs.
@@ -227,7 +227,7 @@ export default function AddictionPage() {
                   Nicotine and Drug Addiction
                 </h3>
                 <p className="mt-4 text-sm sm:text-base lg:text-lg font-medium leading-relaxed text-[#1a1a1a]">
-                  Addiction is a disease, not a moral failing. Recovery and sobriety is not about will power. It can be achieved through medical assistance and structured treatment plans. Our team of trained and licensed professionals help you in choosing the best treatment approach and support you on your journey.
+                  Addiction is a disease, not a moral failing. Recovery and sobriety is not about willpower. It can be achieved through medical assistance and structured treatment plans. Our team of trained and licensed professionals help you in choosing the best treatment approach and support you on your journey.
                 </p>
                 <p className="mt-4 text-sm sm:text-base lg:text-lg font-medium leading-relaxed text-[#1a1a1a]">
                   What we can help with - Smoking, Vaping, Marijuana, Hard Drugs

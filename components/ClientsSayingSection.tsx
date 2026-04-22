@@ -40,7 +40,7 @@ const testimonials: Testimonial[] = [
   },
   {
     quote:
-      "Dr Rajeshwari created a safe, non-judgmental space that helped me gain new perspectives. Because of her, I feel more self-aware and confident.",
+      "Dr. Rajeshwari created a safe, non-judgmental space that helped me gain new perspectives. Because of her, I feel more self-aware and confident.",
     author: "",
   },
   {

@@ -28,10 +28,10 @@ const leftNavItems: NavItem[] = [
     href: '/addiction',
     hasDropdown: true,
     children: [
-      { label: 'Corporate Wellness', href: '/corporate-wellness' },
       { label: 'Intervention Services', href: '/intervention-services' },
     ],
   },
+  { label: 'Corporate Wellness', href: '/corporate-wellness', hasDropdown: false },
 ];
 
 const rightNavItems: NavItem[] = [

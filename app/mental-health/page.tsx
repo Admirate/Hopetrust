@@ -58,7 +58,7 @@ const FOCUS_SECTIONS: Record<FocusKey, FocusConfig> = {
     label: 'Medications',
     heading: 'Medications',
     paragraphs: [
-      'If medication can support your wellbeing, our psychiatrists explain it simply. You understand why it is suggested, how it works and what to expect. Your progress is reviewed gently and decisions are made together.',
+      'If medication can support your well-being, our psychiatrists explain it simply. You understand why it is suggested, how it works and what to expect. Your progress is reviewed gently and decisions are made together.',
     ],
     issues:
       'Anxiety, Depression, Stress, Anger Management, Loneliness, Procrastination, Grief, Trauma, Interpersonal Challenges',
@@ -88,7 +88,7 @@ const FOCUS_SECTIONS: Record<FocusKey, FocusConfig> = {
       'The aim is healthier communication and balance.',
     ],
     issues:
-      'Family Conflicts, Boundaries, Generational Gaps, Parent Child Communication',
+      'Family Conflicts, Boundaries, Generational Gaps, Parent–Child Communication',
     cardBg: '#DFD58F',
     imageSrc: getAssetUrl('family therapy.png'),
     imageAlt: 'Family therapy illustration',
@@ -153,7 +153,7 @@ const CAROUSEL_SLIDES = [
     paragraphs: [
       "Mental health and addiction often affect each other. We support alcohol dependence, nicotine use, behavioral addictions, and dual diagnosis, where emotional or psychiatric concerns and addiction are both present.",
     ],
-    bold: "This can include gambling, internet use, gaming, shopping, food related issues, compulsive work, exercise, and other repeated behaviors that begin to cause harm.",
+    bold: "This can include gambling, internet use, gaming, shopping, food-related issues, compulsive work, exercise, and other repeated behaviors that begin to cause harm.",
   },
   {
     image: getAssetUrl('mental_health_carousel_2.png'),
@@ -171,7 +171,7 @@ const CAROUSEL_SLIDES = [
     title: "LGBTQIA+ affirmative care",
     paragraphs: [
       "We offer supportive and affirmative care for LGBTQIA+ individuals.",
-      "This may include identity related distress, stigma, coming out, relationship concerns, gender dysphoria, anxiety, depression, or the emotional weight of feeling unseen or unsupported.",
+      "This may include identity-related distress, stigma, coming out, relationship concerns, gender dysphoria, anxiety, depression, or the emotional weight of feeling unseen or unsupported.",
     ],
     bold: "",
   },
@@ -387,7 +387,7 @@ export default function MentalHealthPage() {
                 What we help with
               </h2>
               <p className="text-sm sm:text-base lg:text-[24px] font-medium leading-normal sm:leading-[29px] tracking-[0.724px] text-black">
-                We support people dealing with depression, anxiety, stress, trauma, grief, anger, low self worth, sleep difficulties, OCD, ADHD, bipolar disorder, phobias, schizophrenia, personality related concerns, and other mental health difficulties.
+                We support people dealing with depression, anxiety, stress, trauma, grief, anger, low self-worth, sleep difficulties, OCD, ADHD, bipolar disorder, phobias, schizophrenia, personality-related concerns, and other mental health difficulties.
               </p>
               <p className="text-sm sm:text-base lg:text-[24px] font-medium leading-normal sm:leading-[29px] tracking-[0.724px] text-black">
                 We also support concerns around relationships, emotional disconnection, trust, family conflict, intimacy, parenting, and major life changes.
