@@ -687,5 +687,65 @@ Added `alternates.canonical` to all 8 sub-page layouts:
 
 ---
 
-*Last updated: April 20, 2026*
-*Sessions: April 7 (initial) · April 19 ×7 (docs corrections, rate limiting, 401 auto-logout, token expiry check, input limits, audit log) · April 20 (training CRUD, responsive training page, URL refactor, SEO)*
+---
+
+## Session — April 22, 2026 · Razorpay Booking System
+
+**Objective:** Ship an end-to-end online enrollment + payment flow for training
+and addiction programs. Customers pay via Razorpay Checkout, webhook confirms
+server-side, emails fire, admin can manage enrollments.
+
+**Scope delivered (4 phases):**
+
+### Phase 1 — Database (`Database/enrollments.sql`)
+- New `enrollments` table: UUID PK, `program_type`, `program_id`, `program_title`, `program_level`, `amount_inr` (paise), `full_name`/`email`/`phone`, `razorpay_order_id`/`razorpay_payment_id`, `status` (created/paid/failed/abandoned), `paid_at`, `failure_reason`, `metadata` jsonb. RLS locked, indexes on lookup columns.
+- Amount columns added (non-destructively): `addiction_programs.cost_inr`, `training_programs.fee_inr`, and per-level `price_inr` inside existing `levels` jsonb.
+- Seed UPDATEs are guarded so admin edits via the dashboard are never overwritten.
+- Migration is fully idempotent (all `ADD COLUMN IF NOT EXISTS`, all seeds guarded on `= 0` / jsonb shape match).
+
+### Phase 2 — Netlify Functions (`netlify/functions/`)
+- `_shared/razorpay.mjs` — `createRazorpayOrder`, `verifyWebhookSignature` (timing-safe), `verifyCheckoutSignature`. Pure fetch + `node:crypto`, no SDK.
+- `_shared/emails.mjs` — `buildEnrollmentConfirmationEmail`, `buildAdminAlertEmail`, `sendEmail` (Resend REST API). Brand-consistent HTML templates.
+- `create-order.mjs` (public, rate-limited) — validates input, **resolves amount server-side from DB**, pre-generates enrollment UUID, creates Razorpay order, inserts row with `status='created'`. Client cannot influence price.
+- `razorpay-webhook.mjs` (public, signature-verified) — HMAC-SHA256 verification, idempotent, handles `payment.captured` + `payment.failed`, sends both emails in parallel, writes `ENROLLMENT_PAID`/`ENROLLMENT_FAILED` to `admin_audit_log`.
+- `enrollment-status.mjs` (public, UUID-gated) — minimal fields for `/enrollment-success` polling.
+- `admin-enrollments.mjs` (JWT-gated) — GET list with filters + pagination, GET `?format=csv` export (10k row cap, safe ILIKE escaping), PATCH for manual status/notes corrections, audit-logged.
+
+### Phase 3 — Frontend
+- `lib/enrollment.ts` — client API (`createOrder`, `fetchEnrollmentStatus`) + idempotent Razorpay Checkout script loader + `openRazorpayCheckout` helper.
+- `components/EnrollmentModal.tsx` — reusable modal: name/email/phone form with matched client+server validation, Escape/backdrop dismiss, body scroll lock, focus management, responsive bottom-sheet on mobile → centered modal on desktop.
+- `app/training/page.tsx` — replaced each `Book now` anchor with per-level **Enroll** buttons (internships) and single **Enroll now** (traineeships). Modal mounted at page root.
+- `app/addiction/page.tsx` — added **Enroll now** button per program card (only for programs with a real DB `id`; hardcoded fallbacks skipped).
+- `app/enrollment-success/page.tsx` + `layout.tsx` — polls status every 2 s for 15 attempts (~30 s), four states (processing / paid / failed / timeout), `robots: noindex`.
+- `public/_headers` CSP extended for `checkout.razorpay.com`, `api.razorpay.com`, `lumberjack.razorpay.com`.
+- `netlify.toml` added `/api/*` → `/.netlify/functions/*` redirects.
+
+### Phase 4 — Admin Dashboard
+- `lib/enrollments-admin.ts` — typed client for `admin-enrollments`: `fetchEnrollments`, `updateEnrollment`, `downloadEnrollmentsCsv`. 401 → `UnauthorizedError` for auto-logout.
+- `components/admin/EnrollmentsTab.tsx` — full management UI:
+  - Labelled filter bar: search (debounced 350 ms), status, program type, **From date / To date** with cross-referenced `min`/`max`, Clear filters button (shown only when filters active)
+  - Table on `md:+`, card list below `md:`, 25/page pagination, auto-refresh every 30 s while visible, manual Refresh button, CSV Export (respects filters)
+  - Detail drawer: customer mailto/tel links, one-click-copy payment IDs, status dropdown + internal notes (stored in `metadata.admin_notes`), Save disabled until changes exist
+- `app/admin/page.tsx` — added `Receipt`-iconed **Enrollments** third tab with live count badge.
+
+### Responsive polish
+- Admin top header, tab bar, all three heading bars, and the Enrollments table/filter bar all laid out for mobile / tablet / desktop breakpoints.
+- Tab bar horizontally scrolls on mobile with shortened labels ("Addiction (4)" vs "Addiction Programs (4)").
+- Filter bar inputs now each have uppercase labels (Search / Status / Program type / From date / To date) — fixed UX issue where the two date pickers were unlabeled.
+
+### Key design decisions
+- **Server-side amount resolution** — amount is never trusted from client input; looked up inside `create-order` from `cost_inr`/`fee_inr`/`levels[].price_inr`. Tampering the request body can only produce a 400 response.
+- **UUID as Razorpay receipt** — we pre-generate the enrollment UUID via `crypto.randomUUID()` so it can be passed as the Razorpay `receipt` (< 40 chars). The webhook then looks up the row by `razorpay_order_id` and has all context it needs.
+- **No SDKs on server** — Razorpay + Resend both accessed via `fetch`. Keeps cold start fast and dependencies minimal.
+- **Idempotent webhook** — duplicate `payment.captured` deliveries return 200 without re-sending emails or re-running audit writes (guarded by checking `status === 'paid' && razorpay_payment_id === payment.id`).
+- **Email failure doesn't 500 the webhook** — Resend errors are persisted into `enrollments.metadata` for diagnostics, but the webhook still returns 200 so Razorpay does not retry indefinitely.
+- **UUID obscurity for status polling** — `/enrollment-status` is public but only accepts valid UUIDs. With 128-bit entropy and no listing endpoint, there's no practical enumeration attack; the UUID is only ever handed to the paying user via the Razorpay handler redirect.
+
+### New docs
+- `docs/razorpay-booking.md` — 450-line technical reference: schema, function-by-function breakdown, frontend wiring, env vars, CSP, flow diagram, operational runbook.
+- `docs/readme.md` — tech stack + project structure updated to mention Razorpay and new docs.
+
+---
+
+*Last updated: April 22, 2026*
+*Sessions: April 7 (initial) · April 19 ×7 (docs corrections, rate limiting, 401 auto-logout, token expiry check, input limits, audit log) · April 20 (training CRUD, responsive training page, URL refactor, SEO) · April 22 (Razorpay booking system — 4 phases: schema, functions, frontend, admin)*

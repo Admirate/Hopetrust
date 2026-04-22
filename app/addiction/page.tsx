@@ -9,8 +9,15 @@ import { getAssetUrl } from '@/lib/assets';
 import dynamic from 'next/dynamic';
 import type { AddictionProgram } from '@/lib/programs';
 import { fetchPrograms } from '@/lib/programs';
+import EnrollmentModal from '@/components/EnrollmentModal';
 
 const Footer = dynamic(() => import('@/components/Footer'));
+
+interface EnrollTarget {
+  programId: string;
+  programTitle: string;
+  priceDisplay?: string;
+}
 
 /** Hardcoded fallback — used if Supabase is unreachable */
 const FALLBACK_PROGRAMS: Omit<AddictionProgram, 'id' | 'is_active' | 'created_at' | 'updated_at'>[] = [
@@ -94,6 +101,7 @@ export default function AddictionPage() {
   const [programs, setPrograms] = useState<
     Omit<AddictionProgram, 'id' | 'is_active' | 'created_at' | 'updated_at'>[] | AddictionProgram[]
   >(FALLBACK_PROGRAMS);
+  const [enrollTarget, setEnrollTarget] = useState<EnrollTarget | null>(null);
 
   useEffect(() => {
     fetchPrograms()
@@ -288,6 +296,19 @@ export default function AddictionPage() {
                   <p className="mt-4 text-lg sm:text-xl font-bold text-[#1a1a1a]">
                     Package Cost: {program.cost}
                   </p>
+                  {'id' in program && program.id && (
+                    <button
+                      type="button"
+                      onClick={() => setEnrollTarget({
+                        programId: program.id as string,
+                        programTitle: program.title,
+                        priceDisplay: program.cost,
+                      })}
+                      className="mt-4 inline-block rounded-full bg-[#ED7428] px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-[#d4651f] sm:text-base"
+                    >
+                      Enroll now
+                    </button>
+                  )}
                 </div>
               </FadeInSection>
             ))}
@@ -314,6 +335,14 @@ export default function AddictionPage() {
         </FadeInSection>
       </main>
       <Footer />
+      <EnrollmentModal
+        open={enrollTarget !== null}
+        onClose={() => setEnrollTarget(null)}
+        programType="addiction"
+        programId={enrollTarget?.programId ?? ''}
+        programTitle={enrollTarget?.programTitle ?? ''}
+        priceDisplay={enrollTarget?.priceDisplay}
+      />
     </>
   );
 }

@@ -10,9 +10,18 @@ import Header from '@/components/Header';
 import FadeInSection from '@/components/FadeInSection';
 import { getAssetUrl } from '@/lib/assets';
 import dynamic from 'next/dynamic';
+import EnrollmentModal from '@/components/EnrollmentModal';
 
 const Footer = dynamic(() => import('@/components/Footer'));
 const ScrollingTextBanner = dynamic(() => import('@/components/ScrollingTextBanner'));
+
+interface EnrollTarget {
+  programId: string;
+  programTitle: string;
+  levelIndex?: number;
+  levelLabel?: string;
+  priceDisplay?: string;
+}
 
 const heroFont = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -39,6 +48,7 @@ export default function TrainingPage() {
   const textY = useTransform(scrollYProgress, [0, 1], ['0%', '-30%']);
 
   const [programs, setPrograms] = useState<TrainingProgram[]>([]);
+  const [enrollTarget, setEnrollTarget] = useState<EnrollTarget | null>(null);
 
   useEffect(() => {
     fetchTrainingPrograms().then(setPrograms).catch(() => {});
@@ -227,21 +237,30 @@ export default function TrainingPage() {
                     {prog.levels && prog.levels.length > 0 && (
                       <div className="mt-5 space-y-3">
                         {prog.levels.map((level, li) => (
-                          <div key={li} className={`rounded-full border px-4 py-2 sm:px-5 sm:py-2.5 ${li === 0 && idx === 0 ? 'border-[#00373E]' : 'border-[#ED7428]'}`}>
-                            <span className={`${boldFont.className} text-[13px] font-bold text-black sm:text-[16px] lg:text-[24px] lg:leading-[29px] tracking-[0.724138px]`}>
+                          <div
+                            key={li}
+                            className={`flex flex-col gap-2 rounded-2xl border px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:rounded-full sm:px-5 sm:py-2.5 ${li === 0 && idx === 0 ? 'border-[#00373E]' : 'border-[#ED7428]'}`}
+                          >
+                            <span className={`${boldFont.className} text-[13px] font-bold text-black sm:text-[16px] lg:text-[20px] lg:leading-[26px] tracking-[0.724138px]`}>
                               {level.label} — {level.hours} — {level.price}
                             </span>
+                            <button
+                              type="button"
+                              onClick={() => setEnrollTarget({
+                                programId: prog.id,
+                                programTitle: prog.title,
+                                levelIndex: li,
+                                levelLabel: `${level.label} — ${level.hours}`,
+                                priceDisplay: level.price,
+                              })}
+                              className={`${heroFont.className} shrink-0 rounded-full bg-[#00373E] px-5 py-1.5 text-[13px] font-semibold text-white transition-colors hover:bg-[#024a53] sm:text-[14px]`}
+                            >
+                              Enroll
+                            </button>
                           </div>
                         ))}
                       </div>
                     )}
-
-                    <a
-                      href="/book-your-session"
-                      className={`${heroFont.className} mt-6 inline-block rounded-full bg-[#00373E] px-8 py-3 text-[15px] font-semibold text-white transition-colors hover:bg-[#024a53] sm:text-[18px] lg:text-[20px]`}
-                    >
-                      Book now
-                    </a>
                     {prog.format && (
                       <p className={`${introFont.className} mt-3 text-[14px] text-black sm:text-[16px] lg:text-[18px] tracking-[0.724138px]`}>
                         {prog.format}
@@ -274,12 +293,17 @@ export default function TrainingPage() {
                         {tp.fee && <li>Fee — {tp.fee}</li>}
                         {tp.format && <li>Format — {tp.format}</li>}
                       </ul>
-                      <a
-                        href="/book-your-session"
+                      <button
+                        type="button"
+                        onClick={() => setEnrollTarget({
+                          programId: tp.id,
+                          programTitle: tp.title,
+                          priceDisplay: tp.fee || undefined,
+                        })}
                         className={`${heroFont.className} mt-6 inline-block rounded-full bg-[#00373E] px-8 py-3 text-[15px] font-semibold text-white transition-colors hover:bg-[#024a53] sm:text-[18px] lg:text-[20px]`}
                       >
-                        Book now
-                      </a>
+                        Enroll now
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -345,6 +369,18 @@ export default function TrainingPage() {
         </section>
       </main>
       <Footer />
+
+      {/* Shared enrollment modal (opens from any Enroll button) */}
+      <EnrollmentModal
+        open={enrollTarget !== null}
+        onClose={() => setEnrollTarget(null)}
+        programType="training"
+        programId={enrollTarget?.programId ?? ''}
+        programTitle={enrollTarget?.programTitle ?? ''}
+        levelIndex={enrollTarget?.levelIndex}
+        levelLabel={enrollTarget?.levelLabel}
+        priceDisplay={enrollTarget?.priceDisplay}
+      />
     </>
   );
 }
