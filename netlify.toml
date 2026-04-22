@@ -40,6 +40,27 @@
   to = "/.netlify/functions/admin-programs"
   status = 200
 
+# Booking + Razorpay flow (Netlify Functions)
+[[redirects]]
+  from = "/api/create-order"
+  to = "/.netlify/functions/create-order"
+  status = 200
+
+[[redirects]]
+  from = "/api/razorpay-webhook"
+  to = "/.netlify/functions/razorpay-webhook"
+  status = 200
+
+[[redirects]]
+  from = "/api/enrollment-status"
+  to = "/.netlify/functions/enrollment-status"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin-enrollments"
+  to = "/.netlify/functions/admin-enrollments"
+  status = 200
+
 # Serve the custom 404 page for unknown routes
 [[redirects]]
   from = "/*"

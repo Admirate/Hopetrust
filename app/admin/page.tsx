@@ -2,12 +2,13 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import { Trash2, Plus, LogOut, Loader2, GripVertical, Lock, Mail, Eye, EyeOff, Package, AlertTriangle, Pencil, X, Check, GraduationCap } from 'lucide-react';
+import { Trash2, Plus, LogOut, Loader2, GripVertical, Lock, Mail, Eye, EyeOff, Package, AlertTriangle, Pencil, X, Check, GraduationCap, Receipt } from 'lucide-react';
 import type { AddictionProgram } from '@/lib/programs';
 import { fetchPrograms, createProgram, updateProgram, deleteProgram, UnauthorizedError } from '@/lib/programs';
 import type { TrainingProgram, TrainingProgramLevel } from '@/lib/training-programs';
 import { fetchTrainingPrograms, createTrainingProgram, updateTrainingProgram, deleteTrainingProgram, UnauthorizedError as TrainingUnauthorizedError } from '@/lib/training-programs';
 import { getLogoUrl } from '@/lib/assets';
+import EnrollmentsTab from '@/components/admin/EnrollmentsTab';
 
 const LOGO_URL = getLogoUrl();
 
@@ -1097,9 +1098,10 @@ function TrainingProgramCard({
 // ─── Dashboard ───────────────────────────────────────────────────────────────
 
 function Dashboard({ token, email, onLogout }: { token: string; email: string; onLogout: () => void }) {
-  const [activeTab, setActiveTab] = useState<'addiction' | 'training'>('addiction');
+  const [activeTab, setActiveTab] = useState<'addiction' | 'training' | 'enrollments'>('addiction');
   const [programs, setPrograms] = useState<AddictionProgram[]>([]);
   const [trainingPrograms, setTrainingPrograms] = useState<TrainingProgram[]>([]);
+  const [enrollmentCount, setEnrollmentCount] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [trainingLoading, setTrainingLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -1189,50 +1191,63 @@ function Dashboard({ token, email, onLogout }: { token: string; email: string; o
     <div className="min-h-screen bg-[#F7F6F4]">
       {/* Top bar */}
       <header className="sticky top-0 z-50 border-b border-[#00373E]/10 bg-[#00373E] shadow-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-8">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-8">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-white/10 sm:h-10 sm:w-10">
               <Image src={LOGO_URL} alt="Hope Trust" width={28} height={28} className="object-contain" />
             </div>
-            <div>
-              <h1 className="text-base font-bold text-white">Hope Trust Admin</h1>
-              <p className="text-[11px] text-white/50">{email}</p>
+            <div className="min-w-0">
+              <h1 className="truncate text-sm font-bold text-white sm:text-base">Hope Trust Admin</h1>
+              <p className="truncate text-[10px] text-white/50 sm:text-[11px]">{email}</p>
             </div>
           </div>
           <button
             onClick={onLogout}
-            className="inline-flex items-center gap-2 rounded-xl border border-white/20 px-4 py-2 text-sm font-medium text-white/80 transition-all hover:bg-white/10 hover:text-white"
+            className="inline-flex flex-shrink-0 items-center gap-2 rounded-xl border border-white/20 px-3 py-2 text-xs font-medium text-white/80 transition-all hover:bg-white/10 hover:text-white sm:px-4 sm:text-sm"
           >
             <LogOut className="h-4 w-4" />
-            Logout
+            <span className="hidden xs:inline sm:inline">Logout</span>
           </button>
         </div>
       </header>
 
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-8">
-        {/* Tabs */}
-        <div className="mb-8 flex gap-2 rounded-2xl bg-white p-1.5 shadow-sm">
+        {/* Tabs — horizontally scrollable on mobile, fully visible from sm: */}
+        <div className="mb-6 sm:mb-8 -mx-1 flex gap-1.5 overflow-x-auto rounded-2xl bg-white p-1.5 shadow-sm sm:gap-2 sm:overflow-visible">
           <button
             onClick={() => setActiveTab('addiction')}
-            className={`inline-flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all ${
+            className={`inline-flex flex-shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-xl px-3 py-2.5 text-xs font-semibold transition-all sm:flex-1 sm:gap-2 sm:px-4 sm:py-3 sm:text-sm ${
               activeTab === 'addiction'
                 ? 'bg-[#00373E] text-white shadow-lg'
                 : 'text-gray-500 hover:bg-gray-100 hover:text-[#00373E]'
             }`}
           >
             <Package className="h-4 w-4" />
-            Addiction Programs ({programs.length})
+            <span className="sm:hidden">Addiction ({programs.length})</span>
+            <span className="hidden sm:inline">Addiction Programs ({programs.length})</span>
           </button>
           <button
             onClick={() => setActiveTab('training')}
-            className={`inline-flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all ${
+            className={`inline-flex flex-shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-xl px-3 py-2.5 text-xs font-semibold transition-all sm:flex-1 sm:gap-2 sm:px-4 sm:py-3 sm:text-sm ${
               activeTab === 'training'
                 ? 'bg-[#00373E] text-white shadow-lg'
                 : 'text-gray-500 hover:bg-gray-100 hover:text-[#00373E]'
             }`}
           >
             <GraduationCap className="h-4 w-4" />
-            Training Programs ({trainingPrograms.length})
+            <span className="sm:hidden">Training ({trainingPrograms.length})</span>
+            <span className="hidden sm:inline">Training Programs ({trainingPrograms.length})</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('enrollments')}
+            className={`inline-flex flex-shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-xl px-3 py-2.5 text-xs font-semibold transition-all sm:flex-1 sm:gap-2 sm:px-4 sm:py-3 sm:text-sm ${
+              activeTab === 'enrollments'
+                ? 'bg-[#00373E] text-white shadow-lg'
+                : 'text-gray-500 hover:bg-gray-100 hover:text-[#00373E]'
+            }`}
+          >
+            <Receipt className="h-4 w-4" />
+            Enrollments{enrollmentCount !== null ? ` (${enrollmentCount})` : ''}
           </button>
         </div>
 
@@ -1246,15 +1261,15 @@ function Dashboard({ token, email, onLogout }: { token: string; email: string; o
         {/* ── Addiction Programs Tab ── */}
         {activeTab === 'addiction' && (
           <>
-            <div className="mb-8 flex items-center rounded-2xl bg-gradient-to-r from-[#00373E] to-[#024a53] p-5 shadow-sm">
-              <div className="flex-1">
-                <h2 className="text-lg font-bold text-white">Addiction Programs</h2>
-                <p className="text-sm text-white/60">Manage treatment packages shown on the Addiction Services page</p>
+            <div className="mb-6 flex flex-col gap-3 rounded-2xl bg-gradient-to-r from-[#00373E] to-[#024a53] p-4 shadow-sm sm:mb-8 sm:flex-row sm:items-center sm:gap-4 sm:p-5">
+              <div className="min-w-0 flex-1">
+                <h2 className="text-base font-bold text-white sm:text-lg">Addiction Programs</h2>
+                <p className="text-xs text-white/60 sm:text-sm">Manage treatment packages shown on the Addiction Services page</p>
               </div>
               {!showAddForm && (
                 <button
                   onClick={() => setShowAddForm(true)}
-                  className="ml-4 inline-flex items-center gap-2 rounded-xl bg-[#ED7428] px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#ED7428]/20 transition-all hover:bg-[#d4651f] hover:shadow-xl active:scale-[0.98]"
+                  className="inline-flex flex-shrink-0 items-center justify-center gap-2 rounded-xl bg-[#ED7428] px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#ED7428]/20 transition-all hover:bg-[#d4651f] hover:shadow-xl active:scale-[0.98] sm:px-5"
                 >
                   <Plus className="h-4 w-4" />
                   Add Program
@@ -1305,18 +1320,18 @@ function Dashboard({ token, email, onLogout }: { token: string; email: string; o
         {/* ── Training Programs Tab ── */}
         {activeTab === 'training' && (
           <>
-            <div className="mb-8 flex items-center rounded-2xl bg-gradient-to-r from-[#00373E] to-[#024a53] p-5 shadow-sm">
-              <div className="flex-1">
-                <h2 className="text-lg font-bold text-white">Training Programs</h2>
-                <p className="text-sm text-white/60">Manage internship &amp; traineeship cards on the Training page</p>
+            <div className="mb-6 flex flex-col gap-3 rounded-2xl bg-gradient-to-r from-[#00373E] to-[#024a53] p-4 shadow-sm sm:mb-8 sm:flex-row sm:items-center sm:gap-4 sm:p-5">
+              <div className="min-w-0 flex-1">
+                <h2 className="text-base font-bold text-white sm:text-lg">Training Programs</h2>
+                <p className="text-xs text-white/60 sm:text-sm">Manage internship &amp; traineeship cards on the Training page</p>
               </div>
               {!showAddTrainingForm && (
                 <button
                   onClick={() => setShowAddTrainingForm(true)}
-                  className="ml-4 inline-flex items-center gap-2 rounded-xl bg-[#ED7428] px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#ED7428]/20 transition-all hover:bg-[#d4651f] hover:shadow-xl active:scale-[0.98]"
+                  className="inline-flex flex-shrink-0 items-center justify-center gap-2 rounded-xl bg-[#ED7428] px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#ED7428]/20 transition-all hover:bg-[#d4651f] hover:shadow-xl active:scale-[0.98] sm:px-5"
                 >
                   <Plus className="h-4 w-4" />
-                  Add Training Program
+                  Add Training
                 </button>
               )}
             </div>
@@ -1359,6 +1374,15 @@ function Dashboard({ token, email, onLogout }: { token: string; email: string; o
               </div>
             )}
           </>
+        )}
+
+        {/* ── Enrollments Tab ── */}
+        {activeTab === 'enrollments' && (
+          <EnrollmentsTab
+            token={token}
+            onUnauthorized={onLogout}
+            onCountChange={setEnrollmentCount}
+          />
         )}
       </main>
 
