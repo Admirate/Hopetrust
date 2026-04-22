@@ -118,7 +118,7 @@ export default function CorporateWellnessPage() {
           </motion.div>
         </section>
 
-        {/* What we offer section */}
+        {/* What we give section */}
         <section className="w-full bg-[#F7F5EF] py-16 sm:py-24">
 
           {/* Heading + text — staggered reveal */}
@@ -130,7 +130,7 @@ export default function CorporateWellnessPage() {
               transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
               className={`${heroFont.className} text-[26px] leading-tight sm:text-[36px] lg:text-[48px] lg:leading-[58px] tracking-[0.724138px] font-semibold text-[#00373E]`}
             >
-              What we offer
+              What we give
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 24 }}
@@ -164,10 +164,10 @@ export default function CorporateWellnessPage() {
               className="mx-auto w-full max-w-[708px] sm:min-h-[269px] rounded-[20px] sm:rounded-[31px] bg-[#ED7428] p-5 sm:p-6 lg:p-[31px] text-center flex flex-col justify-center"
             >
               <h3 className={`${heroFont.className} text-[20px] leading-tight sm:text-[28px] lg:text-[40px] lg:leading-normal tracking-[0.724138px] font-semibold text-[#00373E]`}>
-                One time sessions
+                One-time sessions
               </h3>
               <p className={`${boldBodyFont.className} mt-3 mx-auto max-w-[595px] text-[14px] leading-relaxed sm:text-[18px] lg:text-[24px] lg:leading-normal tracking-[0.724138px] font-bold text-[#F9E6D0]`}>
-                A simple way to begin conversations around mental health, stress, balance, and well being.
+                A simple way to begin conversations around mental health, stress, balance, and well-being.
               </p>
             </motion.div>
 

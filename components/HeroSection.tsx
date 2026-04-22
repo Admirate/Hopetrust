@@ -101,7 +101,7 @@ const HeroSection = () => {
                 style={{ letterSpacing: '0.724px' }}
               >
                 A gentle reminder: We&apos;re here if you need us — message us
-                anytime
+                anytime.
               </p>
 
               {/* Button */}

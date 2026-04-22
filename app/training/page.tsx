@@ -126,12 +126,12 @@ export default function TrainingPage() {
           </section>
         </FadeInSection>
 
-        {/* What we offer */}
+        {/* What we give */}
         <FadeInSection>
           <section className="w-full bg-[#F9E6D0] py-14 sm:py-20 lg:py-24">
             <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-8 lg:px-12">
               <h2 className={`${heroFont.className} mb-10 text-center text-[26px] font-semibold text-[#00373E] sm:mb-14 sm:text-[36px] lg:text-[48px] lg:leading-[58px] tracking-[0.724138px]`}>
-                What we offer
+                What we give
               </h2>
 
               <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-12 lg:gap-20">
@@ -169,7 +169,7 @@ export default function TrainingPage() {
                     Clinical traineeship
                   </h3>
                   <p className={`${introFont.className} mt-3 text-[15px] leading-relaxed text-[#00373E] sm:text-[18px] sm:leading-[24px] lg:text-[24px] lg:leading-[29px] tracking-[0.724138px]`}>
-                    For postgraduates who want more advanced learning through supervised casework, assessments, and hands on clinical experience.
+                    For postgraduates who want more advanced learning through supervised casework, assessments, and hands-on clinical experience.
                   </p>
                 </div>
               </div>
@@ -188,7 +188,7 @@ export default function TrainingPage() {
                 Clinical Traineeship
               </h2>
               <p className={`${introFont.className} mx-auto mt-4 max-w-[976px] text-center text-[15px] leading-relaxed text-black sm:text-[18px] sm:leading-[24px] lg:text-[24px] lg:leading-[29px] tracking-[0.724138px]`}>
-                Our three month traineeship is designed for early career psychologists who are ready for more direct clinical learning.
+                Our three-month traineeship is designed for early career psychologists who are ready for more direct clinical learning.
               </p>
 
               {/* Icon */}
@@ -393,64 +393,82 @@ function InternshipPathways({
   introFont: { className: string };
 }) {
   return (
-    <section className="w-full bg-[#F7F5EF] py-14 sm:py-20 lg:py-24">
-      <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-8 lg:px-12">
-        {/* Heading */}
-        <h2
-          className={`${heroFont.className} mb-10 text-[26px] font-semibold text-[#00373E] sm:mb-14 sm:text-[36px] lg:text-[48px] lg:leading-[58px] tracking-[0.724138px]`}
-        >
-          Internship Pathways
-        </h2>
+    <section className="w-full bg-[#F7F5EF] py-8 sm:py-12 md:py-14 lg:py-20">
+      <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-6 lg:px-8">
+        {/* White rounded card wrapping the whole section */}
+        <div className="relative overflow-hidden rounded-2xl bg-[#FBF9F7] px-5 py-8 shadow-sm sm:rounded-3xl sm:px-8 sm:py-12 md:px-10 md:py-14 lg:rounded-[32px] lg:px-16 lg:py-20">
+          {/* Decorative footsteps video — tablet (md) up, grows on wider screens */}
+          <video
+            src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/footsteps_training.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+            style={{ clipPath: 'inset(0 4px 0 0)' }}
+            className="pointer-events-none absolute right-0 top-24 -bottom-4 hidden w-[48%] max-w-[460px] bg-transparent object-contain object-right-bottom opacity-90 md:block lg:top-48 lg:-bottom-8 lg:w-[95%] lg:max-w-[1120px] lg:opacity-95"
+          />
 
-        <div className="flex w-full max-w-[708px] flex-col gap-5 sm:gap-8">
-          {/* Card 1 — Addiction Treatment Internship */}
-          <div className="rounded-2xl bg-[#ED7428] p-5 sm:rounded-[31px] sm:p-[31px]">
-            <h3
-              className={`${introFont.className} text-[24px] font-normal text-[#00373E] sm:text-[32px] lg:text-[40px] lg:leading-[48px] tracking-[0.724138px]`}
-            >
-              Addiction Treatment
-              <br />
-              Internship
-            </h3>
-            <p
-              className={`${introFont.className} mt-3 text-[15px] leading-relaxed text-[#F9E6D0] sm:text-[18px] sm:leading-[24px] lg:text-[24px] lg:leading-[29px] tracking-[0.724138px]`}
-            >
-              Focused on addiction, recovery, and co occurring concerns in a therapeutic setting.
-            </p>
+          {/* Heading */}
+          <h2
+            className={`${heroFont.className} relative mb-6 text-[24px] font-semibold text-[#00373E] sm:mb-10 sm:text-[32px] md:mb-12 md:text-[36px] lg:text-[48px] lg:leading-[58px] tracking-[0.724138px]`}
+          >
+            Internship Pathways
+          </h2>
+
+          <div className="relative flex w-full max-w-full flex-col gap-4 sm:gap-6 md:max-w-[480px] md:gap-7 lg:max-w-[620px] lg:gap-8">
+            {/* Card 1 — Addiction Treatment Internship */}
+            <div className="rounded-2xl bg-[#ED7428] p-5 sm:p-6 md:rounded-3xl md:p-7 lg:rounded-[31px] lg:p-[31px]">
+              <h3
+                className={`${introFont.className} text-[22px] font-normal leading-tight text-[#00373E] sm:text-[28px] md:text-[30px] lg:text-[40px] lg:leading-[48px] tracking-[0.724138px]`}
+              >
+                Addiction Treatment
+                <br className="hidden sm:inline" />
+                <span className="sm:hidden"> </span>
+                Internship
+              </h3>
+              <p
+                className={`${introFont.className} mt-3 text-[14px] leading-relaxed text-[#F9E6D0] sm:text-[16px] sm:leading-[22px] md:text-[17px] md:leading-[24px] lg:text-[24px] lg:leading-[29px] tracking-[0.724138px]`}
+              >
+                Focused on addiction, recovery, and co-occurring concerns in a therapeutic setting.
+              </p>
+            </div>
+
+            {/* Card 2 — General Clinical Internship */}
+            <div className="rounded-2xl bg-[#00373E] p-5 sm:p-6 md:rounded-3xl md:p-7 lg:rounded-[31px] lg:p-[31px]">
+              <h3
+                className={`${introFont.className} text-[22px] font-normal leading-tight text-[#ED7428] sm:text-[28px] md:text-[30px] lg:text-[40px] lg:leading-[48px] tracking-[0.724138px]`}
+              >
+                General Clinical
+                <br className="hidden sm:inline" />
+                <span className="sm:hidden"> </span>
+                Internship
+              </h3>
+              <p
+                className={`${introFont.className} mt-3 text-[14px] leading-relaxed text-[#F9E6D0] sm:text-[16px] sm:leading-[22px] md:text-[17px] md:leading-[24px] lg:text-[24px] lg:leading-[29px] tracking-[0.724138px]`}
+              >
+                Focused on counselling psychology, clinical psychology, and addiction-related work through classes and experiential learning.
+              </p>
+            </div>
           </div>
 
-          {/* Card 2 — General Clinical Internship */}
-          <div className="rounded-2xl bg-[#00373E] p-5 sm:rounded-[31px] sm:p-[31px]">
-            <h3
-              className={`${introFont.className} text-[24px] font-normal text-[#ED7428] sm:text-[32px] lg:text-[40px] lg:leading-[48px] tracking-[0.724138px]`}
-            >
-              General Clinical
-              <br />
-              Internship
-            </h3>
-            <p
-              className={`${introFont.className} mt-3 text-[15px] leading-relaxed text-[#F9E6D0] sm:text-[18px] sm:leading-[24px] lg:text-[24px] lg:leading-[29px] tracking-[0.724138px]`}
-            >
-              Focused on counselling psychology, clinical psychology, and addiction related work through classes and experiential learning.
-            </p>
-          </div>
+          {/* Bottom note */}
+          <p
+            className={`${introFont.className} relative mt-8 max-w-full text-[14px] leading-relaxed text-black sm:mt-10 sm:text-[16px] sm:leading-[22px] md:mt-12 md:max-w-[480px] md:text-[17px] md:leading-[24px] lg:mt-14 lg:max-w-[595px] lg:text-[24px] lg:leading-[29px] tracking-[0.724138px]`}
+          >
+            Both options are available in different levels, with online and on-site formats depending on the programme.
+          </p>
         </div>
-
-        {/* Bottom note */}
-        <p
-          className={`${introFont.className} mt-10 max-w-[595px] text-[15px] leading-relaxed text-black sm:mt-14 sm:text-[18px] sm:leading-[24px] lg:text-[24px] lg:leading-[29px] tracking-[0.724138px]`}
-        >
-          Both options are available in different levels, with online and on site formats depending on the programme.
-        </p>
       </div>
     </section>
   );
 }
 
 const GAIN_TEXTS = [
-  'Hands on clinical exposure',
+  'Hands-on clinical exposure',
   'Supervision and case discussion',
-  'Training in assessments and evidence based interventions',
+  'Training in assessments and evidence-based interventions',
   'Peer learning and ongoing skill building',
   'A clearer sense of how to work with clients in real settings',
 ];

@@ -136,7 +136,7 @@ export default function Footer() {
               href="/book-your-session"
               className={`${headingFont.className} inline-flex items-center justify-center rounded-full bg-[#00373E] px-8 py-3 text-sm sm:text-base font-semibold text-white shadow-md transition-all duration-200 hover:bg-[#024a53] hover:-translate-y-0.5 hover:shadow-lg`}
             >
-              Find Support now
+              Find support now
             </Link>
           </div>
         </div>

@@ -575,7 +575,7 @@ export default function About() {
               <p
                 className={`${aboutStoryBodyFont.className} mx-auto mt-3 w-full max-w-[306px] text-center text-sm sm:text-base lg:text-[20px] font-medium leading-normal tracking-[0.724px] text-[#00373E]`}
               >
-                Choose how you want to start Online or in person.
+                Choose how you want to start. Online or in person.
               </p>
             </motion.div>
 

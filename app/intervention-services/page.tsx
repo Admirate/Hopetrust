@@ -110,7 +110,7 @@ export default function InterventionServicesPage() {
                   Denial is a common part of addiction. The person often does not recognise the harm caused and believes they can control the behaviour.
                 </p>
                 <p className={`${introFont.className} text-[15px] leading-relaxed sm:text-[18px] lg:text-[24px] lg:leading-[29px] tracking-[0.724138px] font-normal text-black`}>
-                  A structured intervention helps break denial, help the person face reality, and accept professional treatment.
+                  A structured intervention helps break denial, helps the person face reality, and encourages them to accept professional treatment.
                 </p>
               </div>
             </FadeInSection>
