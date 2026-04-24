@@ -50,7 +50,10 @@ async function parseError(res: Response, fallback: string): Promise<string> {
 export async function createOrder(input: CreateOrderInput): Promise<CreateOrderResponse> {
   const res = await fetch('/.netlify/functions/create-order', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Idempotency-Key': crypto.randomUUID(),
+    },
     body: JSON.stringify(input),
   });
   if (!res.ok) {

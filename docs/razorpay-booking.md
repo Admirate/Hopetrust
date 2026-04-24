@@ -20,8 +20,21 @@ all enrollments from the `/admin/` dashboard.
   database inside Netlify Functions. The client cannot influence the price.
 - **Idempotent webhooks** — duplicate deliveries are safe; only the first
   `payment.captured` event transitions the row to `paid`.
+- **Idempotency key** — `create-order` accepts an `Idempotency-Key` header;
+  retries with the same key return the cached enrollment instead of creating
+  duplicates. The client sends `crypto.randomUUID()` per call.
 - **Signature verification** — Razorpay webhooks verified via HMAC-SHA256
   with constant-time comparison (`crypto.timingSafeEqual`).
+- **Rate limiting** — DB-backed per-IP (10/15 min) and per-email (5/15 min)
+  throttles on `create-order`. Queries the `enrollments` table directly.
+- **Duplicate order guard** — if the same email already has a `created`
+  order for the same program within 30 minutes, the existing order is
+  returned instead of spawning a new Razorpay order.
+- **Request size limits** — `create-order` rejects bodies > 4 KB (413);
+  webhook rejects bodies > 64 KB. Both check `Content-Length` *and* actual
+  body length.
+- **IP trust** — client IP is forwarded to Razorpay in `order.notes.ip` for
+  fraud scoring and stored in enrollment `metadata.ip` for rate limiting.
 - **Zero new dependencies on server** — helpers use `node:crypto` + `fetch`;
   no `razorpay` or `resend` SDKs.
 - **Defence in depth** — CORS locked to production origin, JWT on admin
@@ -47,7 +60,7 @@ See `Database/enrollments.sql` for the full migration. Key columns:
 | `razorpay_order_id`, `razorpay_payment_id` | `text` | Populated across the flow |
 | `status` | `text` | `created` → `paid` / `failed` / `abandoned` |
 | `paid_at`, `failure_reason` | — | Set by webhook |
-| `metadata` | `jsonb` | IP, user agent, webhook event, admin notes, email send results |
+| `metadata` | `jsonb` | IP, user agent, idempotency key, webhook event, admin notes, email send results |
 
 Indexes on `status`, `program_id`, `email`, `razorpay_order_id`,
 `razorpay_payment_id`, `created_at DESC`. RLS enabled with no public policies
@@ -91,11 +104,16 @@ Pure-fetch helpers — no SDK:
 - `sendEmail({ to, subject, html, text, from, replyTo })` → POSTs to Resend REST API (`https://api.resend.com/emails`). Never throws; returns `{ ok, id?, error? }`.
 - `formatINR(paise)` → INR display helper (`₹26,500`).
 
-### `create-order.mjs` (public)
+### `create-order.mjs` (public, rate-limited)
 
 `POST /api/create-order`
 
-Input (JSON):
+Headers (optional):
+- `Idempotency-Key: <uuid>` — if provided, a repeat request with the same
+  key returns the previously created enrollment instead of creating a new one.
+  The client (`lib/enrollment.ts`) sends `crypto.randomUUID()` by default.
+
+Input (JSON, max **4 KB**):
 ```json
 {
   "program_type": "training" | "addiction",
@@ -108,14 +126,20 @@ Input (JSON):
 ```
 
 Flow:
-1. Validate input (regex + length caps on name/email/phone, UUID regex on program_id).
-2. **Resolve amount server-side** from the correct program table:
+1. **Request size limit** — reject if `Content-Length` or actual body > 4 096 bytes (HTTP 413).
+2. Validate input (regex + length caps on name/email/phone, UUID regex on program_id).
+3. Extract IP (`x-forwarded-for` / `x-nf-client-connection-ip`), user-agent, and `Idempotency-Key` header.
+4. **Idempotency check** — if `Idempotency-Key` was sent, query `enrollments` where `metadata->>idempotency_key` matches. If found, return the cached checkout payload.
+5. **IP rate limit** — count enrollments from the same IP in the last 15 minutes. If ≥ 10 → HTTP 429.
+6. **Email rate limit** — count enrollments from the same email in the last 15 minutes. If ≥ 5 → HTTP 429.
+7. **Duplicate order guard** — if the same email already has a `status='created'` enrollment for the same `program_id` within 30 minutes, return that existing order (with `_reused: true`) instead of creating a new one.
+8. **Resolve amount server-side** from the correct program table:
    - `addiction_programs.cost_inr`
    - `training_programs.fee_inr` (single-fee) or `levels[level_index].price_inr` (multi-level)
-3. Pre-generate `enrollment_id = crypto.randomUUID()` so it can be the Razorpay `receipt`.
-4. Call Razorpay `/orders` API → get `order_id`.
-5. Insert an `enrollments` row with `status='created'`, `razorpay_order_id`, `amount_inr`, and metadata `{ ip, user_agent }`.
-6. Return:
+9. Pre-generate `enrollment_id = crypto.randomUUID()` so it can be the Razorpay `receipt`.
+10. Call Razorpay `/orders` API → get `order_id`. IP is included in `notes.ip` for Razorpay fraud signals.
+11. Insert an `enrollments` row with `status='created'`, `razorpay_order_id`, `amount_inr`, and metadata `{ ip, user_agent, idempotency_key? }`.
+12. Return:
    ```json
    {
      "enrollment_id": "...",
@@ -125,28 +149,40 @@ Flow:
      "key_id": "rzp_test_...",
      "program_title": "...",
      "program_level": "Level 1 — 10 hours" | null,
-     "prefill": { "name": "...", "email": "...", "contact": "..." }
+     "prefill": { "name": "...", "email": "...", "contact": "..." },
+     "_reused": false           // true when duplicate guard or idempotency cache hit
    }
    ```
+
+#### Abuse prevention constants
+
+| Constant | Value | Purpose |
+| --- | --- | --- |
+| `MAX_BODY_BYTES` | 4 096 | Request body size cap |
+| `RATE_WINDOW_MS` | 15 min | Sliding window for rate limiting |
+| `MAX_ORDERS_PER_IP` | 10 | Max orders per IP in the window |
+| `MAX_ORDERS_PER_EMAIL` | 5 | Max orders per email in the window |
+| `DUPLICATE_WINDOW_MS` | 30 min | Reuse existing `created` order within this window |
 
 ### `razorpay-webhook.mjs` (public, signature-verified)
 
 `POST /api/razorpay-webhook`
 
-1. Read raw body as text (required for HMAC).
-2. Verify `X-Razorpay-Signature` with `verifyWebhookSignature` — reject `400` if invalid.
-3. Extract `payload.payment.entity` — ignore unrelated events (200 + `ignored`).
-4. Look up `enrollments` by `razorpay_order_id`.
-5. **Idempotency check** — if already `paid` with the same `payment_id`, return 200.
-6. On `payment.captured`:
+1. **Request size limit** — reject if `Content-Length` or actual body > 64 KB (HTTP 413).
+2. Read raw body as text (required for HMAC).
+3. Verify `X-Razorpay-Signature` with `verifyWebhookSignature` — reject `400` if invalid.
+4. Extract `payload.payment.entity` — ignore unrelated events (200 + `ignored`).
+5. Look up `enrollments` by `razorpay_order_id`.
+6. **Idempotency check** — if already `paid` with the same `payment_id`, return 200.
+7. On `payment.captured`:
    - Update `status='paid'`, `razorpay_payment_id`, `paid_at=now()`, merge metadata.
    - Write `ENROLLMENT_PAID` to `admin_audit_log`.
    - Send customer email (Resend) + admin alert email in parallel.
    - If either email fails, persist the Resend error into `metadata` but still return 200 (Razorpay would otherwise keep retrying).
-7. On `payment.failed`:
+8. On `payment.failed`:
    - Update `status='failed'`, `failure_reason`, metadata error details.
    - Write `ENROLLMENT_FAILED` audit entry.
-8. Return `200 ok`.
+9. Return `200 ok`.
 
 ### `enrollment-status.mjs` (public)
 
@@ -171,7 +207,7 @@ Flow:
 
 ### `lib/enrollment.ts` (client API + Razorpay loader)
 
-- `createOrder(input)` → POST `/api/create-order`
+- `createOrder(input)` → POST `/api/create-order` (sends `Idempotency-Key: <uuid>` header)
 - `fetchEnrollmentStatus(id)` → GET `/api/enrollment-status`
 - `loadRazorpayCheckout()` → idempotent script injection of `https://checkout.razorpay.com/v1/checkout.js`
 - `openRazorpayCheckout(options)` → await script load then `new window.Razorpay(options).open()`
