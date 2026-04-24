@@ -4,6 +4,7 @@
 // Returns payload needed to open Razorpay Checkout on the client.
 // =============================================================================
 
+import crypto from 'node:crypto';
 import { createClient } from '@supabase/supabase-js';
 import { createRazorpayOrder } from './_shared/razorpay.mjs';
 
