@@ -86,6 +86,8 @@ Hopetrust/
 │   ├── config.ts               # Site config (name, contact info, maps URL)
 │   ├── assets.ts               # getAssetUrl() + getStorageUrl() — Supabase storage URL builders
 │   ├── jsonld.ts               # JSON-LD structured data schema generators (Organization, Service, Breadcrumb, FAQ)
+│   ├── enrollment.ts           # Razorpay client API + checkout loader (sends Idempotency-Key)
+│   ├── enrollments-admin.ts    # Admin enrollments API wrapper
 │   ├── newsletter-template.ts  # HTML email template builder
 │   ├── utils.ts                # cn() — Tailwind class merger
 │   ├── assets.test.ts          # Asset utility tests
@@ -108,9 +110,16 @@ Hopetrust/
 │
 ├── netlify/
 │   └── functions/
+│       ├── _shared/
+│       │   ├── razorpay.mjs    # Razorpay REST helpers + signature verification
+│       │   └── emails.mjs      # Branded email templates + Resend wrapper
 │       ├── admin-login.mjs     # Netlify Function: admin JWT auth
 │       ├── admin-programs.mjs  # Netlify Function: addiction programs CRUD
 │       ├── admin-training-programs.mjs  # Netlify Function: training programs CRUD
+│       ├── admin-enrollments.mjs  # Netlify Function: enrollment list/CSV/PATCH (JWT-gated)
+│       ├── create-order.mjs    # Netlify Function: Razorpay order + enrollment (rate-limited)
+│       ├── razorpay-webhook.mjs  # Netlify Function: payment webhook (HMAC-verified)
+│       ├── enrollment-status.mjs  # Netlify Function: enrollment polling (UUID-gated)
 │       └── whatsapp-crm.mjs    # Netlify Function: WhatsApp CRM proxy
 │
 ├── supabase/
@@ -581,6 +590,14 @@ npm run build    # next build && node scripts/generate-sitemap.mjs
   - `/blog/` → `/blogs/` (301)
   - `/*` → `/index.html` (200) — SPA fallback
 - **Security Headers:** CSP, HSTS (2-year, preload), X-Frame-Options DENY, X-XSS-Protection, X-Content-Type-Options nosniff, strict Referrer-Policy, Permissions-Policy (camera/mic/geo/payment denied)
+- **Razorpay Security (create-order.mjs):**
+  - **Rate limiting:** DB-backed per-IP (10/15 min) and per-email (5/15 min) via `enrollments` table queries
+  - **Duplicate order guard:** Reuses existing `created` order for same email + program within 30 min
+  - **Idempotency key:** `Idempotency-Key` header stored in `metadata.idempotency_key`; repeat requests return cached enrollment
+  - **Request size limit:** 4 KB body cap on create-order; 64 KB on webhook
+  - **IP trust:** Client IP forwarded to Razorpay `notes.ip` for fraud scoring + used for rate limiting
+  - **HMAC-SHA256 webhook verification** with constant-time comparison (`crypto.timingSafeEqual`)
+  - **Server-side price resolution** — client cannot influence the payment amount
 - **Caching:** Immutable for `/_next/static/*`, JS, CSS, fonts; 1-year for images, videos
 
 ### NPM Scripts
@@ -706,4 +723,4 @@ Every sub-page layout exports its own `metadata` object with:
 
 ---
 
-*Last updated: April 20, 2026*
+*Last updated: April 24, 2026*

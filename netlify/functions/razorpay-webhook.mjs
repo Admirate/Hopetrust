@@ -48,8 +48,17 @@ export default async (req) => {
     return text('Server misconfiguration', 500);
   }
 
+  // ── Request size limit ────────────────────────────────────────────────────
+  const contentLength = parseInt(req.headers.get('content-length') || '0', 10);
+  if (contentLength > 65536) {
+    return text('Payload too large', 413);
+  }
+
   // ── Read raw body (required for signature verification) ───────────────────
   const rawBody = await req.text();
+  if (rawBody.length > 65536) {
+    return text('Payload too large', 413);
+  }
   const signature = req.headers.get('x-razorpay-signature') || '';
 
   if (!verifyWebhookSignature(rawBody, signature)) {
