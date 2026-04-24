@@ -113,6 +113,7 @@ function WhatsAppButtonInner() {
 
           {/* Book Appointment row */}
           <button
+            suppressHydrationWarning
             onClick={handleBookAppointment}
             disabled={busy}
             className="group flex w-full items-center gap-3 rounded-xl border border-gray-100 px-4 py-3 text-left transition-colors hover:bg-gray-50 disabled:opacity-60"

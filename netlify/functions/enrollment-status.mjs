@@ -42,21 +42,19 @@ export default async (req) => {
   const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
   const { data, error } = await supabase
     .from('enrollments')
-    .select('id, status, program_title, program_level, amount_inr, razorpay_payment_id, razorpay_order_id, paid_at')
+    .select('id, status, program_title, program_level, amount_inr, paid_at')
     .eq('id', id)
     .single();
 
   if (error || !data) return json({ error: 'Not found' }, 404);
 
-  // Return only non-sensitive fields
+  // Return only non-sensitive fields — no Razorpay IDs
   return json({
     id: data.id,
     status: data.status,
     program_title: data.program_title,
     program_level: data.program_level,
     amount_inr: data.amount_inr,
-    payment_id: data.razorpay_payment_id,
-    order_id: data.razorpay_order_id,
     paid_at: data.paid_at,
   });
 };

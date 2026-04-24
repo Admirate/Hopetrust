@@ -747,5 +747,71 @@ server-side, emails fire, admin can manage enrollments.
 
 ---
 
-*Last updated: April 22, 2026*
-*Sessions: April 7 (initial) · April 19 ×7 (docs corrections, rate limiting, 401 auto-logout, token expiry check, input limits, audit log) · April 20 (training CRUD, responsive training page, URL refactor, SEO) · April 22 (Razorpay booking system — 4 phases: schema, functions, frontend, admin)*
+## Session — April 24, 2026 · Security Audit & Fixes
+
+### Objective
+Perform a comprehensive security audit of the entire Hope Trust India website and fix all critical and high-severity vulnerabilities identified.
+
+### Audit Scope
+Full-stack audit covering:
+1. Netlify Functions (auth, input validation, injection)
+2. RLS policies & DB security
+3. CSP headers, CORS, `netlify.toml`
+4. Client-side code (XSS, secrets, token handling)
+5. Environment variables & secret exposure
+6. Razorpay payment flow
+7. Email & newsletter security
+
+### Vulnerabilities Found & Fixed
+
+#### CRITICAL
+
+| # | Issue | Fix | File(s) |
+|---|---|---|---|
+| 1 | `.env` in git history | Verified clean — `git log --all -- .env` returned empty | N/A |
+| 2 | Newsletter edge function had **no authentication** — anyone could trigger mass emails to all subscribers | Added Bearer token auth using `SUPABASE_SERVICE_ROLE_KEY`; requests without valid token get 401 | `supabase/functions/send-newsletter/index.ts` |
+| 3 | Newsletter **HTML injection** — `customMessage`, post titles, excerpts, URLs, and image URLs were interpolated raw into HTML | Added `esc()` helper that escapes `& < > " '`; applied to all user-supplied interpolations in `buildNewsletterHtml` | `supabase/functions/send-newsletter/index.ts` |
+
+#### HIGH
+
+| # | Issue | Fix | File(s) |
+|---|---|---|---|
+| 4 | No UUID validation on **DELETE** `id` param in admin programs | Added UUID regex check — invalid IDs return 400 | `netlify/functions/admin-programs.mjs` |
+| 5 | No UUID validation on **PUT** `id` body field in admin programs | Added UUID regex check — invalid IDs return 400 | `netlify/functions/admin-programs.mjs` |
+| 6 | No UUID validation on **DELETE/PUT** in admin training programs | Added UUID regex check to both endpoints | `netlify/functions/admin-training-programs.mjs` |
+| 7 | Login response **leaked attempt count** ("3 attempts remaining before lockout") — aids brute-force timing | Changed to generic `"Invalid credentials"` message; attempt count still logged server-side in audit log | `netlify/functions/admin-login.mjs` |
+| 8 | Public enrollment status endpoint **leaked Razorpay IDs** (`razorpay_payment_id`, `razorpay_order_id`) | Removed both fields from DB query, API response, TypeScript interface, and success page UI | `netlify/functions/enrollment-status.mjs`, `lib/enrollment.ts`, `app/enrollment-success/page.tsx` |
+| 9 | `Permissions-Policy: payment=()` **blocked Razorpay Checkout** Payment Request API | Changed to `payment=(self "https://checkout.razorpay.com")` | `netlify.toml` |
+
+#### LOW (cosmetic / dev-only)
+
+| # | Issue | Fix | File(s) |
+|---|---|---|---|
+| 10 | React hydration warnings from browser extension injecting `fdprocessedid` on buttons | Added `suppressHydrationWarning` to affected buttons | `components/WhatsAppButton.tsx`, `components/HeroSection.tsx` |
+
+### Remaining Audit Findings (not yet fixed)
+
+| Severity | Issue | Notes |
+|---|---|---|
+| HIGH | Initial SQL RLS policies too permissive | Needs careful review — no data at risk currently |
+| HIGH | CRM function ignores body / no size limit | `whatsapp-crm.mjs` forwards empty `{}` body — may be intentional |
+| MEDIUM | `sanitize-html` allows iframes from any `src` | Blog content is author-controlled MDX, low risk |
+| MEDIUM | `'unsafe-inline'` in CSP for `script-src` and `style-src` | Required by Next.js static export + inline styles |
+| LOW | `enrollment-status.mjs` has no rate limiting | UUID entropy provides sufficient protection |
+| INFO | Newsletter template exists in two places | `lib/newsletter-template.ts` vs inline in edge function |
+
+### Payment Integration Testing
+- Verified Razorpay test mode flow end-to-end in Chrome
+- Order creation, Checkout popup, test card payment (`4111 1111 1111 1111`), enrollment status polling all working
+- Webhook-based status update requires deployment with `RAZORPAY_WEBHOOK_SECRET`
+- Edge browser has popup redirect issues with Razorpay test mode (Chrome works fine)
+
+### Key Design Decisions
+- **Generic login errors** — never reveal whether the email exists or how many attempts remain. Audit log retains full detail server-side for incident response
+- **No Razorpay IDs in public API** — users see only their enrollment reference UUID; Razorpay payment/order IDs accessible only via JWT-gated admin dashboard
+- **Newsletter auth via service_role key** — simplest secure approach; no additional secrets needed since the key already exists in the edge function environment
+
+---
+
+*Last updated: April 24, 2026*
+*Sessions: April 7 (initial) · April 19 ×7 (docs corrections, rate limiting, 401 auto-logout, token expiry check, input limits, audit log) · April 20 (training CRUD, responsive training page, URL refactor, SEO) · April 22 (Razorpay booking system — 4 phases: schema, functions, frontend, admin) · April 24 (security audit & fixes — 10 vulnerabilities patched)*

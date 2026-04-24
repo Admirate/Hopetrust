@@ -106,6 +106,7 @@ const HeroSection = () => {
 
               {/* Button */}
               <button
+                suppressHydrationWarning
                 className="mt-4 inline-flex items-center justify-center 
   w-full sm:w-auto 
   rounded-full bg-[#00343A] 

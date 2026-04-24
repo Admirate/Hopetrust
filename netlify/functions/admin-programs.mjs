@@ -149,8 +149,8 @@ export default async (req) => {
       const body = await req.json();
       const { id, title, subtitle, description, features, note, cost, display_order } = body;
 
-      if (!id) {
-        return jsonResponse({ error: 'Program id is required' }, 400);
+      if (!id || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) {
+        return jsonResponse({ error: 'Valid program id is required' }, 400);
       }
       if (!title || !cost) {
         return jsonResponse({ error: 'Title and cost are required' }, 400);
@@ -188,8 +188,8 @@ export default async (req) => {
     const url = new URL(req.url);
     const id = url.searchParams.get('id');
 
-    if (!id) {
-      return jsonResponse({ error: 'Program id is required' }, 400);
+    if (!id || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) {
+      return jsonResponse({ error: 'Valid program id is required' }, 400);
     }
 
     const { error } = await supabase
