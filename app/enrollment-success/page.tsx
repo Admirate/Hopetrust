@@ -130,12 +130,6 @@ export default function EnrollmentSuccessPage() {
                   {status.program_level && <Row label="Level" value={status.program_level} />}
                   <Row label="Amount" value={formatINR(status.amount_inr)} />
                   <Row label="Status" value={<StatusPill status={status.status} />} />
-                  {status.payment_id && (
-                    <Row label="Payment ID" value={<Mono>{status.payment_id}</Mono>} />
-                  )}
-                  {status.order_id && (
-                    <Row label="Order ID" value={<Mono>{status.order_id}</Mono>} />
-                  )}
                   <Row label="Reference" value={<Mono>{status.id}</Mono>} full />
                 </dl>
               )}

@@ -31,8 +31,6 @@ export interface EnrollmentStatus {
   program_title: string;
   program_level: string | null;
   amount_inr: number;
-  payment_id: string | null;
-  order_id: string | null;
   paid_at: string | null;
 }
 

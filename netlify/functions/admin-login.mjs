@@ -154,12 +154,7 @@ export default async (req) => {
 
       const attemptsLeft = MAX_FAILED_ATTEMPTS - newFailedAttempts;
       await writeAuditLog(supabase, req, { action: 'LOGIN_FAILED', actorEmail: user.email, metadata: { attempts_remaining: attemptsLeft } });
-      return json(
-        {
-          error: `Invalid credentials. ${attemptsLeft} attempt${attemptsLeft === 1 ? '' : 's'} remaining before lockout.`,
-        },
-        401
-      );
+      return json({ error: 'Invalid credentials' }, 401);
     }
 
     // ── Successful login — reset rate-limit counters ─────────────────────────

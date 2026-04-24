@@ -7,6 +7,16 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
+/** Escape HTML to prevent injection in interpolated strings. */
+function esc(s = ""): string {
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 interface BlogPost {
   title: string;
   excerpt: string;
@@ -34,14 +44,14 @@ function buildNewsletterHtml(
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border: 1px solid #E5E7EB; border-radius: 12px; overflow: hidden;">
           ${
             post.featuredImage
-              ? `<tr><td style="padding: 0;"><img src="${post.featuredImage}" alt="${post.title}" width="100%" style="display: block; max-height: 200px; object-fit: cover; border-radius: 12px 12px 0 0;" /></td></tr>`
+              ? `<tr><td style="padding: 0;"><img src="${esc(post.featuredImage)}" alt="${esc(post.title)}" width="100%" style="display: block; max-height: 200px; object-fit: cover; border-radius: 12px 12px 0 0;" /></td></tr>`
               : ""
           }
           <tr>
             <td style="padding: 20px 24px;">
-              <h3 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 600; color: #00373E; line-height: 1.3;">${post.title}</h3>
-              <p style="margin: 0 0 16px 0; font-size: 14px; color: #6B7280; line-height: 1.5;">${post.excerpt.substring(0, 150)}${post.excerpt.length > 150 ? "..." : ""}</p>
-              <a href="${post.url}" style="display: inline-block; background-color: #ED7428; color: #ffffff; padding: 10px 24px; border-radius: 50px; text-decoration: none; font-size: 14px; font-weight: 600;">Read Article</a>
+              <h3 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 600; color: #00373E; line-height: 1.3;">${esc(post.title)}</h3>
+              <p style="margin: 0 0 16px 0; font-size: 14px; color: #6B7280; line-height: 1.5;">${esc(post.excerpt.substring(0, 150))}${post.excerpt.length > 150 ? "..." : ""}</p>
+              <a href="${esc(post.url)}" style="display: inline-block; background-color: #ED7428; color: #ffffff; padding: 10px 24px; border-radius: 50px; text-decoration: none; font-size: 14px; font-weight: 600;">Read Article</a>
             </td>
           </tr>
         </table>
@@ -62,7 +72,7 @@ function buildNewsletterHtml(
           <p style="margin: 8px 0 0 0; font-size: 14px; color: #ED7428; font-weight: 500; letter-spacing: 1px; text-transform: uppercase;">Weekly Newsletter</p>
         </td></tr>
         <tr><td style="padding: 32px 40px;">
-          <div style="font-size: 16px; color: #374151; line-height: 1.7;">${customMessage}</div>
+          <div style="font-size: 16px; color: #374151; line-height: 1.7;">${esc(customMessage)}</div>
         </td></tr>
         <tr><td style="padding: 0 40px;"><hr style="border: none; border-top: 2px solid #F3F4F6; margin: 0;" /></td></tr>
         ${
@@ -98,9 +108,23 @@ Deno.serve(async (req: Request) => {
     return new Response("ok", { headers: corsHeaders });
   }
 
+  // ── Auth: require service_role key as Bearer token ─────────────────────────
+  const authHeader = req.headers.get("authorization") || "";
+  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  if (
+    !serviceKey ||
+    !authHeader.startsWith("Bearer ") ||
+    authHeader.slice(7) !== serviceKey
+  ) {
+    return new Response(
+      JSON.stringify({ error: "Unauthorized" }),
+      { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
+  }
+
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabaseServiceKey = serviceKey;
     const resendApiKey = Deno.env.get("RESEND_API_KEY")!;
     const fromEmail =
       Deno.env.get("NEWSLETTER_FROM_EMAIL") ||

@@ -351,7 +351,7 @@ Immutable append-only log of all admin actions. Written server-side only by `adm
   - `LOGIN_FAILED` — wrong password (not yet at lockout threshold)
   - `ACCOUNT_LOCKED` — 5th failed attempt triggers lockout
   - `LOGIN_SUCCESS` — successful authentication
-- **Error Handling:** Generic messages throughout to prevent email enumeration
+- **Error Handling:** Generic `"Invalid credentials"` message for all failures — never reveals email existence or remaining attempt count. Attempt details are logged server-side in audit log only
 
 ### 2. Netlify Function: `admin-programs`
 
@@ -396,14 +396,16 @@ Immutable append-only log of all admin actions. Written server-side only by `adm
 - **File:** `supabase/functions/send-newsletter/index.ts`
 - **Runtime:** Deno (Supabase Edge Functions)
 - **Purpose:** Send branded HTML newsletter emails to all active subscribers
-- **Auth:** Uses `SUPABASE_SERVICE_ROLE_KEY` (bypasses RLS to read subscribers)
+- **Auth:** Requires `Authorization: Bearer <SUPABASE_SERVICE_ROLE_KEY>` header — unauthenticated requests return 401
+- **XSS Prevention:** All user-supplied content (`customMessage`, post titles, excerpts, URLs, image URLs) is HTML-escaped via `esc()` helper before interpolation into the email template
 - **Email Provider:** Resend API
 - **Flow:**
-  1. Receives JSON body with `customMessage` and optional `recentPosts[]`
-  2. Queries `newsletter_subscribers` where `is_active = true`
-  3. Builds branded HTML email (Hope Trust header, custom message, blog post cards, CTA, footer)
-  4. Sends emails in **batches of 50** with **1-second delay** between batches
-  5. Returns `{ sent, failed, errors }` summary
+  1. Validates Bearer token against `SUPABASE_SERVICE_ROLE_KEY`
+  2. Receives JSON body with `customMessage` and optional `recentPosts[]`
+  3. Queries `newsletter_subscribers` where `is_active = true`
+  4. Builds branded HTML email with escaped content (Hope Trust header, custom message, blog post cards, CTA, footer)
+  5. Sends emails in **batches of 50** with **1-second delay** between batches
+  6. Returns `{ sent, failed, errors }` summary
 - **Required Env:** `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, `NEWSLETTER_FROM_EMAIL`
 
 ### 4. Client-Side Supabase Calls (No Server API)
@@ -589,7 +591,7 @@ npm run build    # next build && node scripts/generate-sitemap.mjs
   - `/blog/:slug` → `/blogs/:slug/` (301) — WordPress legacy URLs
   - `/blog/` → `/blogs/` (301)
   - `/*` → `/index.html` (200) — SPA fallback
-- **Security Headers:** CSP, HSTS (2-year, preload), X-Frame-Options DENY, X-XSS-Protection, X-Content-Type-Options nosniff, strict Referrer-Policy, Permissions-Policy (camera/mic/geo/payment denied)
+- **Security Headers:** CSP, HSTS (2-year, preload), X-Frame-Options DENY, X-XSS-Protection, X-Content-Type-Options nosniff, strict Referrer-Policy, Permissions-Policy (camera/mic/geo denied; payment allowed for self + `checkout.razorpay.com`)
 - **Razorpay Security (create-order.mjs):**
   - **Rate limiting:** DB-backed per-IP (10/15 min) and per-email (5/15 min) via `enrollments` table queries
   - **Duplicate order guard:** Reuses existing `created` order for same email + program within 30 min
@@ -723,4 +725,4 @@ Every sub-page layout exports its own `metadata` object with:
 
 ---
 
-*Last updated: April 24, 2026*
+*Last updated: April 24, 2026 (security audit & fixes)*
