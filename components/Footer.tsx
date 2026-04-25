@@ -22,8 +22,8 @@ const socialLinks = [
 ];
 
 const legalLinks = [
-  { label: "Terms of use", href: "/terms" },
-  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Cancellation Policy", href: "/cancellation-policy" },
+  { label: "Privacy Policy", href: "/privacy-policy" },
   { label: "Sitemap", href: "/sitemap" },
 ];
 

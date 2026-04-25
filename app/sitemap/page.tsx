@@ -59,9 +59,10 @@ const sections: SitemapSection[] = [
     ],
   },
   {
-    title: 'Careers',
+    title: 'Legal',
     links: [
-      { label: 'Join Us', href: '/join-us' },
+      { label: 'Cancellation Policy', href: '/cancellation-policy' },
+      { label: 'Privacy Policy', href: '/privacy-policy' },
     ],
   },
 ];
