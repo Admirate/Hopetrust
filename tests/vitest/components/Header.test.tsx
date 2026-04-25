@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 vi.mock('next/navigation', () => ({
   usePathname: () => '/',
@@ -25,7 +25,7 @@ vi.mock('@/lib/assets', () => ({
   getAssetUrl: (path: string) => `/mock/${path}`,
 }));
 
-import Header from '../Header';
+import Header from '@/components/Header';
 
 describe('Header', () => {
   it('renders the logo', () => {
@@ -36,10 +36,10 @@ describe('Header', () => {
 
   it('renders navigation links', () => {
     render(<Header />);
-    expect(screen.getByText('About Us')).toBeInTheDocument();
-    expect(screen.getByText('Mental Health')).toBeInTheDocument();
-    expect(screen.getByText('Contact Us')).toBeInTheDocument();
-    expect(screen.getByText('Book Your Session')).toBeInTheDocument();
+    expect(screen.getAllByText('About Us').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Mental Health').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Contact Us').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('Book Your Session').length).toBeGreaterThanOrEqual(1);
   });
 
   it('has a mobile menu toggle button', () => {

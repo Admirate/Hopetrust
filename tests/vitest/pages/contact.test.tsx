@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 vi.mock('next/navigation', () => ({
@@ -51,7 +51,7 @@ vi.mock('sonner', () => ({
   Toaster: () => null,
 }));
 
-import ContactPage from '../contact/page';
+import ContactPage from '@/app/contact/page';
 import { toast } from 'sonner';
 
 describe('ContactPage', () => {
