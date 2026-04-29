@@ -138,6 +138,53 @@ export async function downloadEnrollmentsCsv(
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
+/**
+ * Download an XLSX export of enrollments matching the current filters.
+ * Fetches all matching enrollments (no pagination) and builds the workbook client-side.
+ */
+export async function downloadEnrollmentsXlsx(
+  token: string,
+  filters: EnrollmentFilters = {}
+): Promise<void> {
+  const { utils, writeFile } = await import('xlsx');
+
+  // Fetch ALL matching enrollments (remove pagination)
+  const allFilters = { ...filters };
+  delete allFilters.limit;
+  delete allFilters.offset;
+  const res = await fetchEnrollments(token, { ...allFilters, limit: 10000, offset: 0 });
+
+  const rows = res.enrollments.map((e) => ({
+    'Created': e.created_at ? new Date(e.created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) : '',
+    'Name': e.full_name,
+    'Email': e.email,
+    'Phone': e.phone,
+    'Program': e.program_title,
+    'Level': e.program_level || '',
+    'Type': e.program_type,
+    'Amount (INR)': (e.amount_inr || 0) / 100,
+    'Status': e.status,
+    'Payment ID': e.razorpay_payment_id || '',
+    'Order ID': e.razorpay_order_id || '',
+    'Enrollment ID': e.id,
+    'Paid At': e.paid_at ? new Date(e.paid_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) : '',
+    'Failure Reason': e.failure_reason || '',
+  }));
+
+  const ws = utils.json_to_sheet(rows);
+  const wb = utils.book_new();
+  utils.book_append_sheet(wb, ws, 'Enrollments');
+
+  // Auto-size columns
+  if (rows.length > 0) {
+    ws['!cols'] = Object.keys(rows[0]).map((key) => ({
+      wch: Math.min(40, Math.max(key.length + 2, ...rows.map((r) => String((r as Record<string, unknown>)[key] ?? '').length)) + 2),
+    }));
+  }
+
+  writeFile(wb, `enrollments-${new Date().toISOString().slice(0, 10)}.xlsx`);
+}
+
 /** Format paise as INR display. */
 export function formatINR(paise: number): string {
   const rupees = (paise || 0) / 100;

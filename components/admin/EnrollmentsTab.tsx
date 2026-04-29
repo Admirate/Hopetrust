@@ -15,11 +15,14 @@ import {
   Phone,
   ClipboardCopy,
   Check,
+  ChevronDown,
+  FileSpreadsheet,
 } from 'lucide-react';
 import {
   fetchEnrollments,
   updateEnrollment,
   downloadEnrollmentsCsv,
+  downloadEnrollmentsXlsx,
   formatINR,
   UnauthorizedError,
   type AdminEnrollment,
@@ -59,6 +62,7 @@ export default function EnrollmentsTab({ token, onUnauthorized, onCountChange }:
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [showExportMenu, setShowExportMenu] = useState(false);
   const [error, setError] = useState('');
   const [selected, setSelected] = useState<AdminEnrollment | null>(null);
 
@@ -114,11 +118,16 @@ export default function EnrollmentsTab({ token, onUnauthorized, onCountChange }:
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
-  async function handleExport() {
+  async function handleExport(format: 'csv' | 'xlsx') {
+    setShowExportMenu(false);
     setExporting(true);
     setError('');
     try {
-      await downloadEnrollmentsCsv(token, filters);
+      if (format === 'xlsx') {
+        await downloadEnrollmentsXlsx(token, filters);
+      } else {
+        await downloadEnrollmentsCsv(token, filters);
+      }
     } catch (e) {
       if (e instanceof UnauthorizedError) { onUnauthorized(); return; }
       setError(e instanceof Error ? e.message : 'Export failed');
@@ -146,14 +155,38 @@ export default function EnrollmentsTab({ token, onUnauthorized, onCountChange }:
             <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
             Refresh
           </button>
-          <button
-            onClick={handleExport}
-            disabled={exporting || total === 0}
-            className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#ED7428] px-3 py-2 text-xs font-semibold text-white shadow-lg shadow-[#ED7428]/20 transition hover:bg-[#d4651f] disabled:opacity-60 sm:flex-initial sm:px-4 sm:text-sm"
-          >
-            {exporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
-            Export CSV
-          </button>
+          <div className="relative">
+            <button
+              onClick={() => setShowExportMenu((v) => !v)}
+              disabled={exporting || total === 0}
+              className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#ED7428] px-3 py-2 text-xs font-semibold text-white shadow-lg shadow-[#ED7428]/20 transition hover:bg-[#d4651f] disabled:opacity-60 sm:flex-initial sm:px-4 sm:text-sm"
+            >
+              {exporting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+              Export Data
+              <ChevronDown className="h-3.5 w-3.5" />
+            </button>
+            {showExportMenu && (
+              <>
+                <div className="fixed inset-0 z-10" onClick={() => setShowExportMenu(false)} />
+                <div className="absolute right-0 top-full z-20 mt-1.5 w-44 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xl">
+                  <button
+                    onClick={() => handleExport('csv')}
+                    className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm text-[#00373E] transition hover:bg-[#F7F6F4]"
+                  >
+                    <FileSpreadsheet className="h-4 w-4 text-emerald-600" />
+                    Export as CSV
+                  </button>
+                  <button
+                    onClick={() => handleExport('xlsx')}
+                    className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm text-[#00373E] transition hover:bg-[#F7F6F4]"
+                  >
+                    <FileSpreadsheet className="h-4 w-4 text-blue-600" />
+                    Export as XLSX
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
