@@ -75,7 +75,7 @@ if (fs.existsSync(OUT_DIR)) {
 
 const robots = `User-agent: *
 Allow: /
-Disallow: /admin/
+Disallow: /arel-ops/
 
 Sitemap: ${SITE_URL}/sitemap.xml
 `;

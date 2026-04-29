@@ -104,7 +104,7 @@ export default function EnrollmentModal({
         key: order.key_id,
         amount: order.amount,
         currency: order.currency,
-        name: 'Hope Trust India',
+        name: 'AREL Hope Recovery Services Hyderabad',
         description: order.program_level
           ? `${order.program_title} — ${order.program_level}`
           : order.program_title,
@@ -262,7 +262,7 @@ export default function EnrollmentModal({
 
               <p className="mt-4 text-center text-[11px] leading-relaxed text-[#6A8181]">
                 Payments are processed securely by Razorpay. By continuing you agree to be contacted
-                by Hope Trust India regarding your enrollment.
+                by AREL Hope Recovery Services Hyderabad regarding your enrollment.
               </p>
             </form>
           </motion.div>

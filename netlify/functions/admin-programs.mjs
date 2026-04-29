@@ -11,7 +11,7 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
 };
 
-// ── Field length limits (must match client-side constants in app/admin/page.tsx) ──
+// ── Field length limits (must match client-side constants in app/arel-ops/page.tsx) ──
 const LIMITS = {
   title: 200,
   subtitle: 200,

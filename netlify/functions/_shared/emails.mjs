@@ -58,7 +58,7 @@ export function buildEnrollmentConfirmationEmail({
           <!-- Header -->
           <tr>
             <td style="background-color:#00373E;padding:32px 40px;text-align:center;">
-              <h1 style="margin:0;font-size:28px;font-weight:700;color:#ffffff;letter-spacing:-0.5px;">Hope Trust</h1>
+              <h1 style="margin:0;font-size:28px;font-weight:700;color:#ffffff;letter-spacing:-0.5px;">AREL Hope Recovery Services</h1>
               <p style="margin:8px 0 0 0;font-size:14px;color:#ED7428;font-weight:500;letter-spacing:1px;text-transform:uppercase;">Enrollment Confirmed</p>
             </td>
           </tr>
@@ -113,7 +113,7 @@ export function buildEnrollmentConfirmationEmail({
           <!-- Footer -->
           <tr>
             <td style="padding:24px 40px;text-align:center;background-color:#00373E;">
-              <p style="margin:0 0 4px 0;font-size:13px;color:#9CA3AF;">Hope Trust, Banjara Hills, Hyderabad, India</p>
+              <p style="margin:0 0 4px 0;font-size:13px;color:#9CA3AF;">AREL Hope Recovery Services, Banjara Hills, Hyderabad, India</p>
               <p style="margin:0;font-size:13px;color:#9CA3AF;">${SUPPORT_PHONE} &nbsp;|&nbsp; ${SUPPORT_EMAIL}</p>
             </td>
           </tr>
@@ -138,7 +138,7 @@ export function buildEnrollmentConfirmationEmail({
     '',
     'Our team will reach out within 1 working day.',
     '',
-    `Hope Trust, Banjara Hills, Hyderabad`,
+    `AREL Hope Recovery Services, Banjara Hills, Hyderabad`,
     `${SUPPORT_PHONE} | ${SUPPORT_EMAIL}`,
   ].filter(Boolean).join('\n');
 
@@ -190,7 +190,7 @@ export function buildAdminAlertEmail({
           </table>
         </td></tr>
         <tr><td style="background:#F9FAFB;padding:16px 24px;text-align:center;">
-          <a href="${SITE_URL}/admin" style="display:inline-block;background:#00373E;color:#ffffff;padding:10px 24px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:600;">Open admin dashboard</a>
+          <a href="${SITE_URL}/arel-ops" style="display:inline-block;background:#00373E;color:#ffffff;padding:10px 24px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:600;">Open admin dashboard</a>
         </td></tr>
       </table>
     </td></tr>
@@ -229,7 +229,7 @@ export async function sendEmail({ to, subject, html, text, from, replyTo }) {
 
   const fromAddr = from
     || process.env.NEWSLETTER_FROM_EMAIL
-    || 'Hope Trust <frontoffice@hopetrustindia.com>';
+    || 'AREL Hope Recovery Services <frontoffice@hopetrustindia.com>';
 
   try {
     const res = await fetch('https://api.resend.com/emails', {

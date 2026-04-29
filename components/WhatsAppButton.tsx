@@ -8,7 +8,7 @@ const WHATSAPP_FALLBACK = siteConfig.contact.whatsappUrl;
 
 export default function WhatsAppButton() {
   const pathname = usePathname();
-  if (pathname?.startsWith('/admin')) return null;
+  if (pathname?.startsWith('/arel-ops')) return null;
   return <WhatsAppButtonInner />;
 }
 

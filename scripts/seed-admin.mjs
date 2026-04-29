@@ -1,13 +1,4 @@
-#!/usr/bin/env node
-// =============================================================================
-// Seed an admin user with a bcrypt-hashed password.
-//
-// Usage:
-//   node scripts/seed-admin.mjs <email> <password>
-//
-// Example:
-//   node scripts/seed-admin.mjs admin@hopetrustindia.com MySecureP@ss123
-//
+
 // Requires SUPABASE_SERVICE_ROLE_KEY in .env.local (not the anon key).
 // =============================================================================
 

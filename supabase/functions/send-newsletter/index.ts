@@ -68,7 +68,7 @@ function buildNewsletterHtml(
     <tr><td align="center" style="padding: 40px 16px;">
       <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width: 600px; width: 100%; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.06);">
         <tr><td style="background-color: #00373E; padding: 32px 40px; text-align: center;">
-          <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">Hope Trust</h1>
+          <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff;">AREL Hope Recovery Services</h1>
           <p style="margin: 8px 0 0 0; font-size: 14px; color: #ED7428; font-weight: 500; letter-spacing: 1px; text-transform: uppercase;">Weekly Newsletter</p>
         </td></tr>
         <tr><td style="padding: 32px 40px;">
@@ -92,7 +92,7 @@ function buildNewsletterHtml(
           <a href="${siteUrl}/contact" style="display: inline-block; background-color: #00373E; color: #ffffff; padding: 12px 32px; border-radius: 50px; text-decoration: none; font-size: 14px; font-weight: 600;">Book a Session</a>
         </td></tr>
         <tr><td style="padding: 24px 40px; text-align: center; background-color: #00373E;">
-          <p style="margin: 0 0 4px 0; font-size: 13px; color: #9CA3AF;">Hope Trust, Banjara Hills, Hyderabad, India</p>
+          <p style="margin: 0 0 4px 0; font-size: 13px; color: #9CA3AF;">AREL Hope Recovery Services, Banjara Hills, Hyderabad, India</p>
           <p style="margin: 0 0 4px 0; font-size: 13px; color: #9CA3AF;">+91 90008 50001 | frontoffice@hopetrustindia.com</p>
           <p style="margin: 12px 0 0 0; font-size: 12px;"><a href="${unsubscribeUrl}" style="color: #ED7428; text-decoration: underline;">Unsubscribe</a></p>
         </td></tr>
@@ -128,7 +128,7 @@ Deno.serve(async (req: Request) => {
     const resendApiKey = Deno.env.get("RESEND_API_KEY")!;
     const fromEmail =
       Deno.env.get("NEWSLETTER_FROM_EMAIL") ||
-      "Hope Trust <newsletter@hopetrustindia.com>";
+      "AREL Hope Recovery Services <newsletter@hopetrustindia.com>";
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
     const resend = new Resend(resendApiKey);

@@ -74,7 +74,7 @@ export function buildNewsletterHtml({
           <tr>
             <td style="background-color: #00373E; padding: 32px 40px; text-align: center;">
               <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff; letter-spacing: -0.5px;">
-                Hope Trust
+                AREL Hope Recovery Services
               </h1>
               <p style="margin: 8px 0 0 0; font-size: 14px; color: #ED7428; font-weight: 500; letter-spacing: 1px; text-transform: uppercase;">
                 Weekly Newsletter
@@ -141,7 +141,7 @@ export function buildNewsletterHtml({
           <tr>
             <td style="padding: 24px 40px; text-align: center; background-color: #00373E;">
               <p style="margin: 0 0 4px 0; font-size: 13px; color: #9CA3AF;">
-                Hope Trust, Banjara Hills, Hyderabad, India
+                AREL Hope Recovery Services, Banjara Hills, Hyderabad, India
               </p>
               <p style="margin: 0 0 4px 0; font-size: 13px; color: #9CA3AF;">
                 +91 90008 50001 | frontoffice@hopetrustindia.com
