@@ -145,7 +145,7 @@ function LoginForm({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full rounded-xl border border-gray-200 bg-[#F7F6F4]/50 py-3 pl-10 pr-4 text-sm text-[#00373E] outline-none transition-all placeholder:text-gray-400 focus:border-[#ED7428] focus:bg-white focus:ring-2 focus:ring-[#ED7428]/20"
-                  placeholder="admin@hopetrustindia.com"
+                  placeholder="Enter your email"
                 />
               </div>
             </div>
