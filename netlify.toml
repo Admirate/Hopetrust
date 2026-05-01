@@ -40,26 +40,27 @@
   to = "/.netlify/functions/admin-programs"
   status = 200
 
-# Booking + Razorpay flow (Netlify Functions)
-[[redirects]]
-  from = "/api/create-order"
-  to = "/.netlify/functions/create-order"
-  status = 200
-
-[[redirects]]
-  from = "/api/razorpay-webhook"
-  to = "/.netlify/functions/razorpay-webhook"
-  status = 200
-
-[[redirects]]
-  from = "/api/enrollment-status"
-  to = "/.netlify/functions/enrollment-status"
-  status = 200
-
-[[redirects]]
-  from = "/api/admin-enrollments"
-  to = "/.netlify/functions/admin-enrollments"
-  status = 200
+# PAYMENT DISABLED — uncomment when Razorpay is integrated
+# # Booking + Razorpay flow (Netlify Functions)
+# [[redirects]]
+#   from = "/api/create-order"
+#   to = "/.netlify/functions/create-order"
+#   status = 200
+#
+# [[redirects]]
+#   from = "/api/razorpay-webhook"
+#   to = "/.netlify/functions/razorpay-webhook"
+#   status = 200
+#
+# [[redirects]]
+#   from = "/api/enrollment-status"
+#   to = "/.netlify/functions/enrollment-status"
+#   status = 200
+#
+# [[redirects]]
+#   from = "/api/admin-enrollments"
+#   to = "/.netlify/functions/admin-enrollments"
+#   status = 200
 
 # Serve the custom 404 page for unknown routes
 [[redirects]]
@@ -76,7 +77,9 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
-    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(self \"https://checkout.razorpay.com\")"
+    # PAYMENT DISABLED — restore Razorpay when integrated:
+    # Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(self \"https://checkout.razorpay.com\")"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
     # CSP is in public/_headers (production only). Kept out of netlify.toml so netlify dev doesn't block Next.js eval() in dev mode.
 
 # Cache static assets

@@ -1,5 +1,12 @@
 # Razorpay Program Booking System
 
+> **⚠️ CURRENTLY DISABLED (May 2026)**
+> All payment/enrollment UI is commented out across the site. The backend
+> (Netlify Functions, database tables, lib modules, components) is **untouched**
+> and ready to re-enable. See `docs/claude.md` → "Disabled Features" for the
+> full list of changes and re-enablement steps. Search for `PAYMENT DISABLED`
+> in the codebase.
+
 End-to-end online enrollment + payment flow for Hope Trust training and
 addiction programs. Built April 22, 2026.
 

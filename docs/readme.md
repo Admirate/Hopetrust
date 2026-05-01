@@ -8,8 +8,8 @@ A modern mental health & addiction recovery clinic website for [Hope Trust](http
 - **TypeScript** + **TailwindCSS** + **shadcn/ui**
 - **Supabase** (PostgreSQL + Storage)
 - **Netlify** (hosting + serverless functions)
-- **Resend** (newsletter + enrollment emails)
-- **Razorpay** (training + addiction program booking/payments)
+- **Resend** (enrollment emails + newsletter — *currently disabled*)
+- **Razorpay** (training + addiction program booking/payments — *currently disabled*)
 
 ## Getting Started
 
@@ -30,7 +30,7 @@ npm run build
 ## Project Structure
 
 ```
-app/                → Next.js pages (9 routes)
+app/                → Next.js pages (13+ routes)
 components/         → React components (custom + shadcn/ui)
 lib/                → Utilities (Supabase client, blog, config, assets)
 hooks/              → Custom React hooks
@@ -40,7 +40,7 @@ netlify/functions/  → Netlify serverless functions
 supabase/functions/ → Supabase Edge Functions
 scripts/            → Build & migration scripts
 docs/               → Project documentation
-                       ├─ razorpay-booking.md  (enrollment + payment system)
+                       ├─ razorpay-booking.md  (enrollment + payment system — currently disabled)
                        ├─ claude.md            (full project reference)
                        └─ session.md           (dev session log)
 

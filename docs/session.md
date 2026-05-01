@@ -813,5 +813,77 @@ Full-stack audit covering:
 
 ---
 
-*Last updated: April 24, 2026*
-*Sessions: April 7 (initial) · April 19 ×7 (docs corrections, rate limiting, 401 auto-logout, token expiry check, input limits, audit log) · April 20 (training CRUD, responsive training page, URL refactor, SEO) · April 22 (Razorpay booking system — 4 phases: schema, functions, frontend, admin) · April 24 (security audit & fixes — 10 vulnerabilities patched)*
+## Session — May 1, 2026 · Disable Payment & Newsletter Features
+
+### Objective
+Temporarily disable all payment/enrollment (Razorpay) and newsletter signup UI across the site, preserving all backend code for future re-enablement.
+
+### Payment / Enrollment — Changes Made
+
+#### `app/training/page.tsx`
+- Commented out `EnrollmentModal` import, `EnrollTarget` interface, `enrollTarget` state
+- Commented out Enroll buttons in internship level rows and traineeship cards
+- Commented out `<EnrollmentModal />` component at page root
+
+#### `app/addiction/page.tsx`
+- Commented out `EnrollmentModal` import, `EnrollTarget` interface, `enrollTarget` state
+- Commented out "Enroll now" buttons in program cards
+- Commented out `<EnrollmentModal />` component at page root
+
+#### `app/arel-ops/page.tsx` (Admin dashboard)
+- Commented out `EnrollmentsTab` import and `Receipt` icon import
+- Commented out `enrollmentCount` state
+- Commented out Enrollments tab button and tab content panel
+- Narrowed `activeTab` type to `'addiction' | 'training'`
+
+#### `app/enrollment-success/page.tsx`
+- Replaced entire page with a `useEffect` redirect to `/`
+- Original implementation available in git history
+
+#### `netlify.toml`
+- Commented out 4 payment-related redirect rules (`create-order`, `razorpay-webhook`, `enrollment-status`, `admin-enrollments`)
+- Removed Razorpay from `Permissions-Policy` (`payment=()` instead of `payment=(self "https://checkout.razorpay.com")`)
+
+#### `public/_headers`
+- Removed Razorpay domains from CSP (`checkout.razorpay.com`, `api.razorpay.com`, `lumberjack.razorpay.com`)
+- Original CSP preserved in a comment for future restoration
+
+### Newsletter — Changes Made
+
+#### `app/page.tsx`
+- Commented out `LargeRectangleSection` dynamic import and `<LargeRectangleSection />` usage (entire section is a newsletter signup card)
+
+#### `components/LargeRectangleSection.tsx`
+- Commented out `NewsletterForm` import and the form element (component itself still exists but form is removed)
+
+#### `components/BlogListClient.tsx`
+- Commented out `NewsletterForm` import and the full "Newsletter CTA" section at top of blog listing
+
+#### `components/Footer.tsx`
+- Commented out "Subscribe to our newsletter" CTA button
+
+### What was NOT changed (preserved for re-enablement)
+- All Netlify Functions (`create-order.mjs`, `razorpay-webhook.mjs`, `enrollment-status.mjs`, `admin-enrollments.mjs`)
+- All lib modules (`lib/enrollment.ts`, `lib/enrollments-admin.ts`, `lib/newsletter-template.ts`)
+- Components (`components/EnrollmentModal.tsx`, `components/admin/EnrollmentsTab.tsx`, `components/NewsletterForm.tsx`)
+- Supabase Edge Function (`supabase/functions/send-newsletter/`)
+- Database tables, RLS policies, and seed data
+
+### Verification
+- `npx tsc --noEmit` — zero TypeScript errors after all changes
+
+### Comment markers
+- All payment comments tagged `PAYMENT DISABLED`
+- All newsletter comments tagged `NEWSLETTER DISABLED`
+- Easy to find and revert with `grep -r "PAYMENT DISABLED"` and `grep -r "NEWSLETTER DISABLED"`
+
+### Docs updated
+- `docs/readme.md` — marked Razorpay and Resend as *currently disabled*
+- `docs/claude.md` — added "Disabled Features (as of May 2026)" section with full inventory and re-enablement steps; updated routes table, data flow diagram, security headers description, and last-updated date
+- `docs/razorpay-booking.md` — added prominent disabled notice at top
+- `docs/session.md` — this entry
+
+---
+
+*Last updated: May 1, 2026*
+*Sessions: April 7 (initial) · April 19 ×7 (docs corrections, rate limiting, 401 auto-logout, token expiry check, input limits, audit log) · April 20 (training CRUD, responsive training page, URL refactor, SEO) · April 22 (Razorpay booking system — 4 phases: schema, functions, frontend, admin) · April 24 (security audit & fixes — 10 vulnerabilities patched) · May 1 (payment & newsletter features disabled)*

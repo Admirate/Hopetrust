@@ -9,15 +9,10 @@ import { getAssetUrl } from '@/lib/assets';
 import dynamic from 'next/dynamic';
 import type { AddictionProgram } from '@/lib/programs';
 import { fetchPrograms } from '@/lib/programs';
-import EnrollmentModal from '@/components/EnrollmentModal';
+// PAYMENT DISABLED — uncomment when Razorpay is integrated
+// import EnrollmentModal from '@/components/EnrollmentModal';
 
 const Footer = dynamic(() => import('@/components/Footer'));
-
-interface EnrollTarget {
-  programId: string;
-  programTitle: string;
-  priceDisplay?: string;
-}
 
 /** Hardcoded fallback — used if Supabase is unreachable */
 const FALLBACK_PROGRAMS: Omit<AddictionProgram, 'id' | 'is_active' | 'created_at' | 'updated_at'>[] = [
@@ -101,7 +96,6 @@ export default function AddictionPage() {
   const [programs, setPrograms] = useState<
     Omit<AddictionProgram, 'id' | 'is_active' | 'created_at' | 'updated_at'>[] | AddictionProgram[]
   >(FALLBACK_PROGRAMS);
-  const [enrollTarget, setEnrollTarget] = useState<EnrollTarget | null>(null);
 
   useEffect(() => {
     fetchPrograms()
@@ -296,6 +290,7 @@ export default function AddictionPage() {
                   <p className="mt-4 text-lg sm:text-xl font-bold text-[#1a1a1a]">
                     Package Cost: {program.cost}
                   </p>
+                  {/* PAYMENT DISABLED — uncomment when Razorpay is integrated
                   {'id' in program && program.id && (
                     <button
                       type="button"
@@ -309,6 +304,7 @@ export default function AddictionPage() {
                       Enroll now
                     </button>
                   )}
+                  */}
                 </div>
               </FadeInSection>
             ))}
@@ -335,6 +331,7 @@ export default function AddictionPage() {
         </FadeInSection>
       </main>
       <Footer />
+      {/* PAYMENT DISABLED — uncomment when Razorpay is integrated
       <EnrollmentModal
         open={enrollTarget !== null}
         onClose={() => setEnrollTarget(null)}
@@ -343,6 +340,7 @@ export default function AddictionPage() {
         programTitle={enrollTarget?.programTitle ?? ''}
         priceDisplay={enrollTarget?.priceDisplay}
       />
+      */}
     </>
   );
 }

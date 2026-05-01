@@ -2,13 +2,16 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
-import { Trash2, Plus, LogOut, Loader2, GripVertical, Lock, Mail, Eye, EyeOff, Package, AlertTriangle, Pencil, X, Check, GraduationCap, Receipt } from 'lucide-react';
+import { Trash2, Plus, LogOut, Loader2, GripVertical, Lock, Mail, Eye, EyeOff, Package, AlertTriangle, Pencil, X, Check, GraduationCap } from 'lucide-react';
+// PAYMENT DISABLED — Receipt icon was used by Enrollments tab
+// import { Receipt } from 'lucide-react';
 import type { AddictionProgram } from '@/lib/programs';
 import { fetchPrograms, createProgram, updateProgram, deleteProgram, UnauthorizedError } from '@/lib/programs';
 import type { TrainingProgram, TrainingProgramLevel } from '@/lib/training-programs';
 import { fetchTrainingPrograms, createTrainingProgram, updateTrainingProgram, deleteTrainingProgram, UnauthorizedError as TrainingUnauthorizedError } from '@/lib/training-programs';
 import { getLogoUrl } from '@/lib/assets';
-import EnrollmentsTab from '@/components/admin/EnrollmentsTab';
+// PAYMENT DISABLED — uncomment when Razorpay is integrated
+// import EnrollmentsTab from '@/components/admin/EnrollmentsTab';
 
 const LOGO_URL = getLogoUrl();
 
@@ -1098,10 +1101,12 @@ function TrainingProgramCard({
 // ─── Dashboard ───────────────────────────────────────────────────────────────
 
 function Dashboard({ token, email, onLogout }: { token: string; email: string; onLogout: () => void }) {
-  const [activeTab, setActiveTab] = useState<'addiction' | 'training' | 'enrollments'>('addiction');
+  // PAYMENT DISABLED — restore 'enrollments' to this union when Razorpay is integrated
+  const [activeTab, setActiveTab] = useState<'addiction' | 'training'>('addiction');
   const [programs, setPrograms] = useState<AddictionProgram[]>([]);
   const [trainingPrograms, setTrainingPrograms] = useState<TrainingProgram[]>([]);
-  const [enrollmentCount, setEnrollmentCount] = useState<number | null>(null);
+  // PAYMENT DISABLED — uncomment when Razorpay is integrated
+  // const [enrollmentCount, setEnrollmentCount] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [trainingLoading, setTrainingLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -1238,6 +1243,7 @@ function Dashboard({ token, email, onLogout }: { token: string; email: string; o
             <span className="sm:hidden">Training ({trainingPrograms.length})</span>
             <span className="hidden sm:inline">Training Programs ({trainingPrograms.length})</span>
           </button>
+          {/* PAYMENT DISABLED — uncomment when Razorpay is integrated
           <button
             onClick={() => setActiveTab('enrollments')}
             className={`inline-flex flex-shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-xl px-3 py-2.5 text-xs font-semibold transition-all sm:flex-1 sm:gap-2 sm:px-4 sm:py-3 sm:text-sm ${
@@ -1249,6 +1255,7 @@ function Dashboard({ token, email, onLogout }: { token: string; email: string; o
             <Receipt className="h-4 w-4" />
             Enrollments{enrollmentCount !== null ? ` (${enrollmentCount})` : ''}
           </button>
+          */}
         </div>
 
         {error && (
@@ -1376,7 +1383,7 @@ function Dashboard({ token, email, onLogout }: { token: string; email: string; o
           </>
         )}
 
-        {/* ── Enrollments Tab ── */}
+        {/* PAYMENT DISABLED — uncomment when Razorpay is integrated
         {activeTab === 'enrollments' && (
           <EnrollmentsTab
             token={token}
@@ -1384,6 +1391,7 @@ function Dashboard({ token, email, onLogout }: { token: string; email: string; o
             onCountChange={setEnrollmentCount}
           />
         )}
+        */}
       </main>
 
       <footer className="mt-auto border-t border-gray-200 bg-white/50 py-4 text-center text-xs text-gray-400">

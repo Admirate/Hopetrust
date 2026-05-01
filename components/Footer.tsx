@@ -126,12 +126,14 @@ export default function Footer() {
 
           {/* Bottom row: buttons */}
           <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-8">
+            {/* NEWSLETTER DISABLED — uncomment when newsletter is enabled
             <Link
               href="/contact"
               className={`${headingFont.className} inline-flex items-center justify-center rounded-full bg-[#00373E] px-8 py-3 text-sm sm:text-base font-semibold text-white shadow-md transition-all duration-200 hover:bg-[#024a53] hover:-translate-y-0.5 hover:shadow-lg`}
             >
               Subscribe to our newsletter
             </Link>
+            */}
             <Link
               href="/book-your-session"
               className={`${headingFont.className} inline-flex items-center justify-center rounded-full bg-[#00373E] px-8 py-3 text-sm sm:text-base font-semibold text-white shadow-md transition-all duration-200 hover:bg-[#024a53] hover:-translate-y-0.5 hover:shadow-lg`}

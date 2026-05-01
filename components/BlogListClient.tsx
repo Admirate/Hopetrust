@@ -6,7 +6,8 @@ import Image from 'next/image';
 import { Search, Calendar, ArrowRight, X } from 'lucide-react';
 import { Bricolage_Grotesque } from 'next/font/google';
 import FadeInSection from '@/components/FadeInSection';
-import NewsletterForm from '@/components/NewsletterForm';
+// NEWSLETTER DISABLED — uncomment when newsletter is enabled
+// import NewsletterForm from '@/components/NewsletterForm';
 import type { BlogPostMeta } from '@/lib/blog';
 
 const headingFont = Bricolage_Grotesque({
@@ -201,7 +202,7 @@ export default function BlogListClient({
         </FadeInSection>
       )}
 
-      {/* Newsletter CTA */}
+      {/* NEWSLETTER DISABLED — uncomment when newsletter is enabled
       <FadeInSection delay={150}>
         <section className="w-full bg-[#00373E]">
           <div className="mx-auto flex w-full max-w-[1225px] flex-col items-center gap-4 px-4 py-10 text-center sm:gap-6 sm:px-8 sm:py-14 lg:px-12">
@@ -220,6 +221,7 @@ export default function BlogListClient({
           </div>
         </section>
       </FadeInSection>
+      */}
 
       {/* Category filters + Grid */}
       <section ref={gridRef} className="w-full bg-[#F7F6F4] pt-8 pb-16 sm:py-10 lg:py-14">

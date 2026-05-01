@@ -10,18 +10,20 @@ import Header from '@/components/Header';
 import FadeInSection from '@/components/FadeInSection';
 import { getAssetUrl } from '@/lib/assets';
 import dynamic from 'next/dynamic';
-import EnrollmentModal from '@/components/EnrollmentModal';
+// PAYMENT DISABLED — uncomment when Razorpay is integrated
+// import EnrollmentModal from '@/components/EnrollmentModal';
 
 const Footer = dynamic(() => import('@/components/Footer'));
 const ScrollingTextBanner = dynamic(() => import('@/components/ScrollingTextBanner'));
 
-interface EnrollTarget {
-  programId: string;
-  programTitle: string;
-  levelIndex?: number;
-  levelLabel?: string;
-  priceDisplay?: string;
-}
+// PAYMENT DISABLED — uncomment when Razorpay is integrated
+// interface EnrollTarget {
+//   programId: string;
+//   programTitle: string;
+//   levelIndex?: number;
+//   levelLabel?: string;
+//   priceDisplay?: string;
+// }
 
 const heroFont = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -48,7 +50,8 @@ export default function TrainingPage() {
   const textY = useTransform(scrollYProgress, [0, 1], ['0%', '-30%']);
 
   const [programs, setPrograms] = useState<TrainingProgram[]>([]);
-  const [enrollTarget, setEnrollTarget] = useState<EnrollTarget | null>(null);
+  // PAYMENT DISABLED — uncomment when Razorpay is integrated
+  // const [enrollTarget, setEnrollTarget] = useState<EnrollTarget | null>(null);
 
   useEffect(() => {
     fetchTrainingPrograms().then(setPrograms).catch(() => {});
@@ -244,6 +247,7 @@ export default function TrainingPage() {
                             <span className={`${boldFont.className} text-[13px] font-bold text-black sm:text-[16px] lg:text-[20px] lg:leading-[26px] tracking-[0.724138px]`}>
                               {level.label} — {level.hours} — {level.price}
                             </span>
+                            {/* PAYMENT DISABLED — uncomment when Razorpay is integrated
                             <button
                               type="button"
                               onClick={() => setEnrollTarget({
@@ -257,6 +261,7 @@ export default function TrainingPage() {
                             >
                               Enroll
                             </button>
+                            */}
                           </div>
                         ))}
                       </div>
@@ -293,6 +298,7 @@ export default function TrainingPage() {
                         {tp.fee && <li>Fee — {tp.fee}</li>}
                         {tp.format && <li>Format — {tp.format}</li>}
                       </ul>
+                      {/* PAYMENT DISABLED — uncomment when Razorpay is integrated
                       <button
                         type="button"
                         onClick={() => setEnrollTarget({
@@ -304,6 +310,7 @@ export default function TrainingPage() {
                       >
                         Enroll now
                       </button>
+                      */}
                     </div>
                   </div>
                 </div>
@@ -370,7 +377,7 @@ export default function TrainingPage() {
       </main>
       <Footer />
 
-      {/* Shared enrollment modal (opens from any Enroll button) */}
+      {/* PAYMENT DISABLED — uncomment when Razorpay is integrated
       <EnrollmentModal
         open={enrollTarget !== null}
         onClose={() => setEnrollTarget(null)}
@@ -381,6 +388,7 @@ export default function TrainingPage() {
         levelLabel={enrollTarget?.levelLabel}
         priceDisplay={enrollTarget?.priceDisplay}
       />
+      */}
     </>
   );
 }

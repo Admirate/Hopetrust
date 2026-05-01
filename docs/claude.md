@@ -8,6 +8,45 @@ This is a **statically exported Next.js 15 application** hosted on **Netlify**, 
 
 ---
 
+## Disabled Features (as of May 2026)
+
+The following features are **temporarily disabled** and commented out in the codebase. All original code is preserved in comments (marked `PAYMENT DISABLED` or `NEWSLETTER DISABLED`) and in git history for future re-enablement.
+
+### Payment / Enrollment (Razorpay)
+- **Enroll buttons** on `/training` and `/addiction` pages — commented out
+- **`EnrollmentModal`** import and usage — commented out on both pages
+- **Enrollments tab** in admin dashboard (`/admin`) — import, tab button, and tab content all commented out; `activeTab` type narrowed to `'addiction' | 'training'`
+- **`/enrollment-success`** page — replaced with a redirect to `/`; original page content available in git history
+- **`netlify.toml` redirects** — `/api/create-order`, `/api/razorpay-webhook`, `/api/enrollment-status`, `/api/admin-enrollments` all commented out
+- **`netlify.toml` Permissions-Policy** — Razorpay removed from `payment=()` directive
+- **`public/_headers` CSP** — Razorpay domains (`checkout.razorpay.com`, `api.razorpay.com`, `lumberjack.razorpay.com`) removed from `script-src`, `connect-src`, and `frame-src`
+
+**Not removed** (standalone, untouched):
+- All Netlify Functions (`create-order.mjs`, `razorpay-webhook.mjs`, `enrollment-status.mjs`, `admin-enrollments.mjs`)
+- All lib modules (`lib/enrollment.ts`, `lib/enrollments-admin.ts`)
+- Components (`components/EnrollmentModal.tsx`, `components/admin/EnrollmentsTab.tsx`)
+- Database tables and RLS policies
+
+### Newsletter
+- **`LargeRectangleSection`** (homepage newsletter signup card) — dynamic import and `<LargeRectangleSection />` commented out in `app/page.tsx`; `NewsletterForm` usage commented out inside the component
+- **Blog newsletter CTA** — `NewsletterForm` import and CTA section commented out in `components/BlogListClient.tsx`
+- **Footer "Subscribe to our newsletter" button** — commented out in `components/Footer.tsx`
+
+**Not removed** (standalone, untouched):
+- `components/NewsletterForm.tsx`
+- `lib/newsletter-template.ts`
+- `supabase/functions/send-newsletter/`
+- `newsletter_subscribers` database table
+
+### How to re-enable
+1. Search for `PAYMENT DISABLED` and `NEWSLETTER DISABLED` across the codebase
+2. Uncomment the marked blocks
+3. Restore the original `public/_headers` CSP and `netlify.toml` redirects + Permissions-Policy
+4. Restore `app/enrollment-success/page.tsx` from git history
+5. Verify build with `npx tsc --noEmit && npm run build`
+
+---
+
 ## Tech Stack
 
 | Layer            | Technology                                                                 |
@@ -424,7 +463,7 @@ Forms submit **directly from the browser** to Supabase using the anon key:
 
 | Route                      | Component                          | Rendering   | Data Source                        |
 | -------------------------- | ---------------------------------- | ----------- | ---------------------------------- |
-| `/`                        | `app/page.tsx`                     | Static SSG  | None (hardcoded content)           |
+| `/`                        | `app/page.tsx`                     | Static SSG  | None (hardcoded content). Newsletter section (`LargeRectangleSection`) currently disabled. |
 | `/about`                   | `app/about/page.tsx`               | Client CSR  | None (hardcoded + assets)          |
 | `/mental-health`           | `app/mental-health/page.tsx`       | Client CSR  | None (hardcoded content)           |
 | `/addiction`               | `app/addiction/page.tsx`           | Client CSR  | Netlify fn: active programs        |
@@ -591,7 +630,7 @@ npm run build    # next build && node scripts/generate-sitemap.mjs
   - `/blog/:slug` → `/blogs/:slug/` (301) — WordPress legacy URLs
   - `/blog/` → `/blogs/` (301)
   - `/*` → `/index.html` (200) — SPA fallback
-- **Security Headers:** CSP, HSTS (2-year, preload), X-Frame-Options DENY, X-XSS-Protection, X-Content-Type-Options nosniff, strict Referrer-Policy, Permissions-Policy (camera/mic/geo denied; payment allowed for self + `checkout.razorpay.com`)
+- **Security Headers:** CSP, HSTS (2-year, preload), X-Frame-Options DENY, X-XSS-Protection, X-Content-Type-Options nosniff, strict Referrer-Policy, Permissions-Policy (camera/mic/geo denied; payment denied — Razorpay currently disabled)
 - **Razorpay Security (create-order.mjs):**
   - **Rate limiting:** DB-backed per-IP (10/15 min) and per-email (5/15 min) via `enrollments` table queries
   - **Duplicate order guard:** Reuses existing `created` order for same email + program within 30 min
@@ -632,7 +671,7 @@ npm run build    # next build && node scripts/generate-sitemap.mjs
 │                   ├──► Supabase (joinus_applications INSERT) │
 │                   └──► Netlify Forms (backup)                │
 │                                                              │
-│  Newsletter ──────────► Supabase (newsletter_subscribers)    │
+│  Newsletter ──────────► Supabase (newsletter_subscribers)    │  *(currently disabled)*
 │                                                              │
 │  Doctor List ─────────► Supabase (doctors SELECT active)     │
 │                                                              │
@@ -725,4 +764,4 @@ Every sub-page layout exports its own `metadata` object with:
 
 ---
 
-*Last updated: April 24, 2026 (security audit & fixes)*
+*Last updated: May 1, 2026 (payment & newsletter features disabled)*

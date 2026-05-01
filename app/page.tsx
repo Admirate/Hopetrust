@@ -20,9 +20,10 @@ const ClientsSayingSection = dynamic(
 const ResourcesSection = dynamic(
   () => import('@/components/ResourcesSection')
 );
-const LargeRectangleSection = dynamic(
-  () => import('@/components/LargeRectangleSection')
-);
+// NEWSLETTER DISABLED — uncomment when newsletter is enabled
+// const LargeRectangleSection = dynamic(
+//   () => import('@/components/LargeRectangleSection')
+// );
 const AffiliationsSection = dynamic(
   () => import('@/components/AffiliationsSection')
 );
@@ -52,8 +53,9 @@ export default function Home() {
         </FadeInSection>
         {/* Let ResourcesSection handle its own staggered card animation */}
         <ResourcesSection />
-        {/* Let LargeRectangleSection handle its own card animation */}
+        {/* NEWSLETTER DISABLED — uncomment when newsletter is enabled
         <LargeRectangleSection />
+        */}
         <FadeInSection>
           <AffiliationsSection />
         </FadeInSection>
