@@ -219,7 +219,7 @@ export default function CancellationPolicyPage() {
             className="absolute inset-0 h-full w-full object-cover"
           >
             <source
-              src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/0_Pink_Red_1280x720.mp4"
+              src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/348932.mp4"
               type="video/mp4"
             />
           </video>

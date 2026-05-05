@@ -361,7 +361,7 @@ export default function TrainingPage() {
             loop
             playsInline
             className="absolute inset-0 h-full w-full object-cover"
-            src={getAssetUrl('0_Pink_Red_1280x720.mp4')}
+            src={getAssetUrl('348932.mp4')}
           />
           <div className="relative z-10 mx-auto max-w-[1100px] px-5 sm:px-10">
             <div className="flex flex-col gap-4 py-6 sm:flex-row sm:items-center sm:gap-12 sm:py-10">

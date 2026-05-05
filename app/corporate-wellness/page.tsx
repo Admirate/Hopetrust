@@ -221,7 +221,7 @@ export default function CorporateWellnessPage() {
             loop
             playsInline
             className="absolute inset-0 h-full w-full object-cover"
-            src={getAssetUrl('0_Pink_Red_1280x720.mp4')}
+            src={getAssetUrl('348932.mp4')}
           />
           <div className="relative z-10 mx-auto max-w-[1100px] px-6 sm:px-10">
             <motion.div

@@ -49,12 +49,12 @@ export default function ScrollingTextBanner() {
         className="flex whitespace-nowrap will-change-transform"
       >
         <span
-          className={`${bricolage.className} text-[32px] sm:text-[42px] md:text-[52px] lg:text-[62px] font-medium italic text-[#00373E] tracking-wide shrink-0`}
+          className={`${bricolage.className} text-[22px] sm:text-[28px] md:text-[34px] lg:text-[42px] font-medium italic text-[#00373E] tracking-wide shrink-0`}
         >
           {repeated}
         </span>
         <span
-          className={`${bricolage.className} text-[32px] sm:text-[42px] md:text-[52px] lg:text-[62px] font-medium italic text-[#00373E] tracking-wide shrink-0`}
+          className={`${bricolage.className} text-[22px] sm:text-[28px] md:text-[34px] lg:text-[42px] font-medium italic text-[#00373E] tracking-wide shrink-0`}
         >
           {repeated}
         </span>

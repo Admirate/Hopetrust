@@ -39,7 +39,7 @@ const HeroSection = () => {
         className="absolute inset-0 h-full w-full object-cover"
         preload="metadata"
       >
-        <source src={getAssetUrl("0_Pink_Red_1280x720.mp4")} type="video/mp4" />
+        <source src={getAssetUrl("348932.mp4")} type="video/mp4" />
         Your browser does not support the video tag.
       </motion.video>
 
