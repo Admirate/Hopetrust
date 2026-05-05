@@ -23,17 +23,16 @@ const bookBodyMediumFont = Bricolage_Grotesque({
 function TherapistCardSkeleton() {
   return (
     <div className="animate-pulse overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
-      <div className="aspect-[4/3] w-full bg-gray-200" />
-      <div className="p-5 sm:p-6 space-y-3">
+      <div className="aspect-[4/3] sm:aspect-square w-full bg-gray-200" />
+      <div className="space-y-3 p-4 sm:p-5 lg:p-6">
         <div className="h-5 w-3/4 rounded bg-gray-200" />
         <div className="h-4 w-1/2 rounded bg-gray-200" />
-        <div className="h-6 w-24 rounded-full bg-gray-200" />
+        <div className="h-5 w-20 rounded-full bg-gray-200" />
         <div className="space-y-2 pt-1">
           <div className="h-3 w-full rounded bg-gray-200" />
           <div className="h-3 w-5/6 rounded bg-gray-200" />
-          <div className="h-3 w-4/6 rounded bg-gray-200" />
         </div>
-        <div className="h-10 w-full rounded-full bg-gray-200 mt-4" />
+        <div className="h-10 w-full rounded-full bg-gray-200 mt-3" />
       </div>
     </div>
   );
@@ -153,7 +152,7 @@ export default function Page() {
 
           {/* Loading skeletons */}
           {loading && (
-            <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mx-auto grid max-w-6xl grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8">
               {Array.from({ length: 6 }).map((_, i) => (
                 <TherapistCardSkeleton key={i} />
               ))}
@@ -178,7 +177,7 @@ export default function Page() {
 
           {/* Cards grid */}
           {!loading && !error && filtered.length > 0 && (
-            <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mx-auto grid max-w-6xl grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8">
               {filtered.map((doc) => (
                 <TherapistCard key={doc.id} doctor={doc} />
               ))}
