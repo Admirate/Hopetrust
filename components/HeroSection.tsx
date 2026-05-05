@@ -44,7 +44,7 @@ const HeroSection = () => {
       </motion.video>
 
       {/* Soft overlay to improve text contrast */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/15 to-black/25" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/45 to-black/55" />
 
       {/* Centered rounded rectangle with inner hero video */}
       <div className="relative z-10 flex h-full w-full items-start justify-center px-4 sm:px-6 lg:px-10 pt-36 sm:pt-40 pb-10 fade-in-optimized">
@@ -75,7 +75,7 @@ const HeroSection = () => {
                 <source src={getAssetUrl("final hero video.mp4")} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
-              <div className="absolute inset-0 bg-black/45" />
+              <div className="absolute inset-0 bg-black/65" />
             </div>
 
             {/* Content overlay */}

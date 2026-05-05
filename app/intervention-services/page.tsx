@@ -56,7 +56,7 @@ export default function InterventionServicesPage() {
           </motion.div>
 
           {/* Dark overlay for readability */}
-          <div className="absolute inset-0 bg-black/35" />
+          <div className="absolute inset-0 bg-black/65" />
 
           {/* Centered content */}
           <motion.div

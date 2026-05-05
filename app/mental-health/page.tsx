@@ -314,7 +314,7 @@ export default function MentalHealthPage() {
           </motion.video>
 
           {/* Dark overlay for readability */}
-          <div className="absolute inset-0 bg-black/35" />
+          <div className="absolute inset-0 bg-black/65" />
 
           {/* Centered content */}
           <motion.div
