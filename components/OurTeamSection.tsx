@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { getAssetUrl } from '@/lib/assets';
 
 type TeamCategory = {
-  value: 'therapists' | 'counsellors' | 'psychologists' | 'medical-professionals';
+  value: 'Social Work' | 'counsellors' | 'psychologists' | 'Psychiatry';
   label: string;
 };
 
@@ -17,10 +17,10 @@ const headingFont = Bricolage_Grotesque({
 });
 
 const categories: TeamCategory[] = [
-  { value: 'therapists', label: 'Therapists.' },
+  { value: 'Social Work', label: 'Social Work.' },
   { value: 'counsellors', label: 'Counsellors.' },
   { value: 'psychologists', label: 'Psychologists.' },
-  { value: 'medical-professionals', label: 'Medical professionals.' },
+  { value: 'Psychiatry', label: 'Psychiatry.' },
 ];
 
 export type OurTeamSectionProps = {
