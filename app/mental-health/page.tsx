@@ -34,7 +34,7 @@ type FocusConfig = {
   label: string;
   heading: string;
   paragraphs: string[];
-  issues: string;
+  issues: React.ReactNode;
   cardBg: string;
   imageSrc: string;
   imageAlt: string;
@@ -49,7 +49,7 @@ const FOCUS_SECTIONS: Record<FocusKey, FocusConfig> = {
       'Therapy helps you notice patterns, make sense of your concerns and move toward clarity and steadiness at your own pace.',
     ],
     issues:
-      'Anxiety, Depression, Stress, Anger Management, Loneliness, Procrastination, Grief, Trauma, Interpersonal Challenges',
+      'Anxiety, Depression, Stress, Anger Management, Loneliness, ADHD, Bipolar Disorder, Schizophrenia',
     cardBg: '#F9E6D0',
     imageSrc: getAssetUrl('mental health therapy.png'),
     imageAlt: 'Therapy illustration',
@@ -88,7 +88,7 @@ const FOCUS_SECTIONS: Record<FocusKey, FocusConfig> = {
       'The aim is healthier communication and balance.',
     ],
     issues:
-      'Family Conflicts, Boundaries, Generational Gaps, Parent–Child Communication',
+      <>Family Conflicts, Boundaries, Generational Gaps,<br />Parent–Child Communication</>,
     cardBg: '#DFD58F',
     imageSrc: getAssetUrl('family therapy.png'),
     imageAlt: 'Family therapy illustration',
@@ -111,6 +111,7 @@ const ASSESSMENTS: Record<
     label: 'Student Mental Health',
     paragraphs: [
       'Support for school, college, and university students navigating stress, exams, and changes.',
+      'We also offer career counselling to help students explore their strengths, make informed decisions, and plan their next steps with confidence.',
       'Sessions focus on building routines, managing expectations, and finding healthy balance.',
       'Parents and caregivers can be included when helpful.',
     ],

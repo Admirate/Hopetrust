@@ -6,7 +6,7 @@ import TherapistCard from "@/components/TherapistCard";
 import dynamic from "next/dynamic";
 import { Bricolage_Grotesque, IBM_Plex_Sans } from "next/font/google";
 import { fetchDoctors, fetchDepartments, type Doctor } from "@/lib/doctors";
-import { Search, AlertCircle } from "lucide-react";
+import { Search, AlertCircle, Phone, MessageSquare } from "lucide-react";
 
 const Footer = dynamic(() => import("@/components/Footer"));
 
@@ -83,7 +83,7 @@ export default function Page() {
     <>
       <Header />
 
-      <main className="min-h-screen pt-20">
+      <main className="min-h-screen pt-20 bg-[#F6EFE8]">
         <section className="min-h-screen w-full bg-[#F6EFE8] px-4 py-10 sm:px-6 lg:px-8">
           {/* Heading */}
           <h1
@@ -100,6 +100,11 @@ export default function Page() {
           >
             Choose a therapist and book a session at a time that works for you.
           </p>
+
+          {/* Pre-booked appointment notice */}
+          <div className="mx-auto mb-10 max-w-2xl rounded-2xl bg-[#00373E] px-6 py-5 text-white text-center">
+            <p className="text-sm sm:text-base font-medium">All appointments are pre-booked.</p>
+          </div>
 
           {/* Filters — only show once data is loaded */}
           {!loading && !error && (

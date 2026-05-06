@@ -33,8 +33,8 @@ const contactInfo = [
     gif: getAssetUrl('call.gif'),
     staticIcon: <Phone className="w-6 h-6" />,
     label: 'Call Us',
-    value: `${siteConfig.contact.phone} / ${siteConfig.contact.phone2}`,
-    href: `tel:${siteConfig.contact.phone.replace(/\s/g, '')}`,
+    value: '+91 9000850001',
+    href: 'tel:+919000850001',
 
     color: 'bg-green-50 text-green-600',
   },
@@ -474,7 +474,7 @@ export default function ContactPage() {
         <textarea name="message" />
       </form>
 
-      <main className={`${bricolage.className} min-h-screen pt-20 bg-white`}>
+      <main className={`${bricolage.className} min-h-screen pt-20 bg-[#F7F5EF]`}>
         {/* Hero Section */}
         <section className="relative py-20 overflow-hidden bg-[#F7F5EF]">
           <div className="absolute top-0 right-0 w-1/3 h-full opacity-10 pointer-events-none">
@@ -498,7 +498,9 @@ export default function ContactPage() {
               In-Clinic / Online Appointments
               <br />
               <span className="text-sm font-medium opacity-80">
-                (Office Hours 9 AM – 8 PM Monday to Saturday)
+                Office Hours 10 AM – 7 PM (Monday to Saturday)
+                <br />
+                Except Holidays(IST)
               </span>
             </motion.p>
           </div>
@@ -508,28 +510,23 @@ export default function ContactPage() {
         <section className="bg-[#00373E] py-6">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-white">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-white/10 rounded-lg">
-                  <Mail className="w-5 h-5 text-orange-400" />
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-wider text-white/60">Training Enquiries</p>
-                  <a href={`mailto:${siteConfig.contact.trainingEmail}`} className="font-semibold hover:text-orange-400 transition-colors">
-                    {siteConfig.contact.trainingEmail}
-                  </a>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-white/10 rounded-lg">
-                  <Phone className="w-5 h-5 text-orange-400" />
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-wider text-white/60">Contact Number</p>
-                  <a href={`tel:${siteConfig.contact.trainingPhone.replace(/\s/g, '')}`} className="font-semibold hover:text-orange-400 transition-colors">
-                    {siteConfig.contact.trainingPhone}
-                  </a>
-                </div>
-              </div>
+              <p className="text-sm font-bold uppercase tracking-widest text-orange-400">Training Enquiries</p>
+              <a
+                href={`mailto:${siteConfig.contact.trainingEmail}`}
+                className="flex items-center gap-3 px-6 py-4 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
+                aria-label="Email training enquiries"
+              >
+                <Mail className="w-8 h-8 text-orange-400" />
+                <span className="font-semibold text-base">Email Us</span>
+              </a>
+              <a
+                href="tel:+919000850001"
+                className="flex items-center gap-3 px-6 py-4 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
+                aria-label="Call us"
+              >
+                <Phone className="w-8 h-8 text-orange-400" />
+                <span className="font-semibold text-base">Call Us</span>
+              </a>
               <div className="hidden md:block h-8 w-px bg-white/20"></div>
               <div className="text-sm text-white/80">
                 Professional courses and workshops
@@ -574,7 +571,7 @@ export default function ContactPage() {
                       name="full_name"
                       value={formData.full_name}
                       onChange={handleChange}
-                      placeholder="John Doe"
+                      placeholder=""
                       className={`w-full bg-white border-2 ${fieldErrors.full_name ? 'border-red-400' : 'border-transparent'} shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] px-6 py-4 rounded-2xl focus:outline-none focus:border-orange-500 focus:shadow-[0_0_20px_rgba(249,115,22,0.1)] transition-all duration-300`}
                     />
                     {fieldErrors.full_name && <p className="text-red-500 text-xs ml-2">{fieldErrors.full_name}</p>}
@@ -586,7 +583,7 @@ export default function ContactPage() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      placeholder="+91 98765 43210"
+                      placeholder=""
                       className={`w-full bg-white border-2 ${fieldErrors.phone ? 'border-red-400' : 'border-transparent'} shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] px-6 py-4 rounded-2xl focus:outline-none focus:border-orange-500 focus:shadow-[0_0_20px_rgba(249,115,22,0.1)] transition-all duration-300`}
                     />
                     {fieldErrors.phone && <p className="text-red-500 text-xs ml-2">{fieldErrors.phone}</p>}
@@ -598,7 +595,7 @@ export default function ContactPage() {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      placeholder="john@example.com"
+                      placeholder=""
                       className={`w-full bg-white border-2 ${fieldErrors.email ? 'border-red-400' : 'border-transparent'} shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)] px-6 py-4 rounded-2xl focus:outline-none focus:border-orange-500 focus:shadow-[0_0_20px_rgba(249,115,22,0.1)] transition-all duration-300`}
                     />
                     {fieldErrors.email && <p className="text-red-500 text-xs ml-2">{fieldErrors.email}</p>}
@@ -658,17 +655,17 @@ export default function ContactPage() {
                   <div className="relative z-10">
                     <div className="flex items-center gap-3 mb-4">
                       <MessageSquare className="text-orange-400" />
-                      <h3 className="text-2xl font-bold">24/7 Support</h3>
+                      <h3 className="text-2xl font-bold">By Appointment Only</h3>
                     </div>
                     <p className="text-white/80 mb-6 leading-relaxed">
-                      Our helpline is available round the clock for emergencies. We are committed to providing immediate support to those in crisis.
+                      All appointments are pre-booked. Please call or message us to schedule your visit. Walk-ins are not available.
                     </p>
                     <a
-                      href={`tel:${siteConfig.contact.phone.replace(/\s/g, '')}`}
+                      href="tel:+919000850001"
                       className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 px-6 py-3 rounded-xl transition-all font-semibold"
                     >
                       <Phone className="w-5 h-5 text-orange-400" />
-                      Appointments: {siteConfig.contact.phone}
+                      Book Now: +91 9000850001
                     </a>
                   </div>
                   {/* Decorative element */}
