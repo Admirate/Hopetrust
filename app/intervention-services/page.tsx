@@ -47,7 +47,7 @@ export default function InterventionServicesPage() {
           {/* Background image with parallax */}
           <motion.div style={{ y: backgroundY }} className="absolute inset-0 h-[120%] w-full">
             <Image
-              src={getAssetUrl('intervention services.png')}
+              src={getAssetUrl('intervensionservices_newheroimage.png')}
               alt="Lush botanical background with pine and yellow flowers"
               fill
               className="object-cover"

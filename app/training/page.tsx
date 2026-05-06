@@ -72,7 +72,7 @@ export default function TrainingPage() {
           {/* Background image with parallax */}
           <motion.div style={{ y: backgroundY }} className="absolute inset-0 h-[120%] w-full">
             <Image
-              src={getAssetUrl('trainigs_hero.png')}
+              src={getAssetUrl('training_new_hero_image.png')}
               alt="Sunset over the ocean with a silhouette representing guidance and growth"
               fill
               className="object-cover"
@@ -80,8 +80,8 @@ export default function TrainingPage() {
             />
           </motion.div>
 
-          {/* Dark overlay for readability */}
-          <div className="absolute inset-0 bg-black/65" />
+          {/* Orange overlay for readability */}
+          <div className="absolute inset-0 bg-[#ED7428]/60" />
 
           {/* Centered content */}
           <motion.div

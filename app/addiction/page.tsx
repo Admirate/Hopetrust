@@ -123,7 +123,7 @@ export default function AddictionPage() {
           {/* Background image with parallax */}
           <motion.div style={{ y: backgroundY }} className="absolute inset-0 h-[120%] w-full">
             <Image
-              src={getAssetUrl('addictionservices_heroimage.png')}
+              src={getAssetUrl('addictionservices_newimage_hero.png')}
               alt="Lush green valley with flowing river"
               fill
               className="object-cover"
