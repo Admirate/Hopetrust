@@ -290,6 +290,12 @@ export default function AddictionPage() {
                   <p className="mt-4 text-lg sm:text-xl font-bold text-[#1a1a1a]">
                     Package Cost: {program.cost}
                   </p>
+                  <a
+                    href={`mailto:frontoffice@hopetrustindia.com?subject=Enquiry about ${encodeURIComponent(program.title)}`}
+                    className="mt-4 inline-block rounded-full bg-[#ED7428] px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-[#d4651f] sm:text-base"
+                  >
+                    Enquire Now
+                  </a>
                   {/* PAYMENT DISABLED — uncomment when Razorpay is integrated
                   {'id' in program && program.id && (
                     <button

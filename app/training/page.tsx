@@ -271,6 +271,12 @@ export default function TrainingPage() {
                         {prog.format}
                       </p>
                     )}
+                    <a
+                      href={`mailto:training@hopetrustindia.com?subject=Enquiry about ${encodeURIComponent(prog.title)}`}
+                      className={`${heroFont.className} mt-5 inline-block rounded-full bg-[#00373E] px-6 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-[#024a53] sm:text-[15px]`}
+                    >
+                      Enquire Now
+                    </a>
                   </div>
                 ))}
               </div>
@@ -298,6 +304,12 @@ export default function TrainingPage() {
                         {tp.fee && <li>Fee — {tp.fee}</li>}
                         {tp.format && <li>Format — {tp.format}</li>}
                       </ul>
+                      <a
+                        href={`mailto:training@hopetrustindia.com?subject=Enquiry about ${encodeURIComponent(tp.title)}`}
+                        className={`${heroFont.className} mt-6 inline-block rounded-full bg-[#00373E] px-8 py-3 text-[15px] font-semibold text-white transition-colors hover:bg-[#024a53] sm:text-[18px] lg:text-[20px]`}
+                      >
+                        Enquire Now
+                      </a>
                       {/* PAYMENT DISABLED — uncomment when Razorpay is integrated
                       <button
                         type="button"
