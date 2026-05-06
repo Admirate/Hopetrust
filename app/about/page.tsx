@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import Header from '@/components/Header';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { motion } from 'motion/react';
 import { Bricolage_Grotesque } from 'next/font/google';
-import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import ProximityText from '@/components/ProximityText';
 import OurTeamSection from '@/components/OurTeamSection';
 import { getAssetUrl } from '@/lib/assets';
@@ -46,159 +45,7 @@ const aboutStoryBodyBoldFont = Bricolage_Grotesque({
   weight: ['700'],
 });
 
-type TypewriterPlainProps = {
-  text: string;
-  start: boolean;
-  onDone?: () => void;
-  typingSpeedMs?: number;
-  showCursor?: boolean;
-};
-
-const TypewriterPlain = ({
-  text,
-  start,
-  onDone,
-  typingSpeedMs = 18,
-  showCursor = false,
-}: TypewriterPlainProps) => {
-  const [visibleCount, setVisibleCount] = useState(0);
-  const onDoneRef = useRef<TypewriterPlainProps['onDone']>(onDone);
-
-  useEffect(() => {
-    onDoneRef.current = onDone;
-  }, [onDone]);
-
-  useEffect(() => {
-    if (!start) return;
-    setVisibleCount(0);
-
-    let index = 0;
-    const intervalId = window.setInterval(() => {
-      index += 1;
-      setVisibleCount(index);
-
-      if (index >= text.length) {
-        window.clearInterval(intervalId);
-        onDoneRef.current?.();
-      }
-    }, typingSpeedMs);
-
-    return () => window.clearInterval(intervalId);
-  }, [start, text, typingSpeedMs]);
-
-  const displayed = start ? text.slice(0, visibleCount) : '';
-
-  return (
-    <span className="relative inline-block align-baseline">
-      <span className="invisible">{text}</span>
-      <span className="absolute inset-0">
-        {displayed}
-        {showCursor ? (
-          <span className="inline-block w-[1ch] animate-cursor-blink text-current">
-            |
-          </span>
-        ) : null}
-      </span>
-    </span>
-  );
-};
-
-type TypewriterSegment = {
-  text: string;
-  className: string;
-};
-
-type TypewriterSegmentsProps = {
-  segments: TypewriterSegment[];
-  start: boolean;
-  onDone?: () => void;
-  typingSpeedMs?: number;
-  showCursor?: boolean;
-};
-
-const TypewriterSegments = ({
-  segments,
-  start,
-  onDone,
-  typingSpeedMs = 18,
-  showCursor = false,
-}: TypewriterSegmentsProps) => {
-  const fullText = segments.map((segment) => segment.text).join('');
-
-  const [visibleCount, setVisibleCount] = useState(0);
-  const onDoneRef = useRef<TypewriterSegmentsProps['onDone']>(onDone);
-
-  useEffect(() => {
-    onDoneRef.current = onDone;
-  }, [onDone]);
-
-  useEffect(() => {
-    if (!start) return;
-    setVisibleCount(0);
-
-    let index = 0;
-    const intervalId = window.setInterval(() => {
-      index += 1;
-      setVisibleCount(index);
-
-      if (index >= fullText.length) {
-        window.clearInterval(intervalId);
-        onDoneRef.current?.();
-      }
-    }, typingSpeedMs);
-
-    return () => window.clearInterval(intervalId);
-  }, [fullText, start, typingSpeedMs]);
-
-  const displayedCount = start ? visibleCount : 0;
-
-  let remaining = displayedCount;
-
-  return (
-    <span className="relative inline-block align-baseline">
-      <span className="invisible">
-        {segments.map((segment, index) => (
-          <span key={`${segment.text}-${index}`} className={segment.className}>
-            {segment.text}
-          </span>
-        ))}
-      </span>
-
-      <span className="absolute inset-0">
-        {segments.map((segment, index) => {
-          const take = Math.max(Math.min(remaining, segment.text.length), 0);
-          remaining -= take;
-          return (
-            <span key={`${segment.text}-${index}`} className={segment.className}>
-              {segment.text.slice(0, take)}
-            </span>
-          );
-        })}
-
-        {showCursor ? (
-          <span className="inline-block w-[1ch] animate-cursor-blink text-current">
-            |
-          </span>
-        ) : null}
-      </span>
-    </span>
-  );
-};
-
 export default function About() {
-  const { elementRef: mediaTypingRef, isVisible: isMediaTypingVisible } =
-    useScrollAnimation({
-      threshold: 0.25,
-      triggerOnce: true,
-    });
-
-  const [mediaTypingPhase, setMediaTypingPhase] = useState(0);
-
-  useEffect(() => {
-    if (!isMediaTypingVisible) return;
-    setMediaTypingPhase(1);
-  }, [isMediaTypingVisible]);
-
   return (
     <>
       <Header />
@@ -696,7 +543,7 @@ export default function About() {
               >
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 mb-6 border-b border-white/40 pb-6">
                   <div>
-                    <p className="text-xl sm:text-2xl font-semibold">60 minutes</p>
+                    <p className="text-xl sm:text-2xl font-semibold">50 minutes</p>
                     <p
                       className={`${aboutStoryBodyFont.className} mt-1 text-sm sm:text-base lg:text-[20px] font-medium`}
                     >
@@ -732,103 +579,6 @@ export default function About() {
                 </p>
               </motion.div>
             </div>
-          </div>
-        </section>
-
-        {/* Media and Gallery section */}
-        <section className="w-full bg-white py-20">
-          <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-8 lg:px-0 flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
-            {/* Overlapping images on the left */}
-            <motion.div
-              className="relative w-full max-w-[340px] sm:max-w-[520px] aspect-[4/3]"
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1] }}
-            >
-              {/* Back image */}
-              <div className="absolute inset-y-4 left-0 right-12 sm:right-20 rounded-[20px] sm:rounded-[32px] overflow-hidden shadow-[0_24px_60px_rgba(0,0,0,0.25)]">
-                <Image
-                  src={getAssetUrl("therapy.png")}
-                  alt="Therapist with client"
-                  fill
-                  className="object-cover"
-                  priority={false}
-                />
-              </div>
-
-              {/* Front image */}
-              <div className="absolute inset-y-0 left-10 sm:left-16 right-0 rounded-[20px] sm:rounded-[32px] overflow-hidden shadow-[0_24px_60px_rgba(0,0,0,0.35)]">
-                <Image
-                  src={getAssetUrl("Madam.png")}
-                  alt="Hope Trust team member"
-                  fill
-                  className="object-cover"
-                  priority={false}
-                />
-              </div>
-            </motion.div>
-
-            {/* Text content on the right */}
-            <motion.div
-              className="w-full lg:w-1/2 text-left"
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{
-                duration: 0.6,
-                delay: 0.1,
-                ease: [0.22, 0.61, 0.36, 1],
-              }}
-              ref={mediaTypingRef as React.RefObject<HTMLDivElement>}
-            >
-              <h2
-                className={`${aboutHeadingFont.className} mb-4 text-center text-3xl sm:text-4xl lg:text-[48px] font-semibold leading-normal tracking-[0.724px] text-black lg:text-left`}
-              >
-                Media and gallery
-              </h2>
-              <p
-                className={`${aboutStoryBodyFont.className} mb-4 text-base sm:text-lg lg:text-[24px] font-medium leading-normal tracking-[0.724px] text-black`}
-              >
-                <TypewriterPlain
-                  text="A quiet look into our space."
-                  start={mediaTypingPhase >= 1}
-                  showCursor={mediaTypingPhase === 1}
-                  onDone={() => setMediaTypingPhase(2)}
-                />
-              </p>
-              <p className="mb-4">
-                <TypewriterSegments
-                  start={mediaTypingPhase >= 2}
-                  showCursor={mediaTypingPhase === 2}
-                  onDone={() => setMediaTypingPhase(3)}
-                  segments={[
-                    {
-                      text: "Our work.",
-                      className: `${aboutStoryBodyBoldFont.className} text-base sm:text-lg lg:text-[24px] font-bold leading-normal tracking-[0.724px] text-[#ED7428]`,
-                    },
-                    {
-                      text: " ",
-                      className: `${aboutStoryBodyBoldFont.className} text-base sm:text-lg lg:text-[24px] font-bold leading-normal tracking-[0.724px] text-[#ED7428]`,
-                    },
-                    {
-                      text: "Our people.",
-                      className: `${aboutStoryBodyBoldFont.className} text-base sm:text-lg lg:text-[24px] font-bold leading-normal tracking-[0.724px] text-[#D7D7D7]`,
-                    },
-                  ]}
-                />
-              </p>
-              <p
-                className={`${aboutStoryBodyFont.className} text-base sm:text-lg lg:text-[24px] font-medium leading-normal tracking-[0.724px] text-black`}
-              >
-                <TypewriterPlain
-                  text="The moments that shape Hope Trust."
-                  start={mediaTypingPhase >= 3}
-                  showCursor={mediaTypingPhase === 3}
-                  onDone={() => setMediaTypingPhase(4)}
-                />
-              </p>
-            </motion.div>
           </div>
         </section>
 
