@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { getAssetUrl } from '@/lib/assets';
 
 type TeamCategory = {
-  value: 'Social Work' | 'counsellors' | 'psychologists' | 'Psychiatry';
+  value: 'therapists' | 'Social Work' | 'counsellors' | 'psychologists' | 'Psychiatry';
   label: string;
 };
 
