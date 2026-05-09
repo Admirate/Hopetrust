@@ -2,10 +2,10 @@
 
 import { useState, useMemo, useRef } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Search, Calendar, ArrowRight, X } from 'lucide-react';
 import { Bricolage_Grotesque } from 'next/font/google';
 import FadeInSection from '@/components/FadeInSection';
+import ImageFallback from '@/components/ImageFallback';
 // NEWSLETTER DISABLED — uncomment when newsletter is enabled
 // import NewsletterForm from '@/components/NewsletterForm';
 import type { BlogPostMeta } from '@/lib/blog';
@@ -149,17 +149,14 @@ export default function BlogListClient({
                 href={`/blogs/${featured.slug}`}
                 className="group flex flex-col overflow-hidden rounded-2xl bg-[#F7F6F4] transition-shadow duration-300 active:scale-[0.99] active:transition-transform [@media(hover:hover)]:hover:shadow-xl sm:rounded-[28px] lg:flex-row"
               >
-                {featured.featuredImage && (
-                  <div className="relative h-[200px] w-full overflow-hidden sm:h-[260px] lg:h-auto lg:w-1/2">
-                    <Image
-                      src={featured.featuredImage}
-                      alt={featured.title}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      unoptimized
-                    />
-                  </div>
-                )}
+                <div className="relative h-[200px] w-full overflow-hidden sm:h-[260px] lg:h-auto lg:w-1/2">
+                  <ImageFallback
+                    src={featured.featuredImage}
+                    alt={featured.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
                 <div className="flex flex-1 flex-col justify-center px-5 py-5 sm:px-6 sm:py-6 lg:px-10 lg:py-10">
                   <span className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-[#ED7428] sm:mb-3 sm:text-xs">
                     Featured Article
@@ -278,19 +275,12 @@ export default function BlogListClient({
                   >
                     {/* Thumbnail */}
                     <div className="relative h-[160px] w-full overflow-hidden bg-[#EAF3FF] sm:h-[180px]">
-                      {post.featuredImage ? (
-                        <Image
-                          src={post.featuredImage}
-                          alt={post.title}
-                          fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                          unoptimized
-                        />
-                      ) : (
-                        <div className="flex h-full items-center justify-center bg-gradient-to-br from-[#F7F6F4] to-[#EAF3FF]">
-                          <span className="text-3xl text-gray-300 sm:text-4xl">📝</span>
-                        </div>
-                      )}
+                      <ImageFallback
+                        src={post.featuredImage}
+                        alt={post.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
                     </div>
 
                     {/* Content */}

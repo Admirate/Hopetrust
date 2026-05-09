@@ -3,10 +3,10 @@ import { notFound } from 'next/navigation';
 import { marked } from 'marked';
 import sanitizeHtml from 'sanitize-html';
 import Link from 'next/link';
-import Image from 'next/image';
 import { ArrowLeft, Clock, Calendar, User, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getAllSlugs, getPostBySlug, getAdjacentPosts } from '@/lib/blog';
 import Header from '@/components/Header';
+import ImageFallback from '@/components/ImageFallback';
 
 export function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
@@ -110,13 +110,12 @@ export default async function BlogPostPage({
         {/* Hero / Featured Image */}
         {post.featuredImage && (
           <div className="relative h-[200px] w-full overflow-hidden bg-[#00373E] sm:h-[320px] lg:h-[440px]">
-            <Image
+            <ImageFallback
               src={post.featuredImage}
               alt={post.title}
               fill
               className="object-cover opacity-40"
               priority
-              unoptimized
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#00373E]/80 to-transparent" />
           </div>
