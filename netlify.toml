@@ -62,6 +62,32 @@
 #   to = "/.netlify/functions/admin-enrollments"
 #   status = 200
 
+# Old WordPress page redirects → new Next.js routes
+[[redirects]]
+  from = "/counselling-psychologist/*"
+  to = "/book-your-session/"
+  status = 301
+
+[[redirects]]
+  from = "/contact-us/*"
+  to = "/contact/"
+  status = 301
+
+[[redirects]]
+  from = "/what-do-we-treat/*"
+  to = "/mental-health/"
+  status = 301
+
+[[redirects]]
+  from = "/counselling-and-therapy/*"
+  to = "/book-your-session/"
+  status = 301
+
+[[redirects]]
+  from = "/how-the-hope-trust-program/*"
+  to = "/about/"
+  status = 301
+
 # Serve the custom 404 page for unknown routes
 [[redirects]]
   from = "/*"
