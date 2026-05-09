@@ -64,9 +64,40 @@
 
 # Old WordPress page redirects → new Next.js routes
 [[redirects]]
+  from = "/counselling-psychologist"
+  to = "/book-your-session/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/counselling-psychologist/"
+  to = "/book-your-session/"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/counselling-psychologist/*"
   to = "/book-your-session/"
   status = 301
+  force = true
+
+[[redirects]]
+  from = "/counselling-psychologists"
+  to = "/book-your-session/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/counselling-psychologists/"
+  to = "/book-your-session/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/counselling-psychologists/*"
+  to = "/book-your-session/"
+  status = 301
+  force = true
 
 [[redirects]]
   from = "/contact-us/*"
