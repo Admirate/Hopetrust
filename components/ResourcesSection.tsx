@@ -1,6 +1,7 @@
 "use client";
 
 import type React from "react";
+import Link from "next/link";
 import { motion } from "motion/react";
 import { Bricolage_Grotesque } from "next/font/google";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
@@ -115,11 +116,13 @@ export default function ResourcesSection() {
               </div>
 
               <div className="mt-8">
-                <InteractiveHoverButton
-                  text="Explore"
-                  accentClass={card.accentClass}
-                  className="w-28 border-none bg-white text-xs sm:text-sm font-semibold text-[#00373E]"
-                />
+                <Link href="/blogs/">
+                  <InteractiveHoverButton
+                    text="Explore"
+                    accentClass={card.accentClass}
+                    className="w-28 border-none bg-white text-xs sm:text-sm font-semibold text-[#00373E]"
+                  />
+                </Link>
               </div>
             </motion.div>
           ))}

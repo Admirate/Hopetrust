@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Bricolage_Grotesque } from "next/font/google";
 import { getAssetUrl } from '@/lib/assets';
@@ -32,20 +32,17 @@ const cards: JourneyCard[] = [
       "If online, a private link is shared through mail or WhatsApp.",
     lines: ["Choose how you want to start.", "Online or in person."],
   },
-  {
-    title: "Session timings",
-    lines: [
-      "Individual therapy — 60 minutes",
-      "Couples therapy — 90 minutes",
-      "Psychiatry — 30 minutes",
-      "Your progress continues after each session.",
-      "One step at a time.",
-    ],
-  },
 ];
 
 export default function RectangleSection() {
   const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % cards.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
 
   const activeCard = cards[activeIndex];
 

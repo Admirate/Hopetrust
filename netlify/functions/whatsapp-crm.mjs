@@ -50,7 +50,40 @@ export default async (request) => {
       body: JSON.stringify({}),
     });
 
-    const data = await res.json();
+    let data = await res.json();
+
+    // Ensure redirect URLs include the country code (91 for India)
+    const fixUrl = (url) => {
+      if (typeof url !== "string") return url;
+      try {
+        const u = new URL(url);
+        let phone = u.searchParams.get("phone");
+        if (phone && !phone.startsWith("+")) {
+          phone = phone.replace(/\D/g, "");
+          if (phone.length === 10) {
+            // 10-digit local number -> prepend India country code
+            u.searchParams.set("phone", "91" + phone);
+            return u.toString();
+          } else if (phone.length === 12 && phone.startsWith("91")) {
+            // Already a valid 12-digit Indian number, keep it
+            u.searchParams.set("phone", phone);
+            return u.toString();
+          }
+        }
+      } catch {
+        // not a valid URL, return as-is
+      }
+      return url;
+    };
+
+    if (data?.url || data?.redirectUrl || data?.link) {
+      data = {
+        ...data,
+        url: fixUrl(data.url),
+        redirectUrl: fixUrl(data.redirectUrl),
+        link: fixUrl(data.link),
+      };
+    }
 
     return new Response(JSON.stringify(data), {
       status: res.status,

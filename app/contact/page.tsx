@@ -498,9 +498,9 @@ export default function ContactPage() {
               In-Clinic / Online Appointments
               <br />
               <span className="text-sm font-medium opacity-80">
-                Office Hours 10 AM – 7 PM (Monday to Saturday)
+                Office Hours 10 AM – 7 PM (IST) (Monday to Saturday)
                 <br />
-                Except Holidays(IST)
+                Except Holidays
               </span>
             </motion.p>
           </div>
@@ -520,7 +520,7 @@ export default function ContactPage() {
                 <span className="font-semibold text-base">Email Us</span>
               </a>
               <a
-                href="tel:+919000850001"
+                href="tel:+919866822240"
                 className="flex items-center gap-3 px-6 py-4 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
                 aria-label="Call us"
               >
@@ -657,16 +657,9 @@ export default function ContactPage() {
                       <MessageSquare className="text-orange-400" />
                       <h3 className="text-2xl font-bold">By Appointment Only</h3>
                     </div>
-                    <p className="text-white/80 mb-6 leading-relaxed">
+                    <p className="text-white/80 leading-relaxed">
                       All appointments are pre-booked. Please call or message us to schedule your visit. Walk-ins are not available.
                     </p>
-                    <a
-                      href="tel:+919000850001"
-                      className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 px-6 py-3 rounded-xl transition-all font-semibold"
-                    >
-                      <Phone className="w-5 h-5 text-orange-400" />
-                      Book Now: +91 9000850001
-                    </a>
                   </div>
                   {/* Decorative element */}
                   <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-orange-500/20 rounded-full blur-3xl"></div>

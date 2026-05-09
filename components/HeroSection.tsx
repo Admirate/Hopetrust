@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { Bricolage_Grotesque } from "next/font/google";
 import { getAssetUrl } from '@/lib/assets';
+import { siteConfig } from '@/lib/config';
 
 const heroFont = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -105,7 +106,10 @@ const HeroSection = () => {
               </p>
 
               {/* Button */}
-              <button
+              <a
+                href={siteConfig.contact.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 suppressHydrationWarning
                 className="mt-4 inline-flex items-center justify-center 
   w-full sm:w-auto 
@@ -117,7 +121,7 @@ const HeroSection = () => {
   active:translate-y-0 active:scale-[0.97] fade-in-optimized"
               >
                 Chat with us
-              </button>
+              </a>
             </div>
           </div>
         </motion.div>

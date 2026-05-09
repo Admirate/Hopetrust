@@ -36,9 +36,9 @@ export function getOrganizationSchema() {
       longitude: 78.4191,
     },
     sameAs: [
-      'https://www.instagram.com/hopetrustindia',
-      'https://www.facebook.com/hopetrustindia',
-      'https://www.linkedin.com/company/hopetrustindia',
+      'https://www.instagram.com/hopetrust?igsh=N2hvNmtmcHZ3emxi',
+      'https://www.facebook.com/hopetrust',
+      'https://www.linkedin.com/company/hope-trust/',
     ],
     openingHoursSpecification: {
       '@type': 'OpeningHoursSpecification',

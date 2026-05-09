@@ -561,7 +561,7 @@ export default function About() {
                   </div>
 
                   <div>
-                    <p className="text-xl sm:text-2xl font-semibold">30 minutes</p>
+                    <p className="text-xl sm:text-2xl font-semibold">15 minutes</p>
                     <p
                       className={`${aboutStoryBodyFont.className} mt-1 text-sm sm:text-base lg:text-[20px] font-medium`}
                     >

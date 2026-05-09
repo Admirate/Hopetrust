@@ -16,9 +16,9 @@ const navLinks = [
 ];
 
 const socialLinks = [
-  { label: "Instagram", href: "https://www.instagram.com/hopetrustindia" },
-  { label: "Facebook", href: "https://www.facebook.com/hopetrustindia" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/company/hopetrustindia" },
+  { label: "Instagram", href: "https://www.instagram.com/hopetrust?igsh=N2hvNmtmcHZ3emxi" },
+  { label: "Facebook", href: "https://www.facebook.com/hopetrust" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/hope-trust/" },
 ];
 
 const legalLinks = [

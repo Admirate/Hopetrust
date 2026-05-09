@@ -67,9 +67,7 @@ export default function InterventionServicesPage() {
             className="relative z-10 flex h-full w-full flex-col items-center justify-center px-4 sm:px-6 lg:px-8 text-center text-white"
           >
             <h1 className={`${heroFont.className} mx-auto max-w-[616px] w-full text-[26px] leading-tight sm:text-[36px] lg:text-[48px] lg:leading-[58px] tracking-[0.724138px] font-semibold text-[#F6F6F6] text-center`}>
-              Now, Addiction Treatment
-              <br />
-              Starts at Your Home
+              Guiding Families Toward Healing
             </h1>
           </motion.div>
         </section>
@@ -88,7 +86,7 @@ export default function InterventionServicesPage() {
           <FadeInSection>
             <div className="relative z-10 mx-auto max-w-[1226px] px-6 sm:px-10 text-center">
               <p className={`${introFont.className} text-[15px] leading-relaxed sm:text-[18px] lg:text-[24px] lg:leading-[29px] tracking-[0.724138px] font-normal text-black`}>
-                Hope Trust offers professional Intervention Services at your doorstep to help your loved one seek
+                Hope Trust offers professional Intervention Services to help your loved one seek
                 treatment for alcohol or drug misuse, gambling, internet addiction, or other addictive behaviours
                 before the situation worsens.
               </p>

@@ -17,10 +17,9 @@ const headingFont = Bricolage_Grotesque({
 });
 
 const categories: TeamCategory[] = [
-  { value: 'Social Work', label: 'Social Work.' },
-  { value: 'counsellors', label: 'Counsellors.' },
   { value: 'psychologists', label: 'Psychologists.' },
   { value: 'Psychiatry', label: 'Psychiatry.' },
+  { value: 'Social Work', label: 'Social Work.' },
 ];
 
 export type OurTeamSectionProps = {

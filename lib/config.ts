@@ -1,5 +1,5 @@
 const whatsappNumber =
-  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919000850001';
+  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919000720003';
 
 export const siteConfig = {
   name: 'Hope Trust India',

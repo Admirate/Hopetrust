@@ -49,7 +49,7 @@ const FOCUS_SECTIONS: Record<FocusKey, FocusConfig> = {
       'Therapy helps you notice patterns, make sense of your concerns and move toward clarity and steadiness at your own pace.',
     ],
     issues:
-      'Anxiety, Depression, Stress, Anger Management, Loneliness, ADHD, Bipolar Disorder, Schizophrenia',
+      'Anxiety, Depression, Stress, Anger Management, ADHD, Bipolar Disorder, Schizophrenia',
     cardBg: '#F9E6D0',
     imageSrc: getAssetUrl('mental health therapy.png'),
     imageAlt: 'Therapy illustration',
