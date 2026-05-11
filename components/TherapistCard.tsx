@@ -108,7 +108,7 @@ export default function TherapistCard({ doctor }: { doctor: Doctor }) {
               <img
                 src={doctor.photo}
                 alt={doctor.name}
-                className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
             </div>

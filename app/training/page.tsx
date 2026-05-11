@@ -348,15 +348,6 @@ export default function TrainingPage() {
                 </p>
               </div>
 
-              {/* Sign up CTA */}
-              <div className="flex justify-center pt-4">
-                <a
-                  href="/book-your-session"
-                  className={`${heroFont.className} rounded-full border border-[#00373E] bg-transparent px-10 py-3 text-[14px] font-semibold text-[#00373E] transition-colors hover:bg-[#00373E] hover:text-white sm:text-[15px]`}
-                >
-                  Sign up
-                </a>
-              </div>
             </div>
           </section>
         </FadeInSection>
