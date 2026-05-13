@@ -4,7 +4,6 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { Bricolage_Grotesque } from "next/font/google";
 import { getAssetUrl } from '@/lib/assets';
-import { siteConfig } from '@/lib/config';
 
 const heroFont = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -101,26 +100,23 @@ const HeroSection = () => {
     w-full max-w-[338px]`}
                 style={{ letterSpacing: '0.724px' }}
               >
-                A gentle reminder: We&apos;re here if you need us — message us
+               We&apos;re here if you need us message us
                 anytime.
               </p>
 
               {/* Button */}
               <a
-                href={siteConfig.contact.whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                suppressHydrationWarning
+                href="/book-your-session"
                 className="mt-4 inline-flex items-center justify-center 
   w-full sm:w-auto 
   rounded-full bg-[#00343A] 
   px-6 sm:px-10 py-3 
   text-sm sm:text-base font-semibold text-white 
   shadow-lg transition-all duration-200 
-  hover:bg-[#02424a] hover:-translate-y-0.5 hover:shadow-xl 
+  hover:bg-[#ED7428] hover:-translate-y-0.5 hover:shadow-xl 
   active:translate-y-0 active:scale-[0.97] fade-in-optimized"
               >
-                Chat with us
+                Find Your Therapist
               </a>
             </div>
           </div>

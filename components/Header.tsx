@@ -37,7 +37,7 @@ const leftNavItems: NavItem[] = [
 const rightNavItems: NavItem[] = [
   { label: 'Training', href: '/training', hasDropdown: false },
   { label: 'Blogs', href: '/blogs', hasDropdown: false },
-  { label: 'Book Your Session', href: '/book-your-session', hasDropdown: false },
+  { label: 'Find Your Therapist', href: '/book-your-session', hasDropdown: false },
   { label: 'Contact Us', href: '/contact', hasDropdown: false },
 ];
 
