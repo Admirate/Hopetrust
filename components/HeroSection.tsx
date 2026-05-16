@@ -86,7 +86,7 @@ const HeroSection = () => {
     text-[28px] sm:text-[36px] lg:text-[48px] leading-snug sm:leading-normal fade-in-optimized text-white`}
                 style={{ letterSpacing: '0.724px' }}
               >
-                A place for <span className="text-[#EE7329]">hope</span>,
+                A place for <span className="text-[#EE7329]">hope</span>,{' '}
                 <br className="hidden sm:block" />
                 healing, and renewal.
               </h1>
