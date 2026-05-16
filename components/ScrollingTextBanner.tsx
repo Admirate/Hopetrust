@@ -8,7 +8,7 @@ const bricolage = Bricolage_Grotesque({
   weight: ["400", "500"],
 });
 
-const TEXT = "A quiet place to pause.  A safe place to feel.  A gentle space to heal.  ";
+const TEXT = "A quiet place to pause.  A safe place to feel.  ";
 
 export default function ScrollingTextBanner() {
   const repeated = Array(8).fill(TEXT).join("");
