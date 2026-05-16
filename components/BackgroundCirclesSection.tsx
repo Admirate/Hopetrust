@@ -2,7 +2,6 @@
 
 import type React from 'react';
 import { Bricolage_Grotesque } from 'next/font/google';
-import TiltedCard from './TiltedCard';
 import VariableProximity from './VariableProximity';
 import { useScrollAnimation, fadeInUp } from '@/hooks/useScrollAnimation';
 import { useRef } from 'react';
@@ -91,16 +90,16 @@ const BackgroundCirclesSection = () => {
             style={fadeInUp(cardVisible, 150)}
           >
             <div className="relative w-full max-w-[479px] aspect-[479/491] rounded-[52px] bg-[#F97316] shadow-[0_24px_60px_rgba(0,0,0,0.2)] overflow-hidden">
-              <TiltedCard
-                imageSrc={getAssetUrl("home page girl.png")}
-                altText="Illustration of a person with overlapping feelings"
-                containerHeight="100%"
-                containerWidth="100%"
-                imageHeight="100%"
-                imageWidth="100%"
-                showMobileWarning={false}
-                showTooltip={false}
-              />
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="h-full w-full object-cover"
+                preload="metadata"
+              >
+                <source src={getAssetUrl("landing page.mp4")} type="video/mp4" />
+              </video>
             </div>
           </div>
         </div>
