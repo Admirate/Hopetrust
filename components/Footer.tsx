@@ -49,8 +49,11 @@ export default function Footer() {
                 />
               </div>
 
-              {/* Nav column 1 */}
+              {/* Nav column 1: Quick Links */}
               <nav className="flex flex-col gap-3">
+                <span className={`${headingFont.className} text-sm sm:text-base font-semibold text-[#00373E] mb-1`}>
+                  Quick Links
+                </span>
                 {navLinks.map((link) => (
                   <Link
                     key={link.label}
@@ -62,8 +65,11 @@ export default function Footer() {
                 ))}
               </nav>
 
-              {/* Nav column 2: social + legal */}
+              {/* Nav column 2: Social */}
               <nav className="flex flex-col gap-3">
+                <span className={`${headingFont.className} text-sm sm:text-base font-semibold text-[#00373E] mb-1`}>
+                  Social
+                </span>
                 {socialLinks.map((link) => (
                   <a
                     key={link.label}
@@ -75,7 +81,13 @@ export default function Footer() {
                     {link.label}
                   </a>
                 ))}
-                <div className="mt-2" />
+              </nav>
+
+              {/* Nav column 3: Legal */}
+              <nav className="flex flex-col gap-3">
+                <span className={`${headingFont.className} text-sm sm:text-base font-semibold text-[#00373E] mb-1`}>
+                  Legal
+                </span>
                 {legalLinks.map((link) => (
                   <Link
                     key={link.label}
