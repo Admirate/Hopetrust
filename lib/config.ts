@@ -1,5 +1,6 @@
-const whatsappNumber =
-  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919000720003';
+// WHATSAPP CRM DISABLED — uncomment when new CRM is integrated
+// const whatsappNumber =
+//   process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919000720003';
 
 export const siteConfig = {
   name: 'Hope Trust India',
@@ -11,7 +12,8 @@ export const siteConfig = {
     phone: '+91 9000850001',
     phone2: '+91 9000720003',
     trainingPhone: '+91 9866822240',
-    whatsappUrl: `https://wa.me/${whatsappNumber}`,
+    // WHATSAPP CRM DISABLED — uncomment when new CRM is integrated
+    // whatsappUrl: `https://wa.me/${whatsappNumber}`,
     address: {
       line1: 'C/o, UCCHVAS Rehabilitation Center,',
       line2: 'Plot no. 564-A-36-111,',

@@ -885,5 +885,48 @@ Temporarily disable all payment/enrollment (Razorpay) and newsletter signup UI a
 
 ---
 
-*Last updated: May 1, 2026*
-*Sessions: April 7 (initial) · April 19 ×7 (docs corrections, rate limiting, 401 auto-logout, token expiry check, input limits, audit log) · April 20 (training CRUD, responsive training page, URL refactor, SEO) · April 22 (Razorpay booking system — 4 phases: schema, functions, frontend, admin) · April 24 (security audit & fixes — 10 vulnerabilities patched) · May 1 (payment & newsletter features disabled)*
+## Session — May 23, 2026 · Disable WhatsApp CRM
+
+### Objective
+Client is switching WhatsApp CRM provider. Temporarily disable all WhatsApp CRM integration code (floating button, Netlify function, config) while preserving all original code for re-enablement.
+
+### Changes Made
+
+#### `components/WhatsAppButton.tsx`
+- Commented out all imports (`useState`, `useCallback`, `useEffect`, `useRef`, `usePathname`, `siteConfig`)
+- Commented out `WHATSAPP_FALLBACK` constant
+- `WhatsAppButton` default export now returns `null`
+- Original `WhatsAppButton`, `WhatsAppButtonInner`, and `WhatsAppIcon` implementations preserved as line comments
+
+#### `app/layout.tsx`
+- Commented out `WhatsAppButton` import
+- Commented out `<WhatsAppButton />` usage inside `<LenisProvider>`
+
+#### `lib/config.ts`
+- Commented out `whatsappNumber` variable declaration
+- Commented out `whatsappUrl` property in `siteConfig.contact`
+
+#### `netlify/functions/whatsapp-crm.mjs`
+- Full handler commented out (CORS, CRM proxy, phone number normalization)
+- Replaced with a 503 stub returning `"WhatsApp CRM is temporarily disabled"`
+- `config.path` kept active so the route stays registered (prevents stale redirects)
+
+#### `tests/vitest/lib/config.test.ts`
+- Commented out WhatsApp URL test (`has a WhatsApp URL`)
+
+### What was NOT changed (intentionally)
+- `components/RectangleSection.tsx` and `app/about/page.tsx` — user-facing **content text** mentioning "WhatsApp" (e.g. "Book through WhatsApp or the website") is informational, not CRM integration code
+- No env vars removed from Netlify — `CRM_ENDPOINT` and `WHATSAPP_CRM_TOKEN` can be updated in-place when the new provider is ready
+
+### Comment marker
+All changes tagged `WHATSAPP CRM DISABLED` — find and uncomment with `grep -r "WHATSAPP CRM DISABLED"`
+
+### Docs updated
+- `docs/claude.md` — added WhatsApp CRM to "Disabled Features" section, updated directory tree, function docs, config description, env vars table, data flow diagram, and last-updated date
+- `docs/session.md` — this entry
+- `docs/readme.md` — no change needed (WhatsApp was not listed in the tech stack summary)
+
+---
+
+*Last updated: May 23, 2026*
+*Sessions: April 7 (initial) · April 19 ×7 (docs corrections, rate limiting, 401 auto-logout, token expiry check, input limits, audit log) · April 20 (training CRUD, responsive training page, URL refactor, SEO) · April 22 (Razorpay booking system — 4 phases: schema, functions, frontend, admin) · April 24 (security audit & fixes — 10 vulnerabilities patched) · May 1 (payment & newsletter features disabled) · May 23 (WhatsApp CRM disabled — client switching provider)*

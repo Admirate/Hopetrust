@@ -4,7 +4,8 @@ import { Inter } from 'next/font/google';
 import WebVitals from '@/components/WebVitals';
 import LenisProvider from '@/components/LenisProvider';
 import { Toaster } from 'sonner';
-import WhatsAppButton from '@/components/WhatsAppButton';
+// WHATSAPP CRM DISABLED — uncomment when new CRM is integrated
+// import WhatsAppButton from '@/components/WhatsAppButton';
 import { getLogoUrl } from '@/lib/assets';
 import JsonLd from '@/components/JsonLd';
 import { getOrganizationSchema, getWebSiteSchema } from '@/lib/jsonld';
@@ -86,7 +87,9 @@ export default function RootLayout({
         <LenisProvider>
           {children}
           <WebVitals />
+          {/* WHATSAPP CRM DISABLED — uncomment when new CRM is integrated
           <WhatsAppButton />
+          */}
           <Toaster position="top-right" richColors />
         </LenisProvider>
       </body>

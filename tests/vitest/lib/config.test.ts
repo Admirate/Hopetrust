@@ -21,9 +21,10 @@ describe('siteConfig', () => {
     expect(siteConfig.contact.trainingPhone).toMatch(/^\+91/);
   });
 
-  it('has a WhatsApp URL', () => {
-    expect(siteConfig.contact.whatsappUrl).toMatch(/^https:\/\/wa\.me\//);
-  });
+  // WHATSAPP CRM DISABLED — uncomment when new CRM is integrated
+  // it('has a WhatsApp URL', () => {
+  //   expect(siteConfig.contact.whatsappUrl).toMatch(/^https:\/\/wa\.me\//);
+  // });
 
   it('has a complete address', () => {
     expect(siteConfig.contact.address.full).toBeTruthy();

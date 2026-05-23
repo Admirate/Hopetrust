@@ -10,7 +10,7 @@ This is a **statically exported Next.js 15 application** hosted on **Netlify**, 
 
 ## Disabled Features (as of May 2026)
 
-The following features are **temporarily disabled** and commented out in the codebase. All original code is preserved in comments (marked `PAYMENT DISABLED` or `NEWSLETTER DISABLED`) and in git history for future re-enablement.
+The following features are **temporarily disabled** and commented out in the codebase. All original code is preserved in comments (marked `PAYMENT DISABLED`, `NEWSLETTER DISABLED`, or `WHATSAPP CRM DISABLED`) and in git history for future re-enablement.
 
 ### Payment / Enrollment (Razorpay)
 - **Enroll buttons** on `/training` and `/addiction` pages — commented out
@@ -38,12 +38,23 @@ The following features are **temporarily disabled** and commented out in the cod
 - `supabase/functions/send-newsletter/`
 - `newsletter_subscribers` database table
 
+### WhatsApp CRM
+- **`WhatsAppButton`** floating icon — component now returns `null`; import and usage commented out in `app/layout.tsx`
+- **`lib/config.ts`** — `whatsappNumber` variable and `whatsappUrl` config property commented out
+- **`netlify/functions/whatsapp-crm.mjs`** — full handler commented out; replaced with a 503 stub so Netlify deploys cleanly (path `/api/whatsapp-crm` still registered)
+- **`tests/vitest/lib/config.test.ts`** — WhatsApp URL test commented out
+
+**Not removed** (standalone, untouched):
+- `components/WhatsAppButton.tsx` — full original implementation preserved as line comments
+- `RectangleSection.tsx` and `app/about/page.tsx` — user-facing copy mentioning "WhatsApp" (informational text, not CRM integration)
+
 ### How to re-enable
-1. Search for `PAYMENT DISABLED` and `NEWSLETTER DISABLED` across the codebase
+1. Search for `PAYMENT DISABLED`, `NEWSLETTER DISABLED`, and `WHATSAPP CRM DISABLED` across the codebase
 2. Uncomment the marked blocks
 3. Restore the original `public/_headers` CSP and `netlify.toml` redirects + Permissions-Policy
 4. Restore `app/enrollment-success/page.tsx` from git history
-5. Verify build with `npx tsc --noEmit && npm run build`
+5. For WhatsApp: set `CRM_ENDPOINT` and `WHATSAPP_CRM_TOKEN` env vars for the new CRM provider
+6. Verify build with `npx tsc --noEmit && npm run build`
 
 ---
 
@@ -71,7 +82,7 @@ The following features are **temporarily disabled** and commented out in the cod
 ```
 Hopetrust/
 ├── app/                        # Next.js App Router pages
-│   ├── layout.tsx              # Root layout (Inter font, Lenis, Toaster, WhatsApp button)
+│   ├── layout.tsx              # Root layout (Inter font, Lenis, Toaster; WhatsApp button disabled)
 │   ├── page.tsx                # Homepage (10 code-split sections)
 │   ├── about/page.tsx          # About page (story, team, typewriter, wellness)
 │   ├── addiction/page.tsx      # Addiction recovery (5-step road)
@@ -100,7 +111,7 @@ Hopetrust/
 │   ├── BlogListClient.tsx      # Blog listing with filtering/pagination (~16KB)
 │   ├── TherapistCard.tsx       # Doctor/therapist card component
 │   ├── NewsletterForm.tsx      # Newsletter signup (inline + card variants)
-│   ├── WhatsAppButton.tsx      # Floating WhatsApp button
+│   ├── WhatsAppButton.tsx      # Floating WhatsApp button (disabled — returns null)
 │   ├── ContactSection.tsx      # Homepage contact section
 │   ├── FadeInSection.tsx       # Scroll-triggered fade-in wrapper
 │   ├── AuroraBackground.tsx    # Animated aurora background effect
@@ -159,7 +170,7 @@ Hopetrust/
 │       ├── create-order.mjs    # Netlify Function: Razorpay order + enrollment (rate-limited)
 │       ├── razorpay-webhook.mjs  # Netlify Function: payment webhook (HMAC-verified)
 │       ├── enrollment-status.mjs  # Netlify Function: enrollment polling (UUID-gated)
-│       └── whatsapp-crm.mjs    # Netlify Function: WhatsApp CRM proxy
+│       └── whatsapp-crm.mjs    # Netlify Function: WhatsApp CRM proxy (disabled — 503 stub)
 │
 ├── supabase/
 │   └── functions/
@@ -417,10 +428,11 @@ Immutable append-only log of all admin actions. Written server-side only by `adm
 - **Audit Log:** Writes `CREATE` / `UPDATE` / `DELETE` to `admin_audit_log` after every successful mutation
 - **Required Env:** `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_JWT_SECRET`
 
-### 4. Netlify Function: `whatsapp-crm`
+### 4. Netlify Function: `whatsapp-crm` *(currently disabled)*
 
 - **File:** `netlify/functions/whatsapp-crm.mjs`
 - **Endpoint:** `POST /api/whatsapp-crm`
+- **Status:** **Disabled (May 2026)** — client is switching WhatsApp CRM provider. Full handler commented out, replaced with a 503 stub. Original code preserved as line comments. Search for `WHATSAPP CRM DISABLED` to re-enable.
 - **Purpose:** Server-side proxy to an external WhatsApp CRM API. Keeps the CRM token secret from the browser.
 - **Auth:** Bearer token from `WHATSAPP_CRM_TOKEN` env var
 - **CORS:** Restricted to `hopetrustindia.com`, `www.hopetrustindia.com`, `localhost:3000`
@@ -549,7 +561,7 @@ Centralized site configuration:
 - Site name and URL
 - Contact emails (frontoffice, training)
 - Phone numbers (main, secondary, training)
-- WhatsApp URL
+- ~~WhatsApp URL~~ *(disabled — `whatsappUrl` commented out, search `WHATSAPP CRM DISABLED`)*
 - Physical address (with Google Maps directions URL)
 - Google Maps embed URL
 
@@ -601,11 +613,11 @@ IntersectionObserver-based hook that returns `{ elementRef, isVisible }`. Featur
 | ----------------------------------- | ---------- | ------------------------------------------ |
 | `NEXT_PUBLIC_SUPABASE_URL`          | Client     | Supabase client + asset URLs               |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY`     | Client     | Supabase client (public key)               |
-| `NEXT_PUBLIC_WHATSAPP_NUMBER`       | Client     | WhatsApp floating button                   |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER`       | Client     | WhatsApp floating button *(disabled)*      |
 | `NEXT_PUBLIC_SITE_URL`              | Client     | Sitemap, newsletter, OG tags               |
 | `NEXT_PUBLIC_GOOGLE_MAPS_EMBED_URL` | Client     | Contact page map iframe                    |
-| `CRM_ENDPOINT`                      | Server     | Netlify whatsapp-crm function              |
-| `WHATSAPP_CRM_TOKEN`               | Server     | Netlify whatsapp-crm auth                  |
+| `CRM_ENDPOINT`                      | Server     | Netlify whatsapp-crm function *(disabled)* |
+| `WHATSAPP_CRM_TOKEN`               | Server     | Netlify whatsapp-crm auth *(disabled)*     |
 | `ADMIN_JWT_SECRET`                  | Server     | Sign/verify admin JWTs (admin-login + admin-programs) |
 | `RESEND_API_KEY`                    | Server     | Supabase newsletter edge function          |
 | `NEWSLETTER_FROM_EMAIL`            | Server     | Newsletter "from" address                  |
@@ -675,7 +687,7 @@ npm run build    # next build && node scripts/generate-sitemap.mjs
 │                                                              │
 │  Doctor List ─────────► Supabase (doctors SELECT active)     │
 │                                                              │
-│  WhatsApp CRM ────────► Netlify Function ──► External CRM    │
+│  WhatsApp CRM ────────► Netlify Function ──► External CRM    │  *(currently disabled)*
 │                                                              │
 │  Blog Pages ──────────► Pre-built at build from MDX files    │
 │                                                              │
@@ -764,4 +776,4 @@ Every sub-page layout exports its own `metadata` object with:
 
 ---
 
-*Last updated: May 1, 2026 (payment & newsletter features disabled)*
+*Last updated: May 23, 2026 (WhatsApp CRM disabled — client switching provider)*

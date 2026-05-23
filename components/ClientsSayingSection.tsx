@@ -20,47 +20,42 @@ type Testimonial = {
 const testimonials: Testimonial[] = [
   {
     quote:
-      "I'm really glad I found Tina ma'am. Her somatic work and the way she asks thoughtful questions helped me understand myself deeply and release a lot of stored tension.",
+      "I had a great experience at Hope Trust. The clinical psychology internship was very productive with a lot of insights. Everyone is very friendly and professional had learned depth about the field covering all the base topics.",
     author: "",
   },
   {
     quote:
-      "I was struggling with stress and anxiety, but the mindfulness programs on Solus have helped me regain balance. I finally feel like I'm prioritizing my mental well-being.",
-    author: "— Mark S., 41",
-  },
-  {
-    quote:
-      "Solus made it so easy to find the right therapist for me. The sessions have truly transformed my mindset, and I feel more in control of my emotions than ever before!",
-    author: "— Anna R., 32",
-  },
-  {
-    quote:
-      "Dr. Rajeshwari Luther's sessions are structured, insightful, and deeply empowering. She helped me understand my emotional patterns, strengths, and areas of growth with clarity and kindness.",
+      "Dr. Rajeshwari has been an invaluable support, providing thoughtful guidance and life-changing perspectives that helped me navigate personal and family challenges over the years.",
     author: "",
   },
   {
     quote:
-      "Dr. Rajeshwari created a safe, non-judgmental space that helped me gain new perspectives. Because of her, I feel more self-aware and confident.",
+      "Mrs. Rajeswari Luther supported me through one of the most difficult phases of my life with empathy, practical guidance, and meaningful insights that helped me rebuild myself and better support my son through recovery.",
     author: "",
   },
   {
     quote:
-      "I had tried other therapists before, but this was the most effective experience. Her approach helped me directly identify my patterns and make real changes with her excellent guidance.",
+      "Was referred to Dr. Tina through a friend, and I\u2019m so grateful for her guidance and support. Every time I talk to her, I feel more positive and gain a fresh perspective on life. She\u2019s sweet, kind, a great listener, and so generous with her time and energy.",
     author: "",
   },
   {
     quote:
-      "I felt welcomed, understood, and supported from the moment I walked in. The team is professional, compassionate, and the environment is very calming and healing.",
+      "Exceptional experience at Hope Trust. From the moment I walked in, I felt welcomed and understood. The staff are highly professional, compassionate, and knowledgeable. The environment is calming and conducive to healing. I highly recommend Hope Trust.",
     author: "",
   },
   {
     quote:
-      "Hope Trust is one of the best deaddiction facilities in Hyderabad. They are highly professional and truly empathetic towards clients.",
+      "Hope Trust really a great place to get back hope on life. Rajeshwari Ma\u2019am is more than just a doctor; she\u2019s a teacher and a guide who instills hope in life and helps understand mental health conditions.",
     author: "",
   },
   {
     quote:
-      "Professional and research-oriented support for complex issues. Highly recommended for anxiety and emotional management.",
+      "I had a wonderful experience at Hope Trust. The Clinical Internship Programme has helped me a lot in gaining knowledge in the practical aspects of psychology. The sessions were quite interactive.",
+    author: "",
+  },
+  {
+    quote:
+      "Insights that Dr. Rajeshwari has given over the course of time has really helped me get through tough times and understand myself better. If you are looking for sessions to connect back to your real self, this is the place. I would highly recommend it.",
     author: "",
   },
 ];
