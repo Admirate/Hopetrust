@@ -33,7 +33,7 @@ UPDATE doctors SET photo = 'https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/
 WHERE name = 'Dr. Justina Wilma Fernandes';
 
 UPDATE doctors SET photo = 'https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/Doctor%20images/purvi.jpg'
-WHERE name = 'Ms. Purvi Chottai';
+WHERE name = 'Ms. Purvi Maski';
 
 UPDATE doctors SET photo = 'https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/Doctor%20images/apeksha.png'
 WHERE name = 'Ms. Apeksha';

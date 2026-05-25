@@ -278,7 +278,7 @@ Stores the therapist/doctor directory displayed on `/book-your-session`.
 - `anon` role: INSERT, UPDATE, DELETE explicitly denied
 - `service_role`: Full access (for dashboard management)
 
-**Seed Data:** 12 doctors pre-loaded (Mrs. Rajeshwari Luther, Dr. Vidhya Sagar, Ms. Muskan Gupta, Ms. Akansha Kabra, Ms. Sneha Sesha, Ms. Arani Shankar, Dr. Nishanth Vemana, Dr. K. Aparna, Dr. Justina Wilma Fernandes, Ms. Purvi Chottai, Ms. Apeksha, Ms. Shruti Sharma).
+**Seed Data:** 12 doctors pre-loaded (Mrs. Rajeshwari Luther, Dr. Vidhya Sagar, Ms. Muskan Gupta, Ms. Akansha Kabra, Ms. Sneha Sesha, Ms. Arani Shankar, Dr. Nishanth Vemana, Dr. K. Aparna, Dr. Justina Wilma Fernandes, Ms. Purvi Maski, Ms. Apeksha, Ms. Shruti Sharma).
 
 ### Table: `admin_users`
 

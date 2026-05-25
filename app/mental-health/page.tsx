@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, memo } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 import Image from 'next/image';
 import { Bricolage_Grotesque } from 'next/font/google';
@@ -126,24 +126,11 @@ const ASSESSMENTS: Record<
   },
 };
 
-const assessmentBodyFont = Bricolage_Grotesque({
+// Single font instance with all needed weights (avoids 4 separate network requests)
+const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
-  weight: ['500'],
-});
-
-const focusHeadingFont = Bricolage_Grotesque({
-  subsets: ['latin'],
-  weight: ['600'],
-});
-
-const focusBodyFont = Bricolage_Grotesque({
-  subsets: ['latin'],
-  weight: ['500'],
-});
-
-const focusBoldBodyFont = Bricolage_Grotesque({
-  subsets: ['latin'],
-  weight: ['700'],
+  weight: ['500', '600', '700'],
+  display: 'swap',
 });
 
 const CAROUSEL_SLIDES = [
@@ -178,7 +165,7 @@ const CAROUSEL_SLIDES = [
   },
 ];
 
-function ConcernsCarousel() {
+const ConcernsCarousel = memo(function ConcernsCarousel() {
   const [active, setActive] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -223,6 +210,8 @@ function ConcernsCarousel() {
                   alt={slide.alt}
                   fill
                   className="object-cover"
+                  loading="lazy"
+                  sizes="(max-width: 768px) 100vw, 40vw"
                 />
               </motion.div>
             </AnimatePresence>
@@ -276,6 +265,42 @@ function ConcernsCarousel() {
       </div>
     </section>
   );
+});
+
+// Lazy-loaded video component — only loads when scrolled into view
+function LazyVideo({ src, className }: { src: string; className: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <video
+      ref={ref}
+      autoPlay={isVisible}
+      muted
+      loop
+      playsInline
+      className={className}
+      preload="none"
+    >
+      {isVisible && <source src={src} type="video/mp4" />}
+    </video>
+  );
 }
 
 export default function MentalHealthPage() {
@@ -294,32 +319,32 @@ export default function MentalHealthPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-black">
+      <main className="min-h-screen bg-[#F7F6F4]">
         {/* Hero section with background video */}
         <section
           ref={heroRef}
           className="relative h-screen w-full overflow-hidden"
         >
-          {/* Background video */}
+          {/* Background video — preload only metadata for faster initial paint */}
           <motion.video
-            style={{ y: backgroundY }}
+            style={{ y: backgroundY, willChange: 'transform' }}
             autoPlay
             muted
             loop
             playsInline
             className="absolute inset-0 h-full w-full object-cover"
-            preload="metadata"
+            preload="none"
+            poster={getAssetUrl('mental health therapy.png')}
           >
             <source src={getAssetUrl("mentalhealthherovideo.mp4")} type="video/mp4" />
-            Your browser does not support the video tag.
           </motion.video>
 
           {/* Dark overlay for readability */}
-          <div className="absolute inset-0 bg-black/65" />
+          <div className="absolute inset-0 bg-black/66" />
 
           {/* Centered content */}
           <motion.div
-            style={{ y: textY }}
+            style={{ y: textY, willChange: 'transform' }}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 0.61, 0.36, 1], delay: 0.2 }}
@@ -344,18 +369,9 @@ export default function MentalHealthPage() {
           </motion.div>
         </section>
 
-        {/* Support banner with video background */}
-        <section className="relative w-full overflow-hidden py-8 sm:py-10">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="absolute inset-0 h-full w-full object-cover"
-            preload="metadata"
-          >
-            <source src={getAssetUrl('348932.mp4')} type="video/mp4" />
-          </video>
+        {/* Support banner with video background — lazy-loaded */}
+        <section className="relative w-full overflow-hidden py-8 sm:py-10 bg-[#00373E]">
+          <LazyVideo src={getAssetUrl('348932.mp4')} className="absolute inset-0 h-full w-full object-cover" />
           <motion.div
             {...fadeFrom('up')}
             className="relative z-10 flex flex-col items-center justify-center text-center px-4 sm:px-8"
@@ -379,6 +395,8 @@ export default function MentalHealthPage() {
                 width={560}
                 height={480}
                 className="w-full h-auto object-cover"
+                loading="lazy"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </motion.div>
 
@@ -470,7 +488,8 @@ export default function MentalHealthPage() {
                         alt={FOCUS_SECTIONS[activeFocus].imageAlt}
                         fill
                         className="object-contain"
-                        priority={false}
+                        loading="lazy"
+                        sizes="(max-width: 768px) 110px, 170px"
                       />
                     </div>
                   </div>
@@ -478,7 +497,7 @@ export default function MentalHealthPage() {
                   {/* Right text */}
                   <div className="w-full md:w-[70%] text-left text-[#00373E] space-y-3 md:space-y-4">
                     <h2
-                      className={focusHeadingFont.className}
+                      className={bricolage.className}
                       style={{
                         color: "#E26B20",
                         fontSize: "clamp(28px, 5vw, 48px)",
@@ -494,7 +513,7 @@ export default function MentalHealthPage() {
                       {FOCUS_SECTIONS[activeFocus].paragraphs.map((para) => (
                         <p
                           key={para}
-                          className={focusBodyFont.className}
+                          className={bricolage.className}
                           style={{
                             fontSize: "clamp(14px, 2.5vw, 24px)",
                             fontWeight: 500,
@@ -509,7 +528,7 @@ export default function MentalHealthPage() {
                       ))}
                     </div>
                     <p
-                      className={focusBoldBodyFont.className}
+                      className={bricolage.className}
                       style={{
                         fontSize: "clamp(14px, 2.5vw, 24px)",
                         fontWeight: 700,
@@ -590,7 +609,7 @@ export default function MentalHealthPage() {
 
                 {/* Copy for active assessment */}
                 <div
-                  className={`${assessmentBodyFont.className} mt-2 max-w-[1058px] text-base sm:text-lg lg:text-[24px] leading-relaxed text-[#5E5E5E] tracking-[0.724px] space-y-4`}
+                  className={`${bricolage.className} mt-2 max-w-[1058px] text-base sm:text-lg lg:text-[24px] leading-relaxed text-[#5E5E5E] tracking-[0.724px] space-y-4`}
                 >
                   <h3 className="text-xl sm:text-2xl lg:text-[40px] font-semibold tracking-[0.724px] text-[#E26B20]">
                     {ASSESSMENTS[activeAssessment].label}

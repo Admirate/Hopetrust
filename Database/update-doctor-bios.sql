@@ -39,7 +39,7 @@ UPDATE doctors SET bio = E'Dr. Tina Fernandes has worked in Research, Education,
 WHERE name = 'Dr. Justina Wilma Fernandes';
 
 UPDATE doctors SET bio = E'Purvi is an RCI-certified clinical psychologist and certified marital & family therapist, specializing in heterosexual and LGBTQ+ couples and families.\n\nAreas of Expertise:\n\u2022 Anxiety, depression & grief\n\u2022 Addiction & emotional disturbances\n\u2022 Life transitions & anger management\n\u2022 Stress, pre- & post-operative counselling\n\u2022 Pain management & adolescent issues\n\u2022 LGBTQ+ couple & family therapy\n\nTherapeutic Approaches:\n\u2022 Emotionally Focused Therapy (EFT)\n\u2022 Solution-driven, evidence-based integrative approach\n\nQualifications:\n\u2022 MPhil in Clinical Psychology\n\u2022 MSc Health Psychology \u2014 Central University, Hyderabad\n\nLanguages: Hindi, English & Gujarati'
-WHERE name = 'Ms. Purvi Chottai';
+WHERE name = 'Ms. Purvi Maski';
 
 UPDATE doctors SET bio = E'Dr. K Aparna is an experienced Neuropsychiatrist and certified life coach, offering specialized services in mental health and wellness.\n\nAreas of Expertise:\n\u2022 Addiction psychiatry\n\u2022 Psychosis & bipolar disorder\n\u2022 Depression, anxiety & OCD\n\u2022 Personality disorders\n\u2022 Adolescent psychiatry\n\u2022 Senile dementia care\n\nQualifications:\n\u2022 MD in Psychiatry\n\nLanguages: English & Telugu'
 WHERE name = 'Dr. K. Aparna';

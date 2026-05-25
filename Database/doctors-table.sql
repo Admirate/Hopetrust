@@ -149,7 +149,7 @@ INSERT INTO doctors (name, qualification, department, bio, booking_url, photo, i
   'https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/Doctor%20images/tina.jpg', true, 9
 ),
 (
-  'Ms. Purvi Chottai',
+  'Ms. Purvi Maski',
   'MPhil Clinical Psychology',
   'Psychology',
   E'Purvi is an RCI-certified clinical psychologist and certified marital & family therapist, specializing in heterosexual and LGBTQ+ couples and families.\n\nAreas of Expertise:\n\u2022 Anxiety, depression & grief\n\u2022 Addiction & emotional disturbances\n\u2022 Life transitions & anger management\n\u2022 Stress, pre- & post-operative counselling\n\u2022 Pain management & adolescent issues\n\u2022 LGBTQ+ couple & family therapy\n\nTherapeutic Approaches:\n\u2022 Emotionally Focused Therapy (EFT)\n\u2022 Solution-driven, evidence-based integrative approach\n\nQualifications:\n\u2022 MPhil in Clinical Psychology\n\u2022 MSc Health Psychology \u2014 Central University, Hyderabad\n\nLanguages: Hindi, English & Gujarati',
