@@ -21,42 +21,147 @@ const testimonials: Testimonial[] = [
   {
     quote:
       "I had a great experience at Hope Trust. The clinical psychology internship was very productive with a lot of insights. Everyone is very friendly and professional had learned depth about the field covering all the base topics.",
-    author: "",
+    author: "Anonymous",
   },
   {
     quote:
       "Dr. Rajeshwari has been an invaluable support, providing thoughtful guidance and life-changing perspectives that helped me navigate personal and family challenges over the years.",
-    author: "",
+    author: "Anonymous",
   },
   {
     quote:
       "Mrs. Rajeswari Luther supported me through one of the most difficult phases of my life with empathy, practical guidance, and meaningful insights that helped me rebuild myself and better support my son through recovery.",
-    author: "",
+    author: "Anonymous",
   },
   {
     quote:
       "Was referred to Dr. Tina through a friend, and I\u2019m so grateful for her guidance and support. Every time I talk to her, I feel more positive and gain a fresh perspective on life. She\u2019s sweet, kind, a great listener, and so generous with her time and energy.",
-    author: "",
+    author: "Anonymous",
   },
   {
     quote:
       "Exceptional experience at Hope Trust. From the moment I walked in, I felt welcomed and understood. The staff are highly professional, compassionate, and knowledgeable. The environment is calming and conducive to healing. I highly recommend Hope Trust.",
-    author: "",
+    author: "Anonymous",
   },
   {
     quote:
       "Hope Trust really a great place to get back hope on life. Rajeshwari Ma\u2019am is more than just a doctor; she\u2019s a teacher and a guide who instills hope in life and helps understand mental health conditions.",
-    author: "",
+    author: "Anonymous",
   },
   {
     quote:
       "I had a wonderful experience at Hope Trust. The Clinical Internship Programme has helped me a lot in gaining knowledge in the practical aspects of psychology. The sessions were quite interactive.",
-    author: "",
+    author: "Anonymous",
   },
   {
     quote:
       "Insights that Dr. Rajeshwari has given over the course of time has really helped me get through tough times and understand myself better. If you are looking for sessions to connect back to your real self, this is the place. I would highly recommend it.",
-    author: "",
+    author: "Anonymous",
+  },
+  {
+    quote:
+      "Dr. Rajeshwari helped me get past my anxieties and understand myself a lot better after several distressing incidents. Her guidance was truly life-changing.",
+    author: "A.T.",
+  },
+  {
+    quote:
+      "Dr. Rajeshwari Luther helped me understand and overcome my childhood trauma, grief, and anxiety. Her EFT therapy sessions helped me the most. I\u2019d definitely recommend her.",
+    author: "Anonymous",
+  },
+  {
+    quote:
+      "I\u2019m extremely happy with the methods Dr. Rajeshwari chose to treat my symptoms. I see a marked improvement in myself and look forward to more sessions.",
+    author: "K.R.",
+  },
+  {
+    quote:
+      "Dr. Rajeshwari is a brilliant listener who never makes you feel rushed. She gives you all the space to talk deeply, asks the right questions, and genuinely cares about her clients. I can\u2019t recommend her enough.",
+    author: "Aditya",
+  },
+  {
+    quote:
+      "The ideas shared were very practical and effective. Dr. Rajeshwari\u2019s friendliness allows you to open up, and her subtle questions rewire your thinking in a healthier, more positive way.",
+    author: "A.",
+  },
+  {
+    quote:
+      "Dr. Rajeshwari created a safe space for me to open up. Her guidance was effective and thoughtful, helping me find clarity and peace. I always left sessions feeling hopeful and understood.",
+    author: "V.M.T.",
+  },
+  {
+    quote:
+      "I\u2019ve been seeing Dr. Rajeshwari for nearly 5 years. She\u2019s a patient listener, gives wise advice, and is excellent at connecting the dots. She\u2019s helped me build important perspective on life.",
+    author: "S.K.P.",
+  },
+  {
+    quote:
+      "Dr. Rajeshwari is an empathetic therapist who truly listens without judgment. Her approach blends professional structure with genuine warmth. Highly recommended for anyone seeking emotional clarity and growth.",
+    author: "Anonymous",
+  },
+  {
+    quote:
+      "Dr. Rajeshwari is consistently patient with my partner and me. Her guidance is empathetic and practical, and working with her has made a real positive difference in how we communicate.",
+    author: "A.",
+  },
+  {
+    quote:
+      "Dr. Rajeshwari\u2019s therapeutic process is outstanding. She helped me understand my emotional patterns with remarkable clarity and kindness. Her sessions are structured, insightful, and genuinely empowering.",
+    author: "C.T.R.",
+  },
+  {
+    quote:
+      "Ms. Tina has helped me understand and speak to parts of me that no one else could address. Her somatic practice and curious questions help you unravel the innate wisdom within yourself.",
+    author: "R.V.V.",
+  },
+  {
+    quote:
+      "Ms. Tina is a wonderful therapist who creates a safe space to open up. She tailors her approach to my specific needs and her empathetic nature makes me feel truly heard and understood.",
+    author: "A.",
+  },
+  {
+    quote:
+      "Dr. Tina is brilliant, loving, and caring. In nine months, she\u2019s helped me become more aware of my needs and boundaries. My communication skills have improved in both personal and professional life.",
+    author: "V.J.",
+  },
+  {
+    quote:
+      "Dr. Nishant gave a very patient ear to all my problems. He doesn\u2019t just give you medication \u2014 he tells you the root cause too. Very helpful for my sleep disorder and anxiety.",
+    author: "V.K.",
+  },
+  {
+    quote:
+      "Consulting Dr. Nishant was great. He tries to understand his patient\u2019s personality along with the symptoms to get to the root cause. I look forward to my follow-up sessions.",
+    author: "T.A.",
+  },
+  {
+    quote:
+      "The sessions with Dr. Nishant were extremely helpful. The medication he prescribed helped me a lot. He\u2019s quite patient and I feel very confident with his approach.",
+    author: "S.S.",
+  },
+  {
+    quote:
+      "Dr. Vidhya Sagar explained my OCD compulsions clearly and recommended exercises like deep breathing that greatly reduce stress. Even Dr. Janardhan Reddy of NIMHANS advised me to seek CBT from him.",
+    author: "K.D.",
+  },
+  {
+    quote:
+      "Dr. Vidyasagar is a hardcore professional who shoots it straight. His chair exercise left a deep impact on me. He makes everything sound treatable with a touch of straight-face humour.",
+    author: "U.W.",
+  },
+  {
+    quote:
+      "Dr. Vidya Sagar creates a safe space and listens patiently. Over a few sessions, he helps you analyse the root cause of problems and become self-reliant to tackle them effectively.",
+    author: "A.",
+  },
+  {
+    quote:
+      "Ms. Muskan had a good vibe about her. I felt comfortable sharing my experiences, and she approached my issues with a positive perspective.",
+    author: "Anonymous",
+  },
+  {
+    quote:
+      "In just a few months, Ms. Muskan has helped me grow as a person, deal with traumatic experiences, and become myself again. She helped me pick myself up from scratch.",
+    author: "P.R.",
   },
 ];
 
