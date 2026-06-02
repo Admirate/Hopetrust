@@ -175,7 +175,7 @@ export default function TherapistCard({ doctor }: { doctor: Doctor }) {
 
           {/* Full bio — scrollable */}
           <div className="flex min-h-0 flex-1 flex-col p-4 sm:p-5 lg:p-6">
-            <div className="flex-1 min-h-0 overflow-y-auto pr-1 therapist-bio-scroll">
+            <div className="flex-1 min-h-0 overflow-y-scroll pr-1 therapist-bio-scroll">
               <FormattedBio text={doctor.bio} />
             </div>
 

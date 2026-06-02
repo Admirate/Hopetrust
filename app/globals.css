@@ -133,13 +133,17 @@
     line-height: 1.6;
   }
   
-  /* Therapist card bio scrollbar — always visible & colored */
+  /* Therapist card bio scrollbar — always visible & colored (even on macOS) */
   .therapist-bio-scroll {
+    overflow-y: scroll !important;
     scrollbar-width: thin;
     scrollbar-color: #00373E #e5e7eb;
+    -webkit-overflow-scrolling: touch;
   }
   .therapist-bio-scroll::-webkit-scrollbar {
-    width: 5px;
+    -webkit-appearance: none;
+    width: 6px;
+    display: block !important;
   }
   .therapist-bio-scroll::-webkit-scrollbar-track {
     background: #e5e7eb;
@@ -148,6 +152,7 @@
   .therapist-bio-scroll::-webkit-scrollbar-thumb {
     background-color: #00373E;
     border-radius: 4px;
+    min-height: 30px;
   }
   .therapist-bio-scroll::-webkit-scrollbar-thumb:hover {
     background-color: #025a66;
