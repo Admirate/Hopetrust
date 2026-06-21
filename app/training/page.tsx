@@ -410,7 +410,7 @@ function InternshipPathways({
         <div className="relative overflow-hidden rounded-2xl bg-[#FBF9F7] px-5 py-8 shadow-sm sm:rounded-3xl sm:px-8 sm:py-12 md:px-10 md:py-14 lg:rounded-[32px] lg:px-16 lg:py-20">
           {/* Decorative footsteps video — tablet (md) up, grows on wider screens */}
           <video
-            src="https://mcrhgsyudgdgzfikbofr.supabase.co/storage/v1/object/public/hopetrust%20assets/footsteps_training.mp4"
+            src="https://mjgbotzrjmwggzwkoovi.supabase.co/storage/v1/object/public/hopetrust%20assets/footsteps_training.mp4"
             autoPlay
             loop
             muted

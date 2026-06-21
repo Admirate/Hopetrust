@@ -1,5 +1,5 @@
 const SUPABASE_URL =
-  process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://mcrhgsyudgdgzfikbofr.supabase.co';
+  process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://mjgbotzrjmwggzwkoovi.supabase.co';
 const BUCKET = 'hopetrust%20assets';
 
 export function getStorageUrl(bucket: string, path: string): string {
