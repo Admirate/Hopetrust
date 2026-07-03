@@ -394,7 +394,7 @@ export default function ContactPage() {
               </motion.a>
 
               <motion.a
-                href="tel:+919000850001"
+                href={`tel:${siteConfig.contact.phone.replace(/\s/g, '')}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 whileHover={{ y: -6, scale: 1.03 }}
@@ -402,7 +402,7 @@ export default function ContactPage() {
                 className="group flex flex-col items-center justify-center bg-white border border-gray-300 rounded-2xl py-6 sm:py-8 px-4 text-center hover:bg-[#00373E] hover:border-[#00373E] hover:shadow-xl transition-all duration-300 cursor-pointer"
               >
                 <span className="text-lg sm:text-xl lg:text-[24px] font-bold text-[#00373E] group-hover:text-white transition-colors duration-300">Call us</span>
-                <span className="text-sm sm:text-base text-[#486364] mt-1 group-hover:text-white/80 transition-colors duration-300">Frontoffice</span>
+                <span className="text-sm sm:text-base text-[#486364] mt-1 group-hover:text-white/80 transition-colors duration-300">{siteConfig.contact.phone}</span>
               </motion.a>
 
               <motion.a
@@ -448,12 +448,13 @@ export default function ContactPage() {
                 <span className="text-base sm:text-lg lg:text-[24px] font-bold text-[#00373E] group-hover:text-white transition-colors duration-300">Email</span>
               </motion.a>
               <motion.a
-                href="tel:+919866822240"
+                href={`tel:${siteConfig.contact.trainingPhone.replace(/\s/g, '')}`}
                 whileHover={{ y: -4, scale: 1.05 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="flex items-center justify-center bg-white rounded-2xl py-4 sm:py-5 px-8 sm:px-14 text-center hover:bg-[#ED7428] hover:shadow-xl transition-all duration-300 w-full sm:w-auto sm:min-w-[180px] cursor-pointer group"
+                className="flex flex-col items-center justify-center bg-white rounded-2xl py-4 sm:py-5 px-8 sm:px-14 text-center hover:bg-[#ED7428] hover:shadow-xl transition-all duration-300 w-full sm:w-auto sm:min-w-[180px] cursor-pointer group"
               >
                 <span className="text-base sm:text-lg lg:text-[24px] font-bold text-[#00373E] group-hover:text-white transition-colors duration-300">Call us</span>
+                <span className="text-sm sm:text-base text-[#486364] mt-1 group-hover:text-white/80 transition-colors duration-300">{siteConfig.contact.trainingPhone}</span>
               </motion.a>
             </div>
           </motion.div>
