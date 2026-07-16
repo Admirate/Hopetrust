@@ -163,6 +163,11 @@ const testimonials: Testimonial[] = [
       "In just a few months, Ms. Muskan has helped me grow as a person, deal with traumatic experiences, and become myself again. She helped me pick myself up from scratch.",
     author: "P.R.",
   },
+  {
+    quote:
+      "Tina Fernandez is really well experienced professional, she makes you feel deeply understood, valued and comfortable. She has  a unique eclectic approach of working with her clients that helps both the client and therapist to tailor make their journey towards alignment, healing and a deep felt sense of grounded strength. I am blessed to have found her as my therapist.",
+    author: "S.U",
+  },
 ];
 
 export default function ClientsSayingSection() {
