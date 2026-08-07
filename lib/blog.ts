@@ -100,6 +100,100 @@ export function getAllCategories(): string[] {
   return Array.from(cats).sort();
 }
 
+/** Posts shown per archive page. Shared by the routes and the UI. */
+export const POSTS_PER_PAGE = 12;
+
+/**
+ * Catch-all category applied to almost every post. It carries no topical
+ * signal, and an archive for it would be a near-duplicate of /blogs/, so its
+ * pill links to /blogs/ and it gets no page of its own.
+ */
+export const GENERIC_CATEGORY = 'Blog';
+
+/**
+ * Below this many posts an archive is thin content. Those pages are still
+ * generated and linked (readers use the filter) but carry `noindex, follow`.
+ */
+export const MIN_INDEXABLE_CATEGORY_POSTS = 3;
+
+export type CategoryInfo = {
+  name: string;
+  slug: string;
+  count: number;
+  /** Where this category's pill points. */
+  href: string;
+  /** False for the generic catch-all — it has no archive page. */
+  hasArchive: boolean;
+  /** False for thin archives, which are generated but not indexed. */
+  indexable: boolean;
+};
+
+/** URL slug for a category name, e.g. "Addiction Recovery" -> "addiction-recovery". */
+export function categorySlug(name: string): string {
+  return name
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+/** Categories with post counts, sorted by name. Slug collisions get a suffix. */
+export function getCategoriesWithCounts(): CategoryInfo[] {
+  const posts = getAllPostsMeta();
+  const counts = new Map<string, number>();
+
+  for (const post of posts) {
+    for (const cat of post.categories) {
+      counts.set(cat, (counts.get(cat) ?? 0) + 1);
+    }
+  }
+
+  const seen = new Map<string, number>();
+  return Array.from(counts.entries())
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([name, count]) => {
+      const base = categorySlug(name) || 'category';
+      const n = seen.get(base) ?? 0;
+      seen.set(base, n + 1);
+      const slug = n === 0 ? base : `${base}-${n + 1}`;
+      const hasArchive = name !== GENERIC_CATEGORY;
+
+      return {
+        name,
+        slug,
+        count,
+        hasArchive,
+        href: hasArchive ? `/blogs/category/${slug}/` : '/blogs/',
+        indexable: hasArchive && count >= MIN_INDEXABLE_CATEGORY_POSTS,
+      };
+    });
+}
+
+/** Categories that get their own archive page. */
+export function getArchiveCategories(): CategoryInfo[] {
+  return getCategoriesWithCounts().filter((c) => c.hasArchive);
+}
+
+export function getCategoryBySlug(slug: string): CategoryInfo | null {
+  return getArchiveCategories().find((c) => c.slug === slug) ?? null;
+}
+
+export function getPostsByCategory(name: string): BlogPostMeta[] {
+  return getAllPostsMeta().filter((p) => p.categories.includes(name));
+}
+
+/** Total archive pages for a given post count. */
+export function pageCount(total: number): number {
+  return Math.max(1, Math.ceil(total / POSTS_PER_PAGE));
+}
+
+/** The slice of posts belonging to a 1-indexed archive page. */
+export function paginate<T>(items: T[], page: number): T[] {
+  return items.slice((page - 1) * POSTS_PER_PAGE, page * POSTS_PER_PAGE);
+}
+
 export function getAllTags(): string[] {
   const posts = getAllPosts();
   const tags = new Set<string>();

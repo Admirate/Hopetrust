@@ -57,11 +57,27 @@ function getBlogPosts() {
           slug,
           title: data.title || slug,
           excerpt: data.excerpt || '',
+          featuredImage: data.featuredImage || '',
+          categories: data.categories || [],
+          tags: data.tags || [],
+          author: data.author || 'Hope Trust',
+          date: typeof data.date === 'string' ? data.date : toIsoDate(data.date),
           lastmod: toIsoDate(data.modified || data.date),
           sortKey: new Date(data.date || 0).getTime() || 0,
         };
       } catch {
-        return { slug, title: slug, excerpt: '', lastmod: today(), sortKey: 0 };
+        return {
+          slug,
+          title: slug,
+          excerpt: '',
+          featuredImage: '',
+          categories: [],
+          tags: [],
+          author: 'Hope Trust',
+          date: today(),
+          lastmod: today(),
+          sortKey: 0,
+        };
       }
     })
     .sort((a, b) => b.sortKey - a.sortKey);
@@ -167,10 +183,54 @@ function xmlEscape(s) {
     .replace(/'/g, '&apos;');
 }
 
-function buildSitemap(posts, therapists) {
+const POSTS_PER_PAGE = 12;
+const GENERIC_CATEGORY = 'Blog';
+const MIN_INDEXABLE_CATEGORY_POSTS = 3;
+
+/**
+ * Blog archive URLs: pages 2..N (page 1 is /blogs/) and the indexable category
+ * archives. Thin archives (< 3 posts) and the generic "Blog" catch-all are
+ * excluded — they are noindex or have no page, so listing them would contradict
+ * the pages themselves. Mirrors the policy in lib/blog.ts.
+ */
+function getArchiveUrls(posts) {
+  const pages = Math.max(1, Math.ceil(posts.length / POSTS_PER_PAGE));
+  const urls = [];
+
+  for (let n = 2; n <= pages; n++) urls.push(`/blogs/page/${n}/`);
+
+  const counts = new Map();
+  for (const p of posts) {
+    for (const c of p.categories) counts.set(c, (counts.get(c) ?? 0) + 1);
+  }
+
+  for (const [name, count] of [...counts.entries()].sort()) {
+    if (name === GENERIC_CATEGORY || count < MIN_INDEXABLE_CATEGORY_POSTS) continue;
+    const slug = name
+      .toLowerCase()
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/&/g, ' and ')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    urls.push(`/blogs/category/${slug}/`);
+  }
+
+  return urls;
+}
+
+function buildSitemap(posts, therapists, archiveUrls) {
   const now = today();
 
   const urls = [
+    ...archiveUrls.map(
+      (u) => `  <url>
+    <loc>${xmlEscape(`${SITE_URL}${u}`)}</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>`
+    ),
     ...staticPages.map(
       (page) => `  <url>
     <loc>${SITE_URL}${page.path}</loc>
@@ -343,13 +403,28 @@ ${articles}
 
 const posts = getBlogPosts();
 const therapists = verifyTherapistSlugs(getTherapists());
+const archiveUrls = getArchiveUrls(posts);
 const targetDir = fs.existsSync(OUT_DIR) ? OUT_DIR : path.join(ROOT, 'public');
 const label = targetDir === OUT_DIR ? 'out' : 'public';
 
+// Fetched by the blog archive the first time a reader searches, so the full
+// corpus stays off the initial page load.
+const searchIndex = posts.map((p) => ({
+  slug: p.slug,
+  title: p.title,
+  excerpt: p.excerpt,
+  featuredImage: p.featuredImage,
+  categories: p.categories,
+  tags: p.tags,
+  author: p.author,
+  date: p.date,
+}));
+
 const files = [
-  ['sitemap.xml', buildSitemap(posts, therapists)],
+  ['sitemap.xml', buildSitemap(posts, therapists, archiveUrls)],
   ['robots.txt', buildRobots()],
   ['llms.txt', buildLlmsTxt(posts, therapists)],
+  ['blogs-search-index.json', JSON.stringify(searchIndex)],
 ];
 
 for (const [name, contents] of files) {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { Search, Calendar, ArrowRight, X } from 'lucide-react';
 import { Bricolage_Grotesque } from 'next/font/google';
@@ -8,82 +8,93 @@ import FadeInSection from '@/components/FadeInSection';
 import ImageFallback from '@/components/ImageFallback';
 // NEWSLETTER DISABLED — uncomment when newsletter is enabled
 // import NewsletterForm from '@/components/NewsletterForm';
-import type { BlogPostMeta } from '@/lib/blog';
+import type { BlogPostMeta, CategoryInfo } from '@/lib/blog';
 
 const headingFont = Bricolage_Grotesque({
   subsets: ['latin'],
   weight: ['600', '700'],
 });
 
-const POSTS_PER_PAGE = 12;
-
-function formatDate(dateStr: string): string {
-  try {
-    return new Date(dateStr).toLocaleDateString('en-IN', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-  } catch {
-    return dateStr;
-  }
-}
-
+/**
+ * Archive view shared by /blogs/, /blogs/page/[n]/ and /blogs/category/[slug]/.
+ *
+ * Pagination and category filtering are links to real static pages, so every
+ * post is reachable by a crawler. Only the current page's posts are sent to the
+ * browser; the full-corpus search index is fetched on demand the first time
+ * someone types, which keeps ~200 KB off the initial load for everyone else.
+ */
 export default function BlogListClient({
   posts,
   categories,
+  total,
+  allCount,
+  page,
+  totalPages,
+  basePath,
+  activeCategory = null,
+  featured,
 }: {
+  /** Posts for this page only. */
   posts: BlogPostMeta[];
-  categories: string[];
+  categories: CategoryInfo[];
+  /** Posts in the current scope (all posts, or all in this category). */
+  total: number;
+  /** Posts site-wide, for the "All" pill. */
+  allCount: number;
+  page: number;
+  totalPages: number;
+  /** URL prefix for pagination, e.g. "/blogs" or "/blogs/category/anxiety". */
+  basePath: string;
+  activeCategory?: string | null;
+  featured?: BlogPostMeta;
 }) {
   const [search, setSearch] = useState('');
-  const [activeCategory, setActiveCategory] = useState('All');
-  const [page, setPage] = useState(1);
+  const [index, setIndex] = useState<BlogPostMeta[] | null>(null);
+  const [indexState, setIndexState] = useState<'idle' | 'loading' | 'error'>('idle');
   const gridRef = useRef<HTMLDivElement>(null);
 
-  const filtered = useMemo(() => {
-    let result = posts;
+  const query = search.trim();
+  const searching = query.length > 0;
 
-    if (activeCategory !== 'All') {
-      result = result.filter((p) => p.categories.includes(activeCategory));
-    }
+  // Fetch the full-corpus index the first time the reader searches.
+  useEffect(() => {
+    if (!searching || index || indexState === 'loading') return;
 
-    if (search.trim()) {
-      const q = search.toLowerCase();
-      result = result.filter(
-        (p) =>
-          p.title.toLowerCase().includes(q) ||
-          p.excerpt.toLowerCase().includes(q) ||
-          p.categories.some((c) => c.toLowerCase().includes(q)) ||
-          p.tags.some((t) => t.toLowerCase().includes(q))
-      );
-    }
+    let cancelled = false;
+    setIndexState('loading');
 
-    return result;
-  }, [posts, search, activeCategory]);
+    fetch('/blogs-search-index.json')
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+      .then((data: BlogPostMeta[]) => {
+        if (cancelled) return;
+        setIndex(data);
+        setIndexState('idle');
+      })
+      .catch(() => {
+        if (!cancelled) setIndexState('error');
+      });
 
-  const totalPages = Math.ceil(filtered.length / POSTS_PER_PAGE);
-  const paginated = filtered.slice(
-    (page - 1) * POSTS_PER_PAGE,
-    page * POSTS_PER_PAGE
-  );
+    return () => {
+      cancelled = true;
+    };
+  }, [searching, index, indexState]);
 
-  const featured = posts[0];
+  const results = useMemo(() => {
+    if (!searching || !index) return [];
+    const q = query.toLowerCase();
+    return index.filter(
+      (p) =>
+        p.title.toLowerCase().includes(q) ||
+        p.excerpt.toLowerCase().includes(q) ||
+        p.categories.some((c) => c.toLowerCase().includes(q)) ||
+        p.tags.some((t) => t.toLowerCase().includes(q))
+    );
+  }, [index, query, searching]);
 
-  const handleCategoryChange = (cat: string) => {
-    setActiveCategory(cat);
-    setPage(1);
-  };
+  const visible = searching ? results : posts;
+  const shownCount = searching ? results.length : total;
 
-  const handleSearch = (val: string) => {
-    setSearch(val);
-    setPage(1);
-  };
-
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-    gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
+  const pageHref = (n: number) => (n === 1 ? `${basePath}/` : `${basePath}/page/${n}/`);
 
   const getVisiblePages = (): number[] => {
     const maxButtons = 5;
@@ -96,6 +107,11 @@ export default function BlogListClient({
     return pages;
   };
 
+  const pillClass = (active: boolean) =>
+    `whitespace-nowrap rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors sm:px-4 sm:py-2 sm:text-sm ${
+      active ? 'bg-[#00373E] text-white' : 'bg-white text-[#00373E] hover:bg-gray-100'
+    }`;
+
   return (
     <>
       {/* Hero section */}
@@ -107,7 +123,7 @@ export default function BlogListClient({
                 className={`${headingFont.className} text-2xl font-bold text-white sm:text-4xl lg:text-5xl`}
               >
                 Insights for your mind,{' '}
-                <span className="text-[#ED7428]">body & soul</span>
+                <span className="text-[#ED7428]">body &amp; soul</span>
               </h1>
               <p className="max-w-xl text-sm leading-relaxed text-white/70 sm:text-base lg:text-lg">
                 Explore expert articles on mental health, therapy, addiction
@@ -124,12 +140,13 @@ export default function BlogListClient({
                 name="search"
                 placeholder="Search articles..."
                 value={search}
-                onChange={(e) => handleSearch(e.target.value)}
+                onChange={(e) => setSearch(e.target.value)}
                 className="w-full rounded-full bg-white py-2.5 pl-10 pr-10 text-sm text-gray-800 shadow-lg outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-[#ED7428] sm:py-3 sm:pl-12 sm:pr-4 sm:text-base"
               />
               {search && (
                 <button
-                  onClick={() => handleSearch('')}
+                  onClick={() => setSearch('')}
+                  aria-label="Clear search"
                   className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 sm:hidden"
                 >
                   <X className="h-4 w-4" />
@@ -141,7 +158,7 @@ export default function BlogListClient({
       </FadeInSection>
 
       {/* Featured post */}
-      {featured && !search && activeCategory === 'All' && (
+      {featured && !searching && (
         <FadeInSection delay={100}>
           <section className="w-full bg-white py-8 sm:py-10 lg:py-14">
             <div className="mx-auto w-full max-w-[1225px] px-4 sm:px-8 lg:px-12">
@@ -199,75 +216,47 @@ export default function BlogListClient({
         </FadeInSection>
       )}
 
-      {/* NEWSLETTER DISABLED — uncomment when newsletter is enabled
-      <FadeInSection delay={150}>
-        <section className="w-full bg-[#00373E]">
-          <div className="mx-auto flex w-full max-w-[1225px] flex-col items-center gap-4 px-4 py-10 text-center sm:gap-6 sm:px-8 sm:py-14 lg:px-12">
-            <h2
-              className={`${headingFont.className} text-xl font-bold text-white sm:text-2xl lg:text-3xl`}
-            >
-              Stay updated with our latest insights
-            </h2>
-            <p className="max-w-lg text-xs text-white/60 sm:text-sm">
-              Subscribe to receive weekly articles on mental health, therapy,
-              recovery, and wellness — straight to your inbox.
-            </p>
-            <div className="w-full max-w-2xl">
-              <NewsletterForm variant="inline" dark />
-            </div>
-          </div>
-        </section>
-      </FadeInSection>
-      */}
-
       {/* Category filters + Grid */}
       <section ref={gridRef} className="w-full bg-[#F7F6F4] pt-8 pb-16 sm:py-10 lg:py-14">
         <div className="mx-auto w-full max-w-[1225px] px-4 sm:px-8 lg:px-12">
-          {/* Category tabs — horizontally scrollable on mobile */}
+          {/* Category tabs — links to real archive pages */}
           <div className="-mx-4 mb-6 overflow-x-auto px-4 sm:mx-0 sm:mb-8 sm:overflow-visible sm:px-0">
             <div className="flex w-max gap-2 pb-2 sm:w-auto sm:flex-wrap sm:pb-0">
-              <button
-                onClick={() => handleCategoryChange('All')}
-                className={`whitespace-nowrap rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors sm:px-4 sm:py-2 sm:text-sm ${
-                  activeCategory === 'All'
-                    ? 'bg-[#00373E] text-white'
-                    : 'bg-white text-[#00373E] hover:bg-gray-100'
-                }`}
-              >
-                All ({posts.length})
-              </button>
-              {categories.map((cat) => {
-                const count = posts.filter((p) =>
-                  p.categories.includes(cat)
-                ).length;
-                return (
-                  <button
-                    key={cat}
-                    onClick={() => handleCategoryChange(cat)}
-                    className={`whitespace-nowrap rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors sm:px-4 sm:py-2 sm:text-sm ${
-                      activeCategory === cat
-                        ? 'bg-[#00373E] text-white'
-                        : 'bg-white text-[#00373E] hover:bg-gray-100'
-                    }`}
-                  >
-                    {cat} ({count})
-                  </button>
-                );
-              })}
+              <Link href="/blogs/" className={pillClass(activeCategory === null)}>
+                All ({allCount})
+              </Link>
+              {categories.map((cat) => (
+                <Link
+                  key={cat.slug}
+                  href={cat.href}
+                  className={pillClass(activeCategory === cat.name)}
+                >
+                  {cat.name} ({cat.count})
+                </Link>
+              ))}
             </div>
           </div>
 
           {/* Results count */}
           <p className="mb-4 text-xs text-gray-500 sm:mb-6 sm:text-sm">
-            {filtered.length} article{filtered.length !== 1 ? 's' : ''} found
-            {search && ` for "${search}"`}
-            {activeCategory !== 'All' && ` in ${activeCategory}`}
+            {indexState === 'loading' && searching
+              ? 'Searching…'
+              : `${shownCount} article${shownCount !== 1 ? 's' : ''} found`}
+            {searching && ` for "${query}"`}
+            {activeCategory && !searching && ` in ${activeCategory}`}
+            {!searching && totalPages > 1 && ` — page ${page} of ${totalPages}`}
           </p>
 
+          {indexState === 'error' && searching && (
+            <p className="mb-4 text-xs text-red-500 sm:text-sm">
+              Search is unavailable right now. Please browse by category instead.
+            </p>
+          )}
+
           {/* Blog grid */}
-          {paginated.length > 0 ? (
+          {visible.length > 0 ? (
             <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {paginated.map((post, idx) => (
+              {visible.map((post, idx) => (
                 <FadeInSection key={post.slug} delay={idx * 50}>
                   <Link
                     href={`/blogs/${post.slug}`}
@@ -323,50 +312,86 @@ export default function BlogListClient({
               ))}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center py-16 text-center sm:py-20">
-              <p className="text-base text-gray-400 sm:text-lg">No articles found</p>
-              <p className="mt-2 text-xs text-gray-300 sm:text-sm">
-                Try adjusting your search or filter
-              </p>
-            </div>
+            indexState !== 'loading' && (
+              <div className="flex flex-col items-center justify-center py-16 text-center sm:py-20">
+                <p className="text-base text-gray-400 sm:text-lg">No articles found</p>
+                <p className="mt-2 text-xs text-gray-300 sm:text-sm">
+                  Try adjusting your search or filter
+                </p>
+              </div>
+            )
           )}
 
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="mt-8 flex items-center justify-center gap-1.5 sm:mt-10 sm:gap-2" style={{ touchAction: 'manipulation' }}>
-              <button
-                onClick={() => handlePageChange(Math.max(1, page - 1))}
-                disabled={page === 1}
-                className="rounded-full bg-white px-3 py-1.5 text-xs font-medium text-[#00373E] shadow-sm transition-colors hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed sm:px-4 sm:py-2 sm:text-sm"
-              >
-                Prev
-              </button>
-
-              {getVisiblePages().map((pageNum) => (
-                <button
-                  key={pageNum}
-                  onClick={() => handlePageChange(pageNum)}
-                  className={`h-8 w-8 rounded-full text-xs font-medium transition-colors sm:h-10 sm:w-10 sm:text-sm ${
-                    page === pageNum
-                      ? 'bg-[#00373E] text-white'
-                      : 'bg-white text-[#00373E] hover:bg-gray-50'
-                  }`}
+          {/* Pagination — real links, so crawlers can walk the whole archive */}
+          {!searching && totalPages > 1 && (
+            <nav
+              aria-label="Pagination"
+              className="mt-8 flex items-center justify-center gap-1.5 sm:mt-10 sm:gap-2"
+              style={{ touchAction: 'manipulation' }}
+            >
+              {page > 1 ? (
+                <Link
+                  href={pageHref(page - 1)}
+                  rel="prev"
+                  className="rounded-full bg-white px-3 py-1.5 text-xs font-medium text-[#00373E] shadow-sm transition-colors hover:bg-gray-50 sm:px-4 sm:py-2 sm:text-sm"
                 >
-                  {pageNum}
-                </button>
-              ))}
+                  Prev
+                </Link>
+              ) : (
+                <span className="cursor-not-allowed rounded-full bg-white px-3 py-1.5 text-xs font-medium text-[#00373E] opacity-40 shadow-sm sm:px-4 sm:py-2 sm:text-sm">
+                  Prev
+                </span>
+              )}
 
-              <button
-                onClick={() => handlePageChange(Math.min(totalPages, page + 1))}
-                disabled={page === totalPages}
-                className="rounded-full bg-white px-3 py-1.5 text-xs font-medium text-[#00373E] shadow-sm transition-colors hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed sm:px-4 sm:py-2 sm:text-sm"
-              >
-                Next
-              </button>
-            </div>
+              {getVisiblePages().map((pageNum) =>
+                pageNum === page ? (
+                  <span
+                    key={pageNum}
+                    aria-current="page"
+                    className="flex h-8 w-8 items-center justify-center rounded-full bg-[#00373E] text-xs font-medium text-white sm:h-10 sm:w-10 sm:text-sm"
+                  >
+                    {pageNum}
+                  </span>
+                ) : (
+                  <Link
+                    key={pageNum}
+                    href={pageHref(pageNum)}
+                    className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-xs font-medium text-[#00373E] transition-colors hover:bg-gray-50 sm:h-10 sm:w-10 sm:text-sm"
+                  >
+                    {pageNum}
+                  </Link>
+                )
+              )}
+
+              {page < totalPages ? (
+                <Link
+                  href={pageHref(page + 1)}
+                  rel="next"
+                  className="rounded-full bg-white px-3 py-1.5 text-xs font-medium text-[#00373E] shadow-sm transition-colors hover:bg-gray-50 sm:px-4 sm:py-2 sm:text-sm"
+                >
+                  Next
+                </Link>
+              ) : (
+                <span className="cursor-not-allowed rounded-full bg-white px-3 py-1.5 text-xs font-medium text-[#00373E] opacity-40 shadow-sm sm:px-4 sm:py-2 sm:text-sm">
+                  Next
+                </span>
+              )}
+            </nav>
           )}
         </div>
       </section>
     </>
   );
+}
+
+function formatDate(dateStr: string): string {
+  try {
+    return new Date(dateStr).toLocaleDateString('en-IN', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  } catch {
+    return dateStr;
+  }
 }
