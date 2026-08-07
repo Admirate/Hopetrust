@@ -373,7 +373,7 @@ export default function ContactPage() {
                 In-Clinic / Online Appointments
               </p>
               <p className="text-sm sm:text-base lg:text-[20px] text-[#486364] mt-1">
-                Office Hours 10 AM – 7 PM (IST) (Monday to Saturday)
+                Office Hours {siteConfig.hours.display} ({siteConfig.hours.displayDays})
                 <br />
                 Except Holidays
               </p>

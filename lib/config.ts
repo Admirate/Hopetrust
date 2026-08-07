@@ -22,7 +22,27 @@ export const siteConfig = {
       full: 'C/o, UCCHVAS Rehabilitation Center, Plot no. 564-A-36-111, Opp. Lotus Pond Road, MLA Colony, Banjara Hills, Hyderabad-500034.',
       mapsUrl:
         'https://www.google.com/maps/dir/?api=1&destination=UCCHVAS+Rehabilitation+Center+Banjara+Hills+Hyderabad',
+      // Structured parts for schema.org PostalAddress. Keep in sync with the
+      // Google Business Profile — NAP mismatches weaken local ranking signals.
+      streetAddress:
+        'C/o UCCHVAS Rehabilitation Center, Plot no. 564-A-36-111, Opp. Lotus Pond Road, MLA Colony, Banjara Hills',
+      locality: 'Hyderabad',
+      region: 'Telangana',
+      postalCode: '500034',
+      country: 'IN',
     },
+  },
+
+  /**
+   * Single source of truth for opening hours. These must match the visible
+   * text on /contact/, the JSON-LD, and the Google Business Profile.
+   */
+  hours: {
+    days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    opens: '10:00',
+    closes: '19:00',
+    display: '10 AM – 7 PM (IST)',
+    displayDays: 'Monday to Saturday',
   },
 
   maps: {

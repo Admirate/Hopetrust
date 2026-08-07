@@ -29,6 +29,14 @@ const AffiliationsSection = dynamic(
 );
 const Footer = dynamic(() => import('@/components/Footer'));
 
+// The root layout deliberately declares no `alternates`, so the homepage sets
+// its own canonical here.
+export const metadata = {
+  alternates: {
+    canonical: '/',
+  },
+};
+
 export default function Home() {
   return (
     <>

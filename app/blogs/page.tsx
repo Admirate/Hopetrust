@@ -3,11 +3,14 @@ import Header from '@/components/Header';
 import BlogListClient from '@/components/BlogListClient';
 
 export const metadata = {
-  title: 'Blog | Hope Trust - Mental Health & Wellness Insights',
+  title: 'Mental Health & Wellness Insights',
   description:
-    'Explore articles on mental health, therapy, addiction recovery, relationships, and wellness from Hope Trust\'s team of experts.',
+    'Articles on mental health, therapy, addiction recovery, relationships, and wellness from Hope Trust\'s team of experts.',
   keywords:
     'mental health blog, therapy articles, addiction recovery insights, wellness tips, Hope Trust blog, depression, anxiety, relationships',
+  alternates: {
+    canonical: '/blogs/',
+  },
   openGraph: {
     title: 'Blog | Hope Trust',
     description:

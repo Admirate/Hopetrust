@@ -15,9 +15,12 @@ const bodyFont = Bricolage_Grotesque({
 });
 
 export const metadata = {
-  title: 'Privacy Policy | Hope Trust',
+  title: 'Privacy Policy',
   description:
-    'Terms and conditions of use for the Hope Trust website. Privacy policy and terms of use for Hope Trust (Arel Hope Recovery Services LLP).',
+    'How Hope Trust (Arel Hope Recovery Services LLP) collects, uses, and protects your personal information.',
+  alternates: {
+    canonical: '/privacy-policy/',
+  },
   openGraph: {
     title: 'Privacy Policy | Hope Trust',
     description:

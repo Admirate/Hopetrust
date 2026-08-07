@@ -3,9 +3,9 @@ import JsonLd from '@/components/JsonLd';
 import { getServiceSchema, getBreadcrumbSchema } from '@/lib/jsonld';
 
 export const metadata: Metadata = {
-  title: 'Mental Health Services | Hope Trust - Therapy, Psychiatry & Counselling',
+  title: 'Mental Health Therapy & Psychiatry',
   description:
-    'Comprehensive mental health support including therapy, psychiatry, couples therapy, and family therapy. We help with anxiety, depression, trauma, ADHD, OCD, grief, relationship concerns, and more. In-clinic and online sessions available in Hyderabad.',
+    'Therapy, psychiatry, couples and family therapy for anxiety, depression, trauma, ADHD, OCD and grief. In-clinic and online sessions in Hyderabad.',
   keywords:
     'mental health, therapy, psychiatry, couples therapy, family therapy, anxiety, depression, ADHD, OCD, trauma, counselling Hyderabad, Hope Trust',
   alternates: {

@@ -42,9 +42,14 @@ export default function AffiliationsSection() {
                   key={`a-${i}`}
                   className="mx-6 sm:mx-8 flex shrink-0 items-center justify-center"
                 >
+                  {/* loading="lazy" also stops React hoisting these
+                      below-the-fold logos into <link rel="preload">, where they
+                      competed for bandwidth with the LCP element. */}
                   <img
                     src={src}
                     alt={`Affiliation logo ${i + 1}`}
+                    loading="lazy"
+                    decoding="async"
                     className="h-14 sm:h-20 w-auto object-contain"
                   />
                 </div>
@@ -55,9 +60,14 @@ export default function AffiliationsSection() {
                   key={`b-${i}`}
                   className="mx-6 sm:mx-8 flex shrink-0 items-center justify-center"
                 >
+                  {/* Visual duplicate for the marquee loop — hidden from
+                      assistive tech and search engines to avoid repeating it. */}
                   <img
                     src={src}
-                    alt={`Affiliation logo ${i + 1}`}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                    decoding="async"
                     className="h-14 sm:h-20 w-auto object-contain"
                   />
                 </div>

@@ -15,9 +15,12 @@ const bodyFont = Bricolage_Grotesque({
 });
 
 export const metadata = {
-  title: 'Terms & Conditions | Hope Trust',
+  title: 'Terms & Conditions',
   description:
-    'Terms and conditions of use for the Hope Trust website. Read the terms governing your use of Hope Trust (Arel Hope Recovery Services LLP) services and website.',
+    'The terms governing your use of Hope Trust (Arel Hope Recovery Services LLP) services and website.',
+  alternates: {
+    canonical: '/terms-and-conditions/',
+  },
   openGraph: {
     title: 'Terms & Conditions | Hope Trust',
     description:

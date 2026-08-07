@@ -6,6 +6,7 @@ import VariableProximity from './VariableProximity';
 import { useScrollAnimation, fadeInUp } from '@/hooks/useScrollAnimation';
 import { useRef } from 'react';
 import { getAssetUrl } from '@/lib/assets';
+import LazyVideo from './LazyVideo';
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -90,16 +91,10 @@ const BackgroundCirclesSection = () => {
             style={fadeInUp(cardVisible, 150)}
           >
             <div className="relative w-full max-w-[479px] aspect-[479/491] rounded-[52px] bg-[#F97316] shadow-[0_24px_60px_rgba(0,0,0,0.2)] overflow-hidden">
-              <video
-                autoPlay
-                muted
-                loop
-                playsInline
+              <LazyVideo
                 className="h-full w-full object-cover"
-                preload="metadata"
-              >
-                <source src={getAssetUrl("landing page.mp4")} type="video/mp4" />
-              </video>
+                src={getAssetUrl('landing page.mp4')}
+              />
             </div>
           </div>
         </div>

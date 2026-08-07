@@ -1,3 +1,12 @@
+# Keep the Netlify preview host out of the search index. Without this the
+# staging domain is a fully crawlable duplicate of the production site.
+https://hopetrust.netlify.app/*
+  X-Robots-Tag: noindex, nofollow
+
+# Netlify deploy previews and branch deploys.
+https://:deploy/--hopetrust.netlify.app/*
+  X-Robots-Tag: noindex, nofollow
+
 # Production CSP — applied by Netlify CDN only, NOT during netlify dev.
 # This keeps dev working (Next.js needs eval() for HMR) while securing production.
 #

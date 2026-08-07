@@ -15,9 +15,12 @@ const bodyFont = Bricolage_Grotesque({
 });
 
 export const metadata = {
-  title: 'Cancellation, Refund Policy and Consent Form | Hope Trust',
+  title: 'Cancellation & Refund Policy',
   description:
     'Hope Trust\'s cancellation policy, refund policy, payment policy, and therapy consent form.',
+  alternates: {
+    canonical: '/cancellation-policy/',
+  },
   openGraph: {
     title: 'Cancellation, Refund Policy and Consent Form | Hope Trust',
     description:

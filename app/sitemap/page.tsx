@@ -16,9 +16,12 @@ const bodyFont = Bricolage_Grotesque({
 });
 
 export const metadata = {
-  title: 'Sitemap | Hope Trust',
+  title: 'Sitemap',
   description:
     'Browse all pages on the Hope Trust website — mental health services, addiction recovery, training, blog articles, and more.',
+  alternates: {
+    canonical: '/sitemap/',
+  },
   openGraph: {
     title: 'Sitemap | Hope Trust',
     description: 'Browse all pages on the Hope Trust website.',

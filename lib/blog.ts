@@ -7,6 +7,8 @@ export interface BlogPost {
   slug: string;
   title: string;
   date: string;
+  /** Last substantive edit. Falls back to `date` when frontmatter omits it. */
+  modified: string;
   excerpt: string;
   categories: string[];
   tags: string[];
@@ -21,6 +23,7 @@ export interface BlogPostMeta {
   slug: string;
   title: string;
   date: string;
+  modified: string;
   excerpt: string;
   categories: string[];
   tags: string[];
@@ -40,6 +43,7 @@ function parseMdxFile(filePath: string): BlogPost | null {
       slug: data.slug || path.basename(filePath, '.mdx'),
       title: data.title || 'Untitled',
       date: data.date || '',
+      modified: data.modified || data.date || '',
       excerpt: data.excerpt || '',
       categories: data.categories || [],
       tags: data.tags || [],

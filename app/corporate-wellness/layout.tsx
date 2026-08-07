@@ -4,9 +4,9 @@ import JsonLd from '@/components/JsonLd';
 import { getServiceSchema, getBreadcrumbSchema } from '@/lib/jsonld';
 
 export const metadata: Metadata = {
-  title: 'Corporate Wellness | Hope Trust - Employee Mental Health Programs',
+  title: 'Corporate Wellness & Employee Mental Health',
   description:
-    'Hope Trust offers corporate wellness programmes designed to support employee mental health, reduce workplace stress, and boost team wellbeing. Sessions, workshops, and structured support in Hyderabad.',
+    'Corporate wellness programmes supporting employee mental health and reducing workplace stress. Sessions, workshops and structured support in Hyderabad.',
   keywords:
     'corporate wellness, employee mental health, workplace stress, EAP, employee assistance programme, mental health workshops, Hope Trust Hyderabad, team wellbeing',
   alternates: {

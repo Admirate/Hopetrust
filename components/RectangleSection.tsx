@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Bricolage_Grotesque } from "next/font/google";
 import { getAssetUrl } from '@/lib/assets';
+import LazyVideo from './LazyVideo';
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -50,16 +51,10 @@ export default function RectangleSection() {
     <section className="w-full bg-transparent py-12 sm:py-16">
       <div className="relative mx-4 sm:mx-6 lg:mx-auto h-[480px] sm:h-[500px] lg:h-[562px] w-auto lg:w-full max-w-[1294px] overflow-hidden rounded-[28px] sm:rounded-[40px] lg:rounded-[54px] bg-white shadow-[0_24px_60px_rgba(0,0,0,0.06)]">
         {/* Background video */}
-        <video
+        <LazyVideo
           className="absolute inset-0 h-full w-full object-cover"
           src={getAssetUrl("Sun shine.mp4")}
-          autoPlay
-          muted
-          playsInline
-          loop
-        >
-          Your browser does not support the video tag.
-        </video>
+        />
 
         {/* Overlay content */}
         <div className="relative z-10 h-full w-full px-6 py-10 sm:px-10 lg:px-16">
@@ -103,16 +98,10 @@ export default function RectangleSection() {
             {/* Right side: inline video - visible on all screens */}
             <div className="flex flex-1 items-center justify-end">
               <div className="h-[180px] w-[120px] sm:h-[200px] sm:w-[150px] lg:h-[286px] lg:w-[214px] overflow-hidden rounded-[20px] sm:rounded-[24px] lg:rounded-[32px]">
-                <video
+                <LazyVideo
                   src={getAssetUrl("FINal.mp4")}
                   className="h-full w-full scale-[1.08] transform object-cover"
-                  autoPlay
-                  muted
-                  playsInline
-                  loop
-                >
-                  Your browser does not support the video tag.
-                </video>
+                />
               </div>
             </div>
           </div>

@@ -4,9 +4,9 @@ import JsonLd from '@/components/JsonLd';
 import { getServiceSchema, getBreadcrumbSchema } from '@/lib/jsonld';
 
 export const metadata: Metadata = {
-  title: 'Intervention Services | Hope Trust - Professional Addiction Intervention',
+  title: 'Professional Addiction Intervention',
   description:
-    'Hope Trust provides professional intervention services at your doorstep. Help your loved one seek treatment for alcohol, drug misuse, gambling, internet addiction, or other addictive behaviours.',
+    'Professional intervention services at your doorstep. Help a loved one seek treatment for alcohol, drug, gambling or internet addiction.',
   keywords:
     'addiction intervention, professional intervention, drug intervention, alcohol intervention, family intervention, Hope Trust intervention, Hyderabad, intervention services',
   alternates: {

@@ -3,9 +3,9 @@ import JsonLd from '@/components/JsonLd';
 import { getBreadcrumbSchema } from '@/lib/jsonld';
 
 export const metadata: Metadata = {
-  title: 'Book Your Session | Hope Trust - Find a Therapist',
+  title: 'Book Your Session — Find a Therapist',
   description:
-    'Browse our team of qualified therapists, psychiatrists, and counsellors. Book an in-clinic or online session at Hope Trust, Hyderabad. Filter by department to find the right professional for your needs.',
+    'Browse qualified therapists, psychiatrists and counsellors at Hope Trust, Hyderabad. Book an in-clinic or online session by department.',
   keywords:
     'book therapy session, find therapist, psychiatrist Hyderabad, counsellor appointment, online therapy, Hope Trust doctors',
   alternates: {

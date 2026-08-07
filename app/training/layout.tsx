@@ -3,9 +3,9 @@ import JsonLd from '@/components/JsonLd';
 import { getServiceSchema, getBreadcrumbSchema } from '@/lib/jsonld';
 
 export const metadata: Metadata = {
-  title: 'Training | Hope Trust - Professional Development Programs',
+  title: 'Professional Development & Training Programs',
   description:
-    'Professional training and certification programs in mental health, addiction counselling, and therapeutic techniques by Hope Trust. Upskill with evidence-based methodologies from industry experts.',
+    'Professional training and certification in mental health and addiction counselling. Evidence-based methodologies taught by Hope Trust experts.',
   keywords:
     'mental health training, addiction counselling course, therapy certification, professional development, Hope Trust training Hyderabad',
   alternates: {

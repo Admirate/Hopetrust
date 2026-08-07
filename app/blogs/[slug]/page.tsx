@@ -6,7 +6,11 @@ import Link from 'next/link';
 import { ArrowLeft, Clock, Calendar, User, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getAllSlugs, getPostBySlug, getAdjacentPosts } from '@/lib/blog';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import ImageFallback from '@/components/ImageFallback';
+import { serializeJsonLd } from '@/components/JsonLd';
+import { siteConfig } from '@/lib/config';
+import { getLogoUrl } from '@/lib/assets';
 
 export function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
@@ -22,7 +26,7 @@ export async function generateMetadata({
   if (!post) return { title: 'Post Not Found' };
 
   return {
-    title: `${post.title} | Hope Trust Blog`,
+    title: post.title,
     description: post.excerpt,
     authors: [{ name: post.author }],
     keywords: [
@@ -31,16 +35,27 @@ export async function generateMetadata({
       'Hope Trust',
       'mental health',
     ].join(', '),
+    alternates: {
+      canonical: `/blogs/${slug}/`,
+    },
     openGraph: {
       title: post.title,
       description: post.excerpt,
       type: 'article',
+      url: `${siteConfig.url}/blogs/${slug}/`,
       publishedTime: post.date,
+      modifiedTime: post.modified,
       authors: [post.author],
-      images: post.featuredImage ? [{ url: post.featuredImage }] : [],
+      images: post.featuredImage ? [{ url: absoluteUrl(post.featuredImage) }] : [],
       siteName: 'Hope Trust',
     },
   };
+}
+
+/** JSON-LD and OG images must be absolute; frontmatter stores site-relative paths. */
+function absoluteUrl(url: string): string {
+  if (/^https?:\/\//.test(url)) return url;
+  return `${siteConfig.url}${url.startsWith('/') ? '' : '/'}${url}`;
 }
 
 function formatDate(dateStr: string): string {
@@ -56,21 +71,34 @@ function formatDate(dateStr: string): string {
 }
 
 function JsonLd({ post }: { post: NonNullable<ReturnType<typeof getPostBySlug>> }) {
+  const url = `${siteConfig.url}/blogs/${post.slug}/`;
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
-    headline: post.title,
+    '@id': `${url}#article`,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    url,
+    headline: post.title.slice(0, 110),
     description: post.excerpt,
     datePublished: post.date,
-    author: { '@type': 'Person', name: post.author },
-    publisher: { '@type': 'Organization', name: 'Hope Trust' },
-    ...(post.featuredImage && { image: post.featuredImage }),
+    dateModified: post.modified || post.date,
+    inLanguage: 'en-IN',
+    author: { '@type': 'Organization', '@id': `${siteConfig.url}/#organization`, name: post.author },
+    publisher: {
+      '@type': 'Organization',
+      '@id': `${siteConfig.url}/#organization`,
+      name: 'Hope Trust',
+      logo: { '@type': 'ImageObject', url: getLogoUrl() },
+    },
+    ...(post.categories.length > 0 && { articleSection: post.categories }),
+    ...(post.tags.length > 0 && { keywords: post.tags.join(', ') }),
+    ...(post.featuredImage && { image: absoluteUrl(post.featuredImage) }),
   };
 
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(schema) }}
     />
   );
 }
@@ -102,9 +130,28 @@ export default async function BlogPostPage({
     allowedSchemes: ['http', 'https', 'mailto'],
   });
 
+  const breadcrumbs = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteConfig.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${siteConfig.url}/blogs/` },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: post.title,
+        item: `${siteConfig.url}/blogs/${post.slug}/`,
+      },
+    ],
+  };
+
   return (
     <>
       <JsonLd post={post} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbs) }}
+      />
       <Header />
       <main className="min-h-screen bg-[#F7F6F4] pt-16 sm:pt-20">
         {/* Hero / Featured Image */}
@@ -226,8 +273,40 @@ export default async function BlogPostPage({
                 <div />
               )}
             </div>
+
+            {/* Contextual links so articles pass authority to service pages */}
+            <aside className="mb-12 rounded-2xl bg-white px-4 py-6 shadow-[0_8px_24px_rgba(0,0,0,0.04)] sm:mb-16 sm:rounded-[28px] sm:px-8 sm:py-8">
+              <h2 className="text-base font-semibold text-[#00373E] sm:text-lg">
+                Talk to someone at Hope Trust
+              </h2>
+              <p className="mt-2 text-sm text-gray-600">
+                If anything here felt familiar, our team in Hyderabad offers in-clinic and
+                online support.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2 sm:gap-3">
+                <Link
+                  href="/book-your-session/"
+                  className="rounded-full bg-[#ED7428] px-4 py-2 text-xs font-medium text-white transition-colors hover:bg-[#d4631f] sm:text-sm"
+                >
+                  Book a session
+                </Link>
+                <Link
+                  href="/mental-health/"
+                  className="rounded-full border border-gray-200 px-4 py-2 text-xs font-medium text-[#00373E] transition-colors hover:border-[#ED7428] sm:text-sm"
+                >
+                  Mental health services
+                </Link>
+                <Link
+                  href="/addiction/"
+                  className="rounded-full border border-gray-200 px-4 py-2 text-xs font-medium text-[#00373E] transition-colors hover:border-[#ED7428] sm:text-sm"
+                >
+                  Addiction recovery
+                </Link>
+              </div>
+            </aside>
           </article>
       </main>
+      <Footer />
     </>
   );
 }

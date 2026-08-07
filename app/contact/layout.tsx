@@ -3,9 +3,9 @@ import JsonLd from '@/components/JsonLd';
 import { getBreadcrumbSchema } from '@/lib/jsonld';
 
 export const metadata: Metadata = {
-  title: 'Contact Us | Hope Trust - Book an Appointment',
+  title: 'Contact Us & Book an Appointment',
   description:
-    'Get in touch with Hope Trust for in-clinic or online appointments. Office hours 9 AM to 8 PM, Monday to Saturday. Located at Banjara Hills, Hyderabad. Call +91 9000850001 or email frontoffice@hopetrustindia.com.',
+    'Book in-clinic or online appointments at Hope Trust, Banjara Hills, Hyderabad. Open 10 AM to 7 PM, Monday to Saturday. Call +91 9000850001.',
   keywords:
     'contact Hope Trust, book appointment, therapy Hyderabad, mental health clinic, Banjara Hills, phone number, email',
   alternates: {
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Contact Us | Hope Trust',
     description:
-      'Reach out for in-clinic or online appointments. Office hours 9 AM to 8 PM, Monday to Saturday. Banjara Hills, Hyderabad.',
+      'Reach out for in-clinic or online appointments. Office hours 10 AM to 7 PM, Monday to Saturday. Banjara Hills, Hyderabad.',
     type: 'website',
     siteName: 'Hope Trust',
   },

@@ -9,6 +9,7 @@ import { Toaster } from 'sonner';
 import { getLogoUrl } from '@/lib/assets';
 import JsonLd from '@/components/JsonLd';
 import { getOrganizationSchema, getWebSiteSchema } from '@/lib/jsonld';
+import { siteConfig } from '@/lib/config';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -28,10 +29,10 @@ export const metadata: Metadata = {
     'mental health, therapy, counselling, recovery, addiction treatment, Hope Trust, Hyderabad, psychiatrist, psychologist, couples therapy, family therapy',
   authors: [{ name: 'Hope Trust' }],
   robots: 'index, follow',
-  metadataBase: new URL('https://hopetrustindia.com'),
-  alternates: {
-    canonical: '/',
-  },
+  metadataBase: new URL(siteConfig.url),
+  // NOTE: do not set `alternates` here. In the App Router every route inherits
+  // it unless it overrides it, which would silently canonicalise all blog posts
+  // and policy pages to `/`. Each route declares its own canonical instead.
   icons: {
     icon: getLogoUrl(),
     apple: getLogoUrl(),
@@ -43,7 +44,7 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: 'Hope Trust',
     locale: 'en_IN',
-    url: 'https://hopetrustindia.com',
+    url: siteConfig.url,
     images: [
       {
         url: getLogoUrl(),

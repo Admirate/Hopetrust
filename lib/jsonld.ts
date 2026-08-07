@@ -24,11 +24,11 @@ export function getOrganizationSchema() {
     email: siteConfig.contact.email,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'Plot no. 564-A-36-111, Opp. Lotus Pond Road, MLA Colony, Banjara Hills',
-      addressLocality: 'Hyderabad',
-      addressRegion: 'Telangana',
-      postalCode: '500034',
-      addressCountry: 'IN',
+      streetAddress: siteConfig.contact.address.streetAddress,
+      addressLocality: siteConfig.contact.address.locality,
+      addressRegion: siteConfig.contact.address.region,
+      postalCode: siteConfig.contact.address.postalCode,
+      addressCountry: siteConfig.contact.address.country,
     },
     geo: {
       '@type': 'GeoCoordinates',
@@ -42,9 +42,9 @@ export function getOrganizationSchema() {
     ],
     openingHoursSpecification: {
       '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-      opens: '09:00',
-      closes: '18:00',
+      dayOfWeek: siteConfig.hours.days,
+      opens: siteConfig.hours.opens,
+      closes: siteConfig.hours.closes,
     },
     priceRange: '$$',
     areaServed: {

@@ -3,9 +3,9 @@ import JsonLd from '@/components/JsonLd';
 import { getBreadcrumbSchema } from '@/lib/jsonld';
 
 export const metadata: Metadata = {
-  title: 'About Us | Hope Trust - Our Story, Team & Approach',
+  title: 'About Us — Our Story, Team & Approach',
   description:
-    'Hope Trust began in 2002 with a simple intention — to offer a calm and steady space for healing. Learn about our 20+ year journey, our multidisciplinary team of 30+ professionals, and our evidence-based approach to mental health and addiction recovery.',
+    'Hope Trust has offered a calm, steady space for healing since 2002. Meet our 30+ multidisciplinary team and our evidence-based approach to recovery.',
   keywords:
     'Hope Trust, about us, mental health clinic Hyderabad, addiction recovery, therapy team, evidence-based treatment, wellness coaching',
   alternates: {
