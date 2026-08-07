@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { Bricolage_Grotesque } from 'next/font/google';
 import type { Doctor } from '@/lib/doctors';
 
@@ -125,8 +126,12 @@ export default function TherapistCard({ doctor }: { doctor: Doctor }) {
 
           {/* Content */}
           <div className="flex min-h-0 flex-1 flex-col p-4 sm:p-5 lg:p-6">
+            {/* Linked so each profile page is reachable by crawlers from the
+                directory. Styling is unchanged from the plain heading. */}
             <h3 className="text-base font-bold leading-tight text-[#00373E] sm:text-lg lg:text-xl">
-              {doctor.name}
+              <Link href={`/therapists/${doctor.slug}/`} className="hover:underline">
+                {doctor.name}
+              </Link>
             </h3>
             <p className="mt-1 text-xs font-medium text-[#ED7428] sm:text-sm">
               {doctor.qualification}
@@ -193,6 +198,12 @@ export default function TherapistCard({ doctor }: { doctor: Doctor }) {
                 </svg>
                 Back
               </button>
+              <Link
+                href={`/therapists/${doctor.slug}/`}
+                className="text-center text-xs font-semibold text-[#ED7428] hover:underline sm:text-sm"
+              >
+                View full profile
+              </Link>
               <BookSessionButton bookingUrl={doctor.bookingUrl} />
             </div>
           </div>

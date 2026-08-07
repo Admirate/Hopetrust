@@ -12,7 +12,8 @@
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "npx playwright test",
-    "test:e2e:ui": "npx playwright test --ui"
+    "test:e2e:ui": "npx playwright test --ui",
+    "snapshot:doctors": "node --env-file=.env scripts/snapshot-doctors.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.99.1",

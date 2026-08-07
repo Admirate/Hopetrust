@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { getDoctorsForBuild } from '@/lib/doctors';
 import Header from '@/components/Header';
 import dynamic from 'next/dynamic';
 import { Bricolage_Grotesque } from 'next/font/google';
@@ -70,7 +71,19 @@ const sections: SitemapSection[] = [
   },
 ];
 
-export default function SitemapPage() {
+export default async function SitemapPage() {
+  const doctors = await getDoctorsForBuild();
+  const allSections: SitemapSection[] = [
+    ...sections,
+    {
+      title: 'Our Therapists',
+      links: doctors.map((d) => ({
+        label: d.name,
+        href: `/therapists/${d.slug}/`,
+      })),
+    },
+  ];
+
   return (
     <>
       <Header />
@@ -88,7 +101,7 @@ export default function SitemapPage() {
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
-            {sections.map((section) => (
+            {allSections.map((section) => (
               <div key={section.title}>
                 <h2
                   className={`${headingFont.className} text-xl sm:text-2xl font-semibold text-[#00373E] mb-4 border-b-2 border-[#ED7428]/30 pb-2`}

@@ -9,6 +9,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const OUT_DIR = path.join(ROOT, 'out');
 const BLOG_DIR = path.join(ROOT, 'content', 'blogs');
+const DOCTORS_SNAPSHOT = path.join(ROOT, 'data', 'doctors-snapshot.json');
 const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL || 'https://hopetrustindia.com'
 ).replace(/\/$/, '');
@@ -66,6 +67,86 @@ function getBlogPosts() {
     .sort((a, b) => b.sortKey - a.sortKey);
 }
 
+/**
+ * Practitioner profile URLs.
+ *
+ * Read from the committed snapshot rather than Supabase so sitemap generation
+ * stays offline-safe. `lib/doctors.ts` owns the same slug rule — keep the two in
+ * step if that changes.
+ */
+function getTherapists() {
+  if (!fs.existsSync(DOCTORS_SNAPSHOT)) return [];
+  try {
+    const { doctors, capturedAt } = JSON.parse(fs.readFileSync(DOCTORS_SNAPSHOT, 'utf-8'));
+
+    // Next.js suppresses console output from its static-generation workers, so
+    // a silent fallback to this snapshot is invisible in the build log. Warn
+    // here instead — this script runs in the main process.
+    const ageDays = Math.floor((Date.now() - new Date(capturedAt).getTime()) / 86400000);
+    if (Number.isFinite(ageDays) && ageDays > 90) {
+      console.warn(
+        `\n  WARNING: data/doctors-snapshot.json was captured ${ageDays} days ago (${capturedAt}).\n` +
+          `  It is the fallback used when Supabase is unreachable at build time.\n` +
+          `  Refresh it with "npm run snapshot:doctors".\n`
+      );
+    }
+
+    const seen = new Map();
+    return doctors.map((d) => {
+      const base =
+        d.name
+          .replace(/^(Mrs?\.?|Ms\.?|Dr\.?|Prof\.?)\s+/i, '')
+          .toLowerCase()
+          .normalize('NFKD')
+          .replace(/[̀-ͯ]/g, '')
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '') || 'therapist';
+      const count = seen.get(base) ?? 0;
+      seen.set(base, count + 1);
+      return {
+        slug: count === 0 ? base : `${base}-${count + 1}`,
+        name: d.name,
+        qualification: d.qualification,
+        department: d.department,
+      };
+    });
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Cross-check the slugs derived above against the directories Next.js actually
+ * emitted. If the two rules ever drift, the sitemap would advertise 404s — so
+ * fail loudly here rather than shipping broken URLs.
+ */
+function verifyTherapistSlugs(therapists) {
+  const dir = path.join(OUT_DIR, 'therapists');
+  if (!fs.existsSync(dir)) return therapists;
+
+  const built = new Set(
+    fs.readdirSync(dir, { withFileTypes: true })
+      .filter((e) => e.isDirectory())
+      .map((e) => e.name)
+  );
+  const derived = new Set(therapists.map((t) => t.slug));
+
+  const missing = [...derived].filter((s) => !built.has(s));
+  const extra = [...built].filter((s) => !derived.has(s));
+
+  if (missing.length || extra.length) {
+    console.error(
+      `\n  ERROR: therapist slug mismatch between data/doctors-snapshot.json and the build.\n` +
+        (missing.length ? `  In sitemap but not built: ${missing.join(', ')}\n` : '') +
+        (extra.length ? `  Built but not in sitemap: ${extra.join(', ')}\n` : '') +
+        `  Run "npm run snapshot:doctors" to refresh the snapshot.\n`
+    );
+    process.exit(1);
+  }
+
+  return therapists;
+}
+
 function today() {
   return new Date().toISOString().split('T')[0];
 }
@@ -86,7 +167,7 @@ function xmlEscape(s) {
     .replace(/'/g, '&apos;');
 }
 
-function buildSitemap(posts) {
+function buildSitemap(posts, therapists) {
   const now = today();
 
   const urls = [
@@ -96,6 +177,14 @@ function buildSitemap(posts) {
     <lastmod>${now}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
+  </url>`
+    ),
+    ...therapists.map(
+      (t) => `  <url>
+    <loc>${xmlEscape(`${SITE_URL}/therapists/${t.slug}/`)}</loc>
+    <lastmod>${now}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>`
     ),
     ...posts.map(
@@ -188,12 +277,19 @@ Sitemap: ${SITE_URL}/sitemap.xml
  * others may use it to find the canonical pages worth reading.
  * Capped at the most recent posts so the file stays readable.
  */
-function buildLlmsTxt(posts) {
+function buildLlmsTxt(posts, therapists) {
   const RECENT = 60;
 
   const primary = staticPages
     .filter((p) => p.title)
     .map((p) => `- [${p.title}](${SITE_URL}${p.path}): ${p.desc}`)
+    .join('\n');
+
+  const clinicians = therapists
+    .map(
+      (t) =>
+        `- [${t.name}](${SITE_URL}/therapists/${t.slug}/): ${t.qualification}, ${t.department}`
+    )
     .join('\n');
 
   const articles = posts
@@ -221,6 +317,10 @@ emergency services.
 
 ${primary}
 
+## Clinicians
+
+${clinicians}
+
 ## Contact
 
 - Address: C/o UCCHVAS Rehabilitation Center, Plot no. 564-A-36-111, Opp. Lotus Pond Road, MLA Colony, Banjara Hills, Hyderabad 500034, Telangana, India
@@ -235,20 +335,21 @@ ${articles}
 ## Full index
 
 - [Sitemap (HTML)](${SITE_URL}/sitemap/)
-- [Sitemap (XML)](${SITE_URL}/sitemap.xml): all ${posts.length + staticPages.length} pages
+- [Sitemap (XML)](${SITE_URL}/sitemap.xml): all ${posts.length + staticPages.length + therapists.length} pages
 `;
 }
 
 // --- write ---------------------------------------------------------------
 
 const posts = getBlogPosts();
+const therapists = verifyTherapistSlugs(getTherapists());
 const targetDir = fs.existsSync(OUT_DIR) ? OUT_DIR : path.join(ROOT, 'public');
 const label = targetDir === OUT_DIR ? 'out' : 'public';
 
 const files = [
-  ['sitemap.xml', buildSitemap(posts)],
+  ['sitemap.xml', buildSitemap(posts, therapists)],
   ['robots.txt', buildRobots()],
-  ['llms.txt', buildLlmsTxt(posts)],
+  ['llms.txt', buildLlmsTxt(posts, therapists)],
 ];
 
 for (const [name, contents] of files) {
@@ -257,5 +358,5 @@ for (const [name, contents] of files) {
 }
 
 console.log(
-  `  ${staticPages.length} static pages + ${posts.length} posts -> ${SITE_URL}`
+  `  ${staticPages.length} static + ${therapists.length} therapists + ${posts.length} posts -> ${SITE_URL}`
 );
