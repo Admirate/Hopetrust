@@ -163,6 +163,31 @@ function verifyTherapistSlugs(therapists) {
   return therapists;
 }
 
+/**
+ * Every archive URL in the sitemap must correspond to a page Next.js actually
+ * emitted. Mirrors verifyTherapistSlugs — the pagination and category rules live
+ * in both lib/blog.ts and this script, so drift has to fail loudly.
+ */
+function verifyArchiveUrls(urls) {
+  if (!fs.existsSync(OUT_DIR)) return urls;
+
+  const missing = urls.filter(
+    (u) => !fs.existsSync(path.join(OUT_DIR, u.replace(/^\/|\/$/g, ''), 'index.html'))
+  );
+
+  if (missing.length) {
+    console.error(
+      `\n  ERROR: sitemap lists blog archive URLs that were not built:\n` +
+        missing.map((u) => `    ${u}`).join('\n') +
+        `\n  The pagination/category rules in scripts/generate-sitemap.mjs and\n` +
+        `  lib/blog.ts have drifted.\n`
+    );
+    process.exit(1);
+  }
+
+  return urls;
+}
+
 function today() {
   return new Date().toISOString().split('T')[0];
 }
@@ -197,7 +222,7 @@ function getArchiveUrls(posts) {
   const pages = Math.max(1, Math.ceil(posts.length / POSTS_PER_PAGE));
   const urls = [];
 
-  for (let n = 2; n <= pages; n++) urls.push(`/blogs/page/${n}/`);
+  for (let n = 2; n <= pages; n++) urls.push(`/blogs/p/${n}/`);
 
   const counts = new Map();
   for (const p of posts) {
@@ -403,7 +428,7 @@ ${articles}
 
 const posts = getBlogPosts();
 const therapists = verifyTherapistSlugs(getTherapists());
-const archiveUrls = getArchiveUrls(posts);
+const archiveUrls = verifyArchiveUrls(getArchiveUrls(posts));
 const targetDir = fs.existsSync(OUT_DIR) ? OUT_DIR : path.join(ROOT, 'public');
 const label = targetDir === OUT_DIR ? 'out' : 'public';
 

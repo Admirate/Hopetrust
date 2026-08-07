@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getDoctorsForBuild } from '@/lib/doctors';
+import { getArchiveCategories, getAllPostsMeta, pageCount } from '@/lib/blog';
 import Header from '@/components/Header';
 import dynamic from 'next/dynamic';
 import { Bricolage_Grotesque } from 'next/font/google';
@@ -73,6 +74,9 @@ const sections: SitemapSection[] = [
 
 export default async function SitemapPage() {
   const doctors = await getDoctorsForBuild();
+  const categories = getArchiveCategories();
+  const archivePages = pageCount(getAllPostsMeta().length);
+
   const allSections: SitemapSection[] = [
     ...sections,
     {
@@ -80,6 +84,20 @@ export default async function SitemapPage() {
       links: doctors.map((d) => ({
         label: d.name,
         href: `/therapists/${d.slug}/`,
+      })),
+    },
+    {
+      title: 'Article Topics',
+      links: categories.map((c) => ({
+        label: `${c.name} (${c.count})`,
+        href: `/blogs/category/${c.slug}/`,
+      })),
+    },
+    {
+      title: 'All Articles',
+      links: Array.from({ length: archivePages }, (_, i) => ({
+        label: `Page ${i + 1}`,
+        href: i === 0 ? '/blogs/' : `/blogs/p/${i + 1}/`,
       })),
     },
   ];

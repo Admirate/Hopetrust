@@ -13,7 +13,7 @@ import { siteConfig } from '@/lib/config';
 
 /**
  * Pages 2..N of the blog archive. Page 1 lives at /blogs/ so there is no
- * duplicate — /blogs/page/1/ is deliberately not generated.
+ * duplicate — /blogs/p/1/ is deliberately not generated.
  */
 export function generateStaticParams() {
   const total = pageCount(getAllPostsMeta().length);
@@ -35,7 +35,7 @@ export async function generateMetadata({
     title: `Mental Health & Wellness Insights — Page ${page}`,
     description: `Page ${page} of ${total} — articles on mental health, therapy, addiction recovery, relationships, and wellness from Hope Trust.`,
     alternates: {
-      canonical: `/blogs/page/${page}/`,
+      canonical: `/blogs/p/${page}/`,
     },
     openGraph: {
       title: `Blog — Page ${page} | Hope Trust`,
@@ -72,7 +72,7 @@ export default async function BlogArchivePage({
         '@type': 'ListItem',
         position: 3,
         name: `Page ${page}`,
-        item: `${siteConfig.url}/blogs/page/${page}/`,
+        item: `${siteConfig.url}/blogs/p/${page}/`,
       },
     ],
   };

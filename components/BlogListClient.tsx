@@ -16,7 +16,7 @@ const headingFont = Bricolage_Grotesque({
 });
 
 /**
- * Archive view shared by /blogs/, /blogs/page/[n]/ and /blogs/category/[slug]/.
+ * Archive view shared by /blogs/, /blogs/p/[n]/ and /blogs/category/[slug]/.
  *
  * Pagination and category filtering are links to real static pages, so every
  * post is reachable by a crawler. Only the current page's posts are sent to the
@@ -57,27 +57,29 @@ export default function BlogListClient({
   const searching = query.length > 0;
 
   // Fetch the full-corpus index the first time the reader searches.
-  useEffect(() => {
-    if (!searching || index || indexState === 'loading') return;
+  //
+  // The ref guard matters: this effect calls setIndexState, which re-renders and
+  // re-runs the effect. A cleanup-based cancel would abort the very fetch the
+  // first run started, leaving the UI stuck on "Searching…" forever.
+  const indexRequested = useRef(false);
 
-    let cancelled = false;
+  useEffect(() => {
+    if (!searching || indexRequested.current) return;
+
+    indexRequested.current = true;
     setIndexState('loading');
 
     fetch('/blogs-search-index.json')
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
       .then((data: BlogPostMeta[]) => {
-        if (cancelled) return;
         setIndex(data);
         setIndexState('idle');
       })
       .catch(() => {
-        if (!cancelled) setIndexState('error');
+        indexRequested.current = false; // allow a retry on the next keystroke
+        setIndexState('error');
       });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [searching, index, indexState]);
+  }, [searching]);
 
   const results = useMemo(() => {
     if (!searching || !index) return [];
@@ -94,7 +96,7 @@ export default function BlogListClient({
   const visible = searching ? results : posts;
   const shownCount = searching ? results.length : total;
 
-  const pageHref = (n: number) => (n === 1 ? `${basePath}/` : `${basePath}/page/${n}/`);
+  const pageHref = (n: number) => (n === 1 ? `${basePath}/` : `${basePath}/p/${n}/`);
 
   const getVisiblePages = (): number[] => {
     const maxButtons = 5;

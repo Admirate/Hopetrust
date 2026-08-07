@@ -58,7 +58,17 @@ function parseMdxFile(filePath: string): BlogPost | null {
   }
 }
 
+/**
+ * Parsing 395 MDX files (including reading-time analysis of full bodies) is
+ * expensive, and the archive routes call these helpers several times each
+ * across ~40 statically generated pages. The content is fixed at build time, so
+ * cache both projections per process.
+ */
+let postsCache: BlogPost[] | null = null;
+let postsMetaCache: BlogPostMeta[] | null = null;
+
 export function getAllPosts(): BlogPost[] {
+  if (postsCache) return postsCache;
   if (!fs.existsSync(BLOG_DIR)) return [];
 
   const files = fs.readdirSync(BLOG_DIR).filter((f) => f.endsWith('.mdx'));
@@ -66,13 +76,18 @@ export function getAllPosts(): BlogPost[] {
     .map((file) => parseMdxFile(path.join(BLOG_DIR, file)))
     .filter((p): p is BlogPost => p !== null);
 
-  return posts.sort(
+  postsCache = posts.sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
+  return postsCache;
 }
 
 export function getAllPostsMeta(): BlogPostMeta[] {
-  return getAllPosts().map(({ content, readingTime, wpLink, ...meta }) => meta);
+  if (postsMetaCache) return postsMetaCache;
+  postsMetaCache = getAllPosts().map(
+    ({ content, readingTime, wpLink, ...meta }) => meta
+  );
+  return postsMetaCache;
 }
 
 export function getPostBySlug(slug: string): BlogPost | null {
@@ -139,8 +154,11 @@ export function categorySlug(name: string): string {
     .replace(/^-+|-+$/g, '');
 }
 
+let categoriesCache: CategoryInfo[] | null = null;
+
 /** Categories with post counts, sorted by name. Slug collisions get a suffix. */
 export function getCategoriesWithCounts(): CategoryInfo[] {
+  if (categoriesCache) return categoriesCache;
   const posts = getAllPostsMeta();
   const counts = new Map<string, number>();
 
@@ -151,7 +169,7 @@ export function getCategoriesWithCounts(): CategoryInfo[] {
   }
 
   const seen = new Map<string, number>();
-  return Array.from(counts.entries())
+  categoriesCache = Array.from(counts.entries())
     .sort((a, b) => a[0].localeCompare(b[0]))
     .map(([name, count]) => {
       const base = categorySlug(name) || 'category';
@@ -169,6 +187,7 @@ export function getCategoriesWithCounts(): CategoryInfo[] {
         indexable: hasArchive && count >= MIN_INDEXABLE_CATEGORY_POSTS,
       };
     });
+  return categoriesCache;
 }
 
 /** Categories that get their own archive page. */
