@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { MessageCircle, X, Send } from 'lucide-react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
+import { MessageCircle, X, ArrowUp, ArrowUpRight } from 'lucide-react';
+import { getLogoUrl } from '@/lib/assets';
 
 /**
  * The website chat bubble. Every decision about what to say is made by the CRM
@@ -74,7 +75,9 @@ export default function ChatBubble() {
   const stateRef = useRef<ChatState>(FRESH_STATE);
   const greeted = useRef(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const launcherRef = useRef<HTMLButtonElement | null>(null);
   const endRef = useRef<HTMLDivElement | null>(null);
+  const still = useReducedMotion();
 
   async function send(text: string) {
     setSending(true);
@@ -124,22 +127,29 @@ export default function ChatBubble() {
     if (open) inputRef.current?.focus();
   }, [open]);
 
-  // Optional call, not just optional chaining. Keeping the newest message in
-  // view is a nicety; an environment without scrollIntoView (jsdom, and some
-  // older mobile browsers) would otherwise throw here and take the whole
-  // widget down with it.
+  // Scroll the transcript, not the page. scrollIntoView on a fixed panel drags
+  // the document behind it on some mobile browsers; setting scrollTop on the
+  // container that actually overflows cannot.
   useEffect(() => {
-    endRef.current?.scrollIntoView?.({ block: 'end' });
-  }, [messages]);
+    const log = endRef.current?.parentElement;
+    if (log) log.scrollTop = log.scrollHeight;
+  }, [messages, sending]);
 
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
+      if (e.key === 'Escape') close();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [open]);
+
+  // Closing must hand the keyboard back to the launcher, or focus falls to the
+  // top of the document and a keyboard user restarts the page to get out.
+  function close() {
+    setOpen(false);
+    launcherRef.current?.focus();
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -150,50 +160,98 @@ export default function ChatBubble() {
     void send(text);
   }
 
+  const armed = draft.trim().length > 0 && !sending;
+
   return (
     <>
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 16, scale: 0.98 }}
+            role="dialog"
+            aria-label="Chat with Hope Trust"
+            initial={still ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 16, scale: 0.98 }}
-            transition={{ duration: 0.18, ease: 'easeOut' }}
-            className="fixed bottom-24 right-4 z-50 flex h-[min(32rem,calc(100vh-8rem))] w-[min(23rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-black/10 sm:right-6"
+            exit={still ? { opacity: 0 } : { opacity: 0, y: 12, scale: 0.98 }}
+            transition={{ duration: still ? 0.12 : 0.22, ease: [0.16, 1, 0.3, 1] }}
+            style={{ transformOrigin: 'bottom right' }}
+            className="fixed inset-x-0 bottom-0 z-50 flex h-[86vh] flex-col overflow-hidden rounded-t-3xl bg-white shadow-[0_-8px_40px_-12px_rgba(0,55,62,0.3)] sm:inset-x-auto sm:bottom-24 sm:right-6 sm:h-[min(34rem,calc(100vh-9rem))] sm:w-[24rem] sm:rounded-3xl sm:shadow-[0_24px_60px_-12px_rgba(0,55,62,0.4)]"
           >
-            <div className="flex items-center justify-between bg-[#00373E] px-4 py-3 text-white">
-              <div>
-                <p className="text-sm font-semibold leading-tight">Hope Trust</p>
-                <p className="text-xs leading-tight text-white/70">
-                  We usually reply straight away
-                </p>
+            {/* Header. The warm light rising from its lower edge is the site's
+                own hero — the sun sitting just below the horizon. */}
+            <div className="relative shrink-0 overflow-hidden bg-[#00373E]">
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-[radial-gradient(115%_100%_at_50%_100%,rgba(237,116,40,0.34),rgba(237,116,40,0)_72%)]"
+              />
+              <div className="relative flex items-center gap-3 px-4 py-3.5">
+                {/* The mark is served from storage, so it can be slow or absent.
+                    The monogram sits underneath rather than behind a state flag:
+                    an unpainted image reveals it, and a blank white disc never
+                    shows. */}
+                <span className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white ring-1 ring-white/25">
+                  <span
+                    aria-hidden="true"
+                    className="text-[12px] font-bold tracking-tight text-[#00373E]"
+                  >
+                    HT
+                  </span>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={getLogoUrl()}
+                    alt=""
+                    width={36}
+                    height={36}
+                    className="absolute inset-0 h-full w-full object-contain p-0.5"
+                  />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[15px] font-semibold leading-tight tracking-[-0.01em] text-white">
+                    Hope Trust
+                  </p>
+                  <p className="mt-1 flex items-center gap-1.5 text-[10px] font-medium uppercase leading-none tracking-[0.09em] text-white/60">
+                    <span className="relative flex h-1.5 w-1.5 shrink-0">
+                      <span className="absolute inline-flex h-full w-full rounded-full bg-[#ED7428] opacity-70 motion-safe:animate-ping" />
+                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#ED7428]" />
+                    </span>
+                    Replies straight away
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={close}
+                  aria-label="Close conversation"
+                  className="-mr-1 shrink-0 rounded-full p-2 text-white/70 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                >
+                  <X className="h-[18px] w-[18px]" aria-hidden="true" />
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                aria-label="Close"
-                className="rounded-full p-1 transition-colors hover:bg-white/10"
-              >
-                <X className="h-5 w-5" aria-hidden="true" />
-              </button>
+              <div
+                aria-hidden="true"
+                className="h-px bg-gradient-to-r from-transparent via-[#ED7428]/50 to-transparent"
+              />
             </div>
 
             <div
               role="log"
               aria-live="polite"
               aria-label="Conversation"
-              className="flex-1 space-y-3 overflow-y-auto bg-[#F7F6F4] px-4 py-4"
+              className="flex-1 space-y-2.5 overflow-y-auto overscroll-contain bg-[#F7F5EF] px-3.5 py-4"
             >
               {messages.map((m, i) => (
-                <div
+                <motion.div
                   key={i}
-                  className={m.from === 'us' ? 'flex justify-end' : 'flex justify-start'}
+                  initial={still ? false : { opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2, ease: 'easeOut' }}
+                  className={
+                    m.from === 'us' ? 'flex justify-end' : 'flex flex-col items-start'
+                  }
                 >
                   <div
                     className={
                       m.from === 'us'
-                        ? 'max-w-[85%] rounded-2xl rounded-br-sm bg-[#00373E] px-3 py-2 text-sm text-white'
-                        : 'max-w-[85%] rounded-2xl rounded-bl-sm bg-white px-3 py-2 text-sm text-gray-800 ring-1 ring-black/5'
+                        ? 'max-w-[85%] rounded-2xl rounded-br-md bg-[#00373E] px-3.5 py-2.5 text-[14px] leading-[1.55] text-white'
+                        : 'max-w-[88%] rounded-2xl rounded-bl-md bg-white px-3.5 py-2.5 text-[14px] leading-[1.55] text-[#374151] shadow-[0_1px_2px_rgba(0,55,62,0.06),0_4px_12px_-6px_rgba(0,55,62,0.14)]'
                     }
                   >
                     <p className="whitespace-pre-wrap">{m.body}</p>
@@ -203,36 +261,75 @@ export default function ChatBubble() {
                         href={`https://wa.me/${WHATSAPP_NUMBER}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-2 inline-block text-sm font-medium text-[#ED7428] underline underline-offset-2"
+                        className="mt-2.5 inline-flex items-center gap-1.5 rounded-full bg-[#ED7428] px-3.5 py-2 text-[13px] font-semibold text-white transition-colors hover:bg-[#d4631f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40 focus-visible:ring-offset-2"
                       >
                         Message us on WhatsApp
+                        <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
                       </a>
                     )}
 
-                    {m.links && m.links.length > 0 && (
-                      <ul className="mt-2 space-y-1">
+                  </div>
+
+                  {/* These arrive as full article titles, not short labels, and
+                      they are the way out of the chat and into help. On the
+                      cream ground they carry their own weight; nested inside
+                      the bubble they read as footnotes. */}
+                  {m.from === 'them' && m.links && m.links.length > 0 && (
+                    <div className="mt-2 w-[88%]">
+                      <p className="mb-1.5 pl-0.5 text-[10px] font-semibold uppercase tracking-[0.09em] text-[#00373E]/60">
+                        Related reading
+                      </p>
+                      {/* ml-0 defeats the site-wide `ul { margin-left: 1rem }`
+                          in globals.css, which would otherwise push these off
+                          the message's left edge. */}
+                      <ul className="ml-0 space-y-1.5">
                         {m.links.map((l) => (
                           <li key={l.url}>
                             <a
                               href={l.url}
-                              className="text-sm font-medium text-[#00373E] underline underline-offset-2 hover:text-[#ED7428]"
+                              className="group flex items-start gap-2.5 rounded-xl border border-[#00373E]/10 bg-white px-3 py-2.5 shadow-[0_1px_2px_rgba(0,55,62,0.06)] transition-all hover:border-[#ED7428]/40 hover:shadow-[0_2px_10px_-3px_rgba(0,55,62,0.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ED7428]/40"
                             >
-                              {l.label}
+                              <span className="min-w-0 flex-1 text-[13px] font-medium leading-snug text-[#00373E]">
+                                {l.label}
+                              </span>
+                              <ArrowUpRight
+                                className="mt-px h-3.5 w-3.5 shrink-0 text-[#00373E]/30 transition-colors group-hover:text-[#ED7428]"
+                                aria-hidden="true"
+                              />
                             </a>
                           </li>
                         ))}
                       </ul>
-                    )}
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+
+              {/* Silence after someone types something hard reads as being
+                  ignored. The turn is always visibly in hand. */}
+              {sending && (
+                <div className="flex justify-start">
+                  <div className="flex items-center gap-1 rounded-2xl rounded-bl-md bg-white px-4 py-3.5 shadow-[0_1px_2px_rgba(0,55,62,0.06),0_4px_12px_-6px_rgba(0,55,62,0.14)]">
+                    <span className="sr-only">Hope Trust is typing</span>
+                    {[0, 1, 2].map((d) => (
+                      <span
+                        key={d}
+                        aria-hidden="true"
+                        className="h-1.5 w-1.5 rounded-full bg-[#00373E]/40 motion-safe:animate-chat-dot"
+                        style={{ animationDelay: `${d * 0.16}s` }}
+                      />
+                    ))}
                   </div>
                 </div>
-              ))}
+              )}
+
               <div ref={endRef} />
             </div>
 
             <form
               onSubmit={handleSubmit}
               aria-label="Send a message"
-              className="flex items-center gap-2 border-t border-black/5 bg-white px-3 py-2"
+              className="flex shrink-0 items-center gap-2 border-t border-[#00373E]/10 bg-white px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:pb-3"
             >
               <label htmlFor="ht-chat-input" className="sr-only">
                 Your message
@@ -244,15 +341,16 @@ export default function ChatBubble() {
                 onChange={(e) => setDraft(e.target.value)}
                 placeholder="Type your message"
                 autoComplete="off"
-                className="min-w-0 flex-1 rounded-full bg-[#F7F6F4] px-4 py-2 text-sm text-gray-800 outline-none ring-1 ring-black/5 focus:ring-[#00373E]"
+                enterKeyHint="send"
+                className="min-w-0 flex-1 rounded-full bg-[#F7F5EF] px-4 py-2.5 text-[14px] text-[#374151] outline-none ring-1 ring-[#00373E]/10 transition-shadow placeholder:text-[#00373E]/30 focus:ring-2 focus:ring-[#00373E]/50"
               />
               <button
                 type="submit"
-                disabled={sending || draft.trim().length === 0}
+                disabled={!armed}
                 aria-label="Send"
-                className="rounded-full bg-[#00373E] p-2 text-white transition-opacity disabled:opacity-40"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#00373E] text-white transition-all hover:bg-[#024a53] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00373E]/40 focus-visible:ring-offset-2 disabled:bg-[#00373E]/20 disabled:text-[#00373E]/40"
               >
-                <Send className="h-4 w-4" aria-hidden="true" />
+                <ArrowUp className="h-[18px] w-[18px]" aria-hidden="true" />
               </button>
             </form>
           </motion.div>
@@ -260,13 +358,31 @@ export default function ChatBubble() {
       </AnimatePresence>
 
       <button
+        ref={launcherRef}
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => (open ? close() : setOpen(true))}
         aria-label="Chat with us"
         aria-expanded={open}
-        className="fixed bottom-6 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#00373E] text-white shadow-lg transition-transform hover:scale-105 sm:right-6"
+        className={`fixed bottom-6 right-4 z-50 h-14 w-14 items-center justify-center rounded-full bg-[#00373E] text-white shadow-[0_8px_24px_-6px_rgba(0,55,62,0.5)] transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00373E]/40 focus-visible:ring-offset-2 active:scale-95 sm:right-6 sm:flex ${
+          open ? 'hidden' : 'flex'
+        }`}
       >
-        <MessageCircle className="h-6 w-6" aria-hidden="true" />
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.span
+            key={open ? 'close' : 'open'}
+            initial={still ? false : { opacity: 0, rotate: -60, scale: 0.7 }}
+            animate={{ opacity: 1, rotate: 0, scale: 1 }}
+            exit={still ? { opacity: 0 } : { opacity: 0, rotate: 60, scale: 0.7 }}
+            transition={{ duration: 0.16, ease: 'easeOut' }}
+            className="flex items-center justify-center"
+          >
+            {open ? (
+              <X className="h-6 w-6" aria-hidden="true" />
+            ) : (
+              <MessageCircle className="h-6 w-6" aria-hidden="true" />
+            )}
+          </motion.span>
+        </AnimatePresence>
       </button>
     </>
   );
