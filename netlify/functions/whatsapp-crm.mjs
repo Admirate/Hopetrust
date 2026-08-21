@@ -1,106 +1,118 @@
-// The website chat bubble's proxy.
+// =============================================================================
+// WHATSAPP CRM DISABLED — uncomment when new CRM is integrated
+// =============================================================================
 //
-// It exists for one reason: the CRM webhook is protected by a shared secret,
-// and a secret in a browser is not a secret. The widget calls this, this holds
-// the token, and the token never reaches the page.
+// const CRM_URL = process.env.CRM_ENDPOINT;
 //
-// It is deliberately thin. No decisions are made here — the engine behind the
-// webhook does all of that. Nothing a person types is logged or stored on this
-// side of the wire.
+// const ALLOWED_ORIGINS = [
+//   "https://hopetrustindia.com",
+//   "https://www.hopetrustindia.com",
+//   "http://localhost:3000",
+// ];
+//
+// function getCorsHeaders(request) {
+//   const origin = request.headers.get("origin") || "";
+//   const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+//   return {
+//     "Access-Control-Allow-Origin": allowedOrigin,
+//     "Access-Control-Allow-Methods": "POST, OPTIONS",
+//     "Access-Control-Allow-Headers": "Content-Type",
+//   };
+// }
+//
+// export default async (request) => {
+//   const cors = getCorsHeaders(request);
+//
+//   if (request.method === "OPTIONS") {
+//     return new Response(null, { status: 204, headers: cors });
+//   }
+//
+//   if (request.method !== "POST") {
+//     return new Response(JSON.stringify({ error: "Method not allowed" }), {
+//       status: 405,
+//       headers: { ...cors, "Content-Type": "application/json" },
+//     });
+//   }
+//
+//   const token = process.env.WHATSAPP_CRM_TOKEN;
+//   const crmUrl = CRM_URL;
+//
+//   if (!token || !crmUrl) {
+//     return new Response(JSON.stringify({ error: "CRM not configured" }), {
+//       status: 500,
+//       headers: { ...cors, "Content-Type": "application/json" },
+//     });
+//   }
+//
+//   try {
+//     const res = await fetch(crmUrl, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//         authorization: `Bearer ${token}`,
+//       },
+//       body: JSON.stringify({}),
+//     });
+//
+//     let data = await res.json();
+//
+//     // Ensure redirect URLs include the country code (91 for India)
+//     const fixUrl = (url) => {
+//       if (typeof url !== "string") return url;
+//       try {
+//         const u = new URL(url);
+//         let phone = u.searchParams.get("phone");
+//         if (phone && !phone.startsWith("+")) {
+//           phone = phone.replace(/\D/g, "");
+//           if (phone.length === 10) {
+//             // 10-digit local number -> prepend India country code
+//             u.searchParams.set("phone", "91" + phone);
+//             return u.toString();
+//           } else if (phone.length === 12 && phone.startsWith("91")) {
+//             // Already a valid 12-digit Indian number, keep it
+//             u.searchParams.set("phone", phone);
+//             return u.toString();
+//           }
+//         }
+//       } catch {
+//         // not a valid URL, return as-is
+//       }
+//       return url;
+//     };
+//
+//     if (data?.url || data?.redirectUrl || data?.link) {
+//       data = {
+//         ...data,
+//         url: fixUrl(data.url),
+//         redirectUrl: fixUrl(data.redirectUrl),
+//         link: fixUrl(data.link),
+//       };
+//     }
+//
+//     return new Response(JSON.stringify(data), {
+//       status: res.status,
+//       headers: { ...cors, "Content-Type": "application/json" },
+//     });
+//   } catch {
+//     return new Response(JSON.stringify({ error: "CRM request failed" }), {
+//       status: 502,
+//       headers: { ...cors, "Content-Type": "application/json" },
+//     });
+//   }
+// };
+//
+// export const config = {
+//   path: "/api/whatsapp-crm",
+// };
 
-const ALLOWED_ORIGINS = [
-  "https://hopetrustindia.com",
-  "https://www.hopetrustindia.com",
-  "http://localhost:3000",
-];
-
-function getCorsHeaders(request) {
-  const origin = request.headers.get("origin") || "";
-  const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
-  return {
-    "Access-Control-Allow-Origin": allowedOrigin,
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-  };
-}
-
-// Per-IP, in memory, deliberately. A serverless instance is short-lived, so
-// this is a speed bump rather than a wall — it exists because every turn costs
-// a Gemini call, and the wall is n8n's own token check.
-const WINDOW_MS = 60_000;
-const MAX_PER_WINDOW = 30;
-const hits = new Map();
-
-function overLimit(ip) {
-  const now = Date.now();
-  const seen = (hits.get(ip) || []).filter((t) => now - t < WINDOW_MS);
-  seen.push(now);
-  hits.set(ip, seen);
-  return seen.length > MAX_PER_WINDOW;
-}
-
-function json(body, status, cors) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { ...cors, "Content-Type": "application/json" },
-  });
-}
-
-export default async (request) => {
-  const cors = getCorsHeaders(request);
-
-  if (request.method === "OPTIONS") {
-    return new Response(null, { status: 204, headers: cors });
-  }
-
-  if (request.method !== "POST") {
-    return json({ error: "Method not allowed" }, 405, cors);
-  }
-
-  // Read at invoke rather than at module load. A missing variable then fails
-  // the request visibly instead of baking an undefined into a cold start.
-  const token = process.env.WHATSAPP_CRM_TOKEN;
-  const crmUrl = process.env.CRM_ENDPOINT;
-
-  if (!token || !crmUrl) {
-    return json({ error: "CRM not configured" }, 500, cors);
-  }
-
-  const ip = request.headers.get("x-forwarded-for") || "unknown";
-  if (overLimit(ip)) {
-    return json({ error: "Too many messages. Please wait a moment." }, 429, cors);
-  }
-
-  let body;
-  try {
-    body = await request.json();
-  } catch {
-    return json({ error: "Bad request" }, 400, cors);
-  }
-
-  const message = typeof body?.message === "string" ? body.message : "";
-  const state = body?.state && typeof body.state === "object" ? body.state : {};
-
-  try {
-    const res = await fetch(crmUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ message, state }),
-    });
-
-    const data = await res.json();
-    return json(data, res.status, cors);
-  } catch {
-    // Nothing about the message goes in the response, and nothing is logged.
-    // A Netlify log line holding what someone typed about their addiction is
-    // the same disclosure as a transcript column, minus the retention policy.
-    return json({ error: "CRM request failed" }, 502, cors);
-  }
+// Stub so Netlify doesn't error on deploy — returns 503 until re-enabled
+export default async () => {
+  return new Response(
+    JSON.stringify({ error: "WhatsApp CRM is temporarily disabled" }),
+    { status: 503, headers: { "Content-Type": "application/json" } }
+  );
 };
 
 export const config = {
-  path: "/api/chat",
+  path: "/api/whatsapp-crm",
 };

@@ -28,14 +28,6 @@
   to = "/blogs/"
   status = 301
 
-# The chat bubble's proxy. The site is `output: 'export'`, so there is no Next
-# API route to answer /api/chat — without this the request falls through to the
-# catch-all 404 at the bottom of this file and the widget never reaches the CRM.
-[[redirects]]
-  from = "/api/chat"
-  to = "/.netlify/functions/whatsapp-crm"
-  status = 200
-
 # Admin API proxies (Netlify Functions)
 [[redirects]]
   from = "/api/admin-login"
