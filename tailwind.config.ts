@@ -38,10 +38,6 @@ const config: Config = {
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-100%)' },
         },
-        'chat-dot': {
-          '0%, 60%, 100%': { opacity: '0.3', transform: 'translateY(0)' },
-          '30%': { opacity: '1', transform: 'translateY(-2px)' },
-        },
       },
       animation: {
         'cursor-blink': 'cursor-blink 1s step-end infinite',
@@ -49,7 +45,6 @@ const config: Config = {
         'slide-in': 'slide-in 0.3s ease-out',
         marquee: 'marquee 30s linear infinite',
         'marquee-logos': 'marquee 25s linear infinite',
-        'chat-dot': 'chat-dot 1.2s ease-in-out infinite',
       },
     },
   },

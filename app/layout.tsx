@@ -7,7 +7,6 @@ import { Toaster } from 'sonner';
 // WHATSAPP CRM DISABLED — uncomment when new CRM is integrated
 // import WhatsAppButton from '@/components/WhatsAppButton';
 import { getLogoUrl } from '@/lib/assets';
-import ChatBubble from '@/components/ChatBubble';
 import JsonLd from '@/components/JsonLd';
 import { getOrganizationSchema, getWebSiteSchema } from '@/lib/jsonld';
 import { siteConfig } from '@/lib/config';
@@ -93,11 +92,6 @@ export default function RootLayout({
           <WhatsAppButton />
           */}
           <Toaster position="top-right" richColors />
-          {/* Last inside the provider so it paints above the page, and in the
-              layout rather than a page so it reaches every route — a blog post
-              is where someone reading about their own problem is most likely
-              to want to ask something. */}
-          <ChatBubble />
         </LenisProvider>
       </body>
     </html>
