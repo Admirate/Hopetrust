@@ -317,6 +317,26 @@ export default function ClientsSayingSection() {
             );
           })}
         </div>
+
+        {/* Every testimonial that is not currently on a card.
+
+            The carousel shows two at a time, so only two of the thirty ever
+            reached the HTML — the other twenty-eight were real social proof
+            that no crawler and no answer engine could see. Rendering the rest
+            here puts all thirty in the document without changing what anyone
+            looks at: it is display:none, not off-screen text, and it holds
+            exactly the testimonials the visible cards do not, so nothing is
+            duplicated. Readers still reach them through the arrows. */}
+        <ul hidden aria-hidden="true">
+          {testimonials
+            .filter((item) => !visible.includes(item))
+            .map((item) => (
+              <li key={item.quote}>
+                <p>{item.quote}</p>
+                {item.author && <p>{item.author}</p>}
+              </li>
+            ))}
+        </ul>
       </div>
     </section>
   );
