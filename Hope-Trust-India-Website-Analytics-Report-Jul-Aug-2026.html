@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hope Trust India — Website Analytics Report</title>
+<style>
+  @page { size: A4; margin: 14mm 13mm 16mm 13mm; }
+
+  :root{
+    --surface-1:#ffffff;
+    --plane:#f7f7f5;
+    --ink:#0b0b0b;
+    --ink-2:#52514e;
+    --muted:#898781;
+    --grid:#e1e0d9;
+    --rule:#c3c2b7;
+    --blue:#2a78d6;
+    --blue-dk:#184f95;
+    --blue-lt:#cde2fb;
+    --orange:#eb6834;
+    --orange-lt:#fbe0d5;
+    --aqua:#1baf7a;
+    --good:#006300;
+    --bad:#d03b3b;
+    --neutral:#c9c8c2;
+    --hair:rgba(11,11,11,0.10);
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    color:var(--ink);
+    background:var(--surface-1);
+    font-size:10pt;
+    line-height:1.5;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+
+  /* ---------- structure ---------- */
+  .page{ page-break-after:always; }
+  .page:last-child{ page-break-after:auto; }
+  section{ page-break-inside:avoid; margin-bottom:13pt; }
+
+  h1{ font-size:22pt; line-height:1.12; margin:0 0 4pt; letter-spacing:-0.4pt; }
+  h2{
+    font-size:12pt; margin:0 0 8pt; letter-spacing:-0.2pt;
+    padding-bottom:4pt; border-bottom:1.5pt solid var(--ink);
+  }
+  h3{ font-size:9.5pt; margin:0 0 5pt; color:var(--ink); }
+  p{ margin:0 0 7pt; color:var(--ink-2); }
+  p:last-child{ margin-bottom:0; }
+  strong{ color:var(--ink); }
+  .lead{ font-size:10pt; color:var(--ink-2); }
+
+  .eyebrow{
+    font-size:7pt; letter-spacing:1.3pt; text-transform:uppercase;
+    color:var(--muted); margin:0 0 5pt; font-weight:600;
+  }
+
+  /* ---------- cover ---------- */
+  .cover-band{
+    background:var(--plane);
+    border-left:4pt solid var(--blue);
+    padding:18pt 18pt 16pt;
+    margin-bottom:15pt;
+  }
+  .cover-meta{
+    display:flex; gap:24pt; margin-top:12pt; padding-top:11pt;
+    border-top:1px solid var(--rule);
+  }
+  .cover-meta div{ font-size:8pt; color:var(--ink-2); }
+  .cover-meta span{
+    display:block; font-size:6.5pt; letter-spacing:1pt; text-transform:uppercase;
+    color:var(--muted); font-weight:600; margin-bottom:1pt;
+  }
+
+  /* ---------- KPI tiles ---------- */
+  .kpis{ display:flex; gap:7pt; }
+  .kpi{
+    flex:1; border:1px solid var(--hair); border-radius:4pt;
+    padding:8pt 9pt 9pt; background:var(--surface-1);
+  }
+  .kpi .label{
+    font-size:7pt; letter-spacing:0.5pt; text-transform:uppercase;
+    color:var(--muted); font-weight:600; margin-bottom:2pt;
+  }
+  .kpi .value{ font-size:18pt; line-height:1.05; font-weight:600; letter-spacing:-0.6pt; }
+  .kpi .sub{ font-size:7pt; color:var(--ink-2); margin-top:2pt; }
+  .kpi.accent{ border-top:2.5pt solid var(--blue); }
+  .kpi.accent-o{ border-top:2.5pt solid var(--orange); }
+  .up{ color:var(--good); font-weight:600; }
+  .down{ color:var(--bad); font-weight:600; }
+
+  /* ---------- bar chart ---------- */
+  .chart{ margin:3pt 0 0; }
+  .row{ display:flex; align-items:center; gap:7pt; margin-bottom:4pt; }
+  .row .name{
+    width:145pt; flex:none; font-size:8pt; color:var(--ink);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .row .name.wide{ width:205pt; }
+  .row .track{ flex:1; height:10pt; background:var(--plane); border-radius:2pt; }
+  .row .bar{ height:10pt; background:var(--blue); border-radius:0 2.5pt 2.5pt 0; }
+  .row .bar.o{ background:var(--orange); }
+  .row .bar.dim{ background:var(--neutral); }
+  .row .val{
+    width:48pt; flex:none; text-align:right; font-size:8pt;
+    font-variant-numeric:tabular-nums; color:var(--ink); font-weight:600;
+  }
+  .row .pct{
+    width:32pt; flex:none; text-align:right; font-size:7.5pt;
+    font-variant-numeric:tabular-nums; color:var(--muted);
+  }
+  .chart-note{ font-size:7.5pt; color:var(--muted); margin-top:6pt; margin-bottom:0; }
+
+  /* ---------- donut charts ---------- */
+  .donut-grid{
+    display:flex; flex-wrap:wrap; gap:12pt 10pt;
+  }
+  .donut-cell{
+    width:calc(50% - 5pt); border:1px solid var(--hair); border-radius:4pt;
+    padding:9pt 10pt 10pt; page-break-inside:avoid;
+  }
+  .donut-cell h3{
+    margin:0 0 2pt; font-size:9.5pt; line-height:1.25;
+  }
+  .donut-cell .cap{ font-size:7pt; color:var(--muted); margin:0 0 9pt; }
+  .donut-body{ display:flex; align-items:center; gap:11pt; }
+  .donut{
+    position:relative; width:124pt; height:124pt; flex:none; border-radius:50%;
+  }
+  .donut .hole{
+    position:absolute; left:31pt; top:31pt; width:62pt; height:62pt;
+    background:var(--surface-1); border-radius:50%;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; line-height:1.1;
+  }
+  .donut .hole b{ font-size:13pt; letter-spacing:-0.4pt; color:var(--ink); }
+  .donut .hole span{ font-size:6pt; color:var(--muted); text-transform:uppercase; letter-spacing:0.4pt; margin-top:1pt; }
+  .legend{ flex:1; min-width:0; }
+  .legend .li{ display:flex; align-items:baseline; gap:5pt; margin-bottom:5pt; font-size:7.5pt; }
+  .legend .li:last-child{ margin-bottom:0; }
+  .legend .sw{
+    width:7pt; height:7pt; flex:none; border-radius:1.5pt; transform:translateY(0.5pt);
+  }
+  .legend .lb{ flex:1; color:var(--ink-2); line-height:1.25; }
+  .legend .lv{
+    flex:none; font-weight:600; color:var(--ink);
+    font-variant-numeric:tabular-nums; font-size:7.5pt;
+  }
+  .sw-blue{ background:var(--blue); }
+  .sw-orange{ background:var(--orange); }
+  .sw-aqua{ background:var(--aqua); }
+  .sw-grey{ background:var(--neutral); }
+
+  /* ---------- tables ---------- */
+  table{ width:100%; border-collapse:collapse; font-size:8pt; }
+  th{
+    text-align:left; font-size:7pt; letter-spacing:0.5pt; text-transform:uppercase;
+    color:var(--muted); font-weight:600; padding:0 6pt 4pt 0;
+    border-bottom:1px solid var(--rule);
+  }
+  td{ padding:4pt 6pt 4pt 0; border-bottom:1px solid var(--grid); color:var(--ink-2); vertical-align:top; }
+  td.num, th.num{ text-align:right; font-variant-numeric:tabular-nums; padding-right:0; }
+  td.k{ color:var(--ink); font-weight:600; }
+  tr.total td{ border-bottom:none; border-top:1.5pt solid var(--ink); color:var(--ink); font-weight:600; }
+  .url{ font-size:7.5pt; color:var(--muted); word-break:break-all; }
+
+  .tag{
+    display:inline-block; font-size:6.5pt; font-weight:700; letter-spacing:0.4pt;
+    text-transform:uppercase; padding:1pt 4pt; border-radius:2pt; white-space:nowrap;
+  }
+  .tag.brand{ background:var(--blue-lt); color:var(--blue-dk); }
+  .tag.nonbrand{ background:var(--orange-lt); color:#9c3d16; }
+
+  /* ---------- callouts ---------- */
+  .finding{
+    border-left:2.5pt solid var(--blue); background:var(--plane);
+    padding:8pt 10pt; margin-bottom:7pt; page-break-inside:avoid;
+  }
+  .finding:last-of-type{ margin-bottom:0; }
+  .finding.warn{ border-left-color:var(--orange); }
+  .finding h4{ margin:0 0 3pt; font-size:9pt; }
+  .finding p{ margin:0; font-size:8pt; }
+
+  .split{ display:flex; gap:13pt; }
+  .split > *{ flex:1; }
+
+  ul{ margin:0; padding-left:13pt; color:var(--ink-2); }
+  li{ margin-bottom:3pt; font-size:8.5pt; }
+  li:last-child{ margin-bottom:0; }
+
+  .footer{
+    margin-top:12pt; padding-top:7pt; border-top:1px solid var(--rule);
+    font-size:7pt; color:var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= PAGE 1 ================= -->
+<div class="page">
+
+  <div class="cover-band">
+    <p class="eyebrow">Website Analytics Report</p>
+    <h1>Hope Trust India</h1>
+    <p class="lead" style="margin:6pt 0 0">Performance review of hopetrustindia.com — website traffic and Google Search visibility.</p>
+    <div class="cover-meta">
+      <div><span>Property</span>hopetrustindia.com</div>
+      <div><span>Reporting period</span>10 July – 9 August 2026</div>
+      <div><span>Search data window</span>Last 28 days</div>
+      <div><span>Report date</span>9 August 2026</div>
+    </div>
+  </div>
+
+  <section>
+    <h2>Executive summary</h2>
+    <p>Over the 30-day period the website recorded <strong>76,538 pageviews from 28,052 unique visitors</strong>, averaging roughly 2,551 pageviews and 935 visitors per day, with traffic holding a stable baseline of 2,000–2,600 pageviews daily and no availability-related dips.</p>
+    <p>On Google Search, the site earned <strong>1,900 clicks from 163,000 impressions</strong> — clicks grew <strong>3%</strong> versus the previous period while impressions fell <strong>16%</strong>, meaning the site is converting a smaller pool of search appearances more efficiently. Average CTR is 1.2% and average position is 12.3, which places most rankings at the bottom of page one or the top of page two.</p>
+    <p>Two structural findings shape this report. First, <strong>search demand is overwhelmingly brand-led</strong> — around 92% of clicks from the top queries come from people already searching for "Hope Trust" by name, while non-branded discovery terms such as "therapist near me" and "psychologist hyderabad" generate high impressions but convert at under 1%. Second, <strong>the geographic profile of raw pageviews and of verified search visitors differ sharply</strong>, which indicates a significant share of recorded pageviews is automated rather than human. Both are addressed in Key Findings.</p>
+  </section>
+
+  <section>
+    <p class="eyebrow">Website traffic · 10 Jul – 9 Aug 2026</p>
+    <div class="kpis">
+      <div class="kpi accent"><div class="label">Total pageviews</div><div class="value">76,538</div><div class="sub">≈ 2,551 per day</div></div>
+      <div class="kpi accent"><div class="label">Unique visitors</div><div class="value">28,052</div><div class="sub">≈ 935 per day</div></div>
+      <div class="kpi accent"><div class="label">Pages per visitor</div><div class="value">2.7</div><div class="sub">Depth of engagement</div></div>
+      <div class="kpi accent"><div class="label">Bandwidth served</div><div class="value">7 GB</div><div class="sub">≈ 96 KB per pageview</div></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Google Search · Last 28 days</p>
+    <div class="kpis">
+      <div class="kpi accent-o"><div class="label">Total clicks</div><div class="value">1,900</div><div class="sub"><span class="up">▲ 3%</span> vs previous period</div></div>
+      <div class="kpi accent-o"><div class="label">Total impressions</div><div class="value">163,000</div><div class="sub"><span class="down">▼ 16%</span> vs previous period</div></div>
+      <div class="kpi accent-o"><div class="label">Average CTR</div><div class="value">1.2%</div><div class="sub">Clicks per 100 appearances</div></div>
+      <div class="kpi accent-o"><div class="label">Average position</div><div class="value">12.3</div><div class="sub">Page 2 of results</div></div>
+    </div>
+  </section>
+
+  <div class="footer">Hope Trust India — Website Analytics Report · 10 July – 9 August 2026 · Page 1 of 8</div>
+</div>
+
+<!-- ================= PAGE 2 — VISUAL SUMMARY ================= -->
+<div class="page">
+
+  <section>
+    <h2>The period at a glance</h2>
+    <p>Four views of where the traffic comes from, what it reads, and what it searches for. Each chart shows share of the whole; exact figures follow in the detailed sections.</p>
+
+    <div class="donut-grid">
+
+      <!-- A · pageviews by country -->
+      <div class="donut-cell">
+        <h3>Where pageviews come from</h3>
+        <p class="cap">Share of 76,538 recorded pageviews · 10 Jul – 9 Aug</p>
+        <div class="donut-body">
+          <div class="donut" style="background:conic-gradient(
+            var(--blue) 0deg 175.68deg,
+            #fff 175.68deg 177.08deg,
+            var(--orange) 177.08deg 202.32deg,
+            #fff 202.32deg 203.72deg,
+            var(--aqua) 203.72deg 280.08deg,
+            #fff 280.08deg 281.48deg,
+            var(--neutral) 281.48deg 358.6deg,
+            #fff 358.6deg 360deg)">
+            <div class="hole"><b>76,538</b><span>Pageviews</span></div>
+          </div>
+          <div class="legend">
+            <div class="li"><span class="sw sw-blue"></span><span class="lb">United States</span><span class="lv">48.8%</span></div>
+            <div class="li"><span class="sw sw-orange"></span><span class="lb">India</span><span class="lv">7.4%</span></div>
+            <div class="li"><span class="sw sw-aqua"></span><span class="lb">Singapore, Germany, China, Canada, France</span><span class="lv">21.6%</span></div>
+            <div class="li"><span class="sw sw-grey"></span><span class="lb">Rest of world</span><span class="lv">22.2%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- B · search clicks by country -->
+      <div class="donut-cell">
+        <h3>Where real search visitors come from</h3>
+        <p class="cap">Share of 1,900 Google Search clicks · last 28 days</p>
+        <div class="donut-body">
+          <div class="donut" style="background:conic-gradient(
+            var(--blue) 0deg 230.4deg,
+            #fff 230.4deg 231.8deg,
+            var(--orange) 231.8deg 288deg,
+            #fff 288deg 289.4deg,
+            var(--aqua) 289.4deg 313.2deg,
+            #fff 313.2deg 314.6deg,
+            var(--neutral) 314.6deg 358.6deg,
+            #fff 358.6deg 360deg)">
+            <div class="hole"><b>1,900</b><span>Clicks</span></div>
+          </div>
+          <div class="legend">
+            <div class="li"><span class="sw sw-blue"></span><span class="lb">India</span><span class="lv">64%</span></div>
+            <div class="li"><span class="sw sw-orange"></span><span class="lb">United States</span><span class="lv">16%</span></div>
+            <div class="li"><span class="sw sw-aqua"></span><span class="lb">UK, Canada &amp; Australia</span><span class="lv">7%</span></div>
+            <div class="li"><span class="sw sw-grey"></span><span class="lb">All other countries</span><span class="lv">13%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- C · brand vs discovery -->
+      <div class="donut-cell">
+        <h3>Brand vs discovery search</h3>
+        <p class="cap">Share of the 441 clicks from the top 10 queries</p>
+        <div class="donut-body">
+          <div class="donut" style="background:conic-gradient(
+            var(--blue) 0deg 329.76deg,
+            #fff 329.76deg 331.16deg,
+            var(--orange) 331.16deg 358.6deg,
+            #fff 358.6deg 360deg)">
+            <div class="hole"><b>441</b><span>Clicks</span></div>
+          </div>
+          <div class="legend">
+            <div class="li"><span class="sw sw-blue"></span><span class="lb">Branded — already looking for Hope Trust</span><span class="lv">91.6%</span></div>
+            <div class="li"><span class="sw sw-orange"></span><span class="lb">Discovery — new, unaware searchers</span><span class="lv">8.4%</span></div>
+            <div class="li" style="margin-top:7pt"><span class="lb" style="color:var(--muted);font-size:7pt">404 branded clicks vs 37 discovery clicks. Growing the orange slice is the core opportunity in this report.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- D · pageviews by page type -->
+      <div class="donut-cell">
+        <h3>What visitors look at</h3>
+        <p class="cap">Share of 76,538 pageviews by page type</p>
+        <div class="donut-body">
+          <div class="donut" style="background:conic-gradient(
+            var(--blue) 0deg 59.4deg,
+            #fff 59.4deg 60.8deg,
+            var(--orange) 60.8deg 105.48deg,
+            #fff 105.48deg 106.88deg,
+            var(--aqua) 106.88deg 142.92deg,
+            #fff 142.92deg 144.32deg,
+            var(--neutral) 144.32deg 358.6deg,
+            #fff 358.6deg 360deg)">
+            <div class="hole"><b>76,538</b><span>Pageviews</span></div>
+          </div>
+          <div class="legend">
+            <div class="li"><span class="sw sw-blue"></span><span class="lb">Homepage — 12,623</span><span class="lv">16.5%</span></div>
+            <div class="li"><span class="sw sw-orange"></span><span class="lb">Top blog articles — 9,825</span><span class="lv">12.8%</span></div>
+            <div class="li"><span class="sw sw-aqua"></span><span class="lb">Service &amp; enquiry pages — 7,994</span><span class="lv">10.4%</span></div>
+            <div class="li"><span class="sw sw-grey"></span><span class="lb">All other pages — 46,096</span><span class="lv">60.2%</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <p class="chart-note">Charts A and B measure different populations: A counts every request reaching the server, including bots; B counts only verified human clicks from Google. The contrast between them is the subject of Key Finding 1.</p>
+  </section>
+
+  <section>
+    <h2>Traffic pattern over the month</h2>
+    <p>Daily pageviews opened the period at roughly 2,400, spiked to a period high of about <strong>4,200 on 12 July</strong>, then settled into a consistent 1,900–2,600 band for the remainder of the month. Three secondary peaks near 3,000 occurred around 2, 5 and 8 August, suggesting content or referral activity in the first week of August. Unique visitors followed the same shape at roughly 1,100–1,300 per day, with peaks near 2,000 on 11 and 15 July and 3 August. The final day, 9 August, is a partial day and reads lower for that reason only.</p>
+    <p>The consistency of the baseline is the notable point: there is no erosion trend across the month, and the site served every request without a measurable availability gap.</p>
+  </section>
+
+  <div class="footer">Hope Trust India — Website Analytics Report · 10 July – 9 August 2026 · Page 2 of 8</div>
+</div>
+
+<!-- ================= PAGE 3 ================= -->
+<div class="page">
+
+  <section>
+    <h2>Audience geography — pageviews</h2>
+    <p>The United States accounts for almost half of all recorded pageviews, with India second at 7.4%. For a Hyderabad-based practice serving Indian clients, this distribution is not a reflection of the addressable market — see Key Finding 1.</p>
+    <div class="chart">
+      <div class="row"><div class="name">United States</div><div class="track"><div class="bar" style="width:100%"></div></div><div class="val">37,345</div><div class="pct">48.8%</div></div>
+      <div class="row"><div class="name">India</div><div class="track"><div class="bar" style="width:15.2%"></div></div><div class="val">5,664</div><div class="pct">7.4%</div></div>
+      <div class="row"><div class="name">Singapore</div><div class="track"><div class="bar" style="width:13.2%"></div></div><div class="val">4,940</div><div class="pct">6.5%</div></div>
+      <div class="row"><div class="name">Germany</div><div class="track"><div class="bar" style="width:9.2%"></div></div><div class="val">3,428</div><div class="pct">4.5%</div></div>
+      <div class="row"><div class="name">China</div><div class="track"><div class="bar" style="width:7.7%"></div></div><div class="val">2,880</div><div class="pct">3.8%</div></div>
+      <div class="row"><div class="name">Canada</div><div class="track"><div class="bar" style="width:7.6%"></div></div><div class="val">2,840</div><div class="pct">3.7%</div></div>
+      <div class="row"><div class="name">France</div><div class="track"><div class="bar" style="width:6.5%"></div></div><div class="val">2,422</div><div class="pct">3.2%</div></div>
+      <div class="row"><div class="name">All other countries</div><div class="track"><div class="bar dim" style="width:45.6%"></div></div><div class="val">17,019</div><div class="pct">22.2%</div></div>
+    </div>
+    <p class="chart-note">Percentages are share of the 76,538 total pageviews. The seven named countries account for 77.8% of the total.</p>
+  </section>
+
+  <section>
+    <h2>Audience geography — verified search clicks</h2>
+    <p>Google Search Console reports only real people clicking through from search results. Its country split is close to the inverse of the pageview split, and is the more reliable picture of the human audience.</p>
+    <div class="chart">
+      <div class="row"><div class="name">India</div><div class="track"><div class="bar o" style="width:100%"></div></div><div class="val">64%</div><div class="pct"></div></div>
+      <div class="row"><div class="name">United States</div><div class="track"><div class="bar o" style="width:25%"></div></div><div class="val">16%</div><div class="pct"></div></div>
+      <div class="row"><div class="name">United Kingdom</div><div class="track"><div class="bar o" style="width:4.7%"></div></div><div class="val">3%</div><div class="pct"></div></div>
+      <div class="row"><div class="name">Canada</div><div class="track"><div class="bar o" style="width:4.7%"></div></div><div class="val">3%</div><div class="pct"></div></div>
+      <div class="row"><div class="name">Australia</div><div class="track"><div class="bar o" style="width:1.6%"></div></div><div class="val">1%</div><div class="pct"></div></div>
+      <div class="row"><div class="name">All other countries</div><div class="track"><div class="bar dim" style="width:20.3%"></div></div><div class="val">13%</div><div class="pct"></div></div>
+    </div>
+    <p class="chart-note">Share of total search clicks over the last 28 days. India is the dominant human audience; the US share is consistent with an NRI and diaspora readership of the blog.</p>
+  </section>
+
+  <section>
+    <h2>What the two geography views mean together</h2>
+    <p>These two charts measure different things and should be read as a pair. The pageview chart counts every request that reached the server — including search-engine crawlers, AI scrapers and monitoring bots, which are concentrated in United States, Singapore, German and Chinese data centres. The search-click chart counts only verified human visits arriving from Google. Where the two disagree this sharply, the human picture is the one to plan around: <strong>the real audience is predominantly Indian, with a meaningful diaspora readership in the US, UK, Canada and Australia.</strong></p>
+  </section>
+
+  <div class="footer">Hope Trust India — Website Analytics Report · 10 July – 9 August 2026 · Page 3 of 8</div>
+</div>
+
+<!-- ================= PAGE 3 ================= -->
+<div class="page">
+
+  <section>
+    <h2>Top pages by pageviews</h2>
+    <div class="chart">
+      <div class="row"><div class="name wide">/ &nbsp;(Homepage)</div><div class="track"><div class="bar" style="width:100%"></div></div><div class="val">12,623</div><div class="pct">16.5%</div></div>
+      <div class="row"><div class="name wide">/blogs/9-interesting-traits-of-people-who-never-post…</div><div class="track"><div class="bar" style="width:26.7%"></div></div><div class="val">3,372</div><div class="pct">4.4%</div></div>
+      <div class="row"><div class="name wide">/book-your-session/</div><div class="track"><div class="bar" style="width:25.4%"></div></div><div class="val">3,201</div><div class="pct">4.2%</div></div>
+      <div class="row"><div class="name wide">/mental-health/</div><div class="track"><div class="bar" style="width:15.2%"></div></div><div class="val">1,914</div><div class="pct">2.5%</div></div>
+      <div class="row"><div class="name wide">/blogs/gambling-addiction/</div><div class="track"><div class="bar" style="width:13.0%"></div></div><div class="val">1,636</div><div class="pct">2.1%</div></div>
+      <div class="row"><div class="name wide">/blogs/ &nbsp;(Blog index)</div><div class="track"><div class="bar" style="width:11.4%"></div></div><div class="val">1,439</div><div class="pct">1.9%</div></div>
+      <div class="row"><div class="name wide">/contact/</div><div class="track"><div class="bar" style="width:9.8%"></div></div><div class="val">1,237</div><div class="pct">1.6%</div></div>
+      <div class="row"><div class="name wide">/blogs/drug-induced-spiritual-experience/</div><div class="track"><div class="bar" style="width:7.0%"></div></div><div class="val">889</div><div class="pct">1.2%</div></div>
+      <div class="row"><div class="name wide">/blogs/my-alcoholism-was-a-spiritual-disease/</div><div class="track"><div class="bar" style="width:6.5%"></div></div><div class="val">821</div><div class="pct">1.1%</div></div>
+      <div class="row"><div class="name wide">/blogs/zen-and-addiction-recovery/</div><div class="track"><div class="bar" style="width:4.9%"></div></div><div class="val">619</div><div class="pct">0.8%</div></div>
+      <div class="row"><div class="name wide">/blogs/alcoholism-and-malnutrition-what-are-the-conseq…</div><div class="track"><div class="bar" style="width:4.6%"></div></div><div class="val">579</div><div class="pct">0.8%</div></div>
+      <div class="row"><div class="name wide">/addiction/</div><div class="track"><div class="bar" style="width:4.5%"></div></div><div class="val">568</div><div class="pct">0.7%</div></div>
+      <div class="row"><div class="name wide">/about/</div><div class="track"><div class="bar" style="width:4.5%"></div></div><div class="val">562</div><div class="pct">0.7%</div></div>
+      <div class="row"><div class="name wide">/training/</div><div class="track"><div class="bar" style="width:4.1%"></div></div><div class="val">512</div><div class="pct">0.7%</div></div>
+      <div class="row"><div class="name wide">/blogs/how-to-stay-calm-in-any-situation-5-stoic-princi…</div><div class="track"><div class="bar" style="width:3.7%"></div></div><div class="val">470</div><div class="pct">0.6%</div></div>
+    </div>
+    <p class="chart-note">Top 15 pages total 30,442 pageviews — 39.8% of all traffic. The remaining 60.2% is spread across the long tail of the blog and service pages.</p>
+  </section>
+
+  <section>
+    <h2>Content performance — what the page data says</h2>
+    <div class="split">
+      <div>
+        <h3>Working well</h3>
+        <ul>
+          <li><strong>The homepage is doing its job</strong> at 16.5% of all pageviews — brand searchers land there first.</li>
+          <li><strong>/book-your-session/ is the third most-viewed page</strong> (3,201 views) and its search clicks are up 19%. This is the commercial page and it is trending in the right direction.</li>
+          <li><strong>/mental-health/ (1,914) and /contact/ (1,237)</strong> both rank in the top seven, showing visitors move from content into service and enquiry pages.</li>
+          <li><strong>The addiction blog cluster</strong> — gambling addiction, spiritual experience, alcoholism, Zen and recovery, malnutrition — draws around 4,500 views and aligns closely with the core service offering.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Needs attention</h3>
+        <ul>
+          <li><strong>The largest blog post is off-topic.</strong> "9 Interesting Traits of People Who Never Post on Social Media" (3,372 views) outperforms every service page but has no direct relationship to treatment services.</li>
+          <li><strong>Service pages sit low.</strong> /addiction/ (568) and /training/ (512) each attract under 1% of traffic despite representing core revenue lines.</li>
+          <li><strong>The blog index (1,439) outranks most individual service pages</strong>, indicating visitors browse content rather than being routed toward services.</li>
+          <li><strong>No conversion measurement is in place</strong> — pageviews are known, but enquiries, form submissions and bookings are not tracked against them.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">Hope Trust India — Website Analytics Report · 10 July – 9 August 2026 · Page 4 of 8</div>
+</div>
+
+<!-- ================= PAGE 4 ================= -->
+<div class="page">
+
+  <section>
+    <h2>Top search queries</h2>
+    <p>The ten queries below produced 441 clicks — roughly 23% of all search clicks in the period.</p>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:44%">Query</th>
+          <th style="width:14%">Type</th>
+          <th class="num" style="width:14%">Clicks</th>
+          <th class="num" style="width:14%">Impressions</th>
+          <th class="num" style="width:14%">CTR</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="k">hope trust</td><td><span class="tag brand">Brand</span></td><td class="num">216</td><td class="num">462</td><td class="num">46.8%</td></tr>
+        <tr><td class="k">hope trust hyderabad</td><td><span class="tag brand">Brand</span></td><td class="num">108</td><td class="num">225</td><td class="num">48.0%</td></tr>
+        <tr><td class="k">hope trust – psychological wellness centre hyderabad</td><td><span class="tag brand">Brand</span></td><td class="num">31</td><td class="num">76</td><td class="num">40.8%</td></tr>
+        <tr><td class="k">hope trust banjara hills</td><td><span class="tag brand">Brand</span></td><td class="num">20</td><td class="num">64</td><td class="num">31.3%</td></tr>
+        <tr><td class="k">hopetrust</td><td><span class="tag brand">Brand</span></td><td class="num">18</td><td class="num">32</td><td class="num">56.3%</td></tr>
+        <tr><td class="k">therapist hyderabad</td><td><span class="tag nonbrand">Discovery</span></td><td class="num">13</td><td class="num">731</td><td class="num">1.8%</td></tr>
+        <tr><td class="k">hope trust india</td><td><span class="tag brand">Brand</span></td><td class="num">11</td><td class="num">19</td><td class="num">57.9%</td></tr>
+        <tr><td class="k">psychologist hyderabad</td><td><span class="tag nonbrand">Discovery</span></td><td class="num">9</td><td class="num">1,208</td><td class="num">0.7%</td></tr>
+        <tr><td class="k">therapist near me</td><td><span class="tag nonbrand">Discovery</span></td><td class="num">8</td><td class="num">1,229</td><td class="num">0.7%</td></tr>
+        <tr><td class="k">best psychologist in hyderabad</td><td><span class="tag nonbrand">Discovery</span></td><td class="num">7</td><td class="num">580</td><td class="num">1.2%</td></tr>
+        <tr class="total"><td>Top 10 total</td><td></td><td class="num">441</td><td class="num">4,626</td><td class="num">9.5%</td></tr>
+      </tbody>
+    </table>
+    <p class="chart-note">Branded queries produced 404 of these 441 clicks (91.6%) from just 878 impressions. Discovery queries produced 37 clicks from 3,748 impressions.</p>
+  </section>
+
+  <section>
+    <h2>Grouped query themes</h2>
+    <p>Google groups similar phrasings into themes. The five largest themes and their period-on-period movement:</p>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:26%">Theme</th>
+          <th style="width:44%">Variations included</th>
+          <th class="num" style="width:15%">Clicks</th>
+          <th class="num" style="width:15%">Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="k">hope trust</td><td>hopetrust, trust hope, the hope trust, hope and trust</td><td class="num">239</td><td class="num"><span class="up">▲ 4%</span></td></tr>
+        <tr><td class="k">hope trust hyderabad</td><td>hope trust – psychological wellness centre hyderabad, and photos</td><td class="num">141</td><td class="num"><span class="up">▲ 18%</span></td></tr>
+        <tr><td class="k">therapist hyderabad</td><td>psychologist hyderabad, best psychologist in hyderabad, therapists in hyderabad</td><td class="num">86</td><td class="num"><span class="down">▼ 10%</span></td></tr>
+        <tr><td class="k">therapist near me</td><td>psychologist near me, counsellor near me, family psychologist near me, therapy near me</td><td class="num">35</td><td class="num"><span class="down">▼ 5%</span></td></tr>
+        <tr><td class="k">hope trust banjara hills</td><td>—</td><td class="num">20</td><td class="num"><span class="up">▲ 18%</span></td></tr>
+      </tbody>
+    </table>
+    <p class="chart-note">Brand themes are growing (+4% to +18%); the two local discovery themes that bring in new, unaware clients are both declining.</p>
+  </section>
+
+  <div class="footer">Hope Trust India — Website Analytics Report · 10 July – 9 August 2026 · Page 5 of 8</div>
+</div>
+
+<!-- ================= PAGE 5 ================= -->
+<div class="page">
+
+  <section>
+    <h2>Best-performing content in search</h2>
+    <table>
+      <thead>
+        <tr><th style="width:62%">Page</th><th class="num" style="width:19%">Clicks</th><th class="num" style="width:19%">Change</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="k">Hope Trust — A place for hope, healing, and renewal</span><br><span class="url">hopetrustindia.com/</span></td><td class="num">509</td><td class="num"><span class="up">▲ &lt;1%</span></td></tr>
+        <tr><td><span class="k">Book Your Session — Find a Therapist</span><br><span class="url">hopetrustindia.com/book-your-session/</span></td><td class="num">336</td><td class="num"><span class="up">▲ 19%</span></td></tr>
+        <tr><td><span class="k">9 Interesting Traits of People Who Never Post on Social Media</span><br><span class="url">hopetrustindia.com/blogs/9-interesting-traits-of-people-who-never-post-on-social-media/</span></td><td class="num">156</td><td class="num"><span class="up">▲ 8%</span></td></tr>
+        <tr><td><span class="k">Strategies for Helping Addicts and Alcoholics to Get the Help they Need</span><br><span class="url">hopetrustindia.com/blogs/strategies-for-helping-addicts-and-alcoholics-to-get-the-help-they-need-2/</span></td><td class="num">86</td><td class="num"><span class="up">▲ 115%</span></td></tr>
+        <tr><td><span class="k">Grandiosity — The Hallmark of Alcoholics and Addicts</span><br><span class="url">hopetrustindia.com/blogs/grandiosity-the-hallmark-of-alcoholics-and-addicts/</span></td><td class="num">53</td><td class="num"><span class="up">▲ 36%</span></td></tr>
+      </tbody>
+    </table>
+    <p class="chart-note">The two strongest growth stories are on-topic recovery content: "Strategies for Helping Addicts and Alcoholics" (+115%) and "Grandiosity" (+36%). This is evidence that treatment-focused content, not general-interest content, has the most headroom.</p>
+  </section>
+
+  <section>
+    <h2>Declining content — refresh candidates</h2>
+    <table>
+      <thead>
+        <tr><th style="width:62%">Page</th><th class="num" style="width:19%">Click change</th><th class="num" style="width:19%">Clicks lost</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="k">The 10 Most Common Phobias</span><br><span class="url">hopetrustindia.com/blogs/the-10-most-common-phobias/</span></td><td class="num"><span class="down">▼ 67%</span></td><td class="num">−12</td></tr>
+        <tr><td><span class="k">Mysterious Dreams and Their Meaning</span><br><span class="url">hopetrustindia.com/blogs/mysterious-dreams-and-their-meaning/</span></td><td class="num"><span class="down">▼ 32%</span></td><td class="num">−10</td></tr>
+        <tr><td><span class="k">Strategies to Stay Sober During the First 90 Days After Alcohol De-addiction Treatment</span><br><span class="url">hopetrustindia.com/blogs/strategies-to-stay-sober-during-the-first-90-days-after-alcohol-de-addiction-treatment/</span></td><td class="num"><span class="down">▼ 40%</span></td><td class="num">−10</td></tr>
+        <tr><td><span class="k">What Emotionally Intelligent Parents Avoid Doing in Front of Their Kids</span><br><span class="url">hopetrustindia.com/blogs/what-emotionally-intelligent-parents-avoid-doing-in-front-of-their-kids/</span></td><td class="num"><span class="down">▼ 83%</span></td><td class="num">−10</td></tr>
+        <tr><td><span class="k">15 Things Money Can't Buy (no matter how rich you are)</span><br><span class="url">hopetrustindia.com/blogs/15-things-money-cant-buy-no-matter-how-rich-you-are/</span></td><td class="num"><span class="down">▼ 39%</span></td><td class="num">−9</td></tr>
+      </tbody>
+    </table>
+    <p class="chart-note">Combined loss is 51 clicks. Four of the five are general-interest posts; the exception — the 90-day sobriety post — is core service content and should be prioritised for a refresh.</p>
+  </section>
+
+  <div class="footer">Hope Trust India — Website Analytics Report · 10 July – 9 August 2026 · Page 6 of 8</div>
+</div>
+
+<!-- ================= PAGE 6 ================= -->
+<div class="page">
+
+  <section>
+    <h2>Key findings</h2>
+
+    <div class="finding warn">
+      <h4>1. A large share of recorded pageviews is not human traffic</h4>
+      <p>Server-side analytics counts every request to the site, including search-engine crawlers, AI scrapers, uptime monitors and bots. Google Search Console counts only real people. The two disagree in a specific, diagnostic way: pageview data shows the United States at 48.8% and India at 7.4%, while verified search clicks show India at 64% and the US at 16%. The prominence of Singapore, Germany and China — all major data-centre regions — points the same way. <strong>Treat 76,538 as total server requests, not as 76,538 human visits.</strong> Installing Google Analytics 4 alongside the current setup would establish a clean, bot-filtered baseline of real sessions.</p>
+    </div>
+
+    <div class="finding">
+      <h4>2. Impressions fell 16% but clicks rose 3% — the trade is favourable</h4>
+      <p>The site is appearing in fewer search results but earning more clicks from them, which lifts CTR. This pattern usually reflects the loss of low-relevance, long-tail impressions rather than a loss of ranking quality, and the click growth confirms that core rankings held. It is worth monitoring: if impressions fall again for a second consecutive period, indexation and content coverage should be reviewed.</p>
+    </div>
+
+    <div class="finding warn">
+      <h4>3. Search visibility is brand-dependent; discovery is the growth gap</h4>
+      <p>Around 92% of clicks from the top queries come from people who already know the Hope Trust name. The queries that would bring in new, unaware clients — "psychologist hyderabad" (1,208 impressions, 9 clicks), "therapist near me" (1,229 impressions, 8 clicks) and "best psychologist in hyderabad" (580 impressions, 7 clicks) — together generate over 3,700 impressions but fewer than 40 clicks. The site is being shown for the right searches and is not being chosen, which is a function of ranking position (average 12.3, i.e. page two) rather than of demand.</p>
+    </div>
+
+    <div class="finding">
+      <h4>4. The booking page is the strongest commercial signal in the data</h4>
+      <p>/book-your-session/ is the third most-visited page (3,201 views) and its search clicks grew 19% — the largest gain of any core page. Traffic is reaching the point of enquiry. What is missing is measurement of what happens next: without conversion tracking, the number of these 3,201 visits that became a call, form submission or booking is unknown.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Suggested targets for the next period</h2>
+    <div class="kpis">
+      <div class="kpi"><div class="label">Search clicks</div><div class="value">2,100</div><div class="sub">+10% on 1,900</div></div>
+      <div class="kpi"><div class="label">Average CTR</div><div class="value">1.5%</div><div class="sub">Up from 1.2%</div></div>
+      <div class="kpi"><div class="label">Average position</div><div class="value">&lt; 10.0</div><div class="sub">Move onto page one</div></div>
+      <div class="kpi"><div class="label">Discovery clicks</div><div class="value">160</div><div class="sub">+30% on 121 non-brand</div></div>
+    </div>
+    <p class="chart-note">Targets assume recommendations 1–4 are implemented at the start of the next period. Once conversion tracking is live, enquiries and bookings should replace clicks as the headline metric.</p>
+  </section>
+
+  <div class="footer">Hope Trust India — Website Analytics Report · 10 July – 9 August 2026 · Page 7 of 8</div>
+</div>
+
+<!-- ================= PAGE 7 ================= -->
+<div class="page">
+
+  <section>
+    <h2>Recommendations</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:6%">#</th>
+          <th style="width:32%">Action</th>
+          <th style="width:44%">Why it matters</th>
+          <th style="width:18%">Priority</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="k">1</td>
+          <td class="k">Install Google Analytics 4 with bot filtering</td>
+          <td>Establishes a verified human-traffic baseline and separates real sessions from crawler requests, so every future report measures the same thing.</td>
+          <td>High — immediate</td>
+        </tr>
+        <tr>
+          <td class="k">2</td>
+          <td class="k">Set up conversion tracking on enquiry actions</td>
+          <td>Track form submissions, phone clicks and WhatsApp events on /book-your-session/ and /contact/. Turns a traffic report into a return-on-investment report.</td>
+          <td>High — immediate</td>
+        </tr>
+        <tr>
+          <td class="k">3</td>
+          <td class="k">Local SEO push for Hyderabad search terms</td>
+          <td>Dedicated pages for "psychologist in Hyderabad", "therapist in Banjara Hills" and related terms, plus Google Business Profile optimisation and LocalBusiness schema. Moving from position 12 to the top five is the single largest available gain — over 3,700 monthly impressions are already there.</td>
+          <td>High — 30–60 days</td>
+        </tr>
+        <tr>
+          <td class="k">4</td>
+          <td class="k">Rewrite titles and meta descriptions on high-impression, low-CTR pages</td>
+          <td>Pages ranking for discovery terms are being seen and not clicked. Clearer, benefit-led titles naming Hyderabad and the service can lift CTR with no ranking change.</td>
+          <td>Medium — 30 days</td>
+        </tr>
+        <tr>
+          <td class="k">5</td>
+          <td class="k">Add service call-to-actions and internal links to high-traffic blogs</td>
+          <td>The top blog post draws 3,372 views with no clear route to a service page. Contextual links into /book-your-session/, /mental-health/ and /addiction/ convert existing readership at no acquisition cost.</td>
+          <td>Medium — 30 days</td>
+        </tr>
+        <tr>
+          <td class="k">6</td>
+          <td class="k">Refresh the five declining posts</td>
+          <td>Update, expand and re-date them, prioritising "Strategies to Stay Sober During the First 90 Days", which is core service content. Recovers 51 lost clicks and protects rankings from further decay.</td>
+          <td>Medium — 60 days</td>
+        </tr>
+        <tr>
+          <td class="k">7</td>
+          <td class="k">Expand the addiction and recovery content cluster</td>
+          <td>The two fastest-growing pages in search are both recovery topics (+115% and +36%). This is where demand and service alignment overlap, and publishing consistently here compounds.</td>
+          <td>Medium — ongoing</td>
+        </tr>
+        <tr>
+          <td class="k">8</td>
+          <td class="k">Strengthen underperforming service pages and monitor impressions</td>
+          <td>/addiction/ (568) and /training/ (512) hold under 1% of traffic despite being core offerings; both need expanded content and homepage prominence. Review indexation if impressions decline for a second period.</td>
+          <td>Low — 90 days</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Methodology and notes</h2>
+    <ul>
+      <li><strong>Sources.</strong> Two independent datasets: the hosting platform's server-side web analytics (pageviews, unique visitors, bandwidth, locations, top pages) and Google Search Console (clicks, impressions, CTR, position, queries, countries).</li>
+      <li><strong>Date windows differ.</strong> Traffic data covers 30 days, 10 July to 9 August 2026. Search data covers Google's last-28-day window and lags by roughly two days, so the two are not directly comparable day for day.</li>
+      <li><strong>Counting methods differ.</strong> Server-side analytics counts every request including bots and crawlers; Search Console counts only human clicks from Google Search. Figures from the two sources should not be added together.</li>
+      <li><strong>Rounding.</strong> Google Search Console reports 1.9K clicks and 163K impressions; these are stated as 1,900 and 163,000 throughout. Percentage changes are as reported by Google against the immediately preceding equivalent period.</li>
+      <li><strong>Partial day.</strong> 9 August 2026 is incomplete (data captured at 9:47 PM) and reads lower than a full day in the traffic trend.</li>
+      <li><strong>Not yet measured.</strong> Traffic sources and channel split, bounce rate, session duration, device breakdown and conversions are not available from the current setup. Recommendations 1 and 2 address this.</li>
+    </ul>
+  </section>
+
+  <div class="footer">Hope Trust India — Website Analytics Report · 10 July – 9 August 2026 · Page 8 of 8 · Prepared by Admirate</div>
+</div>
+
+</body>
+</html>
