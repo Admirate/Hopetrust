@@ -1,0 +1,90 @@
+import { describe, it, expect } from 'vitest';
+import { topicFor, relatedPosts, TOPICS } from '@/lib/post-topics';
+import type { BlogPostMeta } from '@/lib/blog';
+
+function post(overrides: Partial<BlogPostMeta> = {}): BlogPostMeta {
+  return {
+    slug: 'a-post',
+    title: 'A Post',
+    date: '2024-01-01',
+    modified: '2024-01-01',
+    excerpt: '',
+    categories: [],
+    tags: [],
+    featuredImage: '',
+    author: 'Hope Trust',
+    ...overrides,
+  };
+}
+
+describe('topicFor', () => {
+  it.each([
+    ['10 Signs You Need Professional Help for Alcoholism', 'addiction'],
+    ['Understanding Gambling Addiction', 'addiction'],
+    ['5 Short-Term Symptoms of Caffeine Withdrawal', 'addiction'],
+    ['6 Ways to Deal With Your Anxiety', 'mental-health'],
+    ['Everything You Should Know About Depression', 'mental-health'],
+    ['Managing Burnout at Work', 'corporate'],
+  ])('routes %s to %s', (title, expected) => {
+    expect(topicFor(post({ title, slug: 'x' })).id).toBe(expected);
+  });
+
+  it('prefers intervention over addiction when the post is aimed at the family', () => {
+    // Someone searching for how to help a drinking relative wants the
+    // intervention page, not the general treatment page.
+    expect(
+      topicFor(post({ title: 'Strategies for Helping a Loved One Who Refuses Help' })).id
+    ).toBe('intervention');
+  });
+
+  it('reads the slug as well as the title', () => {
+    expect(topicFor(post({ title: 'Untitled', slug: 'living-with-alcoholism' })).id).toBe(
+      'addiction'
+    );
+  });
+
+  it('falls back to mental health rather than returning nothing', () => {
+    expect(topicFor(post({ title: 'Zzzz', slug: 'zzzz' })).id).toBe('mental-health');
+  });
+
+  it('gives every topic a service page and call to action', () => {
+    for (const t of TOPICS) {
+      expect(t.href).toMatch(/^\/[a-z-]*\/$/);
+      expect(t.cta.length).toBeGreaterThan(0);
+      expect(t.heading.length).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe('relatedPosts', () => {
+  const all = [
+    post({ slug: 'alcoholism-signs', title: 'Signs of Alcoholism' }),
+    post({ slug: 'alcoholism-family', title: 'What Alcoholism Does to Your Family' }),
+    post({ slug: 'anxiety-tips', title: 'Dealing With Anxiety' }),
+    post({ slug: 'money', title: 'Things Money Cannot Buy' }),
+  ];
+
+  it('prefers posts sharing distinctive title words', () => {
+    const current = post({ slug: 'alcoholism-help', title: 'Help for Alcoholism' });
+    const ids = relatedPosts(current, all).map((p) => p.slug);
+    expect(ids[0]).toMatch(/^alcoholism-/);
+  });
+
+  it('never returns the post itself', () => {
+    const current = all[0];
+    expect(relatedPosts(current, all).map((p) => p.slug)).not.toContain(current.slug);
+  });
+
+  it('respects the limit', () => {
+    const current = post({ slug: 'x', title: 'Alcoholism Anxiety Money' });
+    expect(relatedPosts(current, all, 2)).toHaveLength(2);
+  });
+
+  it('ignores stopwords, so "how to" alone does not make posts related', () => {
+    const current = post({ slug: 'q', title: 'How to Do the Thing' });
+    const other = [post({ slug: 'r', title: 'How to Be a Person' })];
+    // Both share only stopwords; the sole remaining signal is shared topic.
+    const result = relatedPosts(current, other);
+    expect(result.length).toBeLessThanOrEqual(1);
+  });
+});

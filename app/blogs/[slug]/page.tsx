@@ -12,7 +12,15 @@ import {
   ChevronRight,
   ShieldCheck,
 } from 'lucide-react';
-import { getAllSlugs, getPostBySlug, getAdjacentPosts } from '@/lib/blog';
+import {
+  getAllSlugs,
+  getPostBySlug,
+  getAdjacentPosts,
+  getAllPostsMeta,
+} from '@/lib/blog';
+import { topicFor, relatedPosts } from '@/lib/post-topics';
+import RelatedPosts from '@/components/RelatedPosts';
+import PostFooterCta from '@/components/PostFooterCta';
 import {
   getAuthorsBySlug,
   organizationAuthorRef,
@@ -209,6 +217,8 @@ export default async function BlogPostPage({
 
   const [author, reviewer] = await getAuthorsBySlug([post.authorSlug, post.reviewedBy]);
   const { prev, next } = getAdjacentPosts(slug);
+  const topic = topicFor(post);
+  const related = relatedPosts(post, getAllPostsMeta());
   const rawHtml = marked.parse(post.content) as string;
   const htmlContent = sanitizeHtml(rawHtml, {
     allowedTags: sanitizeHtml.defaults.allowedTags.concat([
@@ -333,7 +343,11 @@ export default async function BlogPostPage({
                   </div>
                 </div>
               )}
+
+              <PostFooterCta topic={topic} />
             </div>
+
+            <RelatedPosts posts={related} />
 
             {/* Previous / Next navigation */}
             <div className="mt-4 mb-12 grid gap-3 sm:mt-8 sm:mb-16 sm:gap-4 sm:grid-cols-2">
