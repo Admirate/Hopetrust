@@ -48,8 +48,20 @@ The following features are **temporarily disabled** and commented out in the cod
 - `components/WhatsAppButton.tsx` — full original implementation preserved as line comments
 - `RectangleSection.tsx` and `app/about/page.tsx` — user-facing copy mentioning "WhatsApp" (informational text, not CRM integration)
 
+### Website Chat Bubble (as of August 2026)
+- **`<ChatBubble />`** — import and usage commented out in `app/layout.tsx`. This is the only thing keeping the widget off the site; the build tree-shakes the component and its chunk out of the bundle entirely.
+- **`tests/e2e/chat.spec.ts`** — suite skipped via `test.skip(() => true, …)` at the top of the file, since every assertion expects a mounted widget
+
+**Not removed** (standalone, untouched):
+- `components/ChatBubble.tsx` — full implementation
+- `netlify/functions/whatsapp-crm.mjs` — the proxy handler is still live
+- `netlify.toml` — the `/api/chat` → `whatsapp-crm` redirect is still registered
+- `tests/vitest/components/chat-bubble.test.tsx` and `tests/vitest/functions/chat-proxy.test.ts` — these exercise the component and the proxy in isolation, so they still pass
+
+> **Note:** `POST /api/chat` remains publicly reachable and still forwards to the CRM webhook. Nothing on the site calls it, but it is not closed. If the bubble is staying off for a while, comment out the `/api/chat` redirect in `netlify.toml` too.
+
 ### How to re-enable
-1. Search for `PAYMENT DISABLED`, `NEWSLETTER DISABLED`, and `WHATSAPP CRM DISABLED` across the codebase
+1. Search for `PAYMENT DISABLED`, `NEWSLETTER DISABLED`, `WHATSAPP CRM DISABLED`, and `CHAT BUBBLE DISABLED` across the codebase
 2. Uncomment the marked blocks
 3. Restore the original `public/_headers` CSP and `netlify.toml` redirects + Permissions-Policy
 4. Restore `app/enrollment-success/page.tsx` from git history

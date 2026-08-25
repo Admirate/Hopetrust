@@ -1,5 +1,11 @@
 import { test, expect } from '@playwright/test';
 
+// CHAT BUBBLE DISABLED — the widget is not mounted in app/layout.tsx, so every
+// assertion here would fail on a page that is behaving correctly. Skipped
+// rather than deleted: the moment the bubble goes back on the page, dropping
+// this line is what proves it still works.
+test.skip(() => true, 'chat bubble is disabled in app/layout.tsx');
+
 // The proxy is stubbed: this proves the bubble is mounted, opens, sends and
 // renders what comes back. Whether the engine behind it answers correctly is
 // the CRM repo's suite, and its own operator checklist.
