@@ -8,6 +8,8 @@ import Header from '@/components/Header';
 import FadeInSection from '@/components/FadeInSection';
 import dynamic from 'next/dynamic';
 import { getAssetUrl } from '@/lib/assets';
+import FaqSection from '@/components/FaqSection';
+import { mentalHealthFaqs } from '@/lib/faqs';
 
 const fadeFrom = (direction: 'left' | 'right' | 'up', delay = 0) => ({
   initial: {
@@ -623,6 +625,7 @@ export default function MentalHealthPage() {
           </div>
         </section>
 
+        <FaqSection items={mentalHealthFaqs} />
       </main>
       <Footer />
     </>

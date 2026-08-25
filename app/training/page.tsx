@@ -10,6 +10,8 @@ import Header from '@/components/Header';
 import FadeInSection from '@/components/FadeInSection';
 import { getAssetUrl } from '@/lib/assets';
 import dynamic from 'next/dynamic';
+import FaqSection from '@/components/FaqSection';
+import { trainingFaqs } from '@/lib/faqs';
 // PAYMENT DISABLED — uncomment when Razorpay is integrated
 // import EnrollmentModal from '@/components/EnrollmentModal';
 
@@ -377,6 +379,7 @@ export default function TrainingPage() {
             </div>
           </div>
         </section>
+        <FaqSection items={trainingFaqs} />
       </main>
       <Footer />
 

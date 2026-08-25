@@ -8,6 +8,8 @@ import Header from '@/components/Header';
 import FadeInSection from '@/components/FadeInSection';
 import { getAssetUrl } from '@/lib/assets';
 import dynamic from 'next/dynamic';
+import FaqSection from '@/components/FaqSection';
+import { interventionFaqs } from '@/lib/faqs';
 
 const Footer = dynamic(() => import('@/components/Footer'));
 
@@ -193,6 +195,7 @@ export default function InterventionServicesPage() {
 
           </div>
         </section>
+        <FaqSection items={interventionFaqs} />
       </main>
       <Footer />
     </>

@@ -9,6 +9,8 @@ import { getAssetUrl } from '@/lib/assets';
 import dynamic from 'next/dynamic';
 import type { AddictionProgram } from '@/lib/programs';
 import { fetchPrograms } from '@/lib/programs';
+import FaqSection from '@/components/FaqSection';
+import { addictionFaqs } from '@/lib/faqs';
 // PAYMENT DISABLED — uncomment when Razorpay is integrated
 // import EnrollmentModal from '@/components/EnrollmentModal';
 
@@ -335,6 +337,7 @@ export default function AddictionPage() {
             </div>
           </section>
         </FadeInSection>
+        <FaqSection items={addictionFaqs} />
       </main>
       <Footer />
       {/* PAYMENT DISABLED — uncomment when Razorpay is integrated

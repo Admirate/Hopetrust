@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import JsonLd from '@/components/JsonLd';
-import { getServiceSchema, getBreadcrumbSchema } from '@/lib/jsonld';
+import { trainingFaqs } from '@/lib/faqs';
+import { getServiceSchema, getBreadcrumbSchema, getFAQSchema } from '@/lib/jsonld';
 
 export const metadata: Metadata = {
   title: 'Professional Development & Training Programs',
@@ -33,6 +34,7 @@ export default function TrainingLayout({
         url: 'https://hopetrustindia.com/training/',
         serviceType: 'Clinical Training',
       })} />
+      <JsonLd data={getFAQSchema(trainingFaqs)} />
       <JsonLd data={getBreadcrumbSchema([
         { name: 'Home', url: 'https://hopetrustindia.com/' },
         { name: 'Training', url: 'https://hopetrustindia.com/training/' },

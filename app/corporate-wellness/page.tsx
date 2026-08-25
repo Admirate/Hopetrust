@@ -8,6 +8,8 @@ import Header from '@/components/Header';
 import { siteConfig } from '@/lib/config';
 import { getAssetUrl } from '@/lib/assets';
 import dynamic from 'next/dynamic';
+import FaqSection from '@/components/FaqSection';
+import { corporateFaqs } from '@/lib/faqs';
 
 const Footer = dynamic(() => import('@/components/Footer'));
 const ScrollingTextBanner = dynamic(() => import('@/components/ScrollingTextBanner'));
@@ -283,6 +285,7 @@ export default function CorporateWellnessPage() {
             </motion.div>
           </div>
         </section>
+        <FaqSection items={corporateFaqs} />
       </main>
       <Footer />
     </>

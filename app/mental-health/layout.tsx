@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import JsonLd from '@/components/JsonLd';
-import { getServiceSchema, getBreadcrumbSchema } from '@/lib/jsonld';
+import { mentalHealthFaqs } from '@/lib/faqs';
+import { getServiceSchema, getBreadcrumbSchema, getFAQSchema } from '@/lib/jsonld';
 
 export const metadata: Metadata = {
   title: 'Mental Health Therapy & Psychiatry',
@@ -33,6 +34,7 @@ export default function MentalHealthLayout({
         url: 'https://hopetrustindia.com/mental-health/',
         serviceType: 'Mental Health Therapy',
       })} />
+      <JsonLd data={getFAQSchema(mentalHealthFaqs)} />
       <JsonLd data={getBreadcrumbSchema([
         { name: 'Home', url: 'https://hopetrustindia.com/' },
         { name: 'Mental Health', url: 'https://hopetrustindia.com/mental-health/' },

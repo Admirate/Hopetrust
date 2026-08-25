@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import JsonLd from '@/components/JsonLd';
-import { getServiceSchema, getBreadcrumbSchema } from '@/lib/jsonld';
+import { corporateFaqs } from '@/lib/faqs';
+import { getServiceSchema, getBreadcrumbSchema, getFAQSchema } from '@/lib/jsonld';
 
 export const metadata: Metadata = {
   title: 'Corporate Wellness & Employee Mental Health',
@@ -30,6 +31,7 @@ export default function CorporateWellnessLayout({ children }: { children: ReactN
         url: 'https://hopetrustindia.com/corporate-wellness/',
         serviceType: 'Corporate Wellness',
       })} />
+      <JsonLd data={getFAQSchema(corporateFaqs)} />
       <JsonLd data={getBreadcrumbSchema([
         { name: 'Home', url: 'https://hopetrustindia.com/' },
         { name: 'Corporate Wellness', url: 'https://hopetrustindia.com/corporate-wellness/' },

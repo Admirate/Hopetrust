@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import JsonLd from '@/components/JsonLd';
-import { getServiceSchema, getBreadcrumbSchema } from '@/lib/jsonld';
+import { interventionFaqs } from '@/lib/faqs';
+import { getServiceSchema, getBreadcrumbSchema, getFAQSchema } from '@/lib/jsonld';
 
 export const metadata: Metadata = {
   title: 'Professional Addiction Intervention',
@@ -30,6 +31,7 @@ export default function InterventionServicesLayout({ children }: { children: Rea
         url: 'https://hopetrustindia.com/intervention-services/',
         serviceType: 'Addiction Intervention',
       })} />
+      <JsonLd data={getFAQSchema(interventionFaqs)} />
       <JsonLd data={getBreadcrumbSchema([
         { name: 'Home', url: 'https://hopetrustindia.com/' },
         { name: 'Intervention Services', url: 'https://hopetrustindia.com/intervention-services/' },

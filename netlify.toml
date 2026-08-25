@@ -12,6 +12,153 @@
   targetPort = 3000
   autoLaunch = false
 
+# Retired placeholder posts.
+#
+# Six posts shipped with the WordPress theme and were never written — lorem
+# ipsum bodies on an indexed health site. They are deleted rather than left to
+# 404, because Google had them indexed; each goes to the page a reader who
+# followed that link would actually have wanted.
+#
+# These must stay ABOVE the /blog/:slug wildcard below, which would otherwise
+# forward the old WordPress URLs straight onto the pages just deleted.
+
+[[redirects]]
+  from = "/blogs/aliquam-imperdiet-non-scelerisque-ligula/"
+  to = "/blogs/"
+  status = 301
+
+[[redirects]]
+  from = "/blogs/aliquam-imperdiet-non-scelerisque-ligula"
+  to = "/blogs/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/aliquam-imperdiet-non-scelerisque-ligula/"
+  to = "/blogs/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/aliquam-imperdiet-non-scelerisque-ligula"
+  to = "/blogs/"
+  status = 301
+
+[[redirects]]
+  from = "/blogs/donec-purus-consectetur-nunc-tempus-arcu/"
+  to = "/blogs/"
+  status = 301
+
+[[redirects]]
+  from = "/blogs/donec-purus-consectetur-nunc-tempus-arcu"
+  to = "/blogs/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/donec-purus-consectetur-nunc-tempus-arcu/"
+  to = "/blogs/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/donec-purus-consectetur-nunc-tempus-arcu"
+  to = "/blogs/"
+  status = 301
+
+[[redirects]]
+  from = "/blogs/pellentesque-cavallis-lorem-congue-turpis-vulputate/"
+  to = "/blogs/"
+  status = 301
+
+[[redirects]]
+  from = "/blogs/pellentesque-cavallis-lorem-congue-turpis-vulputate"
+  to = "/blogs/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/pellentesque-cavallis-lorem-congue-turpis-vulputate/"
+  to = "/blogs/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/pellentesque-cavallis-lorem-congue-turpis-vulputate"
+  to = "/blogs/"
+  status = 301
+
+[[redirects]]
+  from = "/blogs/lorem-ipsum-dolor-si-amet-consectetur-adipiscing/"
+  to = "/blogs/"
+  status = 301
+
+[[redirects]]
+  from = "/blogs/lorem-ipsum-dolor-si-amet-consectetur-adipiscing"
+  to = "/blogs/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/lorem-ipsum-dolor-si-amet-consectetur-adipiscing/"
+  to = "/blogs/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/lorem-ipsum-dolor-si-amet-consectetur-adipiscing"
+  to = "/blogs/"
+  status = 301
+
+[[redirects]]
+  from = "/blogs/getting-the-help-you-need-in-tough-times/"
+  to = "/mental-health/"
+  status = 301
+
+[[redirects]]
+  from = "/blogs/getting-the-help-you-need-in-tough-times"
+  to = "/mental-health/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/getting-the-help-you-need-in-tough-times/"
+  to = "/mental-health/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/getting-the-help-you-need-in-tough-times"
+  to = "/mental-health/"
+  status = 301
+
+[[redirects]]
+  from = "/blogs/senior-mental-health-and-the-pandemic/"
+  to = "/mental-health/"
+  status = 301
+
+[[redirects]]
+  from = "/blogs/senior-mental-health-and-the-pandemic"
+  to = "/mental-health/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/senior-mental-health-and-the-pandemic/"
+  to = "/mental-health/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/senior-mental-health-and-the-pandemic"
+  to = "/mental-health/"
+  status = 301
+
+# Category left empty by the deletions above.
+[[redirects]]
+  from = "/blogs/category/news/"
+  to = "/blogs/"
+  status = 301
+
+# Category left empty by the deletions above.
+[[redirects]]
+  from = "/blogs/category/good-theraphy/"
+  to = "/blogs/"
+  status = 301
+
+# Category left empty by the deletions above.
+[[redirects]]
+  from = "/blogs/category/mental-health/"
+  to = "/mental-health/"
+  status = 301
 # Redirect old WordPress blog URLs (/blog/slug/) to new format (/blogs/slug/)
 [[redirects]]
   from = "/blog/:slug"

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import JsonLd from '@/components/JsonLd';
-import { getServiceSchema, getBreadcrumbSchema } from '@/lib/jsonld';
+import { addictionFaqs } from '@/lib/faqs';
+import { getServiceSchema, getBreadcrumbSchema, getFAQSchema } from '@/lib/jsonld';
 
 export const metadata: Metadata = {
   title: 'Addiction Recovery Services in Hyderabad',
@@ -33,6 +34,7 @@ export default function AddictionLayout({
         url: 'https://hopetrustindia.com/addiction/',
         serviceType: 'Addiction Treatment',
       })} />
+      <JsonLd data={getFAQSchema(addictionFaqs)} />
       <JsonLd data={getBreadcrumbSchema([
         { name: 'Home', url: 'https://hopetrustindia.com/' },
         { name: 'Addiction Services', url: 'https://hopetrustindia.com/addiction/' },
