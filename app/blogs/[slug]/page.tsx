@@ -3,8 +3,22 @@ import { notFound } from 'next/navigation';
 import { marked } from 'marked';
 import sanitizeHtml from 'sanitize-html';
 import Link from 'next/link';
-import { ArrowLeft, Clock, Calendar, User, ChevronLeft, ChevronRight } from 'lucide-react';
+import {
+  ArrowLeft,
+  Clock,
+  Calendar,
+  User,
+  ChevronLeft,
+  ChevronRight,
+  ShieldCheck,
+} from 'lucide-react';
 import { getAllSlugs, getPostBySlug, getAdjacentPosts } from '@/lib/blog';
+import {
+  getAuthorsBySlug,
+  organizationAuthorRef,
+  withCredential,
+  type Author,
+} from '@/lib/authors';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ImageFallback from '@/components/ImageFallback';
@@ -25,10 +39,14 @@ export async function generateMetadata({
   const post = getPostBySlug(slug);
   if (!post) return { title: 'Post Not Found' };
 
+  const [author] = await getAuthorsBySlug([post.authorSlug]);
+
   return {
     title: post.title,
     description: post.excerpt,
-    authors: [{ name: post.author }],
+    authors: author
+      ? [{ name: author.name, url: author.url }]
+      : [{ name: post.author }],
     keywords: [
       ...post.tags,
       ...post.categories,
@@ -45,7 +63,7 @@ export async function generateMetadata({
       url: `${siteConfig.url}/blogs/${slug}/`,
       publishedTime: post.date,
       modifiedTime: post.modified,
-      authors: [post.author],
+      authors: [author ? author.name : post.author],
       images: post.featuredImage ? [{ url: absoluteUrl(post.featuredImage) }] : [],
       siteName: 'Hope Trust',
     },
@@ -70,20 +88,49 @@ function formatDate(dateStr: string): string {
   }
 }
 
-function JsonLd({ post }: { post: NonNullable<ReturnType<typeof getPostBySlug>> }) {
+function JsonLd({
+  post,
+  author,
+  reviewer,
+}: {
+  post: NonNullable<ReturnType<typeof getPostBySlug>>;
+  author: Author | null;
+  reviewer: Author | null;
+}) {
   const url = `${siteConfig.url}/blogs/${post.slug}/`;
+
+  /**
+   * `reviewedBy` and `lastReviewed` live on WebPage, not on the article, so the
+   * page node is spelled out rather than left as a bare `@id` stub. It is typed
+   * MedicalWebPage only when a clinician actually signed off — the type is a
+   * claim about editorial process, and asserting it without a named reviewer
+   * would be the same overstatement the byline work exists to remove.
+   */
+  const pageNode = reviewer
+    ? {
+        '@type': ['WebPage', 'MedicalWebPage'],
+        '@id': url,
+        reviewedBy: { '@id': reviewer.id },
+        lastReviewed: post.reviewedOn,
+      }
+    : { '@type': 'WebPage', '@id': url };
+
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     '@id': `${url}#article`,
-    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    mainEntityOfPage: pageNode,
     url,
     headline: post.title.slice(0, 110),
     description: post.excerpt,
     datePublished: post.date,
     dateModified: post.modified || post.date,
     inLanguage: 'en-IN',
-    author: { '@type': 'Organization', '@id': `${siteConfig.url}/#organization`, name: post.author },
+    // A named clinician is referenced by `@id` so the credentials declared on
+    // their profile page attach to every article they sign. Posts with no named
+    // author stay attributed to the organisation rather than borrowing one.
+    author: author ? { '@id': author.id } : organizationAuthorRef(),
+    ...(reviewer && { reviewedBy: { '@id': reviewer.id } }),
     publisher: {
       '@type': 'Organization',
       '@id': `${siteConfig.url}/#organization`,
@@ -103,6 +150,54 @@ function JsonLd({ post }: { post: NonNullable<ReturnType<typeof getPostBySlug>> 
   );
 }
 
+/**
+ * The named byline. Links to the practitioner's profile so a reader — or a
+ * crawler assessing expertise — can reach their credentials in one hop.
+ */
+function Byline({ author, fallback }: { author: Author | null; fallback: string }) {
+  if (!author) {
+    return (
+      <span className="inline-flex items-center gap-1 sm:gap-1.5">
+        <User className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+        {fallback}
+      </span>
+    );
+  }
+
+  return (
+    <span className="inline-flex items-center gap-1 sm:gap-1.5">
+      <User className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+      <Link
+        href={`/therapists/${author.slug}/`}
+        className="font-medium text-[#00373E] underline-offset-2 transition-colors hover:text-[#ED7428] hover:underline"
+      >
+        {author.name}
+      </Link>
+      <span className="text-gray-400">&middot;</span>
+      <span>{author.credential}</span>
+    </span>
+  );
+}
+
+/** Medical review notice. Rendered only when a clinician has actually signed off. */
+function ReviewNotice({ reviewer, reviewedOn }: { reviewer: Author; reviewedOn?: string }) {
+  return (
+    <div className="mt-4 flex items-start gap-2.5 rounded-xl border border-[#00373E]/10 bg-[#F2F7F7] px-3.5 py-3 sm:mt-6 sm:px-4">
+      <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#00373E]" />
+      <p className="text-xs leading-relaxed text-gray-600 sm:text-sm">
+        Medically reviewed by{' '}
+        <Link
+          href={`/therapists/${reviewer.slug}/`}
+          className="font-medium text-[#00373E] underline-offset-2 hover:text-[#ED7428] hover:underline"
+        >
+          {withCredential(reviewer)}
+        </Link>
+        {reviewedOn && <> on {formatDate(reviewedOn)}</>}.
+      </p>
+    </div>
+  );
+}
+
 export default async function BlogPostPage({
   params,
 }: {
@@ -112,6 +207,7 @@ export default async function BlogPostPage({
   const post = getPostBySlug(slug);
   if (!post) notFound();
 
+  const [author, reviewer] = await getAuthorsBySlug([post.authorSlug, post.reviewedBy]);
   const { prev, next } = getAdjacentPosts(slug);
   const rawHtml = marked.parse(post.content) as string;
   const htmlContent = sanitizeHtml(rawHtml, {
@@ -147,7 +243,7 @@ export default async function BlogPostPage({
 
   return (
     <>
-      <JsonLd post={post} />
+      <JsonLd post={post} author={author} reviewer={reviewer} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbs) }}
@@ -200,10 +296,7 @@ export default async function BlogPostPage({
               </h1>
 
               <div className="flex flex-wrap items-center gap-2.5 text-xs text-gray-500 sm:gap-4 sm:text-sm">
-                <span className="inline-flex items-center gap-1 sm:gap-1.5">
-                  <User className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                  {post.author}
-                </span>
+                <Byline author={author} fallback={post.author} />
                 <span className="inline-flex items-center gap-1 sm:gap-1.5">
                   <Calendar className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   {formatDate(post.date)}
@@ -213,6 +306,10 @@ export default async function BlogPostPage({
                   {post.readingTime}
                 </span>
               </div>
+
+              {reviewer && (
+                <ReviewNotice reviewer={reviewer} reviewedOn={post.reviewedOn} />
+              )}
             </div>
 
             {/* Article body */}

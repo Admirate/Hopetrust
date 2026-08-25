@@ -14,6 +14,12 @@ export interface BlogPost {
   tags: string[];
   featuredImage: string;
   author: string;
+  /** Practitioner slug of the named author, when the post has one. */
+  authorSlug?: string;
+  /** Practitioner slug of the clinician who checked this for accuracy. */
+  reviewedBy?: string;
+  /** ISO date the medical review happened. Required alongside `reviewedBy`. */
+  reviewedOn?: string;
   wpLink: string;
   content: string;
   readingTime: string;
@@ -29,9 +35,29 @@ export interface BlogPostMeta {
   tags: string[];
   featuredImage: string;
   author: string;
+  authorSlug?: string;
+  reviewedBy?: string;
+  reviewedOn?: string;
 }
 
 const BLOG_DIR = path.join(process.cwd(), 'content', 'blogs');
+
+/**
+ * The archive was imported with the byline "HopeTrust", while the schema, the
+ * footer and the organisation node all say "Hope Trust". Search engines treat
+ * the visible byline and the structured publisher name as claims about the same
+ * entity, so they should not disagree over a space.
+ */
+function displayAuthor(name: unknown): string {
+  const value = String(name ?? '').trim();
+  return /^hopetrust$/i.test(value) || value === '' ? 'Hope Trust' : value;
+}
+
+/** YAML gives us a Date for unquoted dates and a string for quoted ones. */
+function toIsoDate(value: unknown): string {
+  if (value instanceof Date) return value.toISOString().slice(0, 10);
+  return String(value).slice(0, 10);
+}
 
 function parseMdxFile(filePath: string): BlogPost | null {
   try {
@@ -48,7 +74,13 @@ function parseMdxFile(filePath: string): BlogPost | null {
       categories: data.categories || [],
       tags: data.tags || [],
       featuredImage: data.featuredImage || '',
-      author: data.author || 'Hope Trust',
+      author: displayAuthor(data.author),
+      authorSlug: data.authorSlug || undefined,
+      // A review claim means nothing without a date, so a `reviewedBy` that
+      // carries no `reviewedOn` is dropped rather than rendered undated.
+      reviewedBy: data.reviewedBy && data.reviewedOn ? data.reviewedBy : undefined,
+      reviewedOn:
+        data.reviewedBy && data.reviewedOn ? toIsoDate(data.reviewedOn) : undefined,
       wpLink: data.wpLink || '',
       content,
       readingTime: stats.text,
@@ -94,6 +126,20 @@ export function getPostBySlug(slug: string): BlogPost | null {
   const filePath = path.join(BLOG_DIR, `${slug}.mdx`);
   if (!fs.existsSync(filePath)) return null;
   return parseMdxFile(filePath);
+}
+
+/**
+ * Posts written by a practitioner, newest first. Backs the article list on
+ * their profile page, which is what turns a bio into an author page: the
+ * credentials and the body of work sit at one URL.
+ */
+export function getPostsByAuthorSlug(authorSlug: string): BlogPostMeta[] {
+  return getAllPostsMeta().filter((p) => p.authorSlug === authorSlug);
+}
+
+/** Posts a practitioner has medically reviewed, newest first. */
+export function getPostsReviewedBy(reviewerSlug: string): BlogPostMeta[] {
+  return getAllPostsMeta().filter((p) => p.reviewedBy === reviewerSlug);
 }
 
 export function getAllSlugs(): string[] {

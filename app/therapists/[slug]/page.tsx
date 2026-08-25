@@ -6,6 +6,8 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { serializeJsonLd } from '@/components/JsonLd';
 import { getDoctorsForBuild, getDoctorBySlug, bioIntro, type Doctor } from '@/lib/doctors';
+import { toAuthor, personSchema } from '@/lib/authors';
+import { getPostsByAuthorSlug, getPostsReviewedBy } from '@/lib/blog';
 import { siteConfig } from '@/lib/config';
 
 export async function generateStaticParams() {
@@ -62,43 +64,62 @@ const SPECIALTY_ENUM: Record<string, string> = {
   Psychiatry: 'https://schema.org/Psychiatric',
 };
 
+/**
+ * Two nodes, deliberately.
+ *
+ * The `Person` node carries the human and their credentials, and is the thing
+ * articles point at from `author` / `reviewedBy`. `Physician` in schema.org is
+ * a `MedicalOrganization`, not a `Person` — it describes a practice, so it is
+ * emitted only for registered medical practitioners. Everyone here is a
+ * clinician, but a psychologist marked up as a physician overstates their
+ * credentials, which on health content is the exact signal we are trying to
+ * get right.
+ */
 function buildSchema(doctor: Doctor) {
   const url = `${siteConfig.url}/therapists/${doctor.slug}/`;
   const specialty = SPECIALTY_ENUM[doctor.department];
+  const author = toAuthor(doctor);
 
   return [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'Physician',
-      '@id': `${url}#physician`,
-      url,
-      name: doctor.name,
+    personSchema(author, {
       description: bioIntro(doctor.bio, 300),
-      jobTitle: doctor.qualification,
-      knowsAbout: doctor.department,
-      ...(specialty && { medicalSpecialty: specialty }),
-      ...(doctor.photo && { image: doctor.photo }),
-      telephone: siteConfig.contact.phone,
-      address: {
-        '@type': 'PostalAddress',
-        streetAddress: siteConfig.contact.address.streetAddress,
-        addressLocality: siteConfig.contact.address.locality,
-        addressRegion: siteConfig.contact.address.region,
-        postalCode: siteConfig.contact.address.postalCode,
-        addressCountry: siteConfig.contact.address.country,
-      },
-      worksFor: { '@id': `${siteConfig.url}/#organization` },
-      areaServed: { '@type': 'City', name: 'Hyderabad' },
-      availableService: {
-        '@type': 'MedicalTherapy',
-        name: `${doctor.department} consultation`,
-      },
-      potentialAction: {
-        '@type': 'ReserveAction',
-        target: doctor.bookingUrl,
-        name: `Book a session with ${doctor.name}`,
-      },
-    },
+      bookingUrl: doctor.bookingUrl,
+    }),
+    ...(author.isMedicalDoctor
+      ? [
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Physician',
+            '@id': `${url}#physician`,
+            url,
+            name: doctor.name,
+            description: bioIntro(doctor.bio, 300),
+            ...(specialty && { medicalSpecialty: specialty }),
+            ...(doctor.photo && { image: doctor.photo }),
+            telephone: siteConfig.contact.phone,
+            address: {
+              '@type': 'PostalAddress',
+              streetAddress: siteConfig.contact.address.streetAddress,
+              addressLocality: siteConfig.contact.address.locality,
+              addressRegion: siteConfig.contact.address.region,
+              postalCode: siteConfig.contact.address.postalCode,
+              addressCountry: siteConfig.contact.address.country,
+            },
+            parentOrganization: { '@id': `${siteConfig.url}/#organization` },
+            employee: { '@id': author.id },
+            areaServed: { '@type': 'City', name: 'Hyderabad' },
+            availableService: {
+              '@type': 'MedicalTherapy',
+              name: `${doctor.department} consultation`,
+            },
+            potentialAction: {
+              '@type': 'ReserveAction',
+              target: doctor.bookingUrl,
+              name: `Book a session with ${doctor.name}`,
+            },
+          },
+        ]
+      : []),
     {
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
@@ -161,6 +182,9 @@ export default async function TherapistPage({
   const { slug } = await params;
   const doctor = await getDoctorBySlug(slug);
   if (!doctor) notFound();
+
+  const written = getPostsByAuthorSlug(doctor.slug);
+  const reviewed = getPostsReviewedBy(doctor.slug);
 
   const all = await getDoctorsForBuild();
   const related = all
@@ -262,6 +286,57 @@ export default async function TherapistPage({
               </p>
             </div>
           </div>
+
+          {/* Published and reviewed work — what makes this an author page as
+              well as a bio, and the return path from 395 articles back to the
+              credentials behind them. */}
+          {(written.length > 0 || reviewed.length > 0) && (
+            <div className="mt-6 rounded-[28px] bg-white p-6 shadow-[0_16px_48px_rgba(0,0,0,0.04)] sm:p-8">
+              {written.length > 0 && (
+                <>
+                  <h2 className="text-base font-semibold text-[#00373E] sm:text-lg">
+                    Articles by {doctor.name}
+                  </h2>
+                  <ul className="mt-4 space-y-2.5">
+                    {written.slice(0, 12).map((post) => (
+                      <li key={post.slug}>
+                        <Link
+                          href={`/blogs/${post.slug}/`}
+                          className="text-sm text-gray-700 underline-offset-2 transition-colors hover:text-[#ED7428] hover:underline sm:text-base"
+                        >
+                          {post.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+
+              {reviewed.length > 0 && (
+                <>
+                  <h2
+                    className={`text-base font-semibold text-[#00373E] sm:text-lg ${
+                      written.length > 0 ? 'mt-8 border-t border-gray-100 pt-6' : ''
+                    }`}
+                  >
+                    Medically reviewed by {doctor.name}
+                  </h2>
+                  <ul className="mt-4 space-y-2.5">
+                    {reviewed.slice(0, 12).map((post) => (
+                      <li key={post.slug}>
+                        <Link
+                          href={`/blogs/${post.slug}/`}
+                          className="text-sm text-gray-700 underline-offset-2 transition-colors hover:text-[#ED7428] hover:underline sm:text-base"
+                        >
+                          {post.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </div>
+          )}
 
           {/* Related practitioners */}
           {related.length > 0 && (
